@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+        xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+        xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        NavigationPage.HasNavigationBar="False"
+        xmlns:buttons="clr-namespace:ElogictisMobile.Views.Buttons"
+        x:Class="ElogictisMobile.Pages.LoginPage">
+    <ContentPage.Content>
+        <Grid>
+            <StackLayout WidthRequest="220" HorizontalOptions="Center">
+                <!-- App Icon -->
+                <Image WidthRequest="200" Aspect="AspectFit"
+                        VerticalOptions="EndAndExpand"
+                        HorizontalOptions="Center" Margin="20,0,20,40"
+                        Source="history" />
+
+                <buttons:BindableButton BackgroundColor="Transparent"
+                        TextColor="White" FontFamily="Nunito-Regular"
+                        BindingContext="{Binding ForgotPasswordModel}"
+                        HorizontalOptions="End" WidthRequest="140" />
+                <buttons:BindableButton BindingContext="{Binding LogInModel}" />
+                <buttons:BindableButton BindingContext="{Binding UsePhoneModel}"
+                        BackgroundColor="Transparent" TextColor="White"
+                        VerticalOptions="StartAndExpand" />
+            </StackLayout>
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>

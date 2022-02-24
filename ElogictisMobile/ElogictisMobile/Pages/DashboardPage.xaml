@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<TabbedPage xmlns="http://xamarin.com/schemas/2014/forms"
+        xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+        xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        xmlns:android="clr-namespace:Xamarin.Forms.PlatformConfiguration.AndroidSpecific;assembly=Xamarin.Forms.Core"
+        android:TabbedPage.ToolbarPlacement="Bottom"
+        xmlns:pages="clr-namespace:ElogictisMobile.Pages"
+        x:Class="ElogictisMobile.Pages.DashboardPage">
+    <TabbedPage.Children>
+        <NavigationPage Title="Thống kê" IconImageSource="">
+            <x:Arguments>
+                <pages:StatisticalPage BindingContext="{Binding StatisticalPageModel}" />
+            </x:Arguments>
+        </NavigationPage>
+        <NavigationPage Title="Hoạt động">
+            <x:Arguments>
+                <pages:HistoryPage BindingContext="{Binding HistoryPageModel}" />
+            </x:Arguments>
+        </NavigationPage>
+        <NavigationPage Title="Quản lý">
+            <x:Arguments>
+                <pages:ManagePage BindingContext="{Binding ManagePageModel}" />
+            </x:Arguments>
+        </NavigationPage>
+        <NavigationPage Title="Tài khoản">
+            <x:Arguments>
+                <pages:ProfilePage BindingContext="{Binding ProfilePageModel}" />
+            </x:Arguments>
+        </NavigationPage>
+    </TabbedPage.Children>
+</TabbedPage>
