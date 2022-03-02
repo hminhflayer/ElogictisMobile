@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="ElogictisMobile.Pages.ProductPage">
+    <ContentPage.Content>
+        <StackLayout>
+            <Label Text="Người gửi"/>
+            <Entry Placeholder="Họ và tên" Text="{Binding FromFullName}"/>
+            <Entry Placeholder="Số điện thoại" Text="{Binding FromPhoneNumber}"/>
+            <Entry Placeholder="Địa chỉ" Text="{Binding FromAddress}"/>
+            <Label Text="Người Nhận"/>
+            <Entry Placeholder="Họ và tên" Text="{Binding ToFullName}"/>
+            <Entry Placeholder="Số điện thoại" Text="{Binding ToPhoneNumber}"/>
+            <Entry Placeholder="Địa chỉ" Text="{Binding ToAddress}"/>
+            <Label Text="Thông tin đơn hàng"/>
+            <Entry Placeholder="Trọng lượng" Text="{Binding Weight}"/>
+            <Entry Placeholder="Số kiện" Text="{Binding Quanlity}"/>
+            <Entry Placeholder="Giá đơn hàng" Text="{Binding Money}"/>
+            <Entry Placeholder="Ghi chú" Text="{Binding Description}"/>
+            <Button Text="Tạo đơn" Command="{Binding AddProduct_Clicked}"/>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

@@ -20,7 +20,17 @@
                         TextColor="White" FontFamily="Nunito-Regular"
                         BindingContext="{Binding ForgotPasswordModel}"
                         HorizontalOptions="End" WidthRequest="140" />
+                <Entry Text="{Binding Username}"
+                   HorizontalOptions="FillAndExpand"
+                   VerticalOptions="Center"
+                   Placeholder="Username" />
+                <Entry Text="{Binding Password}"
+                   Placeholder="Password"
+                   IsPassword="True" 
+                   HorizontalOptions="FillAndExpand"
+                   VerticalOptions="Center"/>
                 <buttons:BindableButton BindingContext="{Binding LogInModel}" />
+                <buttons:BindableButton BindingContext="{Binding SignUpModel}" />
                 <buttons:BindableButton BindingContext="{Binding UsePhoneModel}"
                         BackgroundColor="Transparent" TextColor="White"
                         VerticalOptions="StartAndExpand" />

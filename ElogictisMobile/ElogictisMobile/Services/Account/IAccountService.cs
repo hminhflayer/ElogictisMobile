@@ -8,5 +8,9 @@ namespace ElogictisMobile.Services.Account
     public interface IAccountService
     {
         Task<bool> LoginAsync(string username, string password);
+        Task<string> SignUpAsync(string email, string password);
+        Task<string> LoginWithEmailAndPassword(string email, string password);
+        bool SignOut();
+        bool IsSignIn();
     }
 }

@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Text;
 using ElogictisMobile.Models;
 using ElogictisMobile.Pages;
+using ElogictisMobile.Pages.Profiles;
 using ElogictisMobile.Services;
 using ElogictisMobile.Services.Account;
+using ElogictisMobile.Services.Firebase;
 using ElogictisMobile.Services.Navigation;
 using ElogictisMobile.Services.Work;
 using TinyIoC;
@@ -25,17 +27,22 @@ namespace ElogictisMobile.PageModels.Base
             // Register Page and Page Models
             Register<DashboardPageModel, DashboardPage>();
             Register<LoginPageModel, LoginPage>();
-            //Register<LoginEmailPageModel, LoginEmailPage>();
+            Register<SignUpPageModel, SignUpPage>();
             //Register<LoginPhonePageModel, LoginPhonePage>();
             Register<ProfilePageModel, ProfilePage>();
             Register<HistoryPageModel, HistoryPage>();
             Register<ManagePageModel,  ManagePage>();
             Register<StatisticalPageModel, StatisticalPage>();
+            Register<ProductPageModel, ProductPage>();
+
+            //Profiles
+            Register<ProfileInfoPageModel, ProfileInfoPage>();
 
             // Register Services (registered as Singletons by default)
             _container.Register<INavigationService, NavigationService>();
             _container.Register<IAccountService>(DependencyService.Get<IAccountService>());
             _container.Register<IWorkService, MockWorkService>();
+            _container.Register<IFirebaseAuthentication>(DependencyService.Get<IFirebaseAuthentication>());
             //_container.Register(DependencyService.Get<IRepository<WorkItem>>());
         }
 

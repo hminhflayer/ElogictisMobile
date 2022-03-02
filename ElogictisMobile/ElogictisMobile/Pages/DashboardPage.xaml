@@ -7,24 +7,25 @@
         xmlns:android="clr-namespace:Xamarin.Forms.PlatformConfiguration.AndroidSpecific;assembly=Xamarin.Forms.Core"
         android:TabbedPage.ToolbarPlacement="Bottom"
         xmlns:pages="clr-namespace:ElogictisMobile.Pages"
-        x:Class="ElogictisMobile.Pages.DashboardPage">
+        x:Class="ElogictisMobile.Pages.DashboardPage"
+        BarBackgroundColor="LightBlue">
     <TabbedPage.Children>
-        <NavigationPage Title="Thống kê" IconImageSource="">
+        <NavigationPage Title="Thống kê" IconImageSource="Historyicon">
             <x:Arguments>
                 <pages:StatisticalPage BindingContext="{Binding StatisticalPageModel}" />
             </x:Arguments>
         </NavigationPage>
-        <NavigationPage Title="Hoạt động">
+        <NavigationPage Title="Hoạt động" IconImageSource="Historyicon">
             <x:Arguments>
                 <pages:HistoryPage BindingContext="{Binding HistoryPageModel}" />
             </x:Arguments>
         </NavigationPage>
-        <NavigationPage Title="Quản lý">
+        <NavigationPage Title="Quản lý" IconImageSource="Historyicon">
             <x:Arguments>
                 <pages:ManagePage BindingContext="{Binding ManagePageModel}" />
             </x:Arguments>
         </NavigationPage>
-        <NavigationPage Title="Tài khoản">
+        <NavigationPage Title="Tài khoản" IconImageSource="Usericon">
             <x:Arguments>
                 <pages:ProfilePage BindingContext="{Binding ProfilePageModel}" />
             </x:Arguments>

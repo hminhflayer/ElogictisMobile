@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:buttons="clr-namespace:ElogictisMobile.Views.Buttons"
+             x:Class="ElogictisMobile.Pages.SignUpPage">
+    <ContentPage.Content>
+        <StackLayout>
+            <Entry x:Name="FullName" Placeholder="Họ và tên" Text="{Binding FullName}"/>
+            <Entry x:Name="Email" Placeholder="Email" Text="{Binding Email}"/>
+            <Entry x:Name="Password" Placeholder="Mật khẩu" IsPassword="True" Text="{Binding Password}"/>
+            <Entry x:Name="VerifyPassword" Placeholder="Xác nhận mật khẩu" IsPassword="True" Text="{Binding VerifyPassword}"/>
+            <buttons:BindableButton BindingContext="{Binding SignUpModel}" />
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>
