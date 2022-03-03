@@ -34,6 +34,9 @@ namespace ElogictisMobile.PageModels.Base
             Register<ManagePageModel,  ManagePage>();
             Register<StatisticalPageModel, StatisticalPage>();
             Register<ProductPageModel, ProductPage>();
+            Register<ForgotPasswordPageModel, ForgotPasswordPage>();
+            Register<VerifyForgotPasswordPageModel, ForgotPasswordPage>();
+            Register<ResetPasswordPageModel, ResetPasswordPage>();
 
             //Profiles
             Register<ProfileInfoPageModel, ProfileInfoPage>();

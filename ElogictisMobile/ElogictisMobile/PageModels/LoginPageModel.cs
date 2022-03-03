@@ -38,6 +38,7 @@ namespace ElogictisMobile.PageModels
         public ButtonModel UsePhoneModel { get; set; }
 
         public ButtonModel SignUpModel { get; set; }
+        public ButtonModel ResetPasswordModel { get; set; }
 
         private IAccountService _accountService;
         private INavigationService _navigationService;
@@ -51,12 +52,18 @@ namespace ElogictisMobile.PageModels
             //ForgotPasswordModel = new ButtonModel("forgot password", OnForgotPassword);
             LogInModel = new ButtonModel("LOG IN", OnLogin);
             SignUpModel = new ButtonModel("Sign Up", OnSignUp);
+            ResetPasswordModel = new ButtonModel("Quên mật khẩu", OnForgotPassword);
             //UsePhoneModel = new ButtonModel("USE PHONE NUMBER", GoToPhoneLogin);
         }
 
         private async void OnSignUp()
         {
             await _navigationService.NavigateToAsync<SignUpPageModel>();
+        }
+
+        private async void OnForgotPassword()
+        {
+            await _navigationService.NavigateToAsync<ForgotPasswordPageModel>();
         }
 
         private async void OnLogin()
@@ -86,10 +93,6 @@ namespace ElogictisMobile.PageModels
         //}
     //}
 
-        private void OnForgotPassword()
-        {
-
-        }
 
         private void GoToPhoneLogin()
         {

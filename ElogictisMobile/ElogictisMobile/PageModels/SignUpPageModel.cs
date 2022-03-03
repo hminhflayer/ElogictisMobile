@@ -10,6 +10,7 @@ namespace ElogictisMobile.PageModels
 {
     public class SignUpPageModel : PageModelBase
     {
+        private bool _isVerifyPassFail;
         private IAccountService _accountService;
         private INavigationService _navigationService;
         private string _fullName;
@@ -37,6 +38,13 @@ namespace ElogictisMobile.PageModels
             get => _verifyPassword;
             set => SetProperty(ref _verifyPassword, value);
         }
+
+        public bool IsVerifyPasswordFail
+        {
+            get => _isVerifyPassFail;
+            set => SetProperty(ref _isVerifyPassFail, value);
+        }
+
         public ButtonModel SignUpModel { get; }
 
         public SignUpPageModel(INavigationService navigationService,
@@ -50,11 +58,27 @@ namespace ElogictisMobile.PageModels
 
         private async void SignUpHandle()
         {
-            var loginAttempt = await _accountService.SignUpAsync(Email, Password);
-            if (loginAttempt != "")
+            try
             {
-                await _navigationService.NavigateToAsync<LoginPageModel>();
+                IsVerifyPasswordFail = Password.Equals(VerifyPassword);
+                if (IsVerifyPasswordFail)
+                {
+                    var loginAttempt = await _accountService.SignUpAsync(Email, Password);
+                    if (loginAttempt != "")
+                    {
+                        await _navigationService.NavigateToAsync<LoginPageModel>();
+                    }
+                }
+                else
+                {
+                    await App.Current.MainPage.DisplayAlert("Lỗi", "Mật khẩu và xác nhận mật khẩu không đúng!", "OK");
+                }    
             }
+            catch(Exception ex)
+            {
+                await App.Current.MainPage.DisplayAlert("Lỗi hệ thống", ex.Message, "OK");
+            }
+            
         }
     }
 }

@@ -35,6 +35,11 @@
                         <TapGestureRecognizer Command="{Binding ProfileInfo_Tapped}"/>
                     </Label.GestureRecognizers>
                 </Label>
+                <Label Text="Đổi mật khẩu">
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding ResetPassword_Tapped}"/>
+                    </Label.GestureRecognizers>
+                </Label>
                 <Label Text="Đăng Xuất">
                     <Label.GestureRecognizers>
                         <TapGestureRecognizer Command="{Binding SignOut_Tapped}"/>
