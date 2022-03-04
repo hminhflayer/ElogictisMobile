@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
-using ElogictisMobile.PageModels.Base;
+using ElogictisMobile.ViewModels;
+using ElogictisMobile.ViewModels.Base;
 using Xamarin.Forms;
 
 namespace ElogictisMobile.Services.Navigation
@@ -15,10 +16,10 @@ namespace ElogictisMobile.Services.Navigation
             return Task.CompletedTask;
         }
 
-        public async Task NavigateToAsync<TPageModel>(object navigationData = null, bool setRoot = false)
-            where TPageModel : PageModelBase
+        public async Task NavigateToAsync<TViewModel>(object navigationData = null, bool setRoot = false)
+            where TViewModel : BaseViewModel
         {
-            Page page = PageModelLocator.CreatePageFor<TPageModel>();
+            Page page = ViewModelLocator.CreatePageFor<TViewModel>();
 
             if (setRoot)
             {
@@ -54,7 +55,7 @@ namespace ElogictisMobile.Services.Navigation
                 }
             }
 
-            if (page.BindingContext is PageModelBase pmBase)
+            if (page.BindingContext is BaseViewModel pmBase)
             {
                 await pmBase.InitializeAsync(navigationData);
             }

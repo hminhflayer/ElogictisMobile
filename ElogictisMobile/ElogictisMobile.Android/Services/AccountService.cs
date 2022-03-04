@@ -29,6 +29,7 @@ namespace ElogictisMobile.Droid.Services
             var tcs = new TaskCompletionSource<bool>();
             FirebaseAuth.Instance.SignInWithEmailAndPasswordAsync(email, password)
                 .ContinueWith((task) => OnAuthCompleted(task, tcs));
+
             return tcs.Task;
         }
 
@@ -49,7 +50,7 @@ namespace ElogictisMobile.Droid.Services
         {
             try
             {
-                var user = await FirebaseAuth.Instance.SignInWithEmailAndPasswordAsync(email, password);
+                var user = await FirebaseAuth.Instance.SignInWithEmailAndPasswordAsync(email, password);  
                 var token = await user.User.GetIdTokenAsync(false);
                 return token.Token;
             }
@@ -87,12 +88,15 @@ namespace ElogictisMobile.Droid.Services
         public async Task<string> SignUpAsync(string email, string password)
         {
             //now we use the staic method in FirebaseAuth to get an instance of FirebaseAuth
-            var user = await FirebaseAuth.Instance?.CreateUserWithEmailAndPasswordAsync(email, password);
-
-            var token = await user.User.GetIdTokenAsync(false);
+            var authResult = await FirebaseAuth.Instance?.CreateUserWithEmailAndPasswordAsync(email, password);
+            using (var user = authResult.User)
+            using (var actionCode = ActionCodeSettings.NewBuilder().SetAndroidPackageName("com.caominh.elogictismobile", true, "0").Build())
+            {
+                await user.SendEmailVerificationAsync(actionCode);
+            }
+            var token = await authResult.User.GetIdTokenAsync(false);
 
             return token.Token;
-
         }
     }
 }

@@ -1,0 +1,198 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="ElogictisMobile.Views.StatisticalPage"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:behavior="clr-namespace:ElogictisMobile.Behaviors;assembly=ElogictisMobile"
+    xmlns:border="clr-namespace:Syncfusion.XForms.Border;assembly=Syncfusion.Core.XForms"
+    xmlns:buttons="clr-namespace:Syncfusion.XForms.Buttons;assembly=Syncfusion.Buttons.XForms"
+    xmlns:chart="clr-namespace:Syncfusion.SfChart.XForms;assembly=Syncfusion.SfChart.XForms"
+    xmlns:controls="clr-namespace:ElogictisMobile.Controls;assembly=ElogictisMobile"
+    xmlns:gradient="clr-namespace:Syncfusion.XForms.Graphics;assembly=Syncfusion.Core.XForms"
+    xmlns:listView="clr-namespace:Syncfusion.ListView.XForms;assembly=Syncfusion.SfListView.XForms"
+    xmlns:local="clr-namespace:ElogictisMobile.Views"
+    xmlns:viewModel="clr-namespace:ElogictisMobile.ViewModels"
+    x:Name="healthCarePage"
+    BackgroundColor="{DynamicResource Gray-Bg}"
+    NavigationPage.HasNavigationBar="False">
+
+    <ContentPage.Content>
+        <StackLayout>
+            <Label Text="Hello"/>
+        </StackLayout>
+       <!--<ScrollView>
+            <Grid
+                Padding="8"
+                RowDefinitions="Auto, Auto"
+                RowSpacing="0">
+
+                <listView:SfListView
+                    AutoFitMode="Height"
+                    ItemSpacing="8"
+                    ItemsSource="{Binding HealthCareCardItems}"
+                    SelectionMode="None">
+
+                    <listView:SfListView.ItemTemplate>
+                        <DataTemplate>
+
+                            <controls:CustomShadowFrame
+                                Padding="0"
+                                BackgroundColor="{DynamicResource GrayShadowColor}"
+                                BorderWidth="0"
+                                CornerRadius="4"
+                                HasShadow="True"
+                                Radius="4">
+
+                                <controls:CustomShadowFrame.Content>
+
+                                    <border:SfBorder
+                                        BorderColor="Transparent"
+                                        BorderWidth="0"
+                                        CornerRadius="4">
+                                        <Grid>
+                                            <gradient:SfGradientView>
+                                                <gradient:SfGradientView.BackgroundBrush>
+                                                    <gradient:SfLinearGradientBrush>
+                                                        <gradient:SfLinearGradientBrush.GradientStops>
+                                                            <gradient:SfGradientStop Offset="0.0" Color="{Binding BackgroundGradientStart}" />
+                                                            <gradient:SfGradientStop Offset="1.0" Color="{Binding BackgroundGradientEnd}" />
+                                                        </gradient:SfLinearGradientBrush.GradientStops>
+                                                    </gradient:SfLinearGradientBrush>
+                                                </gradient:SfGradientView.BackgroundBrush>
+                                            </gradient:SfGradientView>
+
+                                            <StackLayout Margin="15" Spacing="5">
+                                                <Label
+                                                    FontFamily="Montserrat-SemiBold"
+                                                    FontSize="12"
+                                                    LineHeight="{OnPlatform Android=1.25,
+                                                                            Default=-1}"
+                                                    Text="{Binding Category}"
+                                                    TextColor="{DynamicResource Gray-White}" />
+                                                <Label
+                                                    FontFamily="Montserrat-SemiBold"
+                                                    FontSize="24"
+                                                    LineHeight="{OnPlatform Android=1.25,
+                                                                            Default=-1}"
+                                                    Text="{Binding CategoryValue}"
+                                                    TextColor="{DynamicResource Gray-White}" />
+                                                <chart:SfChart
+                                                    Margin="0,11,0,0"
+                                                    BackgroundColor="Transparent"
+                                                    HeightRequest="{OnIdiom Phone=44,
+                                                                            Desktop=80,
+                                                                            Tablet=80}"
+                                                    HorizontalOptions="FillAndExpand"
+                                                    VerticalOptions="FillAndExpand">
+                                                    <chart:SfChart.PrimaryAxis>
+                                                        <chart:DateTimeAxis
+                                                            IsVisible="False"
+                                                            RangePadding="None"
+                                                            ShowMajorGridLines="False" />
+                                                    </chart:SfChart.PrimaryAxis>
+
+                                                    <chart:SfChart.SecondaryAxis>
+                                                        <chart:NumericalAxis IsVisible="False" ShowMajorGridLines="False" />
+                                                    </chart:SfChart.SecondaryAxis>
+
+                                                    <chart:SfChart.Series>
+                                                        <chart:SplineSeries
+                                                            ItemsSource="{Binding ChartData, Mode=TwoWay}"
+                                                            StrokeWidth="2"
+                                                            XBindingPath="DateTimeXValue"
+                                                            YBindingPath="YValue"
+                                                            Color="{DynamicResource Gray-White}" />
+                                                    </chart:SfChart.Series>
+
+                                                </chart:SfChart>
+                                            </StackLayout>
+                                        </Grid>
+                                    </border:SfBorder>
+
+                                </controls:CustomShadowFrame.Content>
+                            </controls:CustomShadowFrame>
+
+                        </DataTemplate>
+                    </listView:SfListView.ItemTemplate>
+
+                    --><!--  Layout to customize number of columns in SfListView  --><!--
+                    <listView:SfListView.LayoutManager>
+                        <listView:GridLayout SpanCount="2" />
+                    </listView:SfListView.LayoutManager>
+
+                    <listView:SfListView.Behaviors>
+                        <behavior:SfListViewExtendHeightBehavior />
+                    </listView:SfListView.Behaviors>
+
+                </listView:SfListView>
+
+                <listView:SfListView
+                    Grid.Row="1"
+                    Margin="0,16,0,0"
+                    IsScrollingEnabled="False"
+                    ItemSize="80"
+                    ItemsSource="{Binding HealthCareListItems}"
+                    SelectionMode="None">
+
+                    <listView:SfListView.ItemTemplate>
+                        <DataTemplate>
+                            <controls:CustomShadowFrame
+                                Margin="8"
+                                Padding="0"
+                                BackgroundColor="{DynamicResource GrayShadowColor}"
+                                BorderWidth="0"
+                                CornerRadius="4"
+                                HasShadow="True"
+                                Radius="4">
+
+                                <border:SfBorder
+                                    BorderColor="Transparent"
+                                    BorderWidth="0"
+                                    CornerRadius="4">
+                                    <StackLayout Orientation="Horizontal" Spacing="0">
+
+                                        <BoxView
+                                            BackgroundColor="{Binding BackgroundGradientStart}"
+                                            CornerRadius="4,0,4,0"
+                                            HorizontalOptions="Start"
+                                            WidthRequest="8" />
+
+                                        <Grid
+                                            Padding="8"
+                                            HorizontalOptions="FillAndExpand"
+                                            RowDefinitions="Auto, Auto"
+                                            RowSpacing="4"
+                                            VerticalOptions="Center">
+
+                                            <Label
+                                                FontSize="14"
+                                                HorizontalOptions="Start"
+                                                Style="{StaticResource TitleLabelStyle}"
+                                                Text="{Binding Category}" />
+                                            <Label
+                                                Grid.RowSpan="2"
+                                                Grid.Column="1"
+                                                HorizontalOptions="EndAndExpand"
+                                                Style="{StaticResource TitleLabelStyle}"
+                                                Text="{Binding CategoryValue}"
+                                                VerticalOptions="Center" />
+                                            <Label
+                                                Grid.Row="1"
+                                                FontSize="12"
+                                                HorizontalOptions="Start"
+                                                Style="{StaticResource DescriptionLabelStyle}"
+                                                Text="{Binding CategoryPercentage}" />
+                                        </Grid>
+                                    </StackLayout>
+                                </border:SfBorder>
+
+                            </controls:CustomShadowFrame>
+                        </DataTemplate>
+                    </listView:SfListView.ItemTemplate>
+
+                </listView:SfListView>
+            </Grid>
+        </ScrollView>-->
+    </ContentPage.Content>
+
+</ContentPage>

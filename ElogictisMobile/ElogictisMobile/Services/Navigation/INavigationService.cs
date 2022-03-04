@@ -1,5 +1,5 @@
 ﻿using System.Threading.Tasks;
-using ElogictisMobile.PageModels.Base;
+using ElogictisMobile.ViewModels;
 
 namespace ElogictisMobile.Services.Navigation
 {
@@ -9,11 +9,11 @@ namespace ElogictisMobile.Services.Navigation
         /// Navigation method to asynchonously navigate between Page Models,
         /// and optionally pass navigation Data.
         /// </summary>
-        /// <typeparam name="TPageModel"></typeparam>
+        /// <typeparam name="TViewPage"></typeparam>
         /// <param name="navigationData"></param>
         /// <returns></returns>
-        Task NavigateToAsync<TPageModel>(object navigationData = null, bool setRoot = false)
-            where TPageModel : PageModelBase;
+        Task NavigateToAsync<TViewModel>(object navigationData = null, bool setRoot = false)
+            where TViewModel : BaseViewModel;
 
         /// <summary>
         /// Pop navigation backstack
