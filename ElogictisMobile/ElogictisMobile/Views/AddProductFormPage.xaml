@@ -1,0 +1,352 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="ElogictisMobile.Views.AddProductFormPage"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:ListCollection="clr-namespace:System.Collections.Generic;assembly=netstandard"
+    xmlns:behaviours="clr-namespace:ElogictisMobile.Behaviors"
+    xmlns:border="clr-namespace:Syncfusion.XForms.Border;assembly=Syncfusion.Core.XForms"
+    xmlns:buttons="clr-namespace:Syncfusion.XForms.Buttons;assembly=Syncfusion.Buttons.XForms"
+    xmlns:combobox="clr-namespace:Syncfusion.XForms.ComboBox;assembly=Syncfusion.SfComboBox.XForms"
+    xmlns:controls="clr-namespace:ElogictisMobile.Controls"
+    xmlns:converter="clr-namespace:ElogictisMobile.Converters"
+    xmlns:inputLayout="clr-namespace:Syncfusion.XForms.TextInputLayout;assembly=Syncfusion.Core.XForms"
+    Title="Tạo đơn hàng"
+    BackgroundColor="{DynamicResource Gray-100}"
+    NavigationPage.HasBackButton="True"
+    NavigationPage.HasNavigationBar="True">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converter:BooleanToColorConverter x:Key="ColorConverter" />
+            <converter:InverseBoolConverter x:Key="InverseBoolConverter" />
+            <converter:NameValidationConverter x:Key="FirstValidationErrorConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <ContentPage.Content>
+        <ScrollView>
+            <StackLayout
+                Padding="16,24"
+                BackgroundColor="{DynamicResource Gray-100}"
+                Spacing="16">
+                <Label
+                    Margin="0,0,0,10"
+                    FontFamily="Montserrat-SemiBold"
+                    FontSize="18"
+                    HorizontalOptions="FillAndExpand"
+                    LineHeight="{OnPlatform Default=-1,
+                                            Android=1.25}"
+                    Text="Thông tin người gửi"
+                    TextColor="{DynamicResource Gray-800}"
+                    VerticalOptions="Center"
+                    VerticalTextAlignment="Center" />
+
+                <!--From Full Name-->
+                <StackLayout Grid.Row="1">
+                    <border:SfBorder BorderColor="{Binding Source={x:Reference FromFullNameEntry}, Path=IsFocused, Converter={StaticResource ColorConverter}, ConverterParameter=3}" Style="{StaticResource DataFormBorderlessEntryBorderStyle}">
+                        <Grid ColumnDefinitions="*, Auto">
+                            <controls:BorderlessEntry
+                                x:Name="FromFullNameEntry"
+                                Margin="12,0"
+                                HeightRequest="40"
+                                Placeholder="Họ và tên"
+                                Style="{StaticResource BorderlessEntryStyle}"
+                                Text="{Binding FromFullName.Value}" />
+                            <!--  Label to display error icon  -->
+                            <Label
+                                    Grid.Column="1"
+                                    IsVisible="{Binding Path=IsVisible, Source={x:Reference FullNameValidationLabel}}"
+                                    Style="{StaticResource ErrorIconLabelStyle}"
+                                    Text="{StaticResource Error}" />
+                        </Grid>
+                    </border:SfBorder>
+                    <!--  Label to display error message  -->
+                    <Label
+                        x:Name="FullNameValidationLabel"
+                        Margin="15,-3,0,0"
+                        IsVisible="{Binding FromFullName.IsValid, Converter={StaticResource InverseBoolConverter}}"
+                        Style="{StaticResource SimpleLabelStyle}"
+                        Text="{Binding FromFullName.Errors, Converter={StaticResource FirstValidationErrorConverter}}"
+                        TextColor="{DynamicResource Red}"
+                        VerticalOptions="FillAndExpand" />
+                </StackLayout>
+                <!--From Phone-->
+                <StackLayout Grid.Row="2">
+                    <border:SfBorder BorderColor="{Binding Source={x:Reference FromPhoneEntry}, Path=IsFocused, Converter={StaticResource ColorConverter}, ConverterParameter=3}" Style="{StaticResource DataFormBorderlessEntryBorderStyle}">
+                        <Grid ColumnDefinitions="*, Auto">
+                            <controls:BorderlessEntry
+                                x:Name="FromPhoneEntry"
+                                Margin="12,0"
+                                HeightRequest="40"
+                                Keyboard="Telephone"
+                                Placeholder="Số điện thoại"
+                                Style="{StaticResource BorderlessEntryStyle}"
+                                Text="{Binding FromPhone.Value}" >
+                                <controls:BorderlessEntry.Behaviors>
+                                    <behaviours:EntryMaskedBehavior Mask="(+84)XXX-XXX-XXX" Prefix="(+84)"/>
+                                </controls:BorderlessEntry.Behaviors>
+                            </controls:BorderlessEntry>
+                            
+                                    <!--  Label to display error icon  -->
+                            <Label
+                                    Grid.Column="1"
+                                    IsVisible="{Binding Path=IsVisible, Source={x:Reference FromPhoneValidationLabel}}"
+                                    Style="{StaticResource ErrorIconLabelStyle}"
+                                    Text="{StaticResource Error}" />
+                        </Grid>
+                    </border:SfBorder>
+                    <!--  Label to display error message  -->
+                    <Label
+                        x:Name="FromPhoneValidationLabel"
+                        Margin="15,-3,0,0"
+                        IsVisible="{Binding FromPhone.IsValid, Converter={StaticResource InverseBoolConverter}}"
+                        Style="{StaticResource SimpleLabelStyle}"
+                        Text="{Binding FromPhone.Errors, Converter={StaticResource FirstValidationErrorConverter}}"
+                        TextColor="{DynamicResource Red}"
+                        VerticalOptions="FillAndExpand" />
+                </StackLayout>
+                <!--From Address-->
+                <StackLayout Grid.Row="3">
+                    <border:SfBorder BorderColor="{Binding Source={x:Reference FromAddressEntry}, Path=IsFocused, Converter={StaticResource ColorConverter}, ConverterParameter=3}" Style="{StaticResource DataFormBorderlessEntryBorderStyle}">
+                        <Grid ColumnDefinitions="*, Auto">
+                            <controls:BorderlessEntry
+                                x:Name="StreetAddressEntry"
+                                Margin="12,0"
+                                HeightRequest="40"
+                                Placeholder="Địa chỉ"
+                                Style="{StaticResource BorderlessEntryStyle}"
+                                Text="{Binding FromAddress.Value}" />
+                            <Label
+                                Grid.Column="1"
+                                IsVisible="{Binding Path=IsVisible, Source={x:Reference FromAddressValidationLabel}}"
+                                Style="{StaticResource ErrorIconLabelStyle}"
+                                Text="{StaticResource Error}" />
+                        </Grid>
+                    </border:SfBorder>
+                    <!--  Label to display error message  -->
+                    <Label
+                        x:Name="FromAddressValidationLabel"
+                        Margin="15,-3,0,0"
+                        IsVisible="{Binding FromAddress.IsValid, Converter={StaticResource InverseBoolConverter}}"
+                        Style="{StaticResource SimpleLabelStyle}"
+                        Text="{Binding FromAddress.Errors, Converter={StaticResource FirstValidationErrorConverter}}"
+                        TextColor="{DynamicResource Red}"
+                        VerticalOptions="FillAndExpand" />
+                </StackLayout>
+                <Label
+                    Margin="0,0,0,10"
+                    FontFamily="Montserrat-SemiBold"
+                    FontSize="18"
+                    HorizontalOptions="FillAndExpand"
+                    LineHeight="{OnPlatform Default=-1,
+                                            Android=1.25}"
+                    Text="Thông tin người nhận"
+                    TextColor="{DynamicResource Gray-800}"
+                    VerticalOptions="Center"
+                    VerticalTextAlignment="Center" />
+                <!--To Full Name-->
+                <StackLayout Grid.Row="4">
+                    <border:SfBorder BorderColor="{Binding Source={x:Reference ToFullNameEntry}, Path=IsFocused, Converter={StaticResource ColorConverter}, ConverterParameter=3}" Style="{StaticResource DataFormBorderlessEntryBorderStyle}">
+                        <Grid ColumnDefinitions="*, Auto">
+                            <controls:BorderlessEntry
+                                x:Name="ToFullNameEntry"
+                                Margin="12,0"
+                                HeightRequest="40"
+                                Placeholder="Họ và tên"
+                                Style="{StaticResource BorderlessEntryStyle}"
+                                Text="{Binding ToFullName.Value}" />
+                            <Label
+                                Grid.Column="1"
+                                IsVisible="{Binding Path=IsVisible, Source={x:Reference ToFullNameValidationLabel}}"
+                                Style="{StaticResource ErrorIconLabelStyle}"
+                                Text="{StaticResource Error}" />
+                        </Grid>
+                    </border:SfBorder>
+                    <!--  Label to display error message  -->
+                    <Label
+                        x:Name="ToFullNameValidationLabel"
+                        Margin="15,-3,0,0"
+                        IsVisible="{Binding ToFullName.IsValid, Converter={StaticResource InverseBoolConverter}}"
+                        Style="{StaticResource SimpleLabelStyle}"
+                        Text="{Binding ToFullName.Errors, Converter={StaticResource FirstValidationErrorConverter}}"
+                        TextColor="{DynamicResource Red}"
+                        VerticalOptions="FillAndExpand" />
+                </StackLayout>
+                <!--To Phone-->
+                <StackLayout Grid.Row="5">
+                    <border:SfBorder BorderColor="{Binding Source={x:Reference ToPhoneEntry}, Path=IsFocused, Converter={StaticResource ColorConverter}, ConverterParameter=3}" Style="{StaticResource DataFormBorderlessEntryBorderStyle}">
+                        <Grid ColumnDefinitions="*, Auto">
+                            <controls:BorderlessEntry
+                                x:Name="ToPhoneEntry"
+                                Margin="12,0"
+                                HeightRequest="40"
+                                Keyboard="Telephone"
+                                Placeholder="Số điện thoại"
+                                Style="{StaticResource BorderlessEntryStyle}"
+                                Text="{Binding ToPhone.Value}">
+                                <controls:BorderlessEntry.Behaviors>
+                                    <behaviours:EntryMaskedBehavior Mask="(+84)XXX-XXX-XXX" Prefix="(+84)"/>
+                                </controls:BorderlessEntry.Behaviors>
+                            </controls:BorderlessEntry>
+                            
+                            <Label
+                                Grid.Column="1"
+                                IsVisible="{Binding Path=IsVisible, Source={x:Reference ToPhoneValidationLabel}}"
+                                Style="{StaticResource ErrorIconLabelStyle}"
+                                Text="{StaticResource Error}" />
+                        </Grid>
+                    </border:SfBorder>
+                    <!--  Label to display error message  -->
+                    <Label
+                        x:Name="ToPhoneValidationLabel"
+                        Margin="15,-3,0,0"
+                        IsVisible="{Binding ToPhone.IsValid, Converter={StaticResource InverseBoolConverter}}"
+                        Style="{StaticResource SimpleLabelStyle}"
+                        Text="{Binding ToPhone.Errors, Converter={StaticResource FirstValidationErrorConverter}}"
+                        TextColor="{DynamicResource Red}"
+                        VerticalOptions="FillAndExpand" />
+                </StackLayout>
+                <!--To Address-->
+                <StackLayout Grid.Row="6">
+                    <border:SfBorder BorderColor="{Binding Source={x:Reference ToAddressEntry}, Path=IsFocused, Converter={StaticResource ColorConverter}, ConverterParameter=3}" Style="{StaticResource DataFormBorderlessEntryBorderStyle}">
+                        <Grid ColumnDefinitions="*, Auto">
+                            <controls:BorderlessEntry
+                                x:Name="ToAddressEntry"
+                                Margin="12,0"
+                                HeightRequest="40"
+                                Placeholder="Địa chỉ"
+                                Style="{StaticResource BorderlessEntryStyle}"
+                                Text="{Binding ToAddress.Value}" />
+                            <Label
+                                Grid.Column="1"
+                                IsVisible="{Binding Path=IsVisible, Source={x:Reference ToAddressValidationLabel}}"
+                                Style="{StaticResource ErrorIconLabelStyle}"
+                                Text="{StaticResource Error}" />
+                        </Grid>
+                    </border:SfBorder>
+                    <!--  Label to display error message  -->
+                    <Label
+                        x:Name="ToAddressValidationLabel"
+                        Margin="15,-3,0,0"
+                        IsVisible="{Binding ToAddress.IsValid, Converter={StaticResource InverseBoolConverter}}"
+                        Style="{StaticResource SimpleLabelStyle}"
+                        Text="{Binding ToAddress.Errors, Converter={StaticResource FirstValidationErrorConverter}}"
+                        TextColor="{DynamicResource Red}"
+                        VerticalOptions="FillAndExpand" />
+                </StackLayout>
+                <Label
+                    Margin="0,0,0,10"
+                    FontFamily="Montserrat-SemiBold"
+                    FontSize="18"
+                    HorizontalOptions="FillAndExpand"
+                    LineHeight="{OnPlatform Default=-1,
+                                            Android=1.25}"
+                    Text="Thông tin đơn hàng"
+                    TextColor="{DynamicResource Gray-800}"
+                    VerticalOptions="Center"
+                    VerticalTextAlignment="Center" />
+                <StackLayout Grid.Row="7">
+                    <inputLayout:SfTextInputLayout Style="{DynamicResource TextInputLayoutStyle}">
+                        <combobox:SfComboBox
+                        x:Name="TypeProduct"
+                        SelectedValue="{Binding TypeProduct, Mode=TwoWay}"
+                        Style="{StaticResource TextInputLayoutComboBoxStyle}"
+                        VerticalOptions="CenterAndExpand"
+                        Watermark="Chọn loại hàng hóa">
+                            <combobox:SfComboBox.ComboBoxSource>
+                                <ListCollection:List x:TypeArguments="x:String">
+                                    <x:String>Hàng hóa dễ cháy</x:String>
+                                    <x:String>Hàng hóa dễ vỡ</x:String>
+                                    <x:String>Hàng hóa thông thường</x:String>
+                                </ListCollection:List>
+                            </combobox:SfComboBox.ComboBoxSource>
+                        </combobox:SfComboBox>
+                    </inputLayout:SfTextInputLayout>
+                </StackLayout>
+                <StackLayout Grid.Row="8">
+                    <Label
+                    FontFamily="Montserrat-Medium"
+                    FontSize="12"
+                    HeightRequest="18"
+                    Text="Số lượng kiện hàng"
+                    TextColor="{DynamicResource Gray-800}" />
+                    <border:SfBorder BorderColor="{Binding Source={x:Reference QuanlityEntry}, Path=IsFocused, Converter={StaticResource ColorConverter}, ConverterParameter=3}" Style="{StaticResource DataFormBorderlessEntryBorderStyle}">
+                        <controls:BorderlessEntry
+                        x:Name="QuanlityEntry"
+                        Margin="12,0"
+                        HeightRequest="40"
+                        Keyboard="Numeric"
+                        Placeholder="Số lượng kiện hàng"
+                        Style="{StaticResource BorderlessEntryStyle}"
+                        Text="{Binding Quanlity.Value}" />
+                    </border:SfBorder>
+                </StackLayout>
+                <StackLayout Grid.Row="9">
+                    <Label
+                    FontFamily="Montserrat-Medium"
+                    FontSize="12"
+                    HeightRequest="18"
+                    Text="Tổng trọng lượng (Kg)"
+                    TextColor="{DynamicResource Gray-800}" />
+                    <border:SfBorder BorderColor="{Binding Source={x:Reference WeightEntry}, Path=IsFocused, Converter={StaticResource ColorConverter}, ConverterParameter=3}" Style="{StaticResource DataFormBorderlessEntryBorderStyle}">
+                        <controls:BorderlessEntry
+                            x:Name="WeightEntry"
+                            Margin="12,0"
+                            HeightRequest="40"
+                            Keyboard="Numeric"
+                            Placeholder="Tổng trọng lượng"
+                            Style="{StaticResource BorderlessEntryStyle}"
+                            Text="{Binding Weight.Value}" />
+                    </border:SfBorder>
+                </StackLayout>
+                <StackLayout Grid.Row="10">
+                    <Label
+                    FontFamily="Montserrat-Medium"
+                    FontSize="12"
+                    HeightRequest="18"
+                    Text="Ghi chú"
+                    TextColor="{DynamicResource Gray-800}" />
+                    <border:SfBorder BorderColor="{Binding Source={x:Reference DescriptionEntry}, Path=IsFocused, Converter={StaticResource ColorConverter}, ConverterParameter=3}" Style="{StaticResource DataFormBorderlessEntryBorderStyle}">
+                        <controls:BorderlessEntry
+                        x:Name="DescriptionEntry"
+                        Margin="12,0"
+                        HeightRequest="40"
+                        Placeholder="Ghi chú"
+                        Style="{StaticResource BorderlessEntryStyle}"
+                        Text="{Binding Desciption.Value}" />
+                    </border:SfBorder>
+                </StackLayout>
+                <!--COD-->
+                <StackLayout Grid.Row="11">
+                    <Label
+                    Margin="0,5,0,0"
+                    FontFamily="Montserrat-Medium"
+                    FontSize="12"
+                    HeightRequest="18"
+                    Text="Thu tiền hộ (COD)"
+                    TextColor="{DynamicResource Gray-800}" />
+
+                    <border:SfBorder BorderColor="{Binding Source={x:Reference ToAddressEntry}, Path=IsFocused, Converter={StaticResource ColorConverter}, ConverterParameter=3}" Style="{StaticResource DataFormBorderlessEntryBorderStyle}">
+                        <controls:BorderlessEntry
+                        x:Name="MoneyEntry"
+                        Margin="12,0"
+                        HeightRequest="40"
+                        Placeholder="Tối đa 2.000.000 VNĐ"
+                        Style="{StaticResource BorderlessEntryStyle}"
+                        Text="{Binding Money.Value}" />
+                    </border:SfBorder>
+                </StackLayout>
+
+                <!--Submit Button-->  
+                <buttons:SfButton
+                    Margin="0,24,0,0"
+                    Command="{Binding SubmitCommand}"
+                    Style="{StaticResource GradientButtonStyle}"
+                    Text="Tạo đơn"
+                    WidthRequest="200" />
+
+            </StackLayout>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>

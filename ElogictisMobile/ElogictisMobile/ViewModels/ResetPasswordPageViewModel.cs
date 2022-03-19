@@ -1,6 +1,9 @@
-﻿using ElogictisMobile.Validators;
+﻿using ElogictisMobile.Services.Account;
+using ElogictisMobile.Services.Navigation;
+using ElogictisMobile.Validators;
 using ElogictisMobile.Validators.Rules;
 using ElogictisMobile.ViewModels.Base;
+using System;
 using Xamarin.Forms;
 using Xamarin.Forms.Internals;
 
@@ -15,6 +18,8 @@ namespace ElogictisMobile.ViewModels
         #region Fields
 
         private ValidatablePair<string> password;
+        private INavigationService _navigationService;
+        private IAccountService _accountService;
 
         #endregion
 
@@ -23,12 +28,14 @@ namespace ElogictisMobile.ViewModels
         /// <summary>
         /// Initializes a new instance of the <see cref="ResetPasswordPageViewModel" /> class.
         /// </summary>
-        public ResetPasswordPageViewModel()
+        public ResetPasswordPageViewModel(INavigationService navigationService,
+            IAccountService accountService)
         {
+            _navigationService = navigationService;
+            _accountService = accountService;
             this.InitializeProperties();
             this.AddValidationRules();
             this.SubmitCommand = new Command(this.SubmitClicked);
-            this.SignUpCommand = new Command(this.SignUpClicked);
         }
         #endregion
 
@@ -38,11 +45,6 @@ namespace ElogictisMobile.ViewModels
         /// Gets or sets the command that is executed when the Submit button is clicked.
         /// </summary>
         public Command SubmitCommand { get; set; }
-
-        /// <summary>
-        /// Gets or sets the command that is executed when the Sign Up button is clicked.
-        /// </summary>
-        public Command SignUpCommand { get; set; }
         #endregion
 
         #region Public property
@@ -78,6 +80,11 @@ namespace ElogictisMobile.ViewModels
         public bool AreFieldsValid()
         {
             bool isPassword = this.Password.Validate();
+            bool isVerifyPassword = false;
+            if (isPassword)
+            {
+                isVerifyPassword = this.Password.Item1.Value.Equals(this.Password.Item2.Value);
+            }
             return isPassword;
         }
 
@@ -94,29 +101,34 @@ namespace ElogictisMobile.ViewModels
         /// </summary>
         private void AddValidationRules()
         {
-            this.Password.Item1.Validations.Add(new IsNotNullOrEmptyRule<string> { ValidationMessage = "Password Required" });
-            this.Password.Item2.Validations.Add(new IsNotNullOrEmptyRule<string> { ValidationMessage = "Re-enter Password" });
+            this.Password.Item1.Validations.Add(new IsNotLength<string> { ValidationMessage = "Mật khẩu phải chứa ít nhất một chữ số, một ký tự viết hoa và ít nhất 8 kí tự" });
+            this.Password.Item2.Validations.Add(new IsNotLength<string> { ValidationMessage = "Nhập lại mật khẩu phải chứa ít nhất một chữ số, một ký tự viết hoa và ít nhất 8 kí tự" });
         }
 
         /// <summary>
         /// Invoked when the Submit button is clicked.
         /// </summary>
         /// <param name="obj">The Object</param>
-        private void SubmitClicked(object obj)
+        private async void SubmitClicked(object obj)
         {
-            if (this.AreFieldsValid())
+            try
             {
-                // Do something
+                if (this.AreFieldsValid())
+                {
+                    // Do something
+                    var change = await _accountService.ChangePasswordAsync(Password.Item2.Value);
+                    if (change)
+                    {
+                        await App.Current.MainPage.DisplayAlert("Thông báo", "Đổi mật khẩu thành công!", "Đóng");
+                        await _navigationService.NavigateToAsync<DashboardPageViewModel>();
+                    }    
+                }
+            }   
+            catch(Exception ex)
+            {
+                await App.Current.MainPage.DisplayAlert("Thông báo", ex.Message, "Đóng");
             }
-        }
-
-        /// <summary>
-        /// Invoked when the Sign Up button is clicked.
-        /// </summary>
-        /// <param name="obj">The Object</param>
-        private void SignUpClicked(object obj)
-        {
-            // Do something
+            
         }
 
         #endregion

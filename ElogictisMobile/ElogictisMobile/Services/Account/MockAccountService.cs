@@ -7,9 +7,25 @@ namespace ElogictisMobile.Services.Account
 {
     public class MockAccountService : IAccountService
     {
+
+        public Task<bool> ChangePasswordAsync(string password)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool CheckEmailVerified()
+        {
+            throw new NotImplementedException();
+        }
+
         public Task<double> GetCurrentPayRateAsync()
         {
             return Task.FromResult(10.0);
+        }
+
+        public string GetUidLogin()
+        {
+            throw new NotImplementedException();
         }
 
         public bool IsSignIn()
@@ -27,6 +43,11 @@ namespace ElogictisMobile.Services.Account
         }
 
         public Task<string> LoginWithEmailAndPassword(string email, string password)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task SendEmailVerified()
         {
             throw new NotImplementedException();
         }

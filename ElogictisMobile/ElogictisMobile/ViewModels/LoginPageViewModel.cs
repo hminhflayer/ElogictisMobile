@@ -1,7 +1,10 @@
-﻿using ElogictisMobile.Services.Account;
+﻿using ElogictisMobile.Models;
+using ElogictisMobile.Services;
+using ElogictisMobile.Services.Account;
 using ElogictisMobile.Services.Navigation;
 using ElogictisMobile.Validators;
 using ElogictisMobile.Validators.Rules;
+using Newtonsoft.Json;
 using System;
 using Xamarin.Forms;
 using Xamarin.Forms.Internals;
@@ -133,9 +136,30 @@ namespace ElogictisMobile.ViewModels
                 {
                     // Do Something
                     var loginAttempt = await _accountService.LoginAsync(Email.Value, Password.Value);
-                    if (loginAttempt)
+                    if (loginAttempt == true)
                     {
-                        await _navigationService.NavigateToAsync<DashboardPageViewModel>();
+                        if(_accountService.CheckEmailVerified())
+                        {
+                            StaticClass.Profiles = await RealtimeFirebase.Instance.GetProfiles(_accountService.GetUidLogin());
+                            if (StaticClass.Profiles.Profile_Id == _accountService.GetUidLogin())
+                            {
+                                await _navigationService.NavigateToAsync<DashboardPageViewModel>();
+                            }
+                            else
+                            {
+                                await App.Current.MainPage.DisplayAlert("Thông báo", "Hệ thống không lấy được thông tin đăng nhập của bạn!", "OK");
+                            }
+                        }    
+                        else
+                        {
+                            var action = await App.Current.MainPage.DisplayAlert("Thông báo", "Tài khoản của bạn chưa được xác thực\nBạn muốn nhận lại một mail xác thực khác?!", "Đúng", "Không");
+
+                            if (action)
+                            {
+                                await _accountService.SendEmailVerified();
+                            }
+                        }    
+                            
                     }
                     else
                     {

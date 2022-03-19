@@ -1,7 +1,10 @@
-﻿using ElogictisMobile.Services.Account;
+﻿using ElogictisMobile.Models;
+using ElogictisMobile.Services;
+using ElogictisMobile.Services.Account;
 using ElogictisMobile.Services.Navigation;
 using ElogictisMobile.Validators;
 using ElogictisMobile.Validators.Rules;
+using Newtonsoft.Json;
 using System;
 using Xamarin.Forms;
 using Xamarin.Forms.Internals;
@@ -135,7 +138,7 @@ namespace ElogictisMobile.ViewModels
         {
             this.Name.Validations.Add(new IsNotNullOrEmptyRule<string> { ValidationMessage = "Họ và tên không được trống" });
             this.Password.Item1.Validations.Add(new IsNotNullOrEmptyRule<string> { ValidationMessage = "Mật khẩu không được trống" });
-            this.Password.Item1.Validations.Add(new IsNotLength<string> { ValidationMessage = "Mật khẩu phải chứa ít nhất một chữ số, một ký tự viết hoa, một ký hiệu đặc biệt và ít nhất 8 kí tự" });
+            this.Password.Item1.Validations.Add(new IsNotLength<string> { ValidationMessage = "Mật khẩu phải chứa ít nhất một chữ số, một ký tự viết hoa và ít nhất 8 kí tự" });
             this.Password.Item2.Validations.Add(new IsNotNullOrEmptyRule<string> { ValidationMessage = "Nhập lại mật khẩu không được trống" });
         }
 
@@ -159,12 +162,24 @@ namespace ElogictisMobile.ViewModels
             {
                 if (this.AreFieldsValid())
                 {
-                    FullNameSignUp = Name.Value;
-                    PasswordSignUp = Password.Item1.Value;
                     var loginAttempt = await _accountService.SignUpAsync(Email.Value, Password.Item1.Value);
                     if (loginAttempt != "")
                     {
-                       await _navigationService.NavigateToAsync<AlertSignUpPageViewModel>();
+                        Profiles profiles = new Profiles()
+                        {
+                            Profile_CreateBy = Email.Value,
+                            Profile_CreateTime = DateTime.Now.ToShortDateString(),
+                            Profile_Email = Email.Value,
+                            Profile_Name = Name.Value,
+                            Profile_Id = loginAttempt,
+                            Profile_IsDelete = false,
+                            Profile_Address = "",
+                            Profile_LastUpdateBy = "",
+                            Profile_LastUpdateTime = "",
+                            Profile_Phone = "",
+                        };
+                        await RealtimeFirebase.Instance.UpSert("Profiles", loginAttempt, JsonConvert.SerializeObject(profiles)); 
+                        await _navigationService.NavigateToAsync<AlertSignUpPageViewModel>();
                     }
                     else
                     {

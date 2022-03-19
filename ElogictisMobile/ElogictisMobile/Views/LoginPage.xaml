@@ -127,14 +127,14 @@
                             Text="ĐĂNG NHẬP" />
 
 
-                        <Label
+                        <!--<Label
                             Grid.Row="6"
                             Style="{StaticResource DescriptionLabelStyle}"
                             Text="hoặc"
-                            TextColor="{DynamicResource Gray-800}" />
+                            TextColor="{DynamicResource Gray-800}" />-->
 
                         <!--  Login through facebook account  -->
-                        <buttons:SfButton
+                        <!--<buttons:SfButton
                             Grid.Row="7"
                             Margin="0,16,0,16"
                             BackgroundColor="{DynamicResource FacebookBlue}"
@@ -159,7 +159,7 @@
                                         TextColor="{DynamicResource Gray-White}" />
                                 </StackLayout>
                             </buttons:SfButton.Content>
-                        </buttons:SfButton>
+                        </buttons:SfButton>-->
 
                     </Grid>
 

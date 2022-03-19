@@ -10,7 +10,13 @@ namespace ElogictisMobile.Services.Account
         Task<bool> LoginAsync(string username, string password);
         Task<string> SignUpAsync(string email, string password);
         Task<string> LoginWithEmailAndPassword(string email, string password);
+
+        Task<bool> ChangePasswordAsync(string password);
         bool SignOut();
         bool IsSignIn();
+
+        string GetUidLogin();
+        bool CheckEmailVerified();
+        Task SendEmailVerified();
     }
 }

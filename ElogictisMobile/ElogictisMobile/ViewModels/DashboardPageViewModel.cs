@@ -41,7 +41,7 @@ namespace ElogictisMobile.ViewModels
             StatisticalPageViewModel = statisticalVM;
             TransactionHistoryPageViewModel = historyVM;
             ManageItemPageViewModel = manageVM;
-            SettingsPageViewModel = settingVM;
+            SettingsPageViewModel = settingVM;;
         }
 
         public override Task InitializeAsync(object navigationData)

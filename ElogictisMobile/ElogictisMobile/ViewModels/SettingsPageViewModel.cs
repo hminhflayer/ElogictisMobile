@@ -90,27 +90,51 @@ namespace ElogictisMobile.ViewModels
         /// Invoked when the edit profile option clicked
         /// </summary>
         /// <param name="obj">The object</param>
-        private void EditProfileClicked(object obj)
+        private async void EditProfileClicked(object obj)
         {
-            // Do something
+            try
+            {
+                await _navigationService.NavigateToAsync<UpdateProfilePageViewModel>();
+                // Do something
+            }
+            catch (Exception ex)
+            {
+                await App.Current.MainPage.DisplayAlert("Thông báo", ex.Message, "Đóng");
+            }
         }
 
         /// <summary>
         /// Invoked when the change password clicked
         /// </summary>
         /// <param name="obj">The object</param>
-        private void ChangePasswordClicked(object obj)
+        private async void ChangePasswordClicked(object obj)
         {
-            // Do something
+            try
+            {
+                // Do something
+                await _navigationService.NavigateToAsync<ResetPasswordPageViewModel>(null, true);
+            }
+            catch (Exception ex)
+            {
+                await App.Current.MainPage.DisplayAlert("Thông báo", ex.Message, "Đóng");
+            }
         }
 
         /// <summary>
         /// Invoked when the account link clicked
         /// </summary>
         /// <param name="obj">The object</param>
-        private void LinkAccountClicked(object obj)
+        private async void LinkAccountClicked(object obj)
         {
             // Do something
+            try
+            {
+                await _navigationService.NavigateToAsync<AddProductFormPageViewModel>(null, true);
+            }
+            catch (Exception ex)
+            {
+                await App.Current.MainPage.DisplayAlert("Thông báo", ex.Message, "Đóng");
+            }
         }
 
         /// <summary>

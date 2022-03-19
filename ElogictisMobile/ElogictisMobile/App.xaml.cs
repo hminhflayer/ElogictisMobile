@@ -18,6 +18,8 @@ namespace ElogictisMobile
         public static string ImageServerPath { get; } = "https://cdn.syncfusion.com/essential-ui-kit-for-xamarin.forms/common/uikitimages/";
         public App()
         {
+            //Register Syncfusion license
+            Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("NTk3NTI3QDMxMzkyZTM0MmUzMG1MVER4STVubHNKVkRxczEvRDRxSXlPLyt5My9hODNUazN0dXlTZktYVFU9");
             InitializeComponent();
         }
 

@@ -16,6 +16,7 @@ namespace ElogictisMobile.Models
         public string Product_Weight { get; set; }
         public string Product_Quanlity { get; set; }
         public string Product_Money { get; set; }
+        public string Product_Type { get; set; }
         public string Product_Description { get; set; }
         public string Product_CreateTime { get; set; }
         public string Product_CreateBy { get; set; }

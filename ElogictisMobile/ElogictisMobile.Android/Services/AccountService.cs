@@ -94,9 +94,37 @@ namespace ElogictisMobile.Droid.Services
             {
                 await user.SendEmailVerificationAsync(actionCode);
             }
-            var token = await authResult.User.GetIdTokenAsync(false);
+            var token = authResult.User.Uid;
 
-            return token.Token;
+            return token;
+        }
+
+        public string GetUidLogin()
+        {
+            if(IsSignIn())
+            {
+                return FirebaseAuth.Instance.CurrentUser.Uid;
+            }
+            return "";
+        }
+
+        public bool CheckEmailVerified()
+        {
+            return FirebaseAuth.Instance.CurrentUser.IsEmailVerified;
+        }
+
+        public async Task SendEmailVerified()
+        {
+            using (var actionCode = ActionCodeSettings.NewBuilder().SetAndroidPackageName("com.caominh.elogictismobile", true, "0").Build())
+            {
+                await FirebaseAuth.Instance.CurrentUser.SendEmailVerificationAsync(actionCode);
+            }
+        }
+
+        public async Task<bool> ChangePasswordAsync(string password)
+        {
+            await FirebaseAuth.Instance.CurrentUser.UpdatePasswordAsync(password);
+            return true;
         }
     }
 }

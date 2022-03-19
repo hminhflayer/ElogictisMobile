@@ -13,6 +13,7 @@
   <ItemGroup>
     <None Remove="Data\ecommerce.json" />
     <None Remove="Data\errorAndEmpty.json" />
+    <None Remove="Data\navigation.json" />
     <None Remove="Images\NoItem.svg" />
     <None Remove="Resources\Fonts\Montserrat-Bold.ttf" />
     <None Remove="Resources\Fonts\Montserrat-Medium.ttf" />
@@ -26,6 +27,7 @@
   <ItemGroup>
     <EmbeddedResource Include="Data\ecommerce.json" />
     <EmbeddedResource Include="Data\errorAndEmpty.json" />
+    <EmbeddedResource Include="Data\navigation.json" />
     <EmbeddedResource Include="Images\NoItem.svg" />
     <EmbeddedResource Include="Resources\Fonts\Montserrat-Bold.ttf" />
     <EmbeddedResource Include="Resources\Fonts\Montserrat-Medium.ttf" />
@@ -35,12 +37,14 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="FirebaseDatabase.net" Version="4.0.7" />
     <PackageReference Include="SkiaSharp.Extended" Version="1.60.0" />
     <PackageReference Include="SkiaSharp.Svg" Version="1.60.0" />
     <PackageReference Include="SkiaSharp.Views.Forms" Version="1.68.0" />
     <PackageReference Include="Syncfusion.Xamarin.Buttons" Version="19.4.0.54" />
     <PackageReference Include="Syncfusion.Xamarin.Cards" Version="19.4.0.54" />
     <PackageReference Include="Syncfusion.Xamarin.Core" Version="19.4.0.54" />
+    <PackageReference Include="Syncfusion.Xamarin.DataSource" Version="19.4.0.54" />
     <PackageReference Include="Syncfusion.Xamarin.SfChart" Version="19.4.0.54" />
     <PackageReference Include="Syncfusion.Xamarin.SfComboBox" Version="19.4.0.54" />
     <PackageReference Include="Syncfusion.Xamarin.SfListView" Version="19.4.0.54" />
@@ -111,6 +115,9 @@
     <EmbeddedResource Update="Themes\LightTheme.xaml">
       <Generator>MSBuild:Compile</Generator>
     </EmbeddedResource>
+    <EmbeddedResource Update="Views\AddProductFormPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </EmbeddedResource>
     <EmbeddedResource Update="Views\AlertSignUpPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
@@ -124,6 +131,9 @@
       <Generator>MSBuild:Compile</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Views\ManageItemPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\ManageProfilesPage.xaml">
       <Generator>MSBuild:Compile</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Views\ResetPasswordPage.xaml">
