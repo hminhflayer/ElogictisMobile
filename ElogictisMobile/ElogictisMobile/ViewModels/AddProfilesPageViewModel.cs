@@ -1,12 +1,10 @@
-﻿using ElogictisMobile.DataService;
-using ElogictisMobile.Models;
+﻿using ElogictisMobile.Models;
 using ElogictisMobile.Services;
 using ElogictisMobile.Services.Navigation;
 using ElogictisMobile.Validators;
 using ElogictisMobile.Validators.Rules;
 using Newtonsoft.Json;
 using System;
-using System.Collections.ObjectModel;
 using Xamarin.Forms;
 using Xamarin.Forms.Internals;
 
@@ -16,7 +14,7 @@ namespace ElogictisMobile.ViewModels
     /// ViewModel for Business Registration Form page 
     /// </summary> 
     [Preserve(AllMembers = true)]
-    public class AddProductFormPageViewModel : BaseViewModel
+    public class AddProfilesPageViewModel : BaseViewModel
     {
         #region Constructor
         public ValidatableObject<string> fromFullName;
@@ -32,12 +30,11 @@ namespace ElogictisMobile.ViewModels
         private INavigationService _navigationService;
 
         public string TypeProduct { get; set; }
-        public ObservableCollection<TypeProduct> TypeProductCollection { get; set; } = ContentData.TypeProductCollection;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AddProductFormPageViewModel" /> class
         /// </summary>
-        public AddProductFormPageViewModel(INavigationService navigationService)
+        public AddProfilesPageViewModel(INavigationService navigationService)
         {
             _navigationService = navigationService;
             this.InitializeProperties();
@@ -329,15 +326,6 @@ namespace ElogictisMobile.ViewModels
                     Product_Weight = Weight.Value.ToString(),
                     Product_Status = 1,
                     Product_Holder = ""
-                }));
-
-                var keyNoti = GeneralKey.Instance.General("NOTI");
-                await RealtimeFirebase.Instance.UpSert("Notifications", keyNoti, JsonConvert.SerializeObject(new TransactionHistory
-                {
-                    IdProduct = key,
-                    TransactionDescription = "CHỜ XÁC NHẬN",
-                    Time = DateTime.Now.ToShortDateString(),
-                    Email = LocalContext.Profiles.Profile_Email
                 }));
                 await App.Current.MainPage.DisplayAlert("Thông báo", "Thêm đơn hàng thành công!", "OK");
                 await _navigationService.GoBackAsync();

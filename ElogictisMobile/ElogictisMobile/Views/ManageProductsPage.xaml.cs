@@ -10,19 +10,19 @@ namespace ElogictisMobile.Views
     /// </summary>
     [Preserve(AllMembers = true)]
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class ManageProfilesPage
+    public partial class ManageProductsPage
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="ManageProfilesPage" /> class.
+        /// Initializes a new instance of the <see cref="ManageProductsPage" /> class.
         /// </summary>
-        public ManageProfilesPage()
+        public ManageProductsPage()
         {
             this.InitializeComponent();
         }
 
         private void ListView_ItemTapped(object sender, Xamarin.Forms.ItemTappedEventArgs e)
         {
-            if(this.BindingContext is ManageProfilesPageViewModel vm)
+            if(this.BindingContext is ManageProductsPageViewModel vm)
             {
                 vm.ItemTappedCommand.Execute(e.Item);
             }

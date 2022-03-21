@@ -17,10 +17,7 @@
     NavigationPage.HasNavigationBar="False">
 
     <ContentPage.Content>
-        <StackLayout>
-            <Label Text="Hello"/>
-        </StackLayout>
-       <!--<ScrollView>
+        <ScrollView>
             <Grid
                 Padding="8"
                 RowDefinitions="Auto, Auto"
@@ -61,7 +58,7 @@
                                                 </gradient:SfGradientView.BackgroundBrush>
                                             </gradient:SfGradientView>
 
-                                            <StackLayout Margin="15" Spacing="5">
+                                            <StackLayout Margin="20" Spacing="5">
                                                 <Label
                                                     FontFamily="Montserrat-SemiBold"
                                                     FontSize="12"
@@ -76,35 +73,6 @@
                                                                             Default=-1}"
                                                     Text="{Binding CategoryValue}"
                                                     TextColor="{DynamicResource Gray-White}" />
-                                                <chart:SfChart
-                                                    Margin="0,11,0,0"
-                                                    BackgroundColor="Transparent"
-                                                    HeightRequest="{OnIdiom Phone=44,
-                                                                            Desktop=80,
-                                                                            Tablet=80}"
-                                                    HorizontalOptions="FillAndExpand"
-                                                    VerticalOptions="FillAndExpand">
-                                                    <chart:SfChart.PrimaryAxis>
-                                                        <chart:DateTimeAxis
-                                                            IsVisible="False"
-                                                            RangePadding="None"
-                                                            ShowMajorGridLines="False" />
-                                                    </chart:SfChart.PrimaryAxis>
-
-                                                    <chart:SfChart.SecondaryAxis>
-                                                        <chart:NumericalAxis IsVisible="False" ShowMajorGridLines="False" />
-                                                    </chart:SfChart.SecondaryAxis>
-
-                                                    <chart:SfChart.Series>
-                                                        <chart:SplineSeries
-                                                            ItemsSource="{Binding ChartData, Mode=TwoWay}"
-                                                            StrokeWidth="2"
-                                                            XBindingPath="DateTimeXValue"
-                                                            YBindingPath="YValue"
-                                                            Color="{DynamicResource Gray-White}" />
-                                                    </chart:SfChart.Series>
-
-                                                </chart:SfChart>
                                             </StackLayout>
                                         </Grid>
                                     </border:SfBorder>
@@ -115,7 +83,7 @@
                         </DataTemplate>
                     </listView:SfListView.ItemTemplate>
 
-                    --><!--  Layout to customize number of columns in SfListView  --><!--
+                      <!--Layout to customize number of columns in SfListView-->  
                     <listView:SfListView.LayoutManager>
                         <listView:GridLayout SpanCount="2" />
                     </listView:SfListView.LayoutManager>
@@ -176,12 +144,6 @@
                                                 Style="{StaticResource TitleLabelStyle}"
                                                 Text="{Binding CategoryValue}"
                                                 VerticalOptions="Center" />
-                                            <Label
-                                                Grid.Row="1"
-                                                FontSize="12"
-                                                HorizontalOptions="Start"
-                                                Style="{StaticResource DescriptionLabelStyle}"
-                                                Text="{Binding CategoryPercentage}" />
                                         </Grid>
                                     </StackLayout>
                                 </border:SfBorder>
@@ -192,7 +154,7 @@
 
                 </listView:SfListView>
             </Grid>
-        </ScrollView>-->
+        </ScrollView>
     </ContentPage.Content>
 
 </ContentPage>

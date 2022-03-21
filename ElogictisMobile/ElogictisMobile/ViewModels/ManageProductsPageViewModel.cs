@@ -1,7 +1,6 @@
 ﻿using ElogictisMobile.Models;
 using ElogictisMobile.Services;
 using ElogictisMobile.Services.Navigation;
-using ElogictisMobile.Views;
 using System;
 using System.Collections.ObjectModel;
 using System.Runtime.Serialization;
@@ -15,25 +14,26 @@ namespace ElogictisMobile.ViewModels
     /// </summary>
     [Preserve(AllMembers = true)]
     [DataContract]
-    public class ManageProfilesPageViewModel : BaseViewModel
+    public class ManageProductsPageViewModel : BaseViewModel
     {
         #region Fields
 
         private Command<object> itemTappedCommand;
-
-        private Command<object> addProfileCommand;
+        private Command<object> backCommand;
+        private Command<object> addProductCommand;
 
         #endregion
 
         #region Constructor
 
         /// <summary>
-        /// Initializes a new instance for the <see cref="ManageProfilesPageViewModel"/> class.
+        /// Initializes a new instance for the <see cref="ManageProductsPageViewModel"/> class.
         /// </summary>
-        public ManageProfilesPageViewModel(INavigationService navigationService)
+        public ManageProductsPageViewModel(INavigationService navigationService)
         {
             _navigationService = navigationService;
-            ProfilesList = RealtimeFirebase.Instance.GetAll<Profiles>("Profiles");
+            ContactList = RealtimeFirebase.Instance.GetAll<Products>("Products");
+            LocalContext.ProductsList = ContactList;
         }
 
         #endregion
@@ -51,24 +51,30 @@ namespace ElogictisMobile.ViewModels
             }
         }
 
-        public Command<object> AddProfileCommand
+        public Command<object> BackCommand
         {
             get
             {
-                return this.addProfileCommand ?? (this.addProfileCommand = new Command<object>(this.AddProfileClicked));
+                return this.backCommand ?? (this.backCommand = new Command<object>(this.GoToBack));
             }
         }
+
+        public Command<object> AddProductCommand
+        {
+            get
+            {
+                return this.addProductCommand ?? (this.addProductCommand = new Command<object>(this.AddProductClicked));
+            }
+        }
+
+        private INavigationService _navigationService;
 
         /// <summary>
         /// Gets or sets a collction of value to be displayed in contacts list page.
         /// </summary>
         [DataMember(Name = "contactsPageList")]
-        public ObservableCollection<Contact> ContactList { get; set; }
+        public ObservableCollection<Products> ContactList { get; set; }
 
-        private INavigationService _navigationService;
-
-        public ObservableCollection<Profiles> ProfilesList { get; set; }
-        public Profiles SelectedProfile { get; set; }
         #endregion
 
         #region Methods
@@ -80,18 +86,24 @@ namespace ElogictisMobile.ViewModels
         private async void NavigateToNextPage(object selectedItem)
         {
             // Do something
-            LocalContext.ProfileSelected = selectedItem as Profiles;
-            await _navigationService.NavigateToAsync<DetailProfilePageViewModel>();
+            LocalContext.ProductSelected = selectedItem as Products;
+            await _navigationService.NavigateToAsync<DetailProductFormPageViewModel>();
         }
 
-        private async void AddProfileClicked(object obj)
+        private async void GoToBack(object obj)
+        {
+            // Do something
+            await _navigationService.GoBackAsync();
+        }
+
+        private async void AddProductClicked(object obj)
         {
             // Do something
             try
             {
-                await _navigationService.NavigateToAsync<AddProfilesPageViewModel>();
-            }    
-            catch(Exception ex)
+                await _navigationService.NavigateToAsync<AddProductFormPageViewModel>();
+            }
+            catch (Exception ex)
             {
                 await App.Current.MainPage.DisplayAlert("Thông báo", ex.Message, "OK");
             }

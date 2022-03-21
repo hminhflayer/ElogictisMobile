@@ -53,71 +53,71 @@ namespace ElogictisMobile.ViewModels
         /// </summary>
         public StatisticalPageViewModel()
         {
-            //this.GetChartData();
-            //this.healthCareCardItems = new ObservableCollection<HealthCare>()
-            //{
-            //    new HealthCare()
-            //    {
-            //        Category = "HEART RATE",
-            //        CategoryValue = "87 bmp",
-            //        ChartData = this.heartRateData,
-            //        BackgroundGradientStart = "#f59083",
-            //        BackgroundGradientEnd = "#fae188",
-            //    },
-            //    new HealthCare()
-            //    {
-            //        Category = "CALORIES BURNED",
-            //        CategoryValue = "948 cal",
-            //        ChartData = this.caloriesBurnedData,
-            //        BackgroundGradientStart = "#ff7272",
-            //        BackgroundGradientEnd = "#f650c5",
-            //    },
-            //    new HealthCare()
-            //    {
-            //        Category = "SLEEP TIME",
-            //        CategoryValue = "7.3 hrs",
-            //        ChartData = this.sleepTimeData,
-            //        BackgroundGradientStart = "#5e7cea",
-            //        BackgroundGradientEnd = "#1dcce3",
-            //    },
-            //    new HealthCare()
-            //    {
-            //        Category = "WATER CONSUMED",
-            //        CategoryValue = "38.6 ltr",
-            //        ChartData = this.waterConsumedData,
-            //        BackgroundGradientStart = "#255ea6",
-            //        BackgroundGradientEnd = "#b350d1",
-            //    },
-            //};
+            this.GetChartData();
+            this.healthCareCardItems = new ObservableCollection<HealthCare>()
+            {
+                new HealthCare()
+                {
+                    Category = "CHỜ XÁC NHẬN",
+                    CategoryValue = "0 đơn",
+                    ChartData = this.heartRateData,
+                    BackgroundGradientStart = "#f59083",
+                    BackgroundGradientEnd = "#fae188",
+                },
+                new HealthCare()
+                {
+                    Category = "ĐANG GIAO HÀNG",
+                    CategoryValue = "0 đơn",
+                    ChartData = this.caloriesBurnedData,
+                    BackgroundGradientStart = "#ff7272",
+                    BackgroundGradientEnd = "#f650c5",
+                },
+                new HealthCare()
+                {
+                    Category = "GIAO THÀNH CÔNG",
+                    CategoryValue = "0 đơn",
+                    ChartData = this.sleepTimeData,
+                    BackgroundGradientStart = "#5e7cea",
+                    BackgroundGradientEnd = "#1dcce3",
+                },
+                new HealthCare()
+                {
+                    Category = "ĐÃ HỦY",
+                    CategoryValue = "0 đơn",
+                    ChartData = this.waterConsumedData,
+                    BackgroundGradientStart = "#255ea6",
+                    BackgroundGradientEnd = "#b350d1",
+                },
+            };
 
-            //this.healthCareListItems = new ObservableCollection<HealthCare>()
-            //{
-            //    new HealthCare()
-            //    {
-            //        Category = "Blood Pressure",
-            //        CategoryValue = "141/90 mmgh",
-            //        CategoryPercentage = "30%",
-            //        BackgroundGradientStart = "#cf86ff",
-            //    },
-            //    new HealthCare()
-            //    {
-            //        Category = "Body Weight",
-            //        CategoryValue = "176 lbs",
-            //        CategoryPercentage = "50%",
-            //        BackgroundGradientStart = "#8691ff",
-            //    },
-            //    new HealthCare()
-            //    {
-            //        Category = "Steps",
-            //        CategoryValue = "3463",
-            //        CategoryPercentage = "60%",
-            //        BackgroundGradientStart = "#ff9686",
-            //    },
-            //};
+            this.healthCareListItems = new ObservableCollection<HealthCare>()
+            {
+                new HealthCare()
+                {
+                    Category = "Tổng chi phí thu hộ (COD)",
+                    CategoryValue = "0 VNĐ",
+                    CategoryPercentage = "30%",
+                    BackgroundGradientStart = "#cf86ff",
+                },
+                new HealthCare()
+                {
+                    Category = "Tổng chi phí vận chuyển",
+                    CategoryValue = "0 VNĐ",
+                    CategoryPercentage = "50%",
+                    BackgroundGradientStart = "#8691ff",
+                },
+                new HealthCare()
+                {
+                    Category = "Tổng chi phí vận chuyển trong tháng",
+                    CategoryValue = "0 VNĐ",
+                    CategoryPercentage = "60%",
+                    BackgroundGradientStart = "#ff9686",
+                },
+            };
 
-            //this.ProfileImage = App.ImageServerPath + "ProfileImage1.png";
-            //this.MenuCommand = new Command(this.MenuButtonClicked);
-            //this.ProfileSelectedCommand = new Command(this.ProfileImageClicked);
+            this.ProfileImage = App.ImageServerPath + "ProfileImage1.png";
+            this.MenuCommand = new Command(this.MenuButtonClicked);
+            this.ProfileSelectedCommand = new Command(this.ProfileImageClicked);
         }
 
         #endregion

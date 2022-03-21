@@ -117,5 +117,6 @@ namespace ElogictisMobile.ViewModels
             return Task.CompletedTask;
         }
         #endregion
+
     }
 }

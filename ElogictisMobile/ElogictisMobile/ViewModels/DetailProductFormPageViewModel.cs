@@ -16,8 +16,9 @@ namespace ElogictisMobile.ViewModels
     /// ViewModel for Business Registration Form page 
     /// </summary> 
     [Preserve(AllMembers = true)]
-    public class AddProductFormPageViewModel : BaseViewModel
+    public class DetailProductFormPageViewModel : LoginViewModel
     {
+        public Products products;
         #region Constructor
         public ValidatableObject<string> fromFullName;
         public ValidatableObject<string> fromPhone;
@@ -32,17 +33,20 @@ namespace ElogictisMobile.ViewModels
         private INavigationService _navigationService;
 
         public string TypeProduct { get; set; }
+
+        public bool IsDelete { get; set; }
         public ObservableCollection<TypeProduct> TypeProductCollection { get; set; } = ContentData.TypeProductCollection;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AddProductFormPageViewModel" /> class
         /// </summary>
-        public AddProductFormPageViewModel(INavigationService navigationService)
+        public DetailProductFormPageViewModel(INavigationService navigationService)
         {
             _navigationService = navigationService;
             this.InitializeProperties();
             this.AddValidationRules();
-            this.SubmitCommand = new Command(this.SubmitClicked);
+            this.UpdateProductCommand = new Command(this.SubmitClicked);
+            this.DeleteProductCommand = new Command(this.DeleteClicked);
         }
 
         #endregion
@@ -232,7 +236,8 @@ namespace ElogictisMobile.ViewModels
         /// <summary>
         /// Gets or sets the command is executed when the Submit button is clicked.
         /// </summary>
-        public Command SubmitCommand { get; set; }
+        public Command UpdateProductCommand { get; set; }
+        public Command DeleteProductCommand { get; set; }
 
         #endregion
 
@@ -254,11 +259,19 @@ namespace ElogictisMobile.ViewModels
             this.Desciption = new ValidatableObject<string>();
             this.Money = new ValidatableObject<double>();
 
-            Weight.Value = 0;
-            Quanlity.Value = 0;
-            Money.Value = 0;
-            this.FromFullName.Value = LocalContext.Profiles.Profile_Name;
-            this.FromPhone.Value = LocalContext.Profiles.Profile_Phone;
+            
+            this.FromFullName.Value = LocalContext.ProductSelected.Product_From_FullName;
+            this.FromPhone.Value = LocalContext.ProductSelected.Product_From_PhoneNumber;
+            this.FromAddress.Value = LocalContext.ProductSelected.Product_From_Address;
+            this.ToFullName.Value = LocalContext.ProductSelected.Product_To_FullName;
+            this.ToPhone.Value = LocalContext.ProductSelected.Product_To_PhoneNumber;
+            this.ToAddress.Value = LocalContext.ProductSelected.Product_To_Address;
+            this.Weight.Value = double.Parse(LocalContext.ProductSelected.Product_Weight);
+            this.Quanlity.Value = int.Parse(LocalContext.ProductSelected.Product_Quanlity);
+            this.Desciption.Value = LocalContext.ProductSelected.Product_Description;
+            this.Money.Value = double.Parse(LocalContext.ProductSelected.Product_Money);
+            this.IsDelete = LocalContext.ProductSelected.Product_IsDelete;
+            this.TypeProduct = LocalContext.ProductSelected.Product_Type;
         }
 
         /// <summary>
@@ -306,41 +319,48 @@ namespace ElogictisMobile.ViewModels
         {
             if (this.AreFieldsValid())
             {
-                var key = GeneralKey.Instance.General("PRO");
-                // Do Something
-                await RealtimeFirebase.Instance.UpSert("Products", key, JsonConvert.SerializeObject(new Products
-                {
-                    Product_CreateBy = LocalContext.Profiles.Profile_Email,
-                    Product_CreateTime = DateTime.Now.ToShortDateString(),
-                    Product_Description = Desciption.Value,
-                    Product_From_Address = FromAddress.Value,
-                    Product_From_FullName = FromFullName.Value,
-                    Product_From_PhoneNumber = FromPhone.Value,
-                    Product_ID = key,
-                    Product_IsDelete = false,
-                    Product_LastUpdateBy = "",
-                    Product_LastUpdateTime = "",
-                    Product_Money = Money.Value.ToString(),
-                    Product_Quanlity = Quanlity.Value.ToString(),
-                    Product_To_Address = ToAddress.Value,
-                    Product_To_FullName = ToFullName.Value,
-                    Product_To_PhoneNumber = ToPhone.Value,
-                    Product_Type = TypeProduct,
-                    Product_Weight = Weight.Value.ToString(),
-                    Product_Status = 1,
-                    Product_Holder = ""
-                }));
+                Products temp = products;
+                temp.Product_Description = Desciption.Value;
+                temp.Product_From_Address = FromAddress.Value;
+                temp.Product_From_FullName = FromFullName.Value;
+                temp.Product_From_PhoneNumber = FromPhone.Value;
+                temp.Product_LastUpdateBy = LocalContext.Profiles.Profile_Email;
+                temp.Product_LastUpdateTime = DateTime.Now.ToShortDateString();
+                temp.Product_Money = Money.Value.ToString();
+                temp.Product_Quanlity = Quanlity.Value.ToString();
+                temp.Product_To_Address = ToAddress.Value;
+                temp.Product_To_FullName = ToFullName.Value;
+                temp.Product_To_PhoneNumber = ToPhone.Value;
+                temp.Product_Type = TypeProduct;
+                temp.Product_Weight = Weight.Value.ToString();
+                temp.Product_Holder = "";
 
-                var keyNoti = GeneralKey.Instance.General("NOTI");
-                await RealtimeFirebase.Instance.UpSert("Notifications", keyNoti, JsonConvert.SerializeObject(new TransactionHistory
-                {
-                    IdProduct = key,
-                    TransactionDescription = "CHỜ XÁC NHẬN",
-                    Time = DateTime.Now.ToShortDateString(),
-                    Email = LocalContext.Profiles.Profile_Email
-                }));
+                await RealtimeFirebase.Instance.UpSert("Products", temp.Product_ID, JsonConvert.SerializeObject(temp));
                 await App.Current.MainPage.DisplayAlert("Thông báo", "Thêm đơn hàng thành công!", "OK");
                 await _navigationService.GoBackAsync();
+            }
+        }
+
+        /// <summary>
+        /// Invoked when the Delete button clicked
+        /// </summary>
+        /// <param name="obj">The object</param>
+        private async void DeleteClicked(object obj)
+        {
+            // Do something
+            var action = await App.Current.MainPage.DisplayAlert("Thông báo", "Bạn có thực sự muốn xóa thông tin đơn hàng này?", "Đúng", "Không");
+            if (action)
+            {
+                Products products = LocalContext.ProductSelected;
+                products.Product_IsDelete = true;
+                products.Product_LastUpdateBy = LocalContext.Profiles.Profile_Email;
+                products.Product_LastUpdateTime = DateTime.Now.ToString();
+
+                // Do Something
+                await RealtimeFirebase.Instance.UpSert("Products", products.Product_ID, JsonConvert.SerializeObject(products));
+                //await RealtimeFirebase.Instance.Delete("Products", products.Product_ID);
+                await App.Current.MainPage.DisplayAlert("Thông báo", "Đã xóa thông tin đơn hàng thành công", "OK");
+                IsDelete = true;
             }
         }
 

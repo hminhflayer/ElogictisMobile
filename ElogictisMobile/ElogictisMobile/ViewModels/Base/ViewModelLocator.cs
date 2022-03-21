@@ -22,6 +22,7 @@ namespace ElogictisMobile.ViewModels.Base
             // Register Page and Page Models
 
             Register<DashboardPageViewModel, DashboardPage>();
+
             Register<LoginPageViewModel, LoginPage>();
             Register<SignUpPageViewModel, SignUpPage>();
             Register<ForgotPasswordPageViewModel, ForgotPasswordPage>();
@@ -36,6 +37,10 @@ namespace ElogictisMobile.ViewModels.Base
             Register<UpdateProfilePageViewModel, UpdateProfilePage>();
 
             Register<ManageProfilesPageViewModel, ManageProfilesPage>();
+            Register<ManageProductsPageViewModel, ManageProductsPage>();
+
+            Register<DetailProfilePageViewModel, DetailProfilePage>();
+            Register<DetailProductFormPageViewModel, DetailProductFormPage>();
 
 
             // Register Services (registered as Singletons by default)

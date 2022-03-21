@@ -15,6 +15,18 @@ namespace ElogictisMobile.Models
         public string Profile_CreateBy { get; set; }
         public string Profile_LastUpdateTime { get; set; }
         public string Profile_LastUpdateBy { get; set; }
+        public string Profile_Identity { get; set; }
         public bool Profile_IsDelete { get; set; }
+        /*
+         *AUTH:
+         *1:USERS
+         *2:STAFF
+         *3:MANAGE
+         *4:ADMIN
+         */
+        public int Profile_Auth { get; set; }
+        public string Profile_Avatar { get; set; }
+        public string Token { get; set; }
+        public DateTime ExpireToken { get; set; }
     }
 }

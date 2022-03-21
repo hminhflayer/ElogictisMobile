@@ -1,10 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage
-    x:Class="ElogictisMobile.Views.AddProductFormPage"
-    xmlns:localStatic="ElogictisMobile"
+    x:Class="ElogictisMobile.Views.DetailProductFormPage"
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:ListCollection="clr-namespace:System.Collections.Generic;assembly=netstandard"
+    xmlns:behaviour="clr-namespace:ElogictisMobile.Behaviors"
     xmlns:behaviours="clr-namespace:ElogictisMobile.Behaviors"
     xmlns:border="clr-namespace:Syncfusion.XForms.Border;assembly=Syncfusion.Core.XForms"
     xmlns:buttons="clr-namespace:Syncfusion.XForms.Buttons;assembly=Syncfusion.Buttons.XForms"
@@ -12,7 +12,9 @@
     xmlns:controls="clr-namespace:ElogictisMobile.Controls"
     xmlns:converter="clr-namespace:ElogictisMobile.Converters"
     xmlns:inputLayout="clr-namespace:Syncfusion.XForms.TextInputLayout;assembly=Syncfusion.Core.XForms"
-    Title="Tạo đơn hàng"
+    xmlns:local="clr-namespace:ElogictisMobile.Views"
+    xmlns:viewModel="clr-namespace:ElogictisMobile.ViewModels"
+    Title="Chi tiết đơn hàng"
     BackgroundColor="{DynamicResource Gray-100}"
     NavigationPage.HasNavigationBar="True"
     NavigationPage.HasBackButton="True">
@@ -87,8 +89,8 @@
                                     <behaviours:EntryMaskedBehavior Mask="(+84)XXX-XXX-XXX" Prefix="(+84)"/>
                                 </controls:BorderlessEntry.Behaviors>
                             </controls:BorderlessEntry>
-                            
-                                    <!--  Label to display error icon  -->
+
+                            <!--  Label to display error icon  -->
                             <Label
                                     Grid.Column="1"
                                     IsVisible="{Binding Path=IsVisible, Source={x:Reference FromPhoneValidationLabel}}"
@@ -134,7 +136,7 @@
                         TextColor="{DynamicResource Red}"
                         VerticalOptions="FillAndExpand" />
                 </StackLayout>
-                
+
                 <Label
                     Margin="0,0,0,10"
                     FontFamily="Montserrat-SemiBold"
@@ -190,7 +192,7 @@
                                     <behaviours:EntryMaskedBehavior Mask="(+84)XXX-XXX-XXX" Prefix="(+84)"/>
                                 </controls:BorderlessEntry.Behaviors>
                             </controls:BorderlessEntry>
-                            
+
                             <Label
                                 Grid.Column="1"
                                 IsVisible="{Binding Path=IsVisible, Source={x:Reference ToPhoneValidationLabel}}"
@@ -236,7 +238,7 @@
                         TextColor="{DynamicResource Red}"
                         VerticalOptions="FillAndExpand" />
                 </StackLayout>
-                
+
                 <Label
                     Margin="0,0,0,10"
                     FontFamily="Montserrat-SemiBold"
@@ -323,21 +325,30 @@
                         <controls:BorderlessEntry
                         x:Name="MoneyEntry"
                         Margin="12,0"
-                            Keyboard="Numeric"
+                        Keyboard="Numeric"
                         HeightRequest="40"
                         Placeholder="Tối đa 2.000.000 VNĐ"
                         Style="{StaticResource BorderlessEntryStyle}"
-                        Text="{Binding Money.Value,StringFormat='{0:C}'}" />
+                        Text="{Binding Money.Value, StringFormat='{0:C}'}" />
                     </border:SfBorder>
                 </StackLayout>
 
-                <!--Submit Button-->  
-                <buttons:SfButton
-                    Margin="0,24,0,0"
-                    Command="{Binding SubmitCommand}"
+                <StackLayout Orientation="Horizontal" HorizontalOptions="CenterAndExpand" IsVisible="{Binding IsDelete}">
+                    <buttons:SfButton
+                    Margin="0,16,0,0"
                     Style="{StaticResource GradientButtonStyle}"
-                    Text="Tạo đơn"
-                    WidthRequest="200" />
+                    Text="Cập Nhật"
+                    WidthRequest="200" 
+                    Command="{Binding UpdateProductCommand}"/>
+
+                    <!--  Submit Button  -->
+                    <buttons:SfButton
+                    Margin="0,16,0,0"
+                    Command="{Binding DeleteProductCommand}"
+                    Style="{StaticResource GradientButtonStyle}"
+                    Text="XÓA"
+                    WidthRequest="60" />
+                </StackLayout>
 
             </StackLayout>
         </ScrollView>

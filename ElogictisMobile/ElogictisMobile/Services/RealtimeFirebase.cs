@@ -132,5 +132,17 @@ namespace ElogictisMobile.Services
             return allPersons.Where(a => a.Profile_Id == key).FirstOrDefault();
         }
 
+
+        //Method for Notifi
+        public ObservableCollection<TransactionHistory> GetAllNotifi()
+        {
+
+            var allNoti = client
+              .Child("Notifications")
+              .AsObservable<TransactionHistory>()
+              .AsObservableCollection().ToList();
+
+            return allNoti.Where(a => a.Email == LocalContext.Current.AccountSettings.Profile_Email) as ObservableCollection<TransactionHistory>;
+        }
     }
 }

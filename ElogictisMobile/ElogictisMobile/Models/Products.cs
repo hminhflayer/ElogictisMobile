@@ -23,5 +23,15 @@ namespace ElogictisMobile.Models
         public string Product_LastUpdateTime { get; set; }
         public string Product_LastUpdateBy { get; set; }
         public bool Product_IsDelete { get; set; }
+        /*
+         *STATUS:
+         *1:Wait for confirmation
+         *2:Taking
+         *3:In store
+         *4:Delivering
+         *5:Delivered
+         */
+        public int Product_Status { get; set; }
+        public string Product_Holder { get; set; }
     }
 }

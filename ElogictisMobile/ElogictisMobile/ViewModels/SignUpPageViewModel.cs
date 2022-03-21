@@ -177,6 +177,8 @@ namespace ElogictisMobile.ViewModels
                             Profile_LastUpdateBy = "",
                             Profile_LastUpdateTime = "",
                             Profile_Phone = "",
+                            Profile_Auth = 1,
+                            Profile_Identity = ""
                         };
                         await RealtimeFirebase.Instance.UpSert("Profiles", loginAttempt, JsonConvert.SerializeObject(profiles)); 
                         await _navigationService.NavigateToAsync<AlertSignUpPageViewModel>();

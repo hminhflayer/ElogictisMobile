@@ -1,4 +1,5 @@
-﻿using ElogictisMobile.Services.Account;
+﻿using ElogictisMobile.Models;
+using ElogictisMobile.Services.Account;
 using ElogictisMobile.Services.Navigation;
 using System;
 using Xamarin.Forms;
@@ -34,6 +35,8 @@ namespace ElogictisMobile.ViewModels
             this.TermsCommand = new Command(this.TermsServiceClicked);
             this.PolicyCommand = new Command(this.PrivacyPolicyClicked);
             this.FAQCommand = new Command(this.FAQClicked);
+            this.ManageProductsCommand = new Command(this.ManageProductsClicked);
+            this.ManageProfilesCommand = new Command(this.ManageProfilesClicked);
             this.LogoutCommand = new Command(this.LogoutClicked);
         }
 
@@ -77,6 +80,10 @@ namespace ElogictisMobile.ViewModels
         /// </summary>
         public Command FAQCommand { get; set; }
 
+        public Command ManageProductsCommand { get; set; }
+
+        public Command ManageProfilesCommand { get; set; }
+
         /// <summary>
         /// Gets or sets the command is executed when the logout is clicked.
         /// </summary>
@@ -112,7 +119,7 @@ namespace ElogictisMobile.ViewModels
             try
             {
                 // Do something
-                await _navigationService.NavigateToAsync<ResetPasswordPageViewModel>(null, true);
+                await _navigationService.NavigateToAsync<ResetPasswordPageViewModel>();
             }
             catch (Exception ex)
             {
@@ -124,26 +131,34 @@ namespace ElogictisMobile.ViewModels
         /// Invoked when the account link clicked
         /// </summary>
         /// <param name="obj">The object</param>
-        private async void LinkAccountClicked(object obj)
+        private void LinkAccountClicked(object obj)
         {
             // Do something
-            try
-            {
-                await _navigationService.NavigateToAsync<AddProductFormPageViewModel>(null, true);
-            }
-            catch (Exception ex)
-            {
-                await App.Current.MainPage.DisplayAlert("Thông báo", ex.Message, "Đóng");
-            }
+            //try
+            //{
+            //    await _navigationService.NavigateToAsync<AddProductFormPageViewModel>();
+            //}
+            //catch (Exception ex)
+            //{
+            //    await App.Current.MainPage.DisplayAlert("Thông báo", ex.Message, "Đóng");
+            //}
         }
 
         /// <summary>
         /// Invoked when the terms of service clicked
         /// </summary>
         /// <param name="obj">The object</param>
-        private void TermsServiceClicked(object obj)
+        private async void TermsServiceClicked(object obj)
         {
             // Do something
+            try
+            {
+                await _navigationService.NavigateToAsync<ManageProductsPageViewModel>(null, false);
+            }
+            catch (Exception ex)
+            {
+                await App.Current.MainPage.DisplayAlert("Thông báo", ex.Message, "Đóng");
+            }
         }
 
         /// <summary>
@@ -162,6 +177,32 @@ namespace ElogictisMobile.ViewModels
         private void FAQClicked(object obj)
         {
             // Do something
+        }
+
+        private async void ManageProductsClicked(object obj)
+        {
+            // Do something
+            try
+            {
+                await _navigationService.NavigateToAsync<ManageProductsPageViewModel>();
+            }
+            catch (Exception ex)
+            {
+                await App.Current.MainPage.DisplayAlert("Thông báo", ex.Message, "OK");
+            }
+        }
+
+        private async void ManageProfilesClicked(object obj)
+        {
+            // Do something
+            try
+            {
+                await _navigationService.NavigateToAsync<ManageProfilesPageViewModel>();
+            }
+            catch (Exception ex)
+            {
+                await App.Current.MainPage.DisplayAlert("Thông báo", ex.Message, "OK");
+            }
         }
 
         /// <summary>
@@ -184,6 +225,7 @@ namespace ElogictisMobile.ViewModels
             {
                 if (_accountService.SignOut())
                 {
+                    LocalContext.Current.AccountSettings = new Profiles();
                     await _navigationService.NavigateToAsync<LoginPageViewModel>(null,true);
                 }    
             }

@@ -1,5 +1,6 @@
 ﻿using ElogictisMobile.Models;
 using ElogictisMobile.Services;
+using ElogictisMobile.Services.Navigation;
 using ElogictisMobile.Validators;
 using ElogictisMobile.Validators.Rules;
 using Newtonsoft.Json;
@@ -10,12 +11,13 @@ using Xamarin.Forms.Internals;
 namespace ElogictisMobile.ViewModels
 {
     /// <summary>
-    /// ViewModel for add profile page.
-    /// </summary>
+    /// ViewModel for Business Registration Form page 
+    /// </summary> 
     [Preserve(AllMembers = true)]
-    public class UpdateProfilePageViewModel : BaseViewModel
+    public class DetailProfilePageViewModel : LoginViewModel
     {
         #region Fields
+        private Profiles Profiles { get; set; }
 
         private ValidatableObject<string> fullName;
 
@@ -23,9 +25,14 @@ namespace ElogictisMobile.ViewModels
 
         private string phoneNumber;
 
+        private bool isDelete;
+
         private Command<object> updateProfileCommand;
 
         private Command<object> addProfileCommand;
+
+        private Command<object> deleteProfileCommand;
+        private INavigationService _navigationService;
 
         #endregion
 
@@ -34,8 +41,9 @@ namespace ElogictisMobile.ViewModels
         /// <summary>
         /// Initializing the profile details.
         /// </summary>
-        public UpdateProfilePageViewModel()
+        public DetailProfilePageViewModel(INavigationService navigationService)
         {
+            _navigationService = navigationService;
             this.InitializeProperties();
             this.AddValidationRules();
         }
@@ -62,6 +70,24 @@ namespace ElogictisMobile.ViewModels
                 }
 
                 this.SetProperty(ref this.fullName, value);
+            }
+        }
+
+        public bool IsDelete
+        {
+            get
+            {
+                return this.isDelete;
+            }
+
+            set
+            {
+                if (this.isDelete == value)
+                {
+                    return;
+                }
+
+                this.SetProperty(ref this.isDelete, value);
             }
         }
 
@@ -130,6 +156,14 @@ namespace ElogictisMobile.ViewModels
             }
         }
 
+        public Command<object> DeleteProfileCommand
+        {
+            get
+            {
+                return this.deleteProfileCommand ?? (this.deleteProfileCommand = new Command<object>(this.DeleteProfileClicked));
+            }
+        }
+
         #endregion
 
         #region Method
@@ -153,9 +187,10 @@ namespace ElogictisMobile.ViewModels
             this.FullName = new ValidatableObject<string>();
             this.Email = new ValidatableObject<string>();
 
-            this.FullName.Value = LocalContext.Profiles.Profile_Name;
-            this.Email.Value = LocalContext.Profiles.Profile_Email;
-            this.PhoneNumber = LocalContext.Profiles.Profile_Phone;
+            this.FullName.Value = LocalContext.ProfileSelected.Profile_Name;
+            this.Email.Value = LocalContext.ProfileSelected.Profile_Email;
+            this.PhoneNumber = LocalContext.ProfileSelected.Profile_Phone;
+            this.IsDelete = LocalContext.ProfileSelected.Profile_IsDelete;
         }
 
         /// <summary>
@@ -183,7 +218,7 @@ namespace ElogictisMobile.ViewModels
 
                 // Do Something
                 await RealtimeFirebase.Instance.UpSert("Profiles", LocalContext.Profiles.Profile_Id, JsonConvert.SerializeObject(profiles));
-                await App.Current.MainPage.DisplayAlert("Thông báo", "Đã cập nhật thông tin tài khoản thành công", "OK");
+                await App.Current.MainPage.DisplayAlert("Thông báo", "Đã cập nhật thông tin thành viên thành công", "OK");
             }
         }
 
@@ -194,6 +229,25 @@ namespace ElogictisMobile.ViewModels
         private void AddProfileClicked(object obj)
         {
             // Do something
+        }
+
+        private async void DeleteProfileClicked(object obj)
+        {
+            // Do something
+            var action = await App.Current.MainPage.DisplayAlert("Thông báo", "Bạn có thực sự muốn xóa thông tin thành viên này?", "Đúng","Không");
+            if(action)
+            {
+                Profiles profiles = LocalContext.Profiles;
+                profiles.Profile_IsDelete = true;
+                profiles.Profile_LastUpdateBy = LocalContext.Profiles.Profile_Email;
+                profiles.Profile_LastUpdateTime = DateTime.Now.ToString();
+
+                // Do Something
+                await RealtimeFirebase.Instance.UpSert("Profiles", LocalContext.Profiles.Profile_Id, JsonConvert.SerializeObject(profiles));
+                //await RealtimeFirebase.Instance.Delete("Profiles", LocalContext.ProfileSelected.Profile_Id);
+                await App.Current.MainPage.DisplayAlert("Thông báo", "Đã xóa thông tin thành viên thành công", "OK");
+                isDelete = true;
+            }    
         }
 
         #endregion

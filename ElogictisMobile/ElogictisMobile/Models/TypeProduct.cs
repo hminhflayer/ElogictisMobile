@@ -4,8 +4,10 @@ using System.Text;
 
 namespace ElogictisMobile.Models
 {
-    public class StaticClass
+    public class TypeProduct
     {
-        public static Profiles Profiles { get; set; }
+        public string Id { get; set; }
+        public string Name { get; set; }
+    
     }
 }

@@ -6,7 +6,7 @@ namespace ElogictisMobile.ViewModels
     {
         private StatisticalPageViewModel _statisticalVM;
         private TransactionHistoryPageViewModel _historyVM;
-        private ManageItemPageViewModel _manageVM;
+        private ManageProductsPageViewModel _manageVM;
         private SettingsPageViewModel _settingVM;
 
         public SettingsPageViewModel SettingsPageViewModel
@@ -27,7 +27,7 @@ namespace ElogictisMobile.ViewModels
             set => SetProperty(ref _historyVM, value);
         }
 
-        public ManageItemPageViewModel ManageItemPageViewModel
+        public ManageProductsPageViewModel ManageProductsPageViewModel
         {
             get => _manageVM;
             set => SetProperty(ref _manageVM, value);
@@ -35,12 +35,12 @@ namespace ElogictisMobile.ViewModels
 
         public DashboardPageViewModel(StatisticalPageViewModel statisticalVM,
             TransactionHistoryPageViewModel historyVM,
-            ManageItemPageViewModel manageVM,
+            ManageProductsPageViewModel manageVM,
             SettingsPageViewModel settingVM)
         {
             StatisticalPageViewModel = statisticalVM;
             TransactionHistoryPageViewModel = historyVM;
-            ManageItemPageViewModel = manageVM;
+            ManageProductsPageViewModel = manageVM;
             SettingsPageViewModel = settingVM;;
         }
 
@@ -49,7 +49,7 @@ namespace ElogictisMobile.ViewModels
             return Task.WhenAny(base.InitializeAsync(navigationData),
                 StatisticalPageViewModel.InitializeAsync(null),
                 TransactionHistoryPageViewModel.InitializeAsync(null),
-                ManageItemPageViewModel.InitializeAsync(null),
+                ManageProductsPageViewModel.InitializeAsync(null),
                 SettingsPageViewModel.InitializeAsync(null));
         }
     }

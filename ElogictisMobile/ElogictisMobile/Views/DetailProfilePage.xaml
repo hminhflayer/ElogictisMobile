@@ -1,21 +1,24 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage
-    x:Class="ElogictisMobile.Views.UpdateProfilePage"
+    x:Class="ElogictisMobile.Views.DetailProfilePage"
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:ListCollection="clr-namespace:System.Collections.Generic;assembly=netstandard"
+    xmlns:behaviour="clr-namespace:ElogictisMobile.Behaviors"
+    xmlns:behaviours="clr-namespace:ElogictisMobile.Behaviors"
     xmlns:border="clr-namespace:Syncfusion.XForms.Border;assembly=Syncfusion.Core.XForms"
     xmlns:buttons="clr-namespace:Syncfusion.XForms.Buttons;assembly=Syncfusion.Buttons.XForms"
+    xmlns:combobox="clr-namespace:Syncfusion.XForms.ComboBox;assembly=Syncfusion.SfComboBox.XForms"
     xmlns:control="clr-namespace:ElogictisMobile.Controls"
-    xmlns:behaviours="clr-namespace:ElogictisMobile.Behaviors"
     xmlns:converter="clr-namespace:ElogictisMobile.Converters"
     xmlns:sfavatar="clr-namespace:Syncfusion.XForms.AvatarView;assembly=Syncfusion.Core.XForms"
-    xmlns:ViewModel="clr-namespace:ElogictisMobile.ViewModels" 
-    xmlns:behaviour="clr-namespace:ElogictisMobile.Behaviors"
-    BackgroundColor="{DynamicResource Gray-Bg}"
+    xmlns:inputLayout="clr-namespace:Syncfusion.XForms.TextInputLayout;assembly=Syncfusion.Core.XForms"
+    xmlns:local="clr-namespace:ElogictisMobile.Views"
+    xmlns:viewModel="clr-namespace:ElogictisMobile.ViewModels"
+    Title="Chi tiết thành viên"
+    BackgroundColor="{DynamicResource Gray-100}"
     NavigationPage.HasNavigationBar="True"
-    NavigationPage.HasBackButton="True"
-    Title="Thông tin tài khoản"
-    x:Name="UpdateProfile">
+    NavigationPage.HasBackButton="True">
 
     <ContentPage.Resources>
         <ResourceDictionary>
@@ -25,40 +28,24 @@
         </ResourceDictionary>
     </ContentPage.Resources>
 
+    <ContentPage.ControlTemplate>
+        <ControlTemplate>
+            <StackLayout BackgroundColor="{DynamicResource Gray-Bg}" Spacing="0">
+                <BoxView BackgroundColor="{DynamicResource Gray-200}" HeightRequest="1" />
+                <ContentPresenter />
+            </StackLayout>
+        </ControlTemplate>
+    </ContentPage.ControlTemplate>
+
     <ContentPage.Content>
         <ScrollView>
-            <StackLayout>
-                <StackLayout Padding="16" Spacing="16">
-                    <!--<StackLayout
-                    x:Name="ContactsTitle"
-                    HorizontalOptions="FillAndExpand"
-                    IsVisible="True"
-                    Orientation="Horizontal"
-                    Spacing="0"
-                    VerticalOptions="FillAndExpand">
-
-                        --><!--  Back button command  --><!--
-                        <buttons:SfButton
-                        x:Name="backButton"
-                        Command="{Binding BackButtonCommand}"
-                        CommandParameter="{x:Reference backButton}"
-                        Style="{StaticResource IconButtonStyle}"
-                        Text="{StaticResource Back}" />
-
-                        --><!--  Contacts List page Title  --><!--
-                        <Label
-                        Margin="16"
-                        FontFamily="Montserrat-Medium"
-                        HorizontalOptions="FillAndExpand"
-                        Style="{StaticResource TitleLabelStyle}"
-                        Text="Thông tin tài khoản"
-                        VerticalOptions="Center"
-                        VerticalTextAlignment="Center" />
-
-                    </StackLayout>-->
-                    <Grid>
-                        <!--  Avatar view to display the profile picture  -->
-                        <sfavatar:SfAvatarView
+            <StackLayout
+                Padding="16,24"
+                BackgroundColor="{DynamicResource Gray-100}"
+                Spacing="0">
+                <Grid>
+                    <!--  Avatar view to display the profile picture  -->
+                    <sfavatar:SfAvatarView
                             Padding="13"
                             BackgroundColor="{DynamicResource Gray-200}"
                             BorderWidth="0"
@@ -68,114 +55,123 @@
                             HorizontalOptions="Center"
                             VerticalOptions="Center"
                             WidthRequest="80">
-                            <sfavatar:SfAvatarView.ImageSource>
-                                <FontImageSource
+                        <sfavatar:SfAvatarView.ImageSource>
+                            <FontImageSource
                                     FontFamily="FontIcons"
                                     Glyph="{StaticResource Contact}"
                                     Size="29"
                                     Color="{DynamicResource Gray-600}" />
-                            </sfavatar:SfAvatarView.ImageSource>
-                        </sfavatar:SfAvatarView>
+                        </sfavatar:SfAvatarView.ImageSource>
+                    </sfavatar:SfAvatarView>
 
-                        <border:SfBorder HorizontalOptions="Center" VerticalOptions="Center" 
+                    <border:SfBorder HorizontalOptions="Center" VerticalOptions="Center" 
                         HeightRequest="110" WidthRequest="110" BorderColor="Transparent" >
-                            <border:SfBorder.Content>
-                                <buttons:SfButton Text="{StaticResource Add}" HeightRequest="36"
+                        <border:SfBorder.Content>
+                            <buttons:SfButton Text="{StaticResource Add}" HeightRequest="36"
                                               WidthRequest="36" CornerRadius="36" VerticalOptions="End" 
                                               HorizontalOptions="End" BorderWidth="2" BackgroundColor="{DynamicResource Gray-200}"
                                               BorderColor="{DynamicResource Gray-Bg}"
                                               TextColor="{DynamicResource Steel}" Style="{StaticResource IconButtonStyle}"
                                               Command="{Binding AddProfileCommand}" />
-                            </border:SfBorder.Content>
-                        </border:SfBorder>
-                    </Grid>
+                        </border:SfBorder.Content>
+                    </border:SfBorder>
+                </Grid>
 
-                    <StackLayout>
-                        <!--  Full name entry with border  -->
-                        <border:SfBorder BorderColor="{Binding Source={x:Reference FullNameEntry}, Path=IsFocused, Converter={StaticResource ColorConverter}, ConverterParameter=3}" Style="{StaticResource DataFormBorderlessEntryBorderStyle}"
+                <StackLayout>
+                    <!--  Full name entry with border  -->
+                    <border:SfBorder BorderColor="{Binding Source={x:Reference FullNameEntry}, Path=IsFocused, Converter={StaticResource ColorConverter}, ConverterParameter=3}" Style="{StaticResource DataFormBorderlessEntryBorderStyle}"
                                  Padding="12,8" Margin="0,8,0,0" VerticalOptions="Start">
-                            <Grid ColumnDefinitions="*, Auto">
+                        <Grid ColumnDefinitions="*, Auto">
 
-                                <control:BorderlessEntry
+                            <control:BorderlessEntry
                         x:Name="FullNameEntry"
                         Placeholder="Họ và tên"
                         Style="{StaticResource BorderlessEntryStyle}" 
                         Text="{Binding FullName.Value}">
-                                    <Entry.Behaviors>
-                                        <behaviour:EntryLineValidationBehaviour IsValid="{Binding FullName.IsValid}"/>
-                                    </Entry.Behaviors>
-                                </control:BorderlessEntry>
+                                <Entry.Behaviors>
+                                    <behaviour:EntryLineValidationBehaviour IsValid="{Binding FullName.IsValid}"/>
+                                </Entry.Behaviors>
+                            </control:BorderlessEntry>
 
-                                <!--  Label to display error icon  -->
-                                <Label Grid.Column="1" Style="{StaticResource ErrorIconLabelStyle}" Margin="0"
+                            <!--  Label to display error icon  -->
+                            <Label Grid.Column="1" Style="{StaticResource ErrorIconLabelStyle}" Margin="0"
                                    IsVisible="{Binding Path=IsVisible, Source={x:Reference FullNameValidationLabel}}"
                                    Text="{StaticResource Error}"/>
-                            </Grid>
-                        </border:SfBorder>
+                        </Grid>
+                    </border:SfBorder>
 
-                        <!--  Label to display error message  -->
-                        <Label x:Name="FullNameValidationLabel" Margin="15,-3,0,0" VerticalOptions="FillAndExpand"
+                    <!--  Label to display error message  -->
+                    <Label x:Name="FullNameValidationLabel" Margin="15,-3,0,0" VerticalOptions="FillAndExpand"
                            Text="{Binding FullName.Errors, Converter={StaticResource FirstValidationErrorConverter}}"
                            IsVisible="{Binding FullName.IsValid, Converter={StaticResource InverseBoolConverter}}"
                            Style="{StaticResource SimpleLabelStyle}" TextColor="{DynamicResource Red}"/>
-                    </StackLayout>
+                </StackLayout>
 
-                    <StackLayout>
-                        <!--  Email entry with border  -->
-                        <border:SfBorder
+                <StackLayout>
+                    <!--  Email entry with border  -->
+                    <border:SfBorder
                     Grid.Column="2"
                     BorderColor="{Binding Source={x:Reference EmailEntry}, Path=IsFocused, Converter={StaticResource ColorConverter}, ConverterParameter=3}"
                     Style="{StaticResource DataFormBorderlessEntryBorderStyle}" Padding="12,8" Margin="0,8,0,0" VerticalOptions="Start" >
-                            <Grid ColumnDefinitions="*, Auto">
+                        <Grid ColumnDefinitions="*, Auto">
 
-                                <control:BorderlessEntry
+                            <control:BorderlessEntry
                                 x:Name="EmailEntry"
                                 Placeholder="Email"
                                 Style="{StaticResource BorderlessEntryStyle}" 
                                 Text="{Binding Email.Value}"
                                 IsReadOnly="True">
-                                    <Entry.Behaviors>
-                                        <behaviour:EntryLineValidationBehaviour IsValid="{Binding Email.IsValid}"/>
-                                    </Entry.Behaviors>
-                                </control:BorderlessEntry>
+                                <Entry.Behaviors>
+                                    <behaviour:EntryLineValidationBehaviour IsValid="{Binding Email.IsValid}"/>
+                                </Entry.Behaviors>
+                            </control:BorderlessEntry>
 
-                                <!--  Label to display error icon  -->
-                                <Label Grid.Column="1" Style="{StaticResource ErrorIconLabelStyle}" Margin="0"
+                            <!--  Label to display error icon  -->
+                            <Label Grid.Column="1" Style="{StaticResource ErrorIconLabelStyle}" Margin="0"
                                    IsVisible="{Binding Path=IsVisible, Source={x:Reference EmailValidationLabel}}"
                                    Text="{StaticResource Error}"/>
-                            </Grid>
-                        </border:SfBorder>
+                        </Grid>
+                    </border:SfBorder>
 
-                        <!--  Label to display error message  -->
-                        <Label x:Name="EmailValidationLabel" Margin="15,-3,0,0" VerticalOptions="FillAndExpand"
+                    <!--  Label to display error message  -->
+                    <Label x:Name="EmailValidationLabel" Margin="15,-3,0,0" VerticalOptions="FillAndExpand"
                            Text="{Binding Email.Errors, Converter={StaticResource FirstValidationErrorConverter}}"
                            IsVisible="{Binding Email.IsValid, Converter={StaticResource InverseBoolConverter}}"
                            Style="{StaticResource SimpleLabelStyle}" TextColor="{DynamicResource Red}"/>
-                    </StackLayout>
+                </StackLayout>
 
-                    <!--  Phone number entry with border  -->
-                    <border:SfBorder
+                <!--  Phone number entry with border  -->
+                <border:SfBorder
                     Grid.Column="2"
                     BorderColor="{Binding Source={x:Reference PhoneNoEntry}, Path=IsFocused, Converter={StaticResource ColorConverter}, ConverterParameter=3}"
                     Style="{StaticResource DataFormBorderlessEntryBorderStyle}"  Padding="12,8" Margin="0,8" VerticalOptions="Start" >
-                        <control:BorderlessEntry
+                    <control:BorderlessEntry
                         x:Name="PhoneNoEntry"
                         Keyboard="Telephone" 
                         Placeholder="Số điện thoại"
                         Text="{Binding PhoneNumber}"
                         Style="{StaticResource BorderlessEntryStyle}">
-                            <control:BorderlessEntry.Behaviors>
-                                <behaviours:EntryMaskedBehavior Mask="(+84)XXX-XXX-XXX" Prefix="(+84)"/>
-                            </control:BorderlessEntry.Behaviors>
-                        </control:BorderlessEntry>
-                    </border:SfBorder>
+                        <control:BorderlessEntry.Behaviors>
+                            <behaviours:EntryMaskedBehavior Mask="(+84)XXX-XXX-XXX" Prefix="(+84)"/>
+                        </control:BorderlessEntry.Behaviors>
+                    </control:BorderlessEntry>
+                </border:SfBorder>
 
+                <StackLayout Orientation="Horizontal" HorizontalOptions="CenterAndExpand" IsVisible="{Binding IsDelete}">
                     <buttons:SfButton
                     Margin="0,16,0,0"
                     Style="{StaticResource GradientButtonStyle}"
                     Text="Cập Nhật"
                     WidthRequest="200" 
                     Command="{Binding UpdateProfileCommand}"/>
+
+                    <!--  Submit Button  -->
+                    <buttons:SfButton
+                    Margin="0,16,0,0"
+                    Command="{Binding DeleteProfileCommand}"
+                    Style="{StaticResource GradientButtonStyle}"
+                    Text="XÓA"
+                    WidthRequest="60" />
                 </StackLayout>
             </StackLayout>
         </ScrollView>

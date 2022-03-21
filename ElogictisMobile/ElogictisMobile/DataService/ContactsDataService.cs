@@ -32,7 +32,6 @@ namespace ElogictisMobile.DataService
         public ManageProfilesPageViewModel ManageProfilesPageViewModel =>
             this.contactsViewModel ??
             (this.contactsViewModel = PopulateData<ManageProfilesPageViewModel>("navigation.json"));
-
         #endregion
 
         #region Methods

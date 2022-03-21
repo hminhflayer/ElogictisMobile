@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage
-    x:Class="ElogictisMobile.Views.ManageProfilesPage"
+    x:Class="ElogictisMobile.Views.ManageProductsPage"
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:behavior="clr-namespace:ElogictisMobile.Behaviors;assembly=ElogictisMobile"
@@ -11,12 +11,11 @@
     xmlns:d="http://xamarin.com/schemas/2014/forms/design"
     xmlns:data="clr-namespace:Syncfusion.DataSource;assembly=Syncfusion.DataSource.Portable"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:sfavatar="clr-namespace:Syncfusion.XForms.AvatarView;assembly=Syncfusion.Core.XForms"
-    xmlns:CI="clr-namespace:ImageCircle.Forms.Plugin.Abstractions;assembly=ImageCircle.Forms.Plugin"
+    xmlns:sfavatar="clr-namespace:Syncfusion.XForms.AvatarView;assembly=Syncfusion.Core.XForms" 
     BackgroundColor="{DynamicResource Gray-Bg}"
     NavigationPage.HasNavigationBar="True"
     NavigationPage.HasBackButton="True"
-    Title="Quản lý thành viên"
+    Title="Quản lý đơn hàng"
     mc:Ignorable="d">
 
     <ContentPage.Content>
@@ -32,30 +31,26 @@
                     Style="{StaticResource GradientButtonStyle}"
                     Text="Thêm"
                     WidthRequest="200" 
-                    Command="{Binding AddProfileCommand}"/>
-                <ListView Grid.Row="1" ItemsSource="{Binding ProfilesList}" SelectionMode="None"
+                    Command="{Binding AddProductCommand}"/>
+                <ListView Grid.Row="1" ItemsSource="{Binding ContactList}" SelectionMode="None"
                           HasUnevenRows="True" ItemTapped="ListView_ItemTapped">
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <ViewCell>
-                                <StackLayout Orientation="Horizontal"
-                                             Spacing="16" Padding="16">
-                                    <CI:CircleImage Source="DefaultImage" 
-                                                HeightRequest="45" 
-                                                WidthRequest="45"
-                                                BackgroundColor="AliceBlue" />
+                                <StackLayout Orientation="Vertical" Spacing="16" Padding="16">
                                     <StackLayout Orientation="Horizontal">
-                                        <StackLayout Orientation="Vertical">
-                                            <Label Text="{Binding Profile_Name}"
-                                           FontAttributes="Bold"
+                                        <Label Text="{Binding Product_From_FullName, StringFormat='Từ: {0}'}"
+                                               FontSize="18"
+                                               FontAttributes="Bold"/>
+                                        <Label Text="{Binding Product_From_PhoneNumber}"
                                                FontSize="18"/>
-                                            <Label Text="{Binding Profile_Email}"
-                                               FontSize="16"/>
-                                        </StackLayout>
-                                        <StackLayout IsVisible="{Binding Profile_IsDelete}">
-                                            <Label Text="ĐÃ XÓA" 
-                                                   TextColor="Red"/>
-                                        </StackLayout>
+                                    </StackLayout>
+                                    <StackLayout Orientation="Horizontal">
+                                        <Label Text="{Binding Product_To_FullName, StringFormat='Đến: {0}'}"
+                                               FontSize="18"
+                                               FontAttributes="Bold"/>
+                                        <Label Text="{Binding Product_To_PhoneNumber}"
+                                               FontSize="18"/>
                                     </StackLayout>
                                 </StackLayout>
                             </ViewCell>

@@ -8,17 +8,17 @@
     <TabbedPage.Children>
         <NavigationPage Title="Thống kê" IconImageSource="Homeicon">
             <x:Arguments>
-                <pages:StatisticalPage BindingContext="{Binding SettingsPageViewModel}" />
+                <pages:StatisticalPage BindingContext="{Binding StatisticalPageViewModel}" />
             </x:Arguments>
         </NavigationPage>
-        <NavigationPage Title="Hoạt động" IconImageSource="Historyicon">
+        <NavigationPage Title="Hoạt động" IconImageSource="Bell">
             <x:Arguments>
                 <pages:TransactionHistoryPage BindingContext="{Binding TransactionHistoryPageViewModel}" />
             </x:Arguments>
         </NavigationPage>
         <NavigationPage Title="Quản lý" IconImageSource="Historyicon">
             <x:Arguments>
-                <pages:ManageItemPage BindingContext="{Binding ManageItemPageViewModel}" />
+                <pages:ManageProductsPage BindingContext="{Binding ManageProductsPageViewModel}" />
             </x:Arguments>
         </NavigationPage>
         <NavigationPage Title="Tài khoản" IconImageSource="Usericon">

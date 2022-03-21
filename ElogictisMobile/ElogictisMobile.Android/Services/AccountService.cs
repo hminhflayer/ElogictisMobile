@@ -5,6 +5,7 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using ElogictisMobile.Droid.Services;
+using ElogictisMobile.Models;
 using ElogictisMobile.Services.Account;
 using Firebase.Auth;
 using System;
@@ -50,8 +51,11 @@ namespace ElogictisMobile.Droid.Services
         {
             try
             {
-                var user = await FirebaseAuth.Instance.SignInWithEmailAndPasswordAsync(email, password);  
+                var user = await FirebaseAuth.Instance.SignInWithEmailAndPasswordAsync(email, password);
                 var token = await user.User.GetIdTokenAsync(false);
+                LocalContext.Current.AccountSettings.ExpireToken = DateTime.Now.Add(new TimeSpan(0,0,0, 3600));
+                LocalContext.Current.AccountSettings.Token = token.Token;
+
                 return token.Token;
             }
             catch (FirebaseAuthInvalidUserException e)

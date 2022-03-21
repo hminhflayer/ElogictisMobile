@@ -1,4 +1,5 @@
-﻿using ElogictisMobile.Models;
+﻿using Akavache;
+using ElogictisMobile.Models;
 using ElogictisMobile.Services;
 using ElogictisMobile.Services.Account;
 using ElogictisMobile.Services.Navigation;
@@ -140,9 +141,11 @@ namespace ElogictisMobile.ViewModels
                     {
                         if(_accountService.CheckEmailVerified())
                         {
-                            StaticClass.Profiles = await RealtimeFirebase.Instance.GetProfiles(_accountService.GetUidLogin());
-                            if (StaticClass.Profiles.Profile_Id == _accountService.GetUidLogin())
+                            var profile = await RealtimeFirebase.Instance.GetProfiles(_accountService.GetUidLogin());
+                            if (profile.Profile_Id == _accountService.GetUidLogin())
                             {
+                                LocalContext.Profiles = profile;
+                                LocalContext.Current.AccountSettings = profile;
                                 await _navigationService.NavigateToAsync<DashboardPageViewModel>();
                             }
                             else
