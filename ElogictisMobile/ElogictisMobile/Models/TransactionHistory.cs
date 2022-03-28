@@ -8,12 +8,9 @@ namespace ElogictisMobile.Models
     /// <summary>
     /// Model for transaction history template.
     /// </summary>
-    [Preserve(AllMembers = true)]
-    [DataContract]
     public class TransactionHistory
     {
         #region Fields
-
 
         public string IdProduct { get; set; }
 

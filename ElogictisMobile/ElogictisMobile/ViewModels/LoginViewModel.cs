@@ -27,6 +27,7 @@ namespace ElogictisMobile.ViewModels
         {
             this.InitializeProperties();
             this.AddValidationRules();
+            IsLoading = false;
         }
 
         #endregion

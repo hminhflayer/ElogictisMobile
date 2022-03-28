@@ -38,23 +38,31 @@
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <ViewCell>
-                                <StackLayout Orientation="Horizontal"
+                                <StackLayout Orientation="Vertical"
                                              Spacing="16" Padding="16">
-                                    <CI:CircleImage Source="DefaultImage" 
+                                    <StackLayout Orientation="Horizontal">
+                                        <Label Text="{Binding Auth_ext}"
+                                                   FontAttributes="Bold"
+                                                   TextColor="Green"
+                                               FontSize="16"/>
+                                    </StackLayout>
+                                    <StackLayout Orientation="Horizontal">
+                                        <CI:CircleImage Source="DefaultImage" 
                                                 HeightRequest="45" 
                                                 WidthRequest="45"
                                                 BackgroundColor="AliceBlue" />
-                                    <StackLayout Orientation="Horizontal">
-                                        <StackLayout Orientation="Vertical">
-                                            <Label Text="{Binding Profile_Name}"
+                                        <StackLayout Orientation="Horizontal">
+                                            <StackLayout Orientation="Vertical">
+                                                <Label Text="{Binding Name}"
                                            FontAttributes="Bold"
                                                FontSize="18"/>
-                                            <Label Text="{Binding Profile_Email}"
+                                                <Label Text="{Binding Email}"
                                                FontSize="16"/>
-                                        </StackLayout>
-                                        <StackLayout IsVisible="{Binding Profile_IsDelete}">
-                                            <Label Text="ĐÃ XÓA" 
+                                            </StackLayout>
+                                            <StackLayout IsVisible="{Binding IsDelete}">
+                                                <Label Text="ĐÃ XÓA" 
                                                    TextColor="Red"/>
+                                            </StackLayout>
                                         </StackLayout>
                                     </StackLayout>
                                 </StackLayout>

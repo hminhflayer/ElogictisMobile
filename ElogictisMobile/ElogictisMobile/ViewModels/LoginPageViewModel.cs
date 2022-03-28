@@ -43,11 +43,14 @@ namespace ElogictisMobile.ViewModels
             this.SignUpCommand = new Command(this.SignUpClicked);
             this.ForgotPasswordCommand = new Command(this.ForgotPasswordClicked);
             this.SocialMediaLoginCommand = new Command(this.SocialLoggedIn);
+
+            IsLoading = false;
         }
 
         #endregion
 
         #region property
+
 
         /// <summary>
         /// Gets or sets the property that is bound with an entry that gets the password from user in the login page.
@@ -115,6 +118,7 @@ namespace ElogictisMobile.ViewModels
         private void InitializeProperties()
         {
             this.Password = new ValidatableObject<string>();
+            IsLoading = false;
         }
 
         /// <summary>
@@ -135,6 +139,7 @@ namespace ElogictisMobile.ViewModels
             {
                 if (this.AreFieldsValid())
                 {
+                    IsLoading = true;
                     // Do Something
                     var loginAttempt = await _accountService.LoginAsync(Email.Value, Password.Value);
                     if (loginAttempt == true)
@@ -142,21 +147,23 @@ namespace ElogictisMobile.ViewModels
                         if(_accountService.CheckEmailVerified())
                         {
                             var profile = await RealtimeFirebase.Instance.GetProfiles(_accountService.GetUidLogin());
-                            if (profile.Profile_Id == _accountService.GetUidLogin())
+                            if (profile.Id == _accountService.GetUidLogin())
                             {
+                                IsLoading = false;
                                 LocalContext.Profiles = profile;
                                 LocalContext.Current.AccountSettings = profile;
                                 await _navigationService.NavigateToAsync<DashboardPageViewModel>();
                             }
                             else
                             {
+                                IsLoading = false;
                                 await App.Current.MainPage.DisplayAlert("Thông báo", "Hệ thống không lấy được thông tin đăng nhập của bạn!", "OK");
                             }
                         }    
                         else
                         {
                             var action = await App.Current.MainPage.DisplayAlert("Thông báo", "Tài khoản của bạn chưa được xác thực\nBạn muốn nhận lại một mail xác thực khác?!", "Đúng", "Không");
-
+                            IsLoading = false;
                             if (action)
                             {
                                 await _accountService.SendEmailVerified();
@@ -166,6 +173,7 @@ namespace ElogictisMobile.ViewModels
                     }
                     else
                     {
+                        IsLoading = false;
                         await App.Current.MainPage.DisplayAlert("Lỗi đăng nhập", "Tên đăng nhập hoặc mật khẩu không đúng!", "OK");
                     }
                 }

@@ -1,10 +1,12 @@
-﻿using ElogictisMobile.Models;
+﻿using ElogictisMobile.DataService;
+using ElogictisMobile.Models;
 using ElogictisMobile.Services;
 using ElogictisMobile.Services.Navigation;
 using ElogictisMobile.Validators;
 using ElogictisMobile.Validators.Rules;
 using Newtonsoft.Json;
 using System;
+using System.Collections.ObjectModel;
 using Xamarin.Forms;
 using Xamarin.Forms.Internals;
 
@@ -33,6 +35,7 @@ namespace ElogictisMobile.ViewModels
 
         private Command<object> deleteProfileCommand;
         private INavigationService _navigationService;
+       
 
         #endregion
 
@@ -130,6 +133,10 @@ namespace ElogictisMobile.ViewModels
             }
         }
 
+        public int Auth { get; set; }
+        public bool IsAdmin { get; set; }
+
+        public ObservableCollection<Category> PermissionCollection { get; set; } = ContentData.PermissionCollection;
         #endregion
 
         #region Command
@@ -187,10 +194,12 @@ namespace ElogictisMobile.ViewModels
             this.FullName = new ValidatableObject<string>();
             this.Email = new ValidatableObject<string>();
 
-            this.FullName.Value = LocalContext.ProfileSelected.Profile_Name;
-            this.Email.Value = LocalContext.ProfileSelected.Profile_Email;
-            this.PhoneNumber = LocalContext.ProfileSelected.Profile_Phone;
-            this.IsDelete = LocalContext.ProfileSelected.Profile_IsDelete;
+            this.FullName.Value = LocalContext.ProfileSelected.Name;
+            this.Email.Value = LocalContext.ProfileSelected.Email;
+            this.PhoneNumber = LocalContext.ProfileSelected.Phone;
+            this.IsDelete = LocalContext.ProfileSelected.IsDelete;
+            this.Auth = LocalContext.ProfileSelected.Auth;
+            this.IsAdmin = !(LocalContext.Current.AccountSettings.Auth == 4);
         }
 
         /// <summary>
@@ -211,13 +220,13 @@ namespace ElogictisMobile.ViewModels
             if (this.AreNamesValid())
             {
                 Profiles profiles = LocalContext.Profiles;
-                profiles.Profile_Name = FullName.Value;
-                profiles.Profile_LastUpdateBy = LocalContext.Profiles.Profile_Email;
-                profiles.Profile_LastUpdateTime = DateTime.Now.ToString();
-                profiles.Profile_Phone = PhoneNumber;
+                profiles.Name = FullName.Value;
+                profiles.LastUpdateBy = LocalContext.Profiles.Email;
+                profiles.LastUpdateTime = DateTime.Now.ToString();
+                profiles.Phone = PhoneNumber;
 
                 // Do Something
-                await RealtimeFirebase.Instance.UpSert("Profiles", LocalContext.Profiles.Profile_Id, JsonConvert.SerializeObject(profiles));
+                await RealtimeFirebase.Instance.UpSert("Profiles", LocalContext.Profiles.Id, JsonConvert.SerializeObject(profiles));
                 await App.Current.MainPage.DisplayAlert("Thông báo", "Đã cập nhật thông tin thành viên thành công", "OK");
             }
         }
@@ -238,13 +247,13 @@ namespace ElogictisMobile.ViewModels
             if(action)
             {
                 Profiles profiles = LocalContext.Profiles;
-                profiles.Profile_IsDelete = true;
-                profiles.Profile_LastUpdateBy = LocalContext.Profiles.Profile_Email;
-                profiles.Profile_LastUpdateTime = DateTime.Now.ToString();
+                profiles.IsDelete = true;
+                profiles.LastUpdateBy = LocalContext.Profiles.Email;
+                profiles.LastUpdateTime = DateTime.Now.ToString();
 
                 // Do Something
-                await RealtimeFirebase.Instance.UpSert("Profiles", LocalContext.Profiles.Profile_Id, JsonConvert.SerializeObject(profiles));
-                //await RealtimeFirebase.Instance.Delete("Profiles", LocalContext.ProfileSelected.Profile_Id);
+                await RealtimeFirebase.Instance.UpSert("Profiles", LocalContext.Profiles.Id, JsonConvert.SerializeObject(profiles));
+                //await RealtimeFirebase.Instance.Delete("Profiles", LocalContext.ProfileSelected.Id);
                 await App.Current.MainPage.DisplayAlert("Thông báo", "Đã xóa thông tin thành viên thành công", "OK");
                 isDelete = true;
             }    

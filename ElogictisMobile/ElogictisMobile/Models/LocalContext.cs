@@ -13,8 +13,11 @@ namespace ElogictisMobile.Models
         public static Profiles Profiles { get { return Current.AccountSettings; } set { Current.AccountSettings = value; } }
         public static ObservableCollection<Profiles> ProfilesList { get; set; }
         public static ObservableCollection<Products> ProductsList { get; set; }
+        public static ObservableCollection<Category> TypeProductList { get; set; }
         public static Products ProductSelected { get; set; }
         public static Profiles ProfileSelected { get; set; }
+        public static Category CategorySelected { get; set; }
+        public static PriceList PriceListSelected { get; set; }
 
         #region Singleton
         private static LocalContext _current;
@@ -79,5 +82,6 @@ namespace ElogictisMobile.Models
             get => GetValueOrDefaultSecure(AccountSettingsKey, new Profiles());
             set => AddOrUpdateValueSecure(AccountSettingsKey, value);
         }
+
     }
 }

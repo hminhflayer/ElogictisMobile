@@ -32,7 +32,10 @@ namespace ElogictisMobile.ViewModels
         private INavigationService _navigationService;
 
         public string TypeProduct { get; set; }
-        public ObservableCollection<TypeProduct> TypeProductCollection { get; set; } = ContentData.TypeProductCollection;
+        public ObservableCollection<Category> TypeProductCollection { get; set; } = ContentData.TypeProductCollection;
+
+        public ObservableCollection<Category> WeightCollection { get; set; } = ContentData.WeightCollection;
+
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AddProductFormPageViewModel" /> class
@@ -257,8 +260,8 @@ namespace ElogictisMobile.ViewModels
             Weight.Value = 0;
             Quanlity.Value = 0;
             Money.Value = 0;
-            this.FromFullName.Value = LocalContext.Profiles.Profile_Name;
-            this.FromPhone.Value = LocalContext.Profiles.Profile_Phone;
+            this.FromFullName.Value = LocalContext.Profiles.Name;
+            this.FromPhone.Value = LocalContext.Profiles.Phone;
         }
 
         /// <summary>
@@ -307,40 +310,45 @@ namespace ElogictisMobile.ViewModels
             if (this.AreFieldsValid())
             {
                 var key = GeneralKey.Instance.General("PRO");
-                // Do Something
-                await RealtimeFirebase.Instance.UpSert("Products", key, JsonConvert.SerializeObject(new Products
-                {
-                    Product_CreateBy = LocalContext.Profiles.Profile_Email,
-                    Product_CreateTime = DateTime.Now.ToShortDateString(),
-                    Product_Description = Desciption.Value,
-                    Product_From_Address = FromAddress.Value,
-                    Product_From_FullName = FromFullName.Value,
-                    Product_From_PhoneNumber = FromPhone.Value,
-                    Product_ID = key,
-                    Product_IsDelete = false,
-                    Product_LastUpdateBy = "",
-                    Product_LastUpdateTime = "",
-                    Product_Money = Money.Value.ToString(),
-                    Product_Quanlity = Quanlity.Value.ToString(),
-                    Product_To_Address = ToAddress.Value,
-                    Product_To_FullName = ToFullName.Value,
-                    Product_To_PhoneNumber = ToPhone.Value,
-                    Product_Type = TypeProduct,
-                    Product_Weight = Weight.Value.ToString(),
-                    Product_Status = 1,
-                    Product_Holder = ""
-                }));
-
                 var keyNoti = GeneralKey.Instance.General("NOTI");
-                await RealtimeFirebase.Instance.UpSert("Notifications", keyNoti, JsonConvert.SerializeObject(new TransactionHistory
+                // Do Something
+                var task = await RealtimeFirebase.Instance.UpSert("Products", key, JsonConvert.SerializeObject(new Products
                 {
-                    IdProduct = key,
-                    TransactionDescription = "CHỜ XÁC NHẬN",
-                    Time = DateTime.Now.ToShortDateString(),
-                    Email = LocalContext.Profiles.Profile_Email
+                    CreateBy = LocalContext.Profiles.Email,
+                    CreateTime = DateTime.Now.ToShortDateString(),
+                    Description = Desciption.Value,
+                    From_Address = FromAddress.Value,
+                    From_FullName = FromFullName.Value,
+                    From_PhoneNumber = FromPhone.Value,
+                    ID = key,
+                    IsDelete = false,
+                    LastUpdateBy = "",
+                    LastUpdateTime = "",
+                    Money = Money.Value.ToString(),
+                    Quanlity = Quanlity.Value.ToString(),
+                    To_Address = ToAddress.Value,
+                    To_FullName = ToFullName.Value,
+                    To_PhoneNumber = ToPhone.Value,
+                    Type = TypeProduct,
+                    Weight = Weight.Value.ToString(),
+                    Status = 1,
+                    Holder = ""
                 }));
-                await App.Current.MainPage.DisplayAlert("Thông báo", "Thêm đơn hàng thành công!", "OK");
-                await _navigationService.GoBackAsync();
+                if(task)
+                {
+                    await RealtimeFirebase.Instance.UpSert("Notifications", keyNoti, JsonConvert.SerializeObject(new TransactionHistory
+                    {
+                        IdProduct = key,
+                        TransactionDescription = "CHỜ XÁC NHẬN",
+                        Time = DateTime.Now.ToShortDateString(),
+                        Email = LocalContext.Profiles.Email
+                    }));
+                    await App.Current.MainPage.DisplayAlert("Thông báo", "Thêm đơn hàng thành công!", "OK");
+                }  
+                else
+                {
+                    await App.Current.MainPage.DisplayAlert("Thông báo", "Thêm đơn hàng không thành công!", "OK");
+                }    
             }
         }
 

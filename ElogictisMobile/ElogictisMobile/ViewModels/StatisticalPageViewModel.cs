@@ -1,4 +1,5 @@
 ﻿using ElogictisMobile.Models;
+using ElogictisMobile.Services;
 using System;
 using System.Collections.ObjectModel;
 using Xamarin.Forms;
@@ -24,26 +25,6 @@ namespace ElogictisMobile.ViewModels
         /// </summary>
         private ObservableCollection<HealthCare> healthCareListItems;
 
-        /// <summary>
-        /// To store the heart rate data collection.
-        /// </summary>
-        private ObservableCollection<ChartModel> heartRateData;
-
-        /// <summary>
-        /// To store the calories burned data collection.
-        /// </summary>
-        private ObservableCollection<ChartModel> caloriesBurnedData;
-
-        /// <summary>
-        /// To store the sleep time data collection.
-        /// </summary>
-        private ObservableCollection<ChartModel> sleepTimeData;
-
-        /// <summary>
-        /// To store the water consumed data collection.
-        /// </summary>
-        private ObservableCollection<ChartModel> waterConsumedData;
-
         #endregion
 
         #region Constructor
@@ -53,38 +34,33 @@ namespace ElogictisMobile.ViewModels
         /// </summary>
         public StatisticalPageViewModel()
         {
-            this.GetChartData();
             this.healthCareCardItems = new ObservableCollection<HealthCare>()
             {
                 new HealthCare()
                 {
                     Category = "CHỜ XÁC NHẬN",
-                    CategoryValue = "0 đơn",
-                    ChartData = this.heartRateData,
+                    CategoryValue = 0 +" đơn",
                     BackgroundGradientStart = "#f59083",
                     BackgroundGradientEnd = "#fae188",
                 },
                 new HealthCare()
                 {
                     Category = "ĐANG GIAO HÀNG",
-                    CategoryValue = "0 đơn",
-                    ChartData = this.caloriesBurnedData,
+                    CategoryValue = 0 +" đơn",
                     BackgroundGradientStart = "#ff7272",
                     BackgroundGradientEnd = "#f650c5",
                 },
                 new HealthCare()
                 {
                     Category = "GIAO THÀNH CÔNG",
-                    CategoryValue = "0 đơn",
-                    ChartData = this.sleepTimeData,
+                    CategoryValue = 0 +" đơn",
                     BackgroundGradientStart = "#5e7cea",
                     BackgroundGradientEnd = "#1dcce3",
                 },
                 new HealthCare()
                 {
                     Category = "ĐÃ HỦY",
-                    CategoryValue = "0 đơn",
-                    ChartData = this.waterConsumedData,
+                    CategoryValue = 0 +" đơn",
                     BackgroundGradientStart = "#255ea6",
                     BackgroundGradientEnd = "#b350d1",
                 },
@@ -96,21 +72,18 @@ namespace ElogictisMobile.ViewModels
                 {
                     Category = "Tổng chi phí thu hộ (COD)",
                     CategoryValue = "0 VNĐ",
-                    CategoryPercentage = "30%",
                     BackgroundGradientStart = "#cf86ff",
                 },
                 new HealthCare()
                 {
                     Category = "Tổng chi phí vận chuyển",
                     CategoryValue = "0 VNĐ",
-                    CategoryPercentage = "50%",
                     BackgroundGradientStart = "#8691ff",
                 },
                 new HealthCare()
                 {
                     Category = "Tổng chi phí vận chuyển trong tháng",
                     CategoryValue = "0 VNĐ",
-                    CategoryPercentage = "60%",
                     BackgroundGradientStart = "#ff9686",
                 },
             };
@@ -178,59 +151,6 @@ namespace ElogictisMobile.ViewModels
         #endregion
 
         #region Methods
-
-        /// <summary>
-        /// Chart Data Collection
-        /// </summary>
-        private void GetChartData()
-        {
-            DateTime dateTime = new DateTime(2019, 5, 1);
-
-            this.heartRateData = new ObservableCollection<ChartModel>()
-            {
-                new ChartModel(dateTime, 15),
-                new ChartModel(dateTime.AddMonths(1), 20),
-                new ChartModel(dateTime.AddMonths(2), 17),
-                new ChartModel(dateTime.AddMonths(3), 23),
-                new ChartModel(dateTime.AddMonths(4), 18),
-                new ChartModel(dateTime.AddMonths(5), 25),
-                new ChartModel(dateTime.AddMonths(6), 19),
-                new ChartModel(dateTime.AddMonths(7), 21),
-            };
-
-            this.caloriesBurnedData = new ObservableCollection<ChartModel>()
-            {
-                new ChartModel(dateTime, 940),
-                new ChartModel(dateTime.AddMonths(1), 960),
-                new ChartModel(dateTime.AddMonths(2), 942),
-                new ChartModel(dateTime.AddMonths(3), 957),
-                new ChartModel(dateTime.AddMonths(4), 940),
-                new ChartModel(dateTime.AddMonths(5), 942),
-            };
-
-            this.sleepTimeData = new ObservableCollection<ChartModel>()
-            {
-                new ChartModel(dateTime, 7.8),
-                new ChartModel(dateTime.AddMonths(1), 7.2),
-                new ChartModel(dateTime.AddMonths(2), 8.0),
-                new ChartModel(dateTime.AddMonths(3), 6.8),
-                new ChartModel(dateTime.AddMonths(4), 7.6),
-                new ChartModel(dateTime.AddMonths(5), 7.0),
-                new ChartModel(dateTime.AddMonths(6), 7.5),
-            };
-
-            this.waterConsumedData = new ObservableCollection<ChartModel>()
-            {
-                new ChartModel(dateTime, 36),
-                new ChartModel(dateTime.AddMonths(1), 41),
-                new ChartModel(dateTime.AddMonths(2), 38),
-                new ChartModel(dateTime.AddMonths(3), 41),
-                new ChartModel(dateTime.AddMonths(4), 35),
-                new ChartModel(dateTime.AddMonths(5), 37),
-                new ChartModel(dateTime.AddMonths(6), 38),
-                new ChartModel(dateTime.AddMonths(7), 36),
-            };
-        }
 
         /// <summary>
         /// Invoked when the menu button is clicked

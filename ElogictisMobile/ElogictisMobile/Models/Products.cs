@@ -6,32 +6,31 @@ namespace ElogictisMobile.Models
 {
     public class Products
     {
-        public string Product_ID { get; set; }
-        public string Product_From_FullName { get; set; }
-        public string Product_From_PhoneNumber { get; set; }
-        public string Product_From_Address { get; set; }
-        public string Product_To_FullName { get; set; }
-        public string Product_To_PhoneNumber { get; set; }
-        public string Product_To_Address { get; set; }
-        public string Product_Weight { get; set; }
-        public string Product_Quanlity { get; set; }
-        public string Product_Money { get; set; }
-        public string Product_Type { get; set; }
-        public string Product_Description { get; set; }
-        public string Product_CreateTime { get; set; }
-        public string Product_CreateBy { get; set; }
-        public string Product_LastUpdateTime { get; set; }
-        public string Product_LastUpdateBy { get; set; }
-        public bool Product_IsDelete { get; set; }
+        public string ID { get; set; }
+        public string From_FullName { get; set; }
+        public string From_PhoneNumber { get; set; }
+        public string From_Address { get; set; }
+        public string To_FullName { get; set; }
+        public string To_PhoneNumber { get; set; }
+        public string To_Address { get; set; }
+        public string Weight { get; set; }
+        public string Quanlity { get; set; }
+        public string Money { get; set; }
+        public string Type { get; set; }
+        public string Description { get; set; }
+        public string CreateTime { get; set; }
+        public string CreateBy { get; set; }
+        public string LastUpdateTime { get; set; }
+        public string LastUpdateBy { get; set; }
+        public bool IsDelete { get; set; }
         /*
          *STATUS:
          *1:Wait for confirmation
-         *2:Taking
-         *3:In store
-         *4:Delivering
-         *5:Delivered
+         *2:Delivering
+         *3:Delivered Success
+         *4:Cancel
          */
-        public int Product_Status { get; set; }
-        public string Product_Holder { get; set; }
+        public int Status { get; set; }
+        public string Holder { get; set; }
     }
 }

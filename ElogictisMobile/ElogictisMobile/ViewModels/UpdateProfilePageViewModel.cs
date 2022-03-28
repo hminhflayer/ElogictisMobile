@@ -153,9 +153,9 @@ namespace ElogictisMobile.ViewModels
             this.FullName = new ValidatableObject<string>();
             this.Email = new ValidatableObject<string>();
 
-            this.FullName.Value = LocalContext.Profiles.Profile_Name;
-            this.Email.Value = LocalContext.Profiles.Profile_Email;
-            this.PhoneNumber = LocalContext.Profiles.Profile_Phone;
+            this.FullName.Value = LocalContext.Current.AccountSettings.Name;
+            this.Email.Value = LocalContext.Current.AccountSettings.Email;
+            this.PhoneNumber = LocalContext.Current.AccountSettings.Phone;
         }
 
         /// <summary>
@@ -175,15 +175,17 @@ namespace ElogictisMobile.ViewModels
         {
             if (this.AreNamesValid())
             {
-                Profiles profiles = LocalContext.Profiles;
-                profiles.Profile_Name = FullName.Value;
-                profiles.Profile_LastUpdateBy = LocalContext.Profiles.Profile_Email;
-                profiles.Profile_LastUpdateTime = DateTime.Now.ToString();
-                profiles.Profile_Phone = PhoneNumber;
+                Profiles profiles = LocalContext.Current.AccountSettings;
+                profiles.Name = FullName.Value;
+                profiles.LastUpdateBy = LocalContext.Profiles.Email;
+                profiles.LastUpdateTime = DateTime.Now.ToString();
+                profiles.Phone = PhoneNumber;
 
                 // Do Something
-                await RealtimeFirebase.Instance.UpSert("Profiles", LocalContext.Profiles.Profile_Id, JsonConvert.SerializeObject(profiles));
+                await RealtimeFirebase.Instance.UpSert("Profiles", LocalContext.Profiles.Id, JsonConvert.SerializeObject(profiles));
                 await App.Current.MainPage.DisplayAlert("Thông báo", "Đã cập nhật thông tin tài khoản thành công", "OK");
+
+                LocalContext.Current.AccountSettings = profiles;
             }
         }
 

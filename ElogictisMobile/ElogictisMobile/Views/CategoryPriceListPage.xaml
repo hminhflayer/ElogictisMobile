@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="ElogictisMobile.Views.CategoryPriceListPage"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:buttons="clr-namespace:Syncfusion.XForms.Buttons;assembly=Syncfusion.Buttons.XForms"
+    xmlns:converter="clr-namespace:ElogictisMobile.Converters"
+    xmlns:core="clr-namespace:Syncfusion.XForms.Core;assembly=Syncfusion.Core.XForms"
+    xmlns:local="clr-namespace:ElogictisMobile.Views"
+    xmlns:viewModel="clr-namespace:ElogictisMobile.ViewModels"
+    BackgroundColor="{DynamicResource Gray-200}"
+    Title="Danh mục bảng giá"
+    NavigationPage.HasNavigationBar="True"
+    NavigationPage.HasBackButton="True">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converter:BooleanToColorConverter x:Key="ColorConverter" />
+            <converter:InverseBoolConverter x:Key="InverseBoolConverter" />
+            <converter:NameValidationConverter x:Key="FirstValidationErrorConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+
+    <ContentPage.Content>
+        <ScrollView>
+            <Grid
+            ColumnSpacing="0"
+            RowDefinitions="Auto, Auto, *"
+            RowSpacing="0">
+
+                <buttons:SfButton
+                    Margin="0,16,0,16"
+                    Style="{StaticResource GradientButtonStyle}"
+                    WidthRequest="200" 
+                    Text="Thêm"
+                    Command="{Binding AddPriceListCommand}"/>
+                <ListView Grid.Row="1" ItemsSource="{Binding PricesList}" SelectionMode="None"
+                          HasUnevenRows="True">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <ViewCell>
+                                <StackLayout Orientation="Vertical" Spacing="16" Padding="16">
+                                    <StackLayout Orientation="Horizontal">
+                                        <Label Text="{Binding From_Kilimeter}"
+                                               FontSize="18"/>
+                                        <Label Text="{Binding To_Kilimeter}"
+                                               FontSize="18"
+                                               FontAttributes="Bold"/>
+                                    </StackLayout>
+                                </StackLayout>
+                            </ViewCell>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </Grid>
+        </ScrollView>
+    </ContentPage.Content>
+
+</ContentPage>

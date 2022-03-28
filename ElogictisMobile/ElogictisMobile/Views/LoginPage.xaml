@@ -10,7 +10,8 @@
     xmlns:converter="clr-namespace:ElogictisMobile.Converters"
     xmlns:core="clr-namespace:Syncfusion.XForms.Core;assembly=Syncfusion.Core.XForms"
     xmlns:local="clr-namespace:ElogictisMobile.Views"
-    xmlns:viewModel="clr-namespace:ElogictisMobile.ViewModels"
+    xmlns:viewModel="clr-namespace:ElogictisMobile.ViewModels" 
+    xmlns:busyindicator="clr-namespace:Syncfusion.SfBusyIndicator.XForms;assembly=Syncfusion.SfBusyIndicator.XForms"
     BackgroundColor="{DynamicResource Gray-200}"
     NavigationPage.HasBackButton="False"
     NavigationPage.HasNavigationBar="False">
@@ -30,6 +31,10 @@
 
     <ContentPage.Content>
         <Grid>
+            <!--<ActivityIndicator IsRunning="{Binding IsLoading}"
+                           IsVisible="{Binding IsLoading}"
+                               />-->
+            
             <ScrollView HorizontalOptions="Center">
                 <ScrollView.VerticalOptions>
                     <OnIdiom
@@ -185,7 +190,15 @@
 
                 </StackLayout>
             </ScrollView>
+            <busyindicator:SfBusyIndicator 
+                                       AnimationType="Cupertino" 
+                                       ViewBoxWidth = "150" 
+                                       ViewBoxHeight="150" 
+                                       Title="Đang đăng nhập..."
+                                       TextColor="Blue"
+                                       IsVisible="{Binding IsLoading}"/>
         </Grid>
+        
     </ContentPage.Content>
 
 </ContentPage>

@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="ElogictisMobile.Views.AddCategoryPriceListPage"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:behaviour="clr-namespace:ElogictisMobile.Behaviors"
+    xmlns:border="clr-namespace:Syncfusion.XForms.Border;assembly=Syncfusion.Core.XForms"
+    xmlns:buttons="clr-namespace:Syncfusion.XForms.Buttons;assembly=Syncfusion.Buttons.XForms"
+    xmlns:control="clr-namespace:ElogictisMobile.Controls"
+    xmlns:converter="clr-namespace:ElogictisMobile.Converters"
+    xmlns:core="clr-namespace:Syncfusion.XForms.Core;assembly=Syncfusion.Core.XForms"
+    xmlns:local="clr-namespace:ElogictisMobile.Views"
+    xmlns:viewModel="clr-namespace:ElogictisMobile.ViewModels" 
+    xmlns:busyindicator="clr-namespace:Syncfusion.SfBusyIndicator.XForms;assembly=Syncfusion.SfBusyIndicator.XForms"
+    BackgroundColor="{DynamicResource Gray-200}"
+    NavigationPage.HasNavigationBar="False">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converter:BooleanToColorConverter x:Key="ColorConverter" />
+            <converter:InverseBoolConverter x:Key="InverseBoolConverter" />
+            <converter:NameValidationConverter x:Key="FirstValidationErrorConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    
+    <ContentPage.Content>
+        <ScrollView>
+            <StackLayout>
+                <StackLayout Padding="16" Spacing="16">
+                    <StackLayout>
+                        <!--  Name entry with border  -->
+                        <border:SfBorder BorderColor="{Binding Source={x:Reference NameEntry}, Path=IsFocused, Converter={StaticResource ColorConverter}, ConverterParameter=3}" Style="{StaticResource DataFormBorderlessEntryBorderStyle}"
+                                 Padding="12,8" Margin="0,8,0,0" VerticalOptions="Start">
+                            <Grid ColumnDefinitions="*, Auto">
+
+                                <control:BorderlessEntry
+                        x:Name="NameEntry"
+                        Placeholder="Tên loại hàng"
+                        Style="{StaticResource BorderlessEntryStyle}" 
+                        Text="{Binding Name.Value}">
+                                    <Entry.Behaviors>
+                                        <behaviour:EntryLineValidationBehaviour IsValid="{Binding Name.IsValid}"/>
+                                    </Entry.Behaviors>
+                                </control:BorderlessEntry>
+
+                                <!--  Label to display error icon  -->
+                                <Label Grid.Column="1" Style="{StaticResource ErrorIconLabelStyle}" Margin="0"
+                                   IsVisible="{Binding Path=IsVisible, Source={x:Reference NameValidationLabel}}"
+                                   Text="{StaticResource Error}"/>
+                            </Grid>
+                        </border:SfBorder>
+
+                        <!--  Label to display error message  -->
+                        <Label x:Name="NameValidationLabel" Margin="15,-3,0,0" VerticalOptions="FillAndExpand"
+                           Text="{Binding Name.Errors, Converter={StaticResource FirstValidationErrorConverter}}"
+                           IsVisible="{Binding Name.IsValid, Converter={StaticResource InverseBoolConverter}}"
+                           Style="{StaticResource SimpleLabelStyle}" TextColor="{DynamicResource Red}"/>
+                    </StackLayout>
+
+                    <buttons:SfButton
+                    Margin="0,16,0,0"
+                    Style="{StaticResource GradientButtonStyle}"
+                    Text="Cập Nhật"
+                    WidthRequest="200" 
+                    Command="{Binding AddCategoryTypeProductCommand}"/>
+                </StackLayout>
+                <busyindicator:SfBusyIndicator 
+                                       AnimationType="Cupertino" 
+                                       ViewBoxWidth = "150" 
+                                       ViewBoxHeight="150" 
+                                       Title="Đang thêm dữ liệu..."
+                                       TextColor="Blue"
+                                       IsVisible="{Binding Isloading}"
+                                       IsBusy="{Binding Isloading}"/>
+            </StackLayout>
+        </ScrollView>
+    </ContentPage.Content>
+
+</ContentPage>

@@ -254,8 +254,8 @@ namespace ElogictisMobile.ViewModels
             Weight.Value = 0;
             Quanlity.Value = 0;
             Money.Value = 0;
-            this.FromFullName.Value = LocalContext.Profiles.Profile_Name;
-            this.FromPhone.Value = LocalContext.Profiles.Profile_Phone;
+            this.FromFullName.Value = LocalContext.Profiles.Name;
+            this.FromPhone.Value = LocalContext.Profiles.Phone;
         }
 
         /// <summary>
@@ -307,25 +307,25 @@ namespace ElogictisMobile.ViewModels
                 // Do Something
                 await RealtimeFirebase.Instance.UpSert("Products", key, JsonConvert.SerializeObject(new Products
                 {
-                    Product_CreateBy = LocalContext.Profiles.Profile_Email,
-                    Product_CreateTime = DateTime.Now.ToShortDateString(),
-                    Product_Description = Desciption.Value,
-                    Product_From_Address = FromAddress.Value,
-                    Product_From_FullName = FromFullName.Value,
-                    Product_From_PhoneNumber = FromPhone.Value,
-                    Product_ID = key,
-                    Product_IsDelete = false,
-                    Product_LastUpdateBy = "",
-                    Product_LastUpdateTime = "",
-                    Product_Money = Money.Value.ToString(),
-                    Product_Quanlity = Quanlity.Value.ToString(),
-                    Product_To_Address = ToAddress.Value,
-                    Product_To_FullName = ToFullName.Value,
-                    Product_To_PhoneNumber = ToPhone.Value,
-                    Product_Type = TypeProduct,
-                    Product_Weight = Weight.Value.ToString(),
-                    Product_Status = 1,
-                    Product_Holder = ""
+                    CreateBy = LocalContext.Profiles.Email,
+                    CreateTime = DateTime.Now.ToShortDateString(),
+                    Description = Desciption.Value,
+                    From_Address = FromAddress.Value,
+                    From_FullName = FromFullName.Value,
+                    From_PhoneNumber = FromPhone.Value,
+                    ID = key,
+                    IsDelete = false,
+                    LastUpdateBy = "",
+                    LastUpdateTime = "",
+                    Money = Money.Value.ToString(),
+                    Quanlity = Quanlity.Value.ToString(),
+                    To_Address = ToAddress.Value,
+                    To_FullName = ToFullName.Value,
+                    To_PhoneNumber = ToPhone.Value,
+                    Type = TypeProduct,
+                    Weight = Weight.Value.ToString(),
+                    Status = 1,
+                    Holder = ""
                 }));
                 await App.Current.MainPage.DisplayAlert("Thông báo", "Thêm đơn hàng thành công!", "OK");
                 await _navigationService.GoBackAsync();

@@ -11,7 +11,7 @@
                 <pages:StatisticalPage BindingContext="{Binding StatisticalPageViewModel}" />
             </x:Arguments>
         </NavigationPage>
-        <NavigationPage Title="Hoạt động" IconImageSource="Bell">
+        <NavigationPage Title="Thông báo" IconImageSource="Bell">
             <x:Arguments>
                 <pages:TransactionHistoryPage BindingContext="{Binding TransactionHistoryPageViewModel}" />
             </x:Arguments>

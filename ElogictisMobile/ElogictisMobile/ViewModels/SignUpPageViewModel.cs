@@ -167,18 +167,19 @@ namespace ElogictisMobile.ViewModels
                     {
                         Profiles profiles = new Profiles()
                         {
-                            Profile_CreateBy = Email.Value,
-                            Profile_CreateTime = DateTime.Now.ToShortDateString(),
-                            Profile_Email = Email.Value,
-                            Profile_Name = Name.Value,
-                            Profile_Id = loginAttempt,
-                            Profile_IsDelete = false,
-                            Profile_Address = "",
-                            Profile_LastUpdateBy = "",
-                            Profile_LastUpdateTime = "",
-                            Profile_Phone = "",
-                            Profile_Auth = 1,
-                            Profile_Identity = ""
+                            CreateBy = Email.Value,
+                            CreateTime = DateTime.Now.ToShortDateString(),
+                            Email = Email.Value,
+                            Name = Name.Value,
+                            Id = loginAttempt,
+                            IsDelete = false,
+                            Address = "",
+                            LastUpdateBy = "",
+                            LastUpdateTime = "",
+                            Phone = "",
+                            Auth = 1,
+                            Auth_ext = "Người dùng bình thường",
+                            Identity = ""
                         };
                         await RealtimeFirebase.Instance.UpSert("Profiles", loginAttempt, JsonConvert.SerializeObject(profiles)); 
                         await _navigationService.NavigateToAsync<AlertSignUpPageViewModel>();

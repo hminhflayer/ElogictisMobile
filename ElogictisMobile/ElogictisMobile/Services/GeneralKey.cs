@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
+using Xamarin.Forms;
 
 namespace ElogictisMobile.Services
 {
@@ -27,6 +29,12 @@ namespace ElogictisMobile.Services
                 return key + time;
             }
             return "";
+        }
+
+        public ImageSource GetImageSource(string base64 = null)
+        {
+            byte[] Base64Stream = Convert.FromBase64String(base64);
+            return ImageSource.FromStream(() => new MemoryStream(Base64Stream));
         }
     }
 }

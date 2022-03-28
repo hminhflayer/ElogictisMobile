@@ -46,9 +46,12 @@
     <PackageReference Include="Syncfusion.Xamarin.Cards" Version="19.4.0.54" />
     <PackageReference Include="Syncfusion.Xamarin.Core" Version="19.4.0.54" />
     <PackageReference Include="Syncfusion.Xamarin.DataSource" Version="19.4.0.54" />
+    <PackageReference Include="Syncfusion.Xamarin.SfBadgeView" Version="19.4.0.54" />
+    <PackageReference Include="Syncfusion.Xamarin.SfBusyIndicator" Version="19.4.0.54" />
     <PackageReference Include="Syncfusion.Xamarin.SfChart" Version="19.4.0.54" />
     <PackageReference Include="Syncfusion.Xamarin.SfComboBox" Version="19.4.0.54" />
     <PackageReference Include="Syncfusion.Xamarin.SfListView" Version="19.4.0.54" />
+    <PackageReference Include="Syncfusion.Xamarin.SfPicker" Version="19.4.0.54" />
     <PackageReference Include="Syncfusion.Xamarin.SfRating" Version="19.4.0.54" />
     <PackageReference Include="Xam.Plugins.Forms.ImageCircle" Version="3.0.0.5" />
     <PackageReference Include="Xamarin.Forms" Version="5.0.0.2196" />
@@ -116,6 +119,12 @@
     <EmbeddedResource Update="Themes\LightTheme.xaml">
       <Generator>MSBuild:Compile</Generator>
     </EmbeddedResource>
+    <EmbeddedResource Update="Views\AddCategoryPriceListPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\AddCategoryTypeProductPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </EmbeddedResource>
     <EmbeddedResource Update="Views\AddProductFormPage.xaml">
       <Generator>MSBuild:Compile</Generator>
     </EmbeddedResource>
@@ -125,8 +134,17 @@
     <EmbeddedResource Update="Views\AlertSignUpPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
+    <EmbeddedResource Update="Views\CategoryPriceListPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\CategoryTypeProductPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </EmbeddedResource>
     <EmbeddedResource Update="Views\DashboardPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\DetailCategoryTypeProductPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Views\DetailProductFormPage.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -162,6 +180,9 @@
       <Generator>MSBuild:Compile</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Views\StatisticalPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\Templates\ProductListTemplate.xaml">
       <Generator>MSBuild:Compile</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Views\TransactionHistoryPage.xaml">

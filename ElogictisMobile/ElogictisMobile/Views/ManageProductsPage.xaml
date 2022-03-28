@@ -29,9 +29,11 @@
                 <buttons:SfButton
                     Margin="0,16,0,16"
                     Style="{StaticResource GradientButtonStyle}"
-                    Text="Thêm"
                     WidthRequest="200" 
+                    Text="Thêm"
                     Command="{Binding AddProductCommand}"/>
+                <!--<SearchBar x:Name="filterText" HeightRequest="40"
+                   Placeholder="Search here to filter" Grid.Row="0"/>-->
                 <ListView Grid.Row="1" ItemsSource="{Binding ContactList}" SelectionMode="None"
                           HasUnevenRows="True" ItemTapped="ListView_ItemTapped">
                     <ListView.ItemTemplate>
@@ -39,17 +41,17 @@
                             <ViewCell>
                                 <StackLayout Orientation="Vertical" Spacing="16" Padding="16">
                                     <StackLayout Orientation="Horizontal">
-                                        <Label Text="{Binding Product_From_FullName, StringFormat='Từ: {0}'}"
+                                        <Label Text="{Binding From_FullName, StringFormat='Từ: {0}'}"
                                                FontSize="18"
                                                FontAttributes="Bold"/>
-                                        <Label Text="{Binding Product_From_PhoneNumber}"
+                                        <Label Text="{Binding From_PhoneNumber}"
                                                FontSize="18"/>
                                     </StackLayout>
                                     <StackLayout Orientation="Horizontal">
-                                        <Label Text="{Binding Product_To_FullName, StringFormat='Đến: {0}'}"
+                                        <Label Text="{Binding To_FullName, StringFormat='Đến: {0}'}"
                                                FontSize="18"
                                                FontAttributes="Bold"/>
-                                        <Label Text="{Binding Product_To_PhoneNumber}"
+                                        <Label Text="{Binding To_PhoneNumber}"
                                                FontSize="18"/>
                                     </StackLayout>
                                 </StackLayout>

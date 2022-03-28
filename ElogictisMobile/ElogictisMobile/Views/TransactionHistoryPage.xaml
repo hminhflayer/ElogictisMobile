@@ -14,7 +14,6 @@
     NavigationPage.HasNavigationBar="True">
 
     <ContentPage.Content>
-
         <ScrollView>
             <Grid
             ColumnSpacing="0"

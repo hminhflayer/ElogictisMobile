@@ -1,0 +1,56 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="ElogictisMobile.Views.CategoryTypeProductPage"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:behavior="clr-namespace:ElogictisMobile.Behaviors;assembly=ElogictisMobile"
+    xmlns:behaviors="clr-namespace:ElogictisMobile.Behaviors"
+    xmlns:border="clr-namespace:Syncfusion.XForms.Border;assembly=Syncfusion.Core.XForms"
+    xmlns:buttons="clr-namespace:Syncfusion.XForms.Buttons;assembly=Syncfusion.Buttons.XForms"
+    xmlns:controls="clr-namespace:ElogictisMobile.Controls"
+    xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+    xmlns:data="clr-namespace:Syncfusion.DataSource;assembly=Syncfusion.DataSource.Portable"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:sfavatar="clr-namespace:Syncfusion.XForms.AvatarView;assembly=Syncfusion.Core.XForms" 
+    BackgroundColor="{DynamicResource Gray-Bg}"
+    NavigationPage.HasNavigationBar="True"
+    NavigationPage.HasBackButton="True"
+    Title="Danh mục loại hàng"
+    mc:Ignorable="d">
+
+    <ContentPage.Content>
+
+        <ScrollView>
+            <Grid
+            ColumnSpacing="0"
+            RowDefinitions="Auto, Auto, *"
+            RowSpacing="0">
+
+                <buttons:SfButton
+                    Margin="0,16,0,16"
+                    Style="{StaticResource GradientButtonStyle}"
+                    WidthRequest="200" 
+                    Text="Thêm"
+                    Command="{Binding AddTypeProductCommand}"/>
+                <ListView Grid.Row="1" ItemsSource="{Binding TypeProductList}" SelectionMode="None"
+                          HasUnevenRows="True" ItemTapped="ListView_ItemTapped">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <ViewCell>
+                                <StackLayout Orientation="Vertical" Spacing="16" Padding="16">
+                                    <StackLayout Orientation="Vertical">
+                                        <Label Text="{Binding Id}"
+                                               FontSize="18"/>
+                                        <Label Text="{Binding Name}"
+                                               FontSize="18"
+                                               FontAttributes="Bold"/>
+                                    </StackLayout>
+                                </StackLayout>
+                            </ViewCell>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </Grid>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>

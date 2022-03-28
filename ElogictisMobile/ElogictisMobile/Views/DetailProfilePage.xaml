@@ -58,7 +58,7 @@
                         <sfavatar:SfAvatarView.ImageSource>
                             <FontImageSource
                                     FontFamily="FontIcons"
-                                    Glyph="{StaticResource Contact}"
+                                    Glyph="https://i.pinimg.com/236x/0d/0c/6e/0d0c6e4e3bf2647e0fba35a0905d8484.jpg"
                                     Size="29"
                                     Color="{DynamicResource Gray-600}" />
                         </sfavatar:SfAvatarView.ImageSource>
@@ -156,6 +156,18 @@
                         </control:BorderlessEntry.Behaviors>
                     </control:BorderlessEntry>
                 </border:SfBorder>
+                
+                <!--  Auth  -->
+                <combobox:SfComboBox HeightRequest="40" 
+                                         x:Name="comboBox" 
+                                         DataSource="{Binding PermissionCollection}" 
+                                         DisplayMemberPath="Name" 
+                                         SelectedValuePath="Id"
+                                         SelectedIndex="1"
+                                         SelectedValue="{Binding Auth}"
+                                     IsVisible="{Binding IsAdmin}"
+                                     IsEditableMode="False"
+                                     ShowClearButton="False"/>
 
                 <StackLayout Orientation="Horizontal" HorizontalOptions="CenterAndExpand" IsVisible="{Binding IsDelete}">
                     <buttons:SfButton

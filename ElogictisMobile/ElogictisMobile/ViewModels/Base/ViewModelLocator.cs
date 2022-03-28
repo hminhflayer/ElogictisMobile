@@ -32,15 +32,21 @@ namespace ElogictisMobile.ViewModels.Base
             Register<TransactionHistoryPageViewModel, TransactionHistoryPage>();
             Register<SettingsPageViewModel, SettingsPage>();
             Register<AlertSignUpPageViewModel, AlertSignUpPage>();
+
             Register<AddProductFormPageViewModel, AddProductFormPage>();
+            Register<AddCategoryTypeProductPageViewModel, AddCategoryTypeProductPage>();
+            Register<AddCategoryPriceListPageViewModel, AddCategoryPriceListPage>();
 
             Register<UpdateProfilePageViewModel, UpdateProfilePage>();
 
             Register<ManageProfilesPageViewModel, ManageProfilesPage>();
             Register<ManageProductsPageViewModel, ManageProductsPage>();
+            Register<CategoryTypeProductPageViewModel, CategoryTypeProductPage>();
+            Register<CategoryPriceListPageViewModel, CategoryPriceListPage>();
 
             Register<DetailProfilePageViewModel, DetailProfilePage>();
             Register<DetailProductFormPageViewModel, DetailProductFormPage>();
+            Register<DetailCategoryTypeProductPageViewModel, DetailCategoryTypeProductPage>();
 
 
             // Register Services (registered as Singletons by default)

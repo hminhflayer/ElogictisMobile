@@ -325,7 +325,8 @@
                     ColumnSpacing="0"
                     Command="{Binding TermsCommand}"
                     RowSpacing="0"
-                    Tapped="False">
+                    Tapped="False"
+                    IsVisible="False">
 
                     <!--Terms of service icon-->
                     <Label
@@ -358,7 +359,8 @@
                     ColumnSpacing="0"
                     Command="{Binding PolicyCommand}"
                     RowSpacing="0"
-                    Tapped="False">
+                    Tapped="False"
+                    IsVisible="False">
 
                     <!--Privacy policy icon-->
                     <Label
@@ -391,7 +393,8 @@
                     ColumnSpacing="0"
                     Command="{Binding FAQCommand}"
                     RowSpacing="0"
-                    Tapped="False">
+                    Tapped="False"
+                    IsVisible="False">
 
                     <!--FAQs icon-->
                     <Label
@@ -486,6 +489,71 @@
                         HorizontalOptions="Start"
                         Style="{StaticResource TitleLabelStyle}"
                         Text="Quản lý thành viên"
+                        VerticalOptions="Center" />
+                    <!--Navigation icon-->
+                    <Label
+                        Grid.Column="2"
+                        Margin="16,8"
+                        Style="{StaticResource IconLabelStyle}"
+                        Text="{StaticResource Next}" />
+                </controls:TapAnimationGrid>
+                <BoxView Style="{StaticResource HorizontalSeparatorStyle}" />
+
+                <!--Grid for Edit profile label and navigation bar icon-->
+                <controls:TapAnimationGrid
+                    BackgroundColor="{DynamicResource Gray-Bg}"
+                    ColumnDefinitions="Auto, *, Auto"
+                    ColumnSpacing="0"
+                    Command="{Binding CategoryTypeProductCommand}"
+                    RowSpacing="0"
+                    Tapped="False">
+
+                    <!--Edit profile icon-->
+                    <Label
+                        Grid.Column="0"
+                        Margin="16,0,0,0"
+                        Style="{StaticResource IconLabelStyle}"
+                        Text="{StaticResource Account}" />
+                    <!--Edit profile label-->
+                    <Label
+                        Grid.Column="1"
+                        Margin="16,12"
+                        FontFamily="Montserrat-Medium"
+                        HorizontalOptions="Start"
+                        Style="{StaticResource TitleLabelStyle}"
+                        Text="Danh mục loại hàng"
+                        VerticalOptions="Center" />
+                    <!--Navigation icon-->
+                    <Label
+                        Grid.Column="2"
+                        Margin="16,8"
+                        Style="{StaticResource IconLabelStyle}"
+                        Text="{StaticResource Next}" />
+                </controls:TapAnimationGrid>
+                <BoxView Style="{StaticResource HorizontalSeparatorStyle}" />
+
+                <controls:TapAnimationGrid
+                    BackgroundColor="{DynamicResource Gray-Bg}"
+                    ColumnDefinitions="Auto, *, Auto"
+                    ColumnSpacing="0"
+                    Command="{Binding CategoryPriceListCommand}"
+                    RowSpacing="0"
+                    Tapped="False">
+
+                    <!--Edit profile icon-->
+                    <Label
+                        Grid.Column="0"
+                        Margin="16,0,0,0"
+                        Style="{StaticResource IconLabelStyle}"
+                        Text="{StaticResource Account}" />
+                    <!--Edit profile label-->
+                    <Label
+                        Grid.Column="1"
+                        Margin="16,12"
+                        FontFamily="Montserrat-Medium"
+                        HorizontalOptions="Start"
+                        Style="{StaticResource TitleLabelStyle}"
+                        Text="Danh mục bảng giá"
                         VerticalOptions="Center" />
                     <!--Navigation icon-->
                     <Label

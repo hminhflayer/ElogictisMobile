@@ -24,7 +24,7 @@ namespace ElogictisMobile.ViewModels
 
         public TransactionHistoryPageViewModel()
         {
-            ContactList = RealtimeFirebase.Instance.GetAllNotifi();
+            ContactList = RealtimeFirebase.Instance.GetAll<TransactionHistory>("Notifications");
         }
 
         #endregion

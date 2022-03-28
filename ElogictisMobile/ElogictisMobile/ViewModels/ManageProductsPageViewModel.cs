@@ -101,7 +101,7 @@ namespace ElogictisMobile.ViewModels
             // Do something
             try
             {
-                await _navigationService.NavigateToAsync<AddProductFormPageViewModel>();
+                await _navigationService.NavigateToAsync<AddProductFormPageViewModel>(null,true);
             }
             catch (Exception ex)
             {

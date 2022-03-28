@@ -37,6 +37,8 @@ namespace ElogictisMobile.ViewModels
             this.FAQCommand = new Command(this.FAQClicked);
             this.ManageProductsCommand = new Command(this.ManageProductsClicked);
             this.ManageProfilesCommand = new Command(this.ManageProfilesClicked);
+            this.CategoryTypeProductCommand = new Command(this.CategoryTypeProdcutClicked);
+            this.CategoryPriceListCommand = new Command(this.CategoryPriceListClicked);
             this.LogoutCommand = new Command(this.LogoutClicked);
         }
 
@@ -83,6 +85,10 @@ namespace ElogictisMobile.ViewModels
         public Command ManageProductsCommand { get; set; }
 
         public Command ManageProfilesCommand { get; set; }
+
+        public Command CategoryTypeProductCommand { get; set; }
+
+        public Command CategoryPriceListCommand { get; set; }
 
         /// <summary>
         /// Gets or sets the command is executed when the logout is clicked.
@@ -198,6 +204,32 @@ namespace ElogictisMobile.ViewModels
             try
             {
                 await _navigationService.NavigateToAsync<ManageProfilesPageViewModel>();
+            }
+            catch (Exception ex)
+            {
+                await App.Current.MainPage.DisplayAlert("Thông báo", ex.Message, "OK");
+            }
+        }
+
+        private async void CategoryTypeProdcutClicked(object obj)
+        {
+            // Do something
+            try
+            {
+                await _navigationService.NavigateToAsync<CategoryTypeProductPageViewModel>();
+            }
+            catch (Exception ex)
+            {
+                await App.Current.MainPage.DisplayAlert("Thông báo", ex.Message, "OK");
+            }
+        }
+
+        private async void CategoryPriceListClicked(object obj)
+        {
+            // Do something
+            try
+            {
+                await _navigationService.NavigateToAsync<CategoryPriceListPageViewModel>();
             }
             catch (Exception ex)
             {

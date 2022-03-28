@@ -27,24 +27,30 @@ namespace ElogictisMobile.Services
             client = new FirebaseClient("https://elogictismobile-default-rtdb.firebaseio.com/");
         }
 
-        public async Task UpSert(string collections = null, string key = null,string data = null)
+        public Task<bool> UpSert(string collections = null, string key = null,string data = null)
         {
+            var tcs = new TaskCompletionSource<bool>();
             try
             {
                 if (!string.IsNullOrEmpty(collections)
                     && !string.IsNullOrEmpty(key) 
                     && !string.IsNullOrEmpty(data))
                 {
-                    await client
+                    
+                    client
                     .Child(collections)
                     .Child(key)
-                    .PutAsync(data);
+                    .PutAsync(data)
+                    .ContinueWith((task) => OnAuthCompleted(task, tcs));
+
+                    return tcs.Task;
                 }
             }
             catch(Exception ex)
             {
-                await App.Current.MainPage.DisplayAlert("Thông báo", ex.Message, "OK");
+                App.Current.MainPage.DisplayAlert("Thông báo", ex.Message, "OK");
             }
+            return tcs.Task;
         }
 
         public async Task<string> GetOne<T>(string collections = null, string key = null)
@@ -82,9 +88,26 @@ namespace ElogictisMobile.Services
 
             var profiles = client
                 .Child(collection)
+                .OrderByKey()
                 .AsObservable<T>()
                 .AsObservableCollection();
             return profiles;
+        }
+
+        public ObservableCollection<T> GetAllCategory<T>(string collection = null)
+        {
+            if (string.IsNullOrEmpty(collection))
+            {
+                return null;
+            }
+
+            var gets = client
+                .Child("Categories")
+                .Child(collection)
+                .OrderByKey()
+                .AsObservable<T>()
+                .AsObservableCollection();
+            return gets;
         }
 
         public async Task Delete(string collections = null, string key = null)
@@ -114,22 +137,22 @@ namespace ElogictisMobile.Services
               .Child("Profiles")
               .OnceAsync<Profiles>()).Select(item => new Profiles
               {
-                  Profile_CreateBy = item.Object.Profile_CreateBy,
-                  Profile_CreateTime = item.Object.Profile_CreateTime,
-                  Profile_Email = item.Object.Profile_Email,
-                  Profile_Name = item.Object.Profile_Name,
-                  Profile_Id = item.Object.Profile_Id,
-                  Profile_IsDelete = (bool)item.Object.Profile_IsDelete,
-                  Profile_Address = item.Object.Profile_Address,
-                  Profile_LastUpdateBy = item.Object.Profile_LastUpdateBy,
-                  Profile_LastUpdateTime = item.Object.Profile_LastUpdateTime,
-                  Profile_Phone = item.Object.Profile_Phone
+                  CreateBy = item.Object.CreateBy,
+                  CreateTime = item.Object.CreateTime,
+                  Email = item.Object.Email,
+                  Name = item.Object.Name,
+                  Id = item.Object.Id,
+                  IsDelete = (bool)item.Object.IsDelete,
+                  Address = item.Object.Address,
+                  LastUpdateBy = item.Object.LastUpdateBy,
+                  LastUpdateTime = item.Object.LastUpdateTime,
+                  Phone = item.Object.Phone
               }).ToList();
         }
         public async Task<Profiles> GetProfiles(string key)
         {
             var allPersons = await GetAllProfiles();
-            return allPersons.Where(a => a.Profile_Id == key).FirstOrDefault();
+            return allPersons.Where(a => a.Id == key).FirstOrDefault();
         }
 
 
@@ -139,10 +162,40 @@ namespace ElogictisMobile.Services
 
             var allNoti = client
               .Child("Notifications")
+              .OrderBy("Time")
               .AsObservable<TransactionHistory>()
-              .AsObservableCollection().ToList();
+              .AsObservableCollection();
 
-            return allNoti.Where(a => a.Email == LocalContext.Current.AccountSettings.Profile_Email) as ObservableCollection<TransactionHistory>;
+            return allNoti.Where(a => a.Email == LocalContext.Current.AccountSettings.Email) as ObservableCollection<TransactionHistory>;
+        }
+
+        //Status product
+        public ObservableCollection<Products> GetProductWithStatus(int status = 0)
+        {
+            if (status <= 0 || status > 4)
+            {
+                return null;
+            }
+
+            var product = client
+                .Child("Products")
+                .AsObservable<Products>()
+                .AsObservableCollection()
+                .Where<Products>(a => a.Status == status && a.CreateBy == LocalContext.Current.AccountSettings.Email);
+            
+            return (ObservableCollection<Products>)product;
+        }
+
+        private void OnAuthCompleted(Task task, TaskCompletionSource<bool> tcs)
+        {
+            if (task.IsCanceled || task.IsFaulted)
+            {
+                // something went wrong
+                tcs.SetResult(false);
+                return;
+            }
+            // user is logged in
+            tcs.SetResult(true);
         }
     }
 }

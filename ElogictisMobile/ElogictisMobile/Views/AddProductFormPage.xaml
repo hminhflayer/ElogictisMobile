@@ -254,7 +254,10 @@
                                          DataSource="{Binding TypeProductCollection}" 
                                          DisplayMemberPath="Name" 
                                          SelectedValuePath="Id"
-                                         SelectedValue="{Binding TypeProduct}"/>
+                                         SelectedIndex="1"
+                                         SelectedValue="{Binding TypeProduct}"
+                                         ShowClearButton="False"
+                                         IsEditableMode="False"/>
                 </StackLayout>
                 <StackLayout Grid.Row="8">
                     <Label
@@ -316,7 +319,7 @@
                     FontFamily="Montserrat-Medium"
                     FontSize="12"
                     HeightRequest="18"
-                    Text="Thu tiền hộ (COD)"
+                    Text="Chi phí giao hàng"
                     TextColor="{DynamicResource Gray-800}" />
 
                     <border:SfBorder BorderColor="{Binding Source={x:Reference MoneyEntry}, Path=IsFocused, Converter={StaticResource ColorConverter}, ConverterParameter=3}" Style="{StaticResource DataFormBorderlessEntryBorderStyle}">

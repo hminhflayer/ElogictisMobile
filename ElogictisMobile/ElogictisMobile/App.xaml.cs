@@ -32,7 +32,7 @@ namespace ElogictisMobile
         {
             var navigationService = ViewModelLocator.Resolve<INavigationService>();
             
-            if (LocalContext.Current.AccountSettings.Profile_Id != null)
+            if (LocalContext.Current.AccountSettings.Id != null)
             {
                 return navigationService.NavigateToAsync<DashboardPageViewModel>();
             }
