@@ -26,16 +26,23 @@
                         <DataTemplate>
                             <ViewCell>
                                 <StackLayout Orientation="Vertical" Spacing="16" Padding="16">
-                                    <StackLayout Orientation="Horizontal">
-                                        <Label Text="{Binding IdProduct}"
+                                    <StackLayout Orientation="Horizontal"
+                                                 HorizontalOptions="FillAndExpand">
+                                        <Label Text="{Binding IdProduct, StringFormat='{0}'}"
+                                               FontSize="18"
+                                               FontAttributes="Bold"
+                                               HorizontalOptions="StartAndExpand"/>
+                                        <Label Text="{Binding Time}"
                                                FontSize="18"
                                                FontAttributes="Bold"/>
-                                        <Label Text="{Binding Time}"
+                                        <Label Text="{Binding Date}"
                                                FontSize="18"/>
                                     </StackLayout>
                                     <StackLayout Orientation="Horizontal">
                                         <Label Text="{Binding TransactionDescription}"
-                                               FontSize="18"/>
+                                               FontSize="20"
+                                               FontAttributes="Bold"
+                                               TextColor="#2196F3"/>
                                     </StackLayout>
                                 </StackLayout>
                             </ViewCell>

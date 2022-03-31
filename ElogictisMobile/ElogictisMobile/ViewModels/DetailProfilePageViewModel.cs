@@ -20,6 +20,8 @@ namespace ElogictisMobile.ViewModels
     {
         #region Fields
         private Profiles Profiles { get; set; }
+        private bool IsManager { get; set; } = LocalContext.IsManager;
+        public string Money { get; set; }
 
         private ValidatableObject<string> fullName;
 
@@ -133,8 +135,7 @@ namespace ElogictisMobile.ViewModels
             }
         }
 
-        public int Auth { get; set; }
-        public bool IsAdmin { get; set; }
+        public Category Auth { get; set; }
 
         public ObservableCollection<Category> PermissionCollection { get; set; } = ContentData.PermissionCollection;
         #endregion
@@ -198,8 +199,13 @@ namespace ElogictisMobile.ViewModels
             this.Email.Value = LocalContext.ProfileSelected.Email;
             this.PhoneNumber = LocalContext.ProfileSelected.Phone;
             this.IsDelete = LocalContext.ProfileSelected.IsDelete;
-            this.Auth = LocalContext.ProfileSelected.Auth;
-            this.IsAdmin = !(LocalContext.Current.AccountSettings.Auth == 4);
+            var auth = new Category()
+            {
+                Id = LocalContext.ProfileSelected.Auth,
+                Name = LocalContext.ProfileSelected.Auth_ext
+            };
+            this.Auth = auth;
+            this.Money = LocalContext.Current.AccountSettings.Money.ToString();
         }
 
         /// <summary>
@@ -224,6 +230,8 @@ namespace ElogictisMobile.ViewModels
                 profiles.LastUpdateBy = LocalContext.Profiles.Email;
                 profiles.LastUpdateTime = DateTime.Now.ToString();
                 profiles.Phone = PhoneNumber;
+                profiles.Auth = Auth.Id;
+                profiles.Auth_ext = Auth.Name;
 
                 // Do Something
                 await RealtimeFirebase.Instance.UpSert("Profiles", LocalContext.Profiles.Id, JsonConvert.SerializeObject(profiles));

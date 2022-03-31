@@ -11,9 +11,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Data\about.json" />
     <None Remove="Data\ecommerce.json" />
     <None Remove="Data\errorAndEmpty.json" />
     <None Remove="Data\navigation.json" />
+    <None Remove="Images\EmptyCart.svg" />
     <None Remove="Images\NoItem.svg" />
     <None Remove="Resources\Fonts\Montserrat-Bold.ttf" />
     <None Remove="Resources\Fonts\Montserrat-Medium.ttf" />
@@ -25,9 +27,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Include="Data\about.json" />
     <EmbeddedResource Include="Data\ecommerce.json" />
     <EmbeddedResource Include="Data\errorAndEmpty.json" />
     <EmbeddedResource Include="Data\navigation.json" />
+    <EmbeddedResource Include="Images\EmptyCart.svg" />
     <EmbeddedResource Include="Images\NoItem.svg" />
     <EmbeddedResource Include="Resources\Fonts\Montserrat-Bold.ttf" />
     <EmbeddedResource Include="Resources\Fonts\Montserrat-Medium.ttf" />
@@ -53,6 +57,8 @@
     <PackageReference Include="Syncfusion.Xamarin.SfListView" Version="19.4.0.54" />
     <PackageReference Include="Syncfusion.Xamarin.SfPicker" Version="19.4.0.54" />
     <PackageReference Include="Syncfusion.Xamarin.SfRating" Version="19.4.0.54" />
+    <PackageReference Include="Syncfusion.Xamarin.SfRotator" Version="19.4.0.54" />
+    <PackageReference Include="Xam.Plugin.Media" Version="5.0.1" />
     <PackageReference Include="Xam.Plugins.Forms.ImageCircle" Version="3.0.0.5" />
     <PackageReference Include="Xamarin.Forms" Version="5.0.0.2196" />
     <PackageReference Include="Xamarin.Essentials" Version="1.7.0" />
@@ -119,6 +125,9 @@
     <EmbeddedResource Update="Themes\LightTheme.xaml">
       <Generator>MSBuild:Compile</Generator>
     </EmbeddedResource>
+    <EmbeddedResource Update="Views\AddAgencyPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </EmbeddedResource>
     <EmbeddedResource Update="Views\AddCategoryPriceListPage.xaml">
       <Generator>MSBuild:Compile</Generator>
     </EmbeddedResource>
@@ -129,6 +138,9 @@
       <Generator>MSBuild:Compile</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Views\AddProfilesPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\AddProvincePage.xaml">
       <Generator>MSBuild:Compile</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Views\AlertSignUpPage.xaml">
@@ -143,10 +155,19 @@
     <EmbeddedResource Update="Views\DashboardPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
+    <EmbeddedResource Update="Views\DetailAgencyPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\DetailCategoryPricesListPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </EmbeddedResource>
     <EmbeddedResource Update="Views\DetailCategoryTypeProductPage.xaml">
       <Generator>MSBuild:Compile</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Views\DetailProductFormPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\DetailProductNewPage.xaml">
       <Generator>MSBuild:Compile</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Views\DetailProfilePage.xaml">
@@ -158,13 +179,22 @@
     <EmbeddedResource Update="Views\LoginPage.xaml">
       <Generator>MSBuild:Compile</Generator>
     </EmbeddedResource>
+    <EmbeddedResource Update="Views\ManageAgencyPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </EmbeddedResource>
     <EmbeddedResource Update="Views\ManageItemPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\ManageProductNewPage.xaml">
       <Generator>MSBuild:Compile</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Views\ManageProductsPage.xaml">
       <Generator>MSBuild:Compile</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Views\ManageProfilesPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\ManageProvincePage.xaml">
       <Generator>MSBuild:Compile</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Views\ResetPasswordPage.xaml">
@@ -190,6 +220,9 @@
     </EmbeddedResource>
     <EmbeddedResource Update="Views\VerifyEmailPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\WalkthroughItemPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
     </EmbeddedResource>
   </ItemGroup>
 

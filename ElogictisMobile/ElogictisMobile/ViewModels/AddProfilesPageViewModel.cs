@@ -317,7 +317,7 @@ namespace ElogictisMobile.ViewModels
                     IsDelete = false,
                     LastUpdateBy = "",
                     LastUpdateTime = "",
-                    Money = Money.Value.ToString(),
+                    Money = Money.Value,
                     Quanlity = Quanlity.Value.ToString(),
                     To_Address = ToAddress.Value,
                     To_FullName = ToFullName.Value,

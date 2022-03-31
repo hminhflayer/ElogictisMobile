@@ -11,9 +11,11 @@
     xmlns:core="clr-namespace:Syncfusion.XForms.Core;assembly=Syncfusion.Core.XForms"
     xmlns:local="clr-namespace:ElogictisMobile.Views"
     xmlns:viewModel="clr-namespace:ElogictisMobile.ViewModels" 
-    xmlns:busyindicator="clr-namespace:Syncfusion.SfBusyIndicator.XForms;assembly=Syncfusion.SfBusyIndicator.XForms"
+    xmlns:busyindicator="clr-namespace:Syncfusion.SfBusyIndicator.XForms;assembly=Syncfusion.SfBusyIndicator.XForms" xmlns:combobox="clr-namespace:Syncfusion.XForms.ComboBox;assembly=Syncfusion.SfComboBox.XForms"
     BackgroundColor="{DynamicResource Gray-200}"
-    NavigationPage.HasNavigationBar="False">
+    Title="Cấu hình bảng giá"
+    NavigationPage.HasNavigationBar="True"
+    NavigationPage.HasBackButton="True">
 
     <ContentPage.Resources>
         <ResourceDictionary>
@@ -27,33 +29,170 @@
         <ScrollView>
             <StackLayout>
                 <StackLayout Padding="16" Spacing="16">
+                    <!--Type Product-->
+                    <StackLayout>
+                        <combobox:SfComboBox HeightRequest="40" 
+                                         x:Name="comboBox" 
+                                         DataSource="{Binding TypeProductCollection}" 
+                                         DisplayMemberPath="Name" 
+                                         SelectedValuePath="Id"
+                                         SelectedItem="{Binding TypeProduct}"
+                                             IsEditableMode="False"
+                                             ShowClearButton="False"/>
+                    </StackLayout>
+                    <!--From Weight-->
                     <StackLayout>
                         <!--  Name entry with border  -->
-                        <border:SfBorder BorderColor="{Binding Source={x:Reference NameEntry}, Path=IsFocused, Converter={StaticResource ColorConverter}, ConverterParameter=3}" Style="{StaticResource DataFormBorderlessEntryBorderStyle}"
+                        <border:SfBorder BorderColor="{Binding Source={x:Reference FromWeightEntry}, Path=IsFocused, Converter={StaticResource ColorConverter}, ConverterParameter=3}" Style="{StaticResource DataFormBorderlessEntryBorderStyle}"
                                  Padding="12,8" Margin="0,8,0,0" VerticalOptions="Start">
                             <Grid ColumnDefinitions="*, Auto">
 
                                 <control:BorderlessEntry
-                        x:Name="NameEntry"
-                        Placeholder="Tên loại hàng"
+                        x:Name="FromWeightEntry"
+                        Placeholder="Trọng lượng từ"
                         Style="{StaticResource BorderlessEntryStyle}" 
-                        Text="{Binding Name.Value}">
+                        Text="{Binding FromWeight.Value}"
+                                    Keyboard="Numeric">
                                     <Entry.Behaviors>
-                                        <behaviour:EntryLineValidationBehaviour IsValid="{Binding Name.IsValid}"/>
+                                        <behaviour:EntryLineValidationBehaviour IsValid="{Binding FromWeight.IsValid}"/>
                                     </Entry.Behaviors>
                                 </control:BorderlessEntry>
 
                                 <!--  Label to display error icon  -->
                                 <Label Grid.Column="1" Style="{StaticResource ErrorIconLabelStyle}" Margin="0"
-                                   IsVisible="{Binding Path=IsVisible, Source={x:Reference NameValidationLabel}}"
+                                   IsVisible="{Binding Path=IsVisible, Source={x:Reference FromWeightValidationLabel}}"
                                    Text="{StaticResource Error}"/>
                             </Grid>
                         </border:SfBorder>
 
                         <!--  Label to display error message  -->
-                        <Label x:Name="NameValidationLabel" Margin="15,-3,0,0" VerticalOptions="FillAndExpand"
-                           Text="{Binding Name.Errors, Converter={StaticResource FirstValidationErrorConverter}}"
-                           IsVisible="{Binding Name.IsValid, Converter={StaticResource InverseBoolConverter}}"
+                        <Label x:Name="FromWeightValidationLabel" Margin="15,-3,0,0" VerticalOptions="FillAndExpand"
+                           Text="{Binding FromWeight.Errors, Converter={StaticResource FirstValidationErrorConverter}}"
+                           IsVisible="{Binding FromWeight.IsValid, Converter={StaticResource InverseBoolConverter}}"
+                           Style="{StaticResource SimpleLabelStyle}" TextColor="{DynamicResource Red}"/>
+                    </StackLayout>
+                    <!--To Weight-->
+                    <StackLayout>
+                        <!--  Name entry with border  -->
+                        <border:SfBorder BorderColor="{Binding Source={x:Reference ToWeightEntry}, Path=IsFocused, Converter={StaticResource ColorConverter}, ConverterParameter=3}" Style="{StaticResource DataFormBorderlessEntryBorderStyle}"
+                                 Padding="12,8" Margin="0,8,0,0" VerticalOptions="Start">
+                            <Grid ColumnDefinitions="*, Auto">
+
+                                <control:BorderlessEntry
+                        x:Name="ToWeightEntry"
+                        Placeholder="Trọng lượng đến"
+                        Style="{StaticResource BorderlessEntryStyle}" 
+                        Text="{Binding ToWeight.Value}"
+                                    Keyboard="Numeric">
+                                    <Entry.Behaviors>
+                                        <behaviour:EntryLineValidationBehaviour IsValid="{Binding ToWeight.IsValid}"/>
+                                    </Entry.Behaviors>
+                                </control:BorderlessEntry>
+
+                                <!--  Label to display error icon  -->
+                                <Label Grid.Column="1" Style="{StaticResource ErrorIconLabelStyle}" Margin="0"
+                                   IsVisible="{Binding Path=IsVisible, Source={x:Reference ToWeightValidationLabel}}"
+                                   Text="{StaticResource Error}"/>
+                            </Grid>
+                        </border:SfBorder>
+
+                        <!--  Label to display error message  -->
+                        <Label x:Name="ToWeightValidationLabel" Margin="15,-3,0,0" VerticalOptions="FillAndExpand"
+                           Text="{Binding ToWeight.Errors, Converter={StaticResource FirstValidationErrorConverter}}"
+                           IsVisible="{Binding ToWeight.IsValid, Converter={StaticResource InverseBoolConverter}}"
+                           Style="{StaticResource SimpleLabelStyle}" TextColor="{DynamicResource Red}"/>
+                    </StackLayout>
+                    <!--From Kilometer-->
+                    <StackLayout>
+                        <!--  Name entry with border  -->
+                        <border:SfBorder BorderColor="{Binding Source={x:Reference FromKilometerEntry}, Path=IsFocused, Converter={StaticResource ColorConverter}, ConverterParameter=3}" Style="{StaticResource DataFormBorderlessEntryBorderStyle}"
+                                 Padding="12,8" Margin="0,8,0,0" VerticalOptions="Start">
+                            <Grid ColumnDefinitions="*, Auto">
+
+                                <control:BorderlessEntry
+                        x:Name="FromKilometerEntry"
+                        Placeholder="Khoảng cách từ"
+                        Style="{StaticResource BorderlessEntryStyle}" 
+                        Text="{Binding FromKilometer.Value}"
+                                    Keyboard="Numeric">
+                                    <Entry.Behaviors>
+                                        <behaviour:EntryLineValidationBehaviour IsValid="{Binding FromKilometer.IsValid}"/>
+                                    </Entry.Behaviors>
+                                </control:BorderlessEntry>
+
+                                <!--  Label to display error icon  -->
+                                <Label Grid.Column="1" Style="{StaticResource ErrorIconLabelStyle}" Margin="0"
+                                   IsVisible="{Binding Path=IsVisible, Source={x:Reference FromKilometerValidationLabel}}"
+                                   Text="{StaticResource Error}"/>
+                            </Grid>
+                        </border:SfBorder>
+
+                        <!--  Label to display error message  -->
+                        <Label x:Name="FromKilometerValidationLabel" Margin="15,-3,0,0" VerticalOptions="FillAndExpand"
+                           Text="{Binding FromKilometer.Errors, Converter={StaticResource FirstValidationErrorConverter}}"
+                           IsVisible="{Binding FromKilometer.IsValid, Converter={StaticResource InverseBoolConverter}}"
+                           Style="{StaticResource SimpleLabelStyle}" TextColor="{DynamicResource Red}"/>
+                    </StackLayout>
+                    <!--To Kilometer-->
+                    <StackLayout>
+                        <!--  Name entry with border  -->
+                        <border:SfBorder BorderColor="{Binding Source={x:Reference ToKilometerEntry}, Path=IsFocused, Converter={StaticResource ColorConverter}, ConverterParameter=3}" Style="{StaticResource DataFormBorderlessEntryBorderStyle}"
+                                 Padding="12,8" Margin="0,8,0,0" VerticalOptions="Start">
+                            <Grid ColumnDefinitions="*, Auto">
+
+                                <control:BorderlessEntry
+                        x:Name="ToKilometerEntry"
+                        Placeholder="Khoảng cách đến"
+                        Style="{StaticResource BorderlessEntryStyle}" 
+                        Text="{Binding ToKilometer.Value}"
+                                    Keyboard="Numeric">
+                                    <Entry.Behaviors>
+                                        <behaviour:EntryLineValidationBehaviour IsValid="{Binding ToKilometer.IsValid}"/>
+                                    </Entry.Behaviors>
+                                </control:BorderlessEntry>
+
+                                <!--  Label to display error icon  -->
+                                <Label Grid.Column="1" Style="{StaticResource ErrorIconLabelStyle}" Margin="0"
+                                   IsVisible="{Binding Path=IsVisible, Source={x:Reference ToKilometerValidationLabel}}"
+                                   Text="{StaticResource Error}"/>
+                            </Grid>
+                        </border:SfBorder>
+
+                        <!--  Label to display error message  -->
+                        <Label x:Name="ToKilometerValidationLabel" Margin="15,-3,0,0" VerticalOptions="FillAndExpand"
+                           Text="{Binding ToKilometer.Errors, Converter={StaticResource FirstValidationErrorConverter}}"
+                           IsVisible="{Binding ToKilometer.IsValid, Converter={StaticResource InverseBoolConverter}}"
+                           Style="{StaticResource SimpleLabelStyle}" TextColor="{DynamicResource Red}"/>
+                    </StackLayout>
+                    <!--Price-->
+                    <StackLayout>
+                        <!--  Name entry with border  -->
+                        <border:SfBorder BorderColor="{Binding Source={x:Reference PriceEntry}, Path=IsFocused, Converter={StaticResource ColorConverter}, ConverterParameter=3}" Style="{StaticResource DataFormBorderlessEntryBorderStyle}"
+                                 Padding="12,8" Margin="0,8,0,0" VerticalOptions="Start">
+                            <Grid ColumnDefinitions="*, Auto">
+
+                                <control:BorderlessEntry
+                        x:Name="PriceEntry"
+                        Placeholder="Giá tiền"
+                        Style="{StaticResource BorderlessEntryStyle}" 
+                        Text="{Binding Price.Value, StringFormat='{0:C}'}"
+                        Keyboard="Numeric">
+                                    <Entry.Behaviors>
+                                        <behaviour:EntryLineValidationBehaviour IsValid="{Binding Price.IsValid}"/>
+                                    </Entry.Behaviors>
+                                </control:BorderlessEntry>
+
+                                <!--  Label to display error icon  -->
+                                <Label Grid.Column="1" Style="{StaticResource ErrorIconLabelStyle}" Margin="0"
+                                   IsVisible="{Binding Path=IsVisible, Source={x:Reference PriceValidationLabel}}"
+                                   Text="{StaticResource Error}"/>
+                            </Grid>
+                        </border:SfBorder>
+
+                        <!--  Label to display error message  -->
+                        <Label x:Name="PriceValidationLabel" Margin="15,-3,0,0" VerticalOptions="FillAndExpand"
+                           Text="{Binding Price.Errors, Converter={StaticResource FirstValidationErrorConverter}}"
+                           IsVisible="{Binding Price.IsValid, Converter={StaticResource InverseBoolConverter}}"
                            Style="{StaticResource SimpleLabelStyle}" TextColor="{DynamicResource Red}"/>
                     </StackLayout>
 
@@ -62,7 +201,7 @@
                     Style="{StaticResource GradientButtonStyle}"
                     Text="Cập Nhật"
                     WidthRequest="200" 
-                    Command="{Binding AddCategoryTypeProductCommand}"/>
+                    Command="{Binding AddPriceListCommand}"/>
                 </StackLayout>
                 <busyindicator:SfBusyIndicator 
                                        AnimationType="Cupertino" 
@@ -71,7 +210,7 @@
                                        Title="Đang thêm dữ liệu..."
                                        TextColor="Blue"
                                        IsVisible="{Binding Isloading}"
-                                       IsBusy="{Binding Isloading}"/>
+                                       IsBusy="{Binding IsLoading}"/>
             </StackLayout>
         </ScrollView>
     </ContentPage.Content>

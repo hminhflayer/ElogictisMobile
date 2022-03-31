@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="ElogictisMobile.Views.AddAgencyPage"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:buttons="clr-namespace:Syncfusion.XForms.Buttons;assembly=Syncfusion.Buttons.XForms"
+    xmlns:controls="clr-namespace:ElogictisMobile.Controls" 
+    xmlns:converter="clr-namespace:ElogictisMobile.Converters" 
+    xmlns:border="clr-namespace:Syncfusion.XForms.Border;assembly=Syncfusion.Core.XForms" 
+    xmlns:behaviours="clr-namespace:ElogictisMobile.Behaviors" 
+    xmlns:combobox="clr-namespace:Syncfusion.XForms.ComboBox;assembly=Syncfusion.SfComboBox.XForms"
+    Title="Thêm đại lý"
+    BackgroundColor="{DynamicResource Gray-Bg}"
+    NavigationPage.HasBackButton="True"
+    NavigationPage.HasNavigationBar="True">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converter:BooleanToColorConverter x:Key="ColorConverter" />
+            <converter:InverseBoolConverter x:Key="InverseBoolConverter" />
+            <converter:NameValidationConverter x:Key="FirstValidationErrorConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <ContentPage.Content>
+        <ScrollView>
+            <StackLayout
+                Padding="16,24"
+                BackgroundColor="{DynamicResource Gray-100}"
+                Spacing="16">
+                <Label
+                    Margin="0,0,0,10"
+                    FontFamily="Montserrat-SemiBold"
+                    FontSize="18"
+                    HorizontalOptions="FillAndExpand"
+                    LineHeight="{OnPlatform Default=-1,
+                                            Android=1.25}"
+                    Text="Thông tin đại lý"
+                    TextColor="{DynamicResource Gray-800}"
+                    VerticalOptions="Center"
+                    VerticalTextAlignment="Center" />
+                <!--From Full Name-->
+                <StackLayout Grid.Row="1">
+                    <Label
+                    Margin="0,0,0,10"
+                    FontFamily="Montserrat-SemiBold"
+                    FontSize="16"
+                    HorizontalOptions="FillAndExpand"
+                    LineHeight="{OnPlatform Default=-1,
+                                            Android=1.25}"
+                    Text="Tên đại lý: "
+                    TextColor="{DynamicResource Gray-800}"
+                    VerticalOptions="Center"
+                    VerticalTextAlignment="Center" />
+                    <border:SfBorder BorderColor="{Binding Source={x:Reference NameEntry}, Path=IsFocused, Converter={StaticResource ColorConverter}, ConverterParameter=3}" Style="{StaticResource DataFormBorderlessEntryBorderStyle}">
+                        <Grid ColumnDefinitions="*, Auto">
+                            <controls:BorderlessEntry
+                                x:Name="NameEntry"
+                                Margin="12,0"
+                                HeightRequest="40"
+                                Placeholder="Tên đại lý"
+                                Style="{StaticResource BorderlessEntryStyle}"
+                                Text="{Binding Name.Value}" />
+                            <!--  Label to display error icon  -->
+                            <Label
+                                    Grid.Column="1"
+                                    IsVisible="{Binding Path=IsVisible, Source={x:Reference NameValidationLabel}}"
+                                    Style="{StaticResource ErrorIconLabelStyle}"
+                                    Text="{StaticResource Error}" />
+                        </Grid>
+                    </border:SfBorder>
+                    <!--  Label to display error message  -->
+                    <Label
+                        x:Name="NameValidationLabel"
+                        Margin="15,-3,0,0"
+                        IsVisible="{Binding Name.IsValid, Converter={StaticResource InverseBoolConverter}}"
+                        Style="{StaticResource SimpleLabelStyle}"
+                        Text="{Binding Name.Errors, Converter={StaticResource FirstValidationErrorConverter}}"
+                        TextColor="{DynamicResource Red}"
+                        VerticalOptions="FillAndExpand" />
+                </StackLayout>
+                <!--From Phone-->
+                <StackLayout Grid.Row="2">
+                    <Label
+                    Margin="0,0,0,10"
+                    FontFamily="Montserrat-SemiBold"
+                    FontSize="16"
+                    HorizontalOptions="FillAndExpand"
+                    LineHeight="{OnPlatform Default=-1,
+                                            Android=1.25}"
+                    Text="Địa chỉ chi tiết: "
+                    TextColor="{DynamicResource Gray-800}"
+                    VerticalOptions="Center"
+                    VerticalTextAlignment="Center" />
+                    <border:SfBorder BorderColor="{Binding Source={x:Reference AddressEntry}, Path=IsFocused, Converter={StaticResource ColorConverter}, ConverterParameter=3}" Style="{StaticResource DataFormBorderlessEntryBorderStyle}">
+                        <Grid ColumnDefinitions="*, Auto">
+                            <controls:BorderlessEntry
+                                x:Name="AddressEntry"
+                                Margin="12,0"
+                                HeightRequest="40"
+                                Placeholder="Đia chỉ chi tiết"
+                                Style="{StaticResource BorderlessEntryStyle}"
+                                Text="{Binding Address.Value}" >
+                            </controls:BorderlessEntry>
+
+                            <!--  Label to display error icon  -->
+                            <Label
+                                    Grid.Column="1"
+                                    IsVisible="{Binding Path=IsVisible, Source={x:Reference AddressValidationLabel}}"
+                                    Style="{StaticResource ErrorIconLabelStyle}"
+                                    Text="{StaticResource Error}" />
+                        </Grid>
+                    </border:SfBorder>
+                    <!--  Label to display error message  -->
+                    <Label
+                        x:Name="AddressValidationLabel"
+                        Margin="15,-3,0,0"
+                        IsVisible="{Binding Address.IsValid, Converter={StaticResource InverseBoolConverter}}"
+                        Style="{StaticResource SimpleLabelStyle}"
+                        Text="{Binding Address.Errors, Converter={StaticResource FirstValidationErrorConverter}}"
+                        TextColor="{DynamicResource Red}"
+                        VerticalOptions="FillAndExpand" />
+                </StackLayout>
+
+                <Label
+                    Margin="0,0,0,10"
+                    FontFamily="Montserrat-SemiBold"
+                    FontSize="18"
+                    HorizontalOptions="FillAndExpand"
+                    LineHeight="{OnPlatform Default=-1,
+                                            Android=1.25}"
+                    Text="Thông tin đơn hàng"
+                    TextColor="{DynamicResource Gray-800}"
+                    VerticalOptions="Center"
+                    VerticalTextAlignment="Center" />
+                <StackLayout Orientation="Horizontal">
+                    <Label
+                    Margin="0,0,0,10"
+                    FontFamily="Montserrat-SemiBold"
+                    FontSize="16"
+                    HorizontalOptions="FillAndExpand"
+                    LineHeight="{OnPlatform Default=-1,
+                                            Android=1.25}"
+                    Text="Tỉnh: "
+                    TextColor="{DynamicResource Gray-800}"
+                    VerticalOptions="Center"
+                    VerticalTextAlignment="Center" />
+                    <combobox:SfComboBox HeightRequest="40" 
+                                         WidthRequest="280"
+                                         DataSource="{Binding ProvinceCollection}" 
+                                         DisplayMemberPath="Name" 
+                                         SelectedValuePath="Id"
+                                         SelectedItem="{Binding Province}"
+                                         IsEnabled="True"
+                                         SelectionChanged="SfComboBox_SelectionChanged"
+                                         SelectedValue="89"
+                                         ShowClearButton="False"
+                                         IsEditableMode="False"/>
+                </StackLayout>
+                <StackLayout Orientation="Horizontal">
+                    <Label
+                    Margin="0,0,0,10"
+                    FontFamily="Montserrat-SemiBold"
+                    FontSize="16"
+                    HorizontalOptions="FillAndExpand"
+                    LineHeight="{OnPlatform Default=-1,
+                                            Android=1.25}"
+                    Text="Huyện: "
+                    TextColor="{DynamicResource Gray-800}"
+                    VerticalOptions="Center"
+                    VerticalTextAlignment="Center" />
+                    <combobox:SfComboBox HeightRequest="40"
+                                         WidthRequest="280"
+                                         DataSource="{Binding DistrictCollection}" 
+                                         DisplayMemberPath="Name" 
+                                         SelectedValuePath="Id"
+                                         SelectedValue="883"
+                                         SelectedItem="{Binding District}"
+                                         SelectionChanged="District_SelectionChanged"
+                                         ShowClearButton="False"
+                                         IsEditableMode="False"/>
+                </StackLayout>
+                <StackLayout Orientation="Horizontal">
+                    <Label
+                    Margin="0,0,0,10"
+                    FontFamily="Montserrat-SemiBold"
+                    FontSize="16"
+                    HorizontalOptions="FillAndExpand"
+                    LineHeight="{OnPlatform Default=-1,
+                                            Android=1.25}"
+                    Text="Xã: "
+                    TextColor="{DynamicResource Gray-800}"
+                    VerticalOptions="Center"
+                    VerticalTextAlignment="Center" />
+                    <combobox:SfComboBox HeightRequest="40"
+                                         WidthRequest="280"
+                                         DataSource="{Binding TownCollection}" 
+                                         DisplayMemberPath="Name" 
+                                         SelectedValuePath="Id"
+                                         SelectedIndex="0"
+                                         SelectedItem="{Binding Town}"
+                                         ShowClearButton="False"
+                                         IsEditableMode="False"/>
+                </StackLayout>
+                <StackLayout>
+                    <Label
+                    Margin="0,0,0,10"
+                    FontFamily="Montserrat-SemiBold"
+                    FontSize="16"
+                    HorizontalOptions="FillAndExpand"
+                    LineHeight="{OnPlatform Default=-1,
+                                            Android=1.25}"
+                    Text="Người quản lý: "
+                    TextColor="{DynamicResource Gray-800}"
+                    VerticalOptions="Center"
+                    VerticalTextAlignment="Center" />
+                    <combobox:SfComboBox HeightRequest="40" 
+                                         DataSource="{Binding ProfilesCollection}" 
+                                         DisplayMemberPath="Name" 
+                                         SelectedValuePath="Id"
+                                         SelectedIndex="0"
+                                         SelectedItem="{Binding Profiles}"
+                                         ShowClearButton="False"
+                                         IsEditableMode="False"/>
+                </StackLayout>
+
+                <!--Submit Button-->
+                <buttons:SfButton
+                    Margin="0,24,0,0"
+                    Command="{Binding SubmitCommand}"
+                    Style="{StaticResource GradientButtonStyle}"
+                    Text="Thêm"
+                    WidthRequest="200" />
+
+            </StackLayout>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>

@@ -33,7 +33,7 @@ namespace ElogictisMobile.ViewModels
         public CategoryPriceListPageViewModel(INavigationService navigationService)
         {
             _navigationService = navigationService;
-            PricesList = RealtimeFirebase.Instance.GetAllCategory<Category>("PriceList");
+            PricesList = RealtimeFirebase.Instance.GetAllCategory<PriceList>("PricesList");
         }
 
         #endregion
@@ -72,7 +72,7 @@ namespace ElogictisMobile.ViewModels
         /// <summary>
         /// Gets or sets a collction of value to be displayed in contacts list page.
         /// </summary>\
-        public ObservableCollection<Category> PricesList { get; set; }
+        public ObservableCollection<PriceList> PricesList { get; set; }
 
         #endregion
 
@@ -82,10 +82,11 @@ namespace ElogictisMobile.ViewModels
         /// Invoked when an item is selected from the contacts list.
         /// </summary>
         /// <param name="selectedItem">Selected item from the list view.</param>
-        private void NavigateToNextPage(object selectedItem)
+        private async void NavigateToNextPage(object selectedItem)
         {
             // Do something
-
+            LocalContext.PriceListSelected = selectedItem as PriceList;
+            await _navigationService.NavigateToAsync<DetailCategoryPricesListPageViewModel>();
         }
 
         private async void GoToBack(object obj)

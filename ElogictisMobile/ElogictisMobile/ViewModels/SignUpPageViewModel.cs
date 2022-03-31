@@ -177,9 +177,10 @@ namespace ElogictisMobile.ViewModels
                             LastUpdateBy = "",
                             LastUpdateTime = "",
                             Phone = "",
-                            Auth = 1,
+                            Auth = "1",
                             Auth_ext = "Người dùng bình thường",
-                            Identity = ""
+                            Identity = "",
+                            Money = 0
                         };
                         await RealtimeFirebase.Instance.UpSert("Profiles", loginAttempt, JsonConvert.SerializeObject(profiles)); 
                         await _navigationService.NavigateToAsync<AlertSignUpPageViewModel>();

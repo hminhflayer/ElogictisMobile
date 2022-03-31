@@ -55,7 +55,6 @@ namespace ElogictisMobile.Droid.Services
                 var token = await user.User.GetIdTokenAsync(false);
                 LocalContext.Current.AccountSettings.ExpireToken = DateTime.Now.Add(new TimeSpan(0,0,0, 3600));
                 LocalContext.Current.AccountSettings.Token = token.Token;
-
                 return token.Token;
             }
             catch (FirebaseAuthInvalidUserException e)

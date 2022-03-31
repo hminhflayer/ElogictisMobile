@@ -9,8 +9,10 @@
     xmlns:effectView="clr-namespace:Syncfusion.XForms.EffectsView;assembly=Syncfusion.Core.XForms"
     xmlns:viewModel="clr-namespace:ElogictisMobile.ViewModels"
     x:Name="settingPage"
+    Title="Quản lý đại lý"
     BackgroundColor="{DynamicResource Gray-100}"
-    NavigationPage.HasNavigationBar="False">
+    NavigationPage.HasBackButton="True"
+    NavigationPage.HasNavigationBar="True">
 
     <ContentPage.Content>
         <ScrollView>
@@ -421,10 +423,12 @@
 
                 <BoxView Style="{StaticResource HorizontalSeparatorStyle}" />
                 <!--Header label for account setting-->
-                <Label
+                <StackLayout Orientation="Vertical" Spacing="0"
+                             IsVisible="{Binding IsManage}">
+                    <Label
                     Margin="16,24,0,16"
                     FontFamily="Montserrat-SemiBold"
-                    FontSize="12"
+                    FontSize="16"
                     HorizontalOptions="FillAndExpand"
                     LineHeight="{OnPlatform Default=-1,
                                             Android=1.25}"
@@ -433,8 +437,39 @@
                     VerticalOptions="Center"
                     VerticalTextAlignment="Center" />
 
-                <!--Grid for Edit profile label and navigation bar icon-->
-                <controls:TapAnimationGrid
+                    <controls:TapAnimationGrid
+                    BackgroundColor="{DynamicResource Gray-Bg}"
+                    ColumnDefinitions="Auto, *, Auto"
+                    ColumnSpacing="0"
+                    Command="{Binding ProductNewCommand}"
+                    RowSpacing="0"
+                    Tapped="False">
+
+                        <!--Edit profile icon-->
+                        <Label
+                        Grid.Column="0"
+                        Margin="16,0,0,0"
+                        Style="{StaticResource IconLabelStyle}"
+                        Text="{StaticResource Account}" />
+                        <!--Edit profile label-->
+                        <Label
+                        Grid.Column="1"
+                        Margin="16,12"
+                        FontFamily="Montserrat-Medium"
+                        HorizontalOptions="Start"
+                        Style="{StaticResource TitleLabelStyle}"
+                        Text="Đơn mới"
+                        VerticalOptions="Center" />
+                        <!--Navigation icon-->
+                        <Label
+                        Grid.Column="2"
+                        Margin="16,8"
+                        Style="{StaticResource IconLabelStyle}"
+                        Text="{StaticResource Next}" />
+                    </controls:TapAnimationGrid>
+                    <BoxView Style="{StaticResource HorizontalSeparatorStyle}" />
+                    <!--Grid for Edit profile label and navigation bar icon-->
+                    <controls:TapAnimationGrid
                     BackgroundColor="{DynamicResource Gray-Bg}"
                     ColumnDefinitions="Auto, *, Auto"
                     ColumnSpacing="0"
@@ -442,14 +477,14 @@
                     RowSpacing="0"
                     Tapped="False">
 
-                    <!--Edit profile icon-->
-                    <Label
+                        <!--Edit profile icon-->
+                        <Label
                         Grid.Column="0"
                         Margin="16,0,0,0"
                         Style="{StaticResource IconLabelStyle}"
                         Text="{StaticResource Account}" />
-                    <!--Edit profile label-->
-                    <Label
+                        <!--Edit profile label-->
+                        <Label
                         Grid.Column="1"
                         Margin="16,12"
                         FontFamily="Montserrat-Medium"
@@ -457,17 +492,17 @@
                         Style="{StaticResource TitleLabelStyle}"
                         Text="Quản lý đơn hàng"
                         VerticalOptions="Center" />
-                    <!--Navigation icon-->
-                    <Label
+                        <!--Navigation icon-->
+                        <Label
                         Grid.Column="2"
                         Margin="16,8"
                         Style="{StaticResource IconLabelStyle}"
                         Text="{StaticResource Next}" />
-                </controls:TapAnimationGrid>
-                <BoxView Style="{StaticResource HorizontalSeparatorStyle}" />
+                    </controls:TapAnimationGrid>
+                    <BoxView Style="{StaticResource HorizontalSeparatorStyle}" />
 
-                <!--Grid for Edit profile label and navigation bar icon-->
-                <controls:TapAnimationGrid
+                    <!--Grid for Edit profile label and navigation bar icon-->
+                    <controls:TapAnimationGrid
                     BackgroundColor="{DynamicResource Gray-Bg}"
                     ColumnDefinitions="Auto, *, Auto"
                     ColumnSpacing="0"
@@ -475,14 +510,14 @@
                     RowSpacing="0"
                     Tapped="False">
 
-                    <!--Edit profile icon-->
-                    <Label
+                        <!--Edit profile icon-->
+                        <Label
                         Grid.Column="0"
                         Margin="16,0,0,0"
                         Style="{StaticResource IconLabelStyle}"
                         Text="{StaticResource Account}" />
-                    <!--Edit profile label-->
-                    <Label
+                        <!--Edit profile label-->
+                        <Label
                         Grid.Column="1"
                         Margin="16,12"
                         FontFamily="Montserrat-Medium"
@@ -490,49 +525,61 @@
                         Style="{StaticResource TitleLabelStyle}"
                         Text="Quản lý thành viên"
                         VerticalOptions="Center" />
-                    <!--Navigation icon-->
-                    <Label
+                        <!--Navigation icon-->
+                        <Label
                         Grid.Column="2"
                         Margin="16,8"
                         Style="{StaticResource IconLabelStyle}"
                         Text="{StaticResource Next}" />
-                </controls:TapAnimationGrid>
-                <BoxView Style="{StaticResource HorizontalSeparatorStyle}" />
+                    </controls:TapAnimationGrid>
+                    <BoxView Style="{StaticResource HorizontalSeparatorStyle}" />
+                </StackLayout>
+                <StackLayout Orientation="Vertical" Spacing="0"
+                             IsVisible="{Binding IsAdmin}">
+                    <Label
+                    Margin="16,24,0,16"
+                    FontFamily="Montserrat-SemiBold"
+                    FontSize="16"
+                    HorizontalOptions="FillAndExpand"
+                    LineHeight="{OnPlatform Default=-1,
+                                            Android=1.25}"
+                    Text="QUẢN TRỊ VIÊN"
+                    TextColor="{DynamicResource Gray-800}"
+                    VerticalOptions="Center"
+                    VerticalTextAlignment="Center" />
 
-                <!--Grid for Edit profile label and navigation bar icon-->
-                <controls:TapAnimationGrid
+                    <controls:TapAnimationGrid
                     BackgroundColor="{DynamicResource Gray-Bg}"
                     ColumnDefinitions="Auto, *, Auto"
                     ColumnSpacing="0"
-                    Command="{Binding CategoryTypeProductCommand}"
+                    Command="{Binding AgencyCommand}"
                     RowSpacing="0"
                     Tapped="False">
 
-                    <!--Edit profile icon-->
-                    <Label
+                        <!--Edit profile icon-->
+                        <Label
                         Grid.Column="0"
                         Margin="16,0,0,0"
                         Style="{StaticResource IconLabelStyle}"
                         Text="{StaticResource Account}" />
-                    <!--Edit profile label-->
-                    <Label
+                        <!--Edit profile label-->
+                        <Label
                         Grid.Column="1"
                         Margin="16,12"
                         FontFamily="Montserrat-Medium"
                         HorizontalOptions="Start"
                         Style="{StaticResource TitleLabelStyle}"
-                        Text="Danh mục loại hàng"
+                        Text="Quản lý đại lý"
                         VerticalOptions="Center" />
-                    <!--Navigation icon-->
-                    <Label
+                        <!--Navigation icon-->
+                        <Label
                         Grid.Column="2"
                         Margin="16,8"
                         Style="{StaticResource IconLabelStyle}"
                         Text="{StaticResource Next}" />
-                </controls:TapAnimationGrid>
-                <BoxView Style="{StaticResource HorizontalSeparatorStyle}" />
-
-                <controls:TapAnimationGrid
+                    </controls:TapAnimationGrid>
+                    <BoxView Style="{StaticResource HorizontalSeparatorStyle}" />
+                    <controls:TapAnimationGrid
                     BackgroundColor="{DynamicResource Gray-Bg}"
                     ColumnDefinitions="Auto, *, Auto"
                     ColumnSpacing="0"
@@ -540,14 +587,14 @@
                     RowSpacing="0"
                     Tapped="False">
 
-                    <!--Edit profile icon-->
-                    <Label
+                        <!--Edit profile icon-->
+                        <Label
                         Grid.Column="0"
                         Margin="16,0,0,0"
                         Style="{StaticResource IconLabelStyle}"
                         Text="{StaticResource Account}" />
-                    <!--Edit profile label-->
-                    <Label
+                        <!--Edit profile label-->
+                        <Label
                         Grid.Column="1"
                         Margin="16,12"
                         FontFamily="Montserrat-Medium"
@@ -555,15 +602,111 @@
                         Style="{StaticResource TitleLabelStyle}"
                         Text="Danh mục bảng giá"
                         VerticalOptions="Center" />
-                    <!--Navigation icon-->
-                    <Label
+                        <!--Navigation icon-->
+                        <Label
                         Grid.Column="2"
                         Margin="16,8"
                         Style="{StaticResource IconLabelStyle}"
                         Text="{StaticResource Next}" />
-                </controls:TapAnimationGrid>
-                <BoxView Style="{StaticResource HorizontalSeparatorStyle}" />
+                    </controls:TapAnimationGrid>
+                    <BoxView Style="{StaticResource HorizontalSeparatorStyle}" />
+                    <!--Grid for Edit profile label and navigation bar icon-->
+                    <controls:TapAnimationGrid
+                    BackgroundColor="{DynamicResource Gray-Bg}"
+                    ColumnDefinitions="Auto, *, Auto"
+                    ColumnSpacing="0"
+                    Command="{Binding CategoryTypeProductCommand}"
+                    RowSpacing="0"
+                    Tapped="False">
 
+                        <!--Edit profile icon-->
+                        <Label
+                        Grid.Column="0"
+                        Margin="16,0,0,0"
+                        Style="{StaticResource IconLabelStyle}"
+                        Text="{StaticResource Account}" />
+                        <!--Edit profile label-->
+                        <Label
+                        Grid.Column="1"
+                        Margin="16,12"
+                        FontFamily="Montserrat-Medium"
+                        HorizontalOptions="Start"
+                        Style="{StaticResource TitleLabelStyle}"
+                        Text="Danh mục loại hàng"
+                        VerticalOptions="Center" />
+                        <!--Navigation icon-->
+                        <Label
+                        Grid.Column="2"
+                        Margin="16,8"
+                        Style="{StaticResource IconLabelStyle}"
+                        Text="{StaticResource Next}" />
+                    </controls:TapAnimationGrid>
+                    <BoxView Style="{StaticResource HorizontalSeparatorStyle}" />
+
+                    <controls:TapAnimationGrid
+                    BackgroundColor="{DynamicResource Gray-Bg}"
+                    ColumnDefinitions="Auto, *, Auto"
+                    ColumnSpacing="0"
+                    Command="{Binding CategoryPriceListCommand}"
+                    RowSpacing="0"
+                    Tapped="False">
+
+                        <!--Edit profile icon-->
+                        <Label
+                        Grid.Column="0"
+                        Margin="16,0,0,0"
+                        Style="{StaticResource IconLabelStyle}"
+                        Text="{StaticResource Account}" />
+                        <!--Edit profile label-->
+                        <Label
+                        Grid.Column="1"
+                        Margin="16,12"
+                        FontFamily="Montserrat-Medium"
+                        HorizontalOptions="Start"
+                        Style="{StaticResource TitleLabelStyle}"
+                        Text="Danh mục bảng giá"
+                        VerticalOptions="Center" />
+                        <!--Navigation icon-->
+                        <Label
+                        Grid.Column="2"
+                        Margin="16,8"
+                        Style="{StaticResource IconLabelStyle}"
+                        Text="{StaticResource Next}" />
+                    </controls:TapAnimationGrid>
+                    <BoxView Style="{StaticResource HorizontalSeparatorStyle}" />
+
+                    <controls:TapAnimationGrid
+                    BackgroundColor="{DynamicResource Gray-Bg}"
+                    ColumnDefinitions="Auto, *, Auto"
+                    ColumnSpacing="0"
+                    Command="{Binding ProvinceCommand}"
+                    RowSpacing="0"
+                    Tapped="False">
+
+                        <!--Edit profile icon-->
+                        <Label
+                        Grid.Column="0"
+                        Margin="16,0,0,0"
+                        Style="{StaticResource IconLabelStyle}"
+                        Text="{StaticResource Account}" />
+                        <!--Edit profile label-->
+                        <Label
+                        Grid.Column="1"
+                        Margin="16,12"
+                        FontFamily="Montserrat-Medium"
+                        HorizontalOptions="Start"
+                        Style="{StaticResource TitleLabelStyle}"
+                        Text="Danh mục Tỉnh"
+                        VerticalOptions="Center" />
+                        <!--Navigation icon-->
+                        <Label
+                        Grid.Column="2"
+                        Margin="16,8"
+                        Style="{StaticResource IconLabelStyle}"
+                        Text="{StaticResource Next}" />
+                    </controls:TapAnimationGrid>
+                    <BoxView Style="{StaticResource HorizontalSeparatorStyle}" />
+                </StackLayout>
                 <!--Logout button-->
                 <buttons:SfButton
                     Margin="0,24,0,32"

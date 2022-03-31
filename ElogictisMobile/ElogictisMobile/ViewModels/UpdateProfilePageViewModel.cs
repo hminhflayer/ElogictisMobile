@@ -3,6 +3,7 @@ using ElogictisMobile.Services;
 using ElogictisMobile.Validators;
 using ElogictisMobile.Validators.Rules;
 using Newtonsoft.Json;
+using Plugin.Media;
 using System;
 using Xamarin.Forms;
 using Xamarin.Forms.Internals;
@@ -47,6 +48,7 @@ namespace ElogictisMobile.ViewModels
         /// <summary>
         /// Gets or sets the FirstName
         /// </summary>
+        public ImageSource Avatar { get; set; }
         public ValidatableObject<string> FullName
         {
             get
@@ -156,6 +158,7 @@ namespace ElogictisMobile.ViewModels
             this.FullName.Value = LocalContext.Current.AccountSettings.Name;
             this.Email.Value = LocalContext.Current.AccountSettings.Email;
             this.PhoneNumber = LocalContext.Current.AccountSettings.Phone;
+            this.Avatar = LocalContext.Current.AccountSettings.Avatar;
         }
 
         /// <summary>
@@ -193,9 +196,24 @@ namespace ElogictisMobile.ViewModels
         /// Invoked when add profile button is clicked from the add profile page.
         /// </summary>
         /// <param name="obj">Selected item from the list view.</param>
-        private void AddProfileClicked(object obj)
+        private async void AddProfileClicked(object obj)
         {
             // Do something
+            var file = await CrossMedia.Current.PickPhotoAsync();
+            if (file == null)
+                return;
+            await App.Current.MainPage.DisplayAlert("File Location", file.AlbumPath, "OK");
+            var filepath = file.Path;
+
+            var tmp = ImageSource.FromStream(() =>
+            {
+                var stream = file.GetStream();
+
+                //file.Dispose();
+                return stream;
+            });
+
+            Avatar = tmp;
         }
 
         #endregion

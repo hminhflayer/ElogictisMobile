@@ -1,0 +1,114 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="ElogictisMobile.Views.AddProvincePage"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:badge="clr-namespace:Syncfusion.XForms.BadgeView;assembly=Syncfusion.SfBadgeView.XForms"
+    xmlns:border="clr-namespace:Syncfusion.XForms.Border;assembly=Syncfusion.Core.XForms"
+    xmlns:buttons="clr-namespace:Syncfusion.XForms.Buttons;assembly=Syncfusion.Buttons.XForms"
+    xmlns:control="clr-namespace:ElogictisMobile.Controls"
+    xmlns:behaviours="clr-namespace:ElogictisMobile.Behaviors"
+    xmlns:converter="clr-namespace:ElogictisMobile.Converters"
+    xmlns:sfavatar="clr-namespace:Syncfusion.XForms.AvatarView;assembly=Syncfusion.Core.XForms"
+    xmlns:ViewModel="clr-namespace:ElogictisMobile.ViewModels" 
+    xmlns:behaviour="clr-namespace:ElogictisMobile.Behaviors"
+    BackgroundColor="{DynamicResource Gray-Bg}"
+    NavigationPage.HasBackButton="True"
+    NavigationPage.HasNavigationBar="True"
+    Title="Thêm tỉnh">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converter:BooleanToColorConverter x:Key="ColorConverter" />
+            <converter:InverseBoolConverter x:Key="InverseBoolConverter" />
+            <converter:NameValidationConverter x:Key="FirstValidationErrorConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <ContentPage.Content>
+        <ScrollView>
+            <StackLayout
+                Padding="16,24"
+                BackgroundColor="{DynamicResource Gray-100}"
+                Spacing="16">
+                <Label
+                    Margin="0,0,0,10"
+                    FontFamily="Montserrat-SemiBold"
+                    FontSize="18"
+                    HorizontalOptions="FillAndExpand"
+                    LineHeight="{OnPlatform Default=-1,
+                                            Android=1.25}"
+                    Text="Thông tin tỉnh"
+                    TextColor="{DynamicResource Gray-800}"
+                    VerticalOptions="Center"
+                    VerticalTextAlignment="Center" />
+                <StackLayout Grid.Row="1">
+                    <border:SfBorder BorderColor="{Binding Source={x:Reference IdEntry}, Path=IsFocused, Converter={StaticResource ColorConverter}, ConverterParameter=3}" Style="{StaticResource DataFormBorderlessEntryBorderStyle}">
+                        <Grid ColumnDefinitions="*, Auto">
+                            <control:BorderlessEntry
+                                x:Name="IdEntry"
+                                Margin="12,0"
+                                HeightRequest="40"
+                                Placeholder="Mã tỉnh"
+                                Style="{StaticResource BorderlessEntryStyle}"
+                                Text="{Binding Id.Value}" />
+                            <!--  Label to display error icon  -->
+                            <Label
+                                    Grid.Column="1"
+                                    IsVisible="{Binding Path=IsVisible, Source={x:Reference IdValidationLabel}}"
+                                    Style="{StaticResource ErrorIconLabelStyle}"
+                                    Text="{StaticResource Error}" />
+                        </Grid>
+                    </border:SfBorder>
+                    <!--  Label to display error message  -->
+                    <Label
+                        x:Name="IdValidationLabel"
+                        Margin="15,-3,0,0"
+                        IsVisible="{Binding Id.IsValid, Converter={StaticResource InverseBoolConverter}}"
+                        Style="{StaticResource SimpleLabelStyle}"
+                        Text="{Binding Id.Errors, Converter={StaticResource FirstValidationErrorConverter}}"
+                        TextColor="{DynamicResource Red}"
+                        VerticalOptions="FillAndExpand" />
+                </StackLayout>
+                <!--From Full Name-->
+                <StackLayout Grid.Row="1">
+                    <border:SfBorder BorderColor="{Binding Source={x:Reference NameEntry}, Path=IsFocused, Converter={StaticResource ColorConverter}, ConverterParameter=3}" Style="{StaticResource DataFormBorderlessEntryBorderStyle}">
+                        <Grid ColumnDefinitions="*, Auto">
+                            <control:BorderlessEntry
+                                x:Name="NameEntry"
+                                Margin="12,0"
+                                HeightRequest="40"
+                                Placeholder="Tên tỉnh"
+                                Style="{StaticResource BorderlessEntryStyle}"
+                                Text="{Binding Name.Value}" />
+                            <!--  Label to display error icon  -->
+                            <Label
+                                    Grid.Column="1"
+                                    IsVisible="{Binding Path=IsVisible, Source={x:Reference NameValidationLabel}}"
+                                    Style="{StaticResource ErrorIconLabelStyle}"
+                                    Text="{StaticResource Error}" />
+                        </Grid>
+                    </border:SfBorder>
+                    <!--  Label to display error message  -->
+                    <Label
+                        x:Name="NameValidationLabel"
+                        Margin="15,-3,0,0"
+                        IsVisible="{Binding Name.IsValid, Converter={StaticResource InverseBoolConverter}}"
+                        Style="{StaticResource SimpleLabelStyle}"
+                        Text="{Binding Name.Errors, Converter={StaticResource FirstValidationErrorConverter}}"
+                        TextColor="{DynamicResource Red}"
+                        VerticalOptions="FillAndExpand" />
+                </StackLayout>
+
+                <!--Submit Button-->
+                <buttons:SfButton
+                    Margin="0,24,0,0"
+                    Command="{Binding SubmitCommand}"
+                    Style="{StaticResource GradientButtonStyle}"
+                    Text="Tạo đơn"
+                    WidthRequest="200" />
+
+            </StackLayout>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>

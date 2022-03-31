@@ -142,7 +142,7 @@
                                                 Grid.Column="1"
                                                 HorizontalOptions="EndAndExpand"
                                                 Style="{StaticResource TitleLabelStyle}"
-                                                Text="{Binding CategoryValue}"
+                                                Text="{Binding CategoryValue, StringFormat='{0:$#,##0}'}"
                                                 VerticalOptions="Center" />
                                         </Grid>
                                     </StackLayout>

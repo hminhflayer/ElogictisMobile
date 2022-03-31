@@ -14,10 +14,18 @@ namespace ElogictisMobile.Models
         public static ObservableCollection<Profiles> ProfilesList { get; set; }
         public static ObservableCollection<Products> ProductsList { get; set; }
         public static ObservableCollection<Category> TypeProductList { get; set; }
+        public static ObservableCollection<Category> ProvinceList { get; set; }
         public static Products ProductSelected { get; set; }
         public static Profiles ProfileSelected { get; set; }
         public static Category CategorySelected { get; set; }
         public static PriceList PriceListSelected { get; set; }
+        public static Agency AgencySelected { get; set; }
+        public static Category ProvinceSelected { get; set; }
+        public static District DistrictSelected { get; set; }
+        public static Town TownSelected { get; set; }
+        public static bool IsManager { get; set; }
+        public static bool IsShipper { get; set; }
+        public static bool IsAdmin { get; set; }
 
         #region Singleton
         private static LocalContext _current;
@@ -83,5 +91,25 @@ namespace ElogictisMobile.Models
             set => AddOrUpdateValueSecure(AccountSettingsKey, value);
         }
 
+        public bool GetPermission(int per)
+        {
+            switch (per)
+            {
+                case 2:
+                    {
+                        return int.Parse(LocalContext.Current.AccountSettings.Auth) == 2;
+                    }
+                case 3:
+                    {
+                        return int.Parse(LocalContext.Current.AccountSettings.Auth) == 3;
+                    }
+                case 4:
+                    {
+                        return int.Parse(LocalContext.Current.AccountSettings.Auth) == 4;
+                    }
+            }
+
+            return false;
+        }
     }
 }

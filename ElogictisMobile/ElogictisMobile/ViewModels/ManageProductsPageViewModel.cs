@@ -32,8 +32,20 @@ namespace ElogictisMobile.ViewModels
         public ManageProductsPageViewModel(INavigationService navigationService)
         {
             _navigationService = navigationService;
+            //if(LocalContext.IsShipper)
+            //{
+            //    ContactList = RealtimeFirebase.Instance.GetAllProductGeted();
+            //}    
+            //else if(LocalContext.IsManager || LocalContext.IsAdmin)
+            //{
+            //    ContactList = RealtimeFirebase.Instance.GetAll<Products>("Products");
+            //}    
+            //else
+            //{
+            //    ContactList = RealtimeFirebase.Instance.GetAllProductCreated();
+            //}    
             ContactList = RealtimeFirebase.Instance.GetAll<Products>("Products");
-            LocalContext.ProductsList = ContactList;
+            //LocalContext.ProductsList = ContactList;
         }
 
         #endregion
@@ -101,7 +113,7 @@ namespace ElogictisMobile.ViewModels
             // Do something
             try
             {
-                await _navigationService.NavigateToAsync<AddProductFormPageViewModel>(null,true);
+                await _navigationService.NavigateToAsync<AddProductFormPageViewModel>();
             }
             catch (Exception ex)
             {

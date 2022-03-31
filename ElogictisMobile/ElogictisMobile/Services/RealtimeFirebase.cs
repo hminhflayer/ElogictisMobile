@@ -110,23 +110,28 @@ namespace ElogictisMobile.Services
             return gets;
         }
 
-        public async Task Delete(string collections = null, string key = null)
+        public Task<bool> Delete(string collections = null, string key = null)
         {
+            var tcs = new TaskCompletionSource<bool>();
             try
             {
                 if (!string.IsNullOrEmpty(collections)
                     && !string.IsNullOrEmpty(key))
                 {
-                    await client
+                     client
                     .Child(collections)
                     .Child(key)
-                    .DeleteAsync();
+                    .DeleteAsync()
+                    .ContinueWith((task) => OnAuthCompleted(task, tcs));
+
+                    return tcs.Task; ;
                 }
             }
             catch (Exception ex)
             {
-                await App.Current.MainPage.DisplayAlert("Thông báo", ex.Message, "OK");
+                App.Current.MainPage.DisplayAlert("Thông báo", ex.Message, "OK");
             }
+            return tcs.Task;
         }
 
         //Method for Profiles
@@ -146,7 +151,11 @@ namespace ElogictisMobile.Services
                   Address = item.Object.Address,
                   LastUpdateBy = item.Object.LastUpdateBy,
                   LastUpdateTime = item.Object.LastUpdateTime,
-                  Phone = item.Object.Phone
+                  Phone = item.Object.Phone,
+                  Money = item.Object.Money,
+                  Auth = item.Object.Auth,
+                  Auth_ext = item.Object.Auth_ext,
+                  Avatar = item.Object.Avatar
               }).ToList();
         }
         public async Task<Profiles> GetProfiles(string key)
@@ -154,7 +163,6 @@ namespace ElogictisMobile.Services
             var allPersons = await GetAllProfiles();
             return allPersons.Where(a => a.Id == key).FirstOrDefault();
         }
-
 
         //Method for Notifi
         public ObservableCollection<TransactionHistory> GetAllNotifi()
@@ -197,5 +205,80 @@ namespace ElogictisMobile.Services
             // user is logged in
             tcs.SetResult(true);
         }
+
+        public ObservableCollection<Products> GetAllNewProduct()
+        {
+            var list = (client
+                .Child("Products")
+                .OrderByKey()
+                .AsObservable<Products>()
+                .AsObservableCollection())
+                .Where<Products>(x => x.Status == 1);
+            if(list.Count() == 0)
+            {
+                return new ObservableCollection<Products>();
+            }    
+            return (ObservableCollection<Products>)list;
+        }
+
+        public ObservableCollection<Products> GetAllProductGeted()
+        {
+            var list = (client
+                .Child("Products")
+                .OrderByKey()
+                .AsObservable<Products>()
+                .AsObservableCollection())
+                .Where<Products>(x => x.Holder == LocalContext.Current.AccountSettings.Id);
+
+            return (ObservableCollection<Products>)list;
+        }
+
+        public ObservableCollection<Products> GetAllProductCreated()
+        {
+            var list = (client
+                .Child("Products")
+                .OrderByKey()
+                .AsObservable<Products>()
+                .AsObservableCollection())
+                .Where<Products>(x => x.CreateBy == LocalContext.Current.AccountSettings.Id);
+
+            return (ObservableCollection<Products>)list;
+        }
+
+        public ObservableCollection<Category> GetListProvince()
+        {
+            var list = client
+                .Child("Categories")
+                .Child("Province")
+                .AsObservable<Category>()
+                .AsObservableCollection();
+
+            return list;
+        }
+
+        public ObservableCollection<District> GetListDistrict(string category = null)
+        {
+            var list = client
+                .Child("Categories")
+                .Child("District")
+                .Child(category)
+                .AsObservable<District>()
+                .AsObservableCollection();
+
+            return list;
+        }
+
+        public ObservableCollection<Town> GetListTown(string district = null)
+        {
+            var list = client
+                .Child("Categories")
+                .Child("Town")
+                .Child(district)
+                .AsObservable<Town>()
+                .AsObservableCollection();
+
+            return list;
+        }
+
     }
 }

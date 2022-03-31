@@ -19,6 +19,7 @@ namespace ElogictisMobile.Models
         public string Email { get; set; }
 
         public string Time { get; set; }
+        public string Date { get; set; }
 
         #endregion
     }

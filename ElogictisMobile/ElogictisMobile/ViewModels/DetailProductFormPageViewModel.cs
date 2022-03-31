@@ -18,8 +18,7 @@ namespace ElogictisMobile.ViewModels
     [Preserve(AllMembers = true)]
     public class DetailProductFormPageViewModel : LoginViewModel
     {
-        public Products products;
-        #region Constructor
+        #region Field
         public ValidatableObject<string> fromFullName;
         public ValidatableObject<string> fromPhone;
         public ValidatableObject<string> fromAddress;
@@ -32,11 +31,11 @@ namespace ElogictisMobile.ViewModels
         public ValidatableObject<double> money;
         private INavigationService _navigationService;
 
-        public string TypeProduct { get; set; }
-
-        public bool IsDelete { get; set; }
+        public Category TypeProduct { get; set; }
         public ObservableCollection<Category> TypeProductCollection { get; set; } = ContentData.TypeProductCollection;
 
+        #endregion
+        #region Constructor 
         /// <summary>
         /// Initializes a new instance of the <see cref="AddProductFormPageViewModel" /> class
         /// </summary>
@@ -52,11 +51,11 @@ namespace ElogictisMobile.ViewModels
         #endregion
 
         #region Properties
-
+        public bool IsManage { get; set; } = LocalContext.IsManager;
         /// <summary>
         /// Gets or sets the property that bounds with an entry that gets the From Full Name from user.
         /// </summary>
-
+        public string Status { get; set; } = LocalContext.ProductSelected.Status_ext;
 
         public ValidatableObject<string> FromFullName
         {
@@ -259,7 +258,11 @@ namespace ElogictisMobile.ViewModels
             this.Desciption = new ValidatableObject<string>();
             this.Money = new ValidatableObject<double>();
 
-            
+            var tmp = new Category()
+            {
+                Id = LocalContext.ProductSelected.Type,
+                Name = LocalContext.ProductSelected.Type_ext
+            };
             this.FromFullName.Value = LocalContext.ProductSelected.From_FullName;
             this.FromPhone.Value = LocalContext.ProductSelected.From_PhoneNumber;
             this.FromAddress.Value = LocalContext.ProductSelected.From_Address;
@@ -269,9 +272,8 @@ namespace ElogictisMobile.ViewModels
             this.Weight.Value = double.Parse(LocalContext.ProductSelected.Weight);
             this.Quanlity.Value = int.Parse(LocalContext.ProductSelected.Quanlity);
             this.Desciption.Value = LocalContext.ProductSelected.Description;
-            this.Money.Value = double.Parse(LocalContext.ProductSelected.Money);
-            this.IsDelete = LocalContext.ProductSelected.IsDelete;
-            this.TypeProduct = LocalContext.ProductSelected.Type;
+            this.Money.Value = LocalContext.ProductSelected.Money;
+            this.TypeProduct = tmp;
         }
 
         /// <summary>
@@ -319,24 +321,25 @@ namespace ElogictisMobile.ViewModels
         {
             if (this.AreFieldsValid())
             {
-                Products temp = products;
+                Products temp = LocalContext.ProductSelected;
                 temp.Description = Desciption.Value;
                 temp.From_Address = FromAddress.Value;
                 temp.From_FullName = FromFullName.Value;
                 temp.From_PhoneNumber = FromPhone.Value;
-                temp.LastUpdateBy = LocalContext.Profiles.Email;
+                temp.LastUpdateBy = LocalContext.Current.AccountSettings.Id;
                 temp.LastUpdateTime = DateTime.Now.ToShortDateString();
-                temp.Money = Money.Value.ToString();
+                temp.Money = Money.Value;
                 temp.Quanlity = Quanlity.Value.ToString();
                 temp.To_Address = ToAddress.Value;
                 temp.To_FullName = ToFullName.Value;
                 temp.To_PhoneNumber = ToPhone.Value;
-                temp.Type = TypeProduct;
+                temp.Type = TypeProduct.Id;
+                temp.Type_ext = TypeProduct.Name;
                 temp.Weight = Weight.Value.ToString();
                 temp.Holder = "";
 
                 await RealtimeFirebase.Instance.UpSert("Products", temp.ID, JsonConvert.SerializeObject(temp));
-                await App.Current.MainPage.DisplayAlert("Thông báo", "Thêm đơn hàng thành công!", "OK");
+                await App.Current.MainPage.DisplayAlert("Thông báo", "Cập nhật thành công!", "OK");
                 await _navigationService.GoBackAsync();
             }
         }
@@ -360,7 +363,6 @@ namespace ElogictisMobile.ViewModels
                 await RealtimeFirebase.Instance.UpSert("Products", products.ID, JsonConvert.SerializeObject(products));
                 //await RealtimeFirebase.Instance.Delete("Products", products.ID);
                 await App.Current.MainPage.DisplayAlert("Thông báo", "Đã xóa thông tin đơn hàng thành công", "OK");
-                IsDelete = true;
             }
         }
 

@@ -152,6 +152,12 @@ namespace ElogictisMobile.ViewModels
                                 IsLoading = false;
                                 LocalContext.Profiles = profile;
                                 LocalContext.Current.AccountSettings = profile;
+                                if (LocalContext.Current.AccountSettings.Auth != null)
+                                {
+                                    LocalContext.IsAdmin = LocalContext.Current.GetPermission(4);
+                                    LocalContext.IsManager = LocalContext.Current.GetPermission(3);
+                                    LocalContext.IsShipper = LocalContext.Current.GetPermission(2);
+                                }
                                 await _navigationService.NavigateToAsync<DashboardPageViewModel>();
                             }
                             else
@@ -212,7 +218,6 @@ namespace ElogictisMobile.ViewModels
         {
             // Do something
         }
-
         #endregion
     }
 }

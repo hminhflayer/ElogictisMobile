@@ -1,3 +1,4 @@
+using Syncfusion.SfRotator.XForms.iOS;
 using Syncfusion.XForms.Pickers.iOS;
 using Syncfusion.XForms.iOS.BadgeView;
 using Syncfusion.SfChart.XForms.iOS.Renderers;
@@ -36,6 +37,7 @@ namespace ElogictisMobile.iOS
         public override bool FinishedLaunching(UIApplication app, NSDictionary options)
         {
             global::Xamarin.Forms.Forms.Init();
+            SfRotatorRenderer.Init();
             SfDatePickerRenderer.Init();
             SfBadgeViewRenderer.Init();
             Core.Init();

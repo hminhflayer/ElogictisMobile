@@ -31,7 +31,7 @@ namespace ElogictisMobile.ViewModels
         public ValidatableObject<double> money;
         private INavigationService _navigationService;
 
-        public string TypeProduct { get; set; }
+        public Category TypeProduct { get; set; }
         public ObservableCollection<Category> TypeProductCollection { get; set; } = ContentData.TypeProductCollection;
 
         public ObservableCollection<Category> WeightCollection { get; set; } = ContentData.WeightCollection;
@@ -307,6 +307,11 @@ namespace ElogictisMobile.ViewModels
         /// <param name="obj">The object</param>
         private async void SubmitClicked(object obj)
         {
+            if(LocalContext.Current.AccountSettings.Money == 0)
+            {
+                await App.Current.MainPage.DisplayAlert("Thông báo", "Bạn không còn tiền trong tài khoản!", "OK");
+                return;
+            }    
             if (this.AreFieldsValid())
             {
                 var key = GeneralKey.Instance.General("PRO");
@@ -314,7 +319,7 @@ namespace ElogictisMobile.ViewModels
                 // Do Something
                 var task = await RealtimeFirebase.Instance.UpSert("Products", key, JsonConvert.SerializeObject(new Products
                 {
-                    CreateBy = LocalContext.Profiles.Email,
+                    CreateBy = LocalContext.Current.AccountSettings.Id,
                     CreateTime = DateTime.Now.ToShortDateString(),
                     Description = Desciption.Value,
                     From_Address = FromAddress.Value,
@@ -324,15 +329,18 @@ namespace ElogictisMobile.ViewModels
                     IsDelete = false,
                     LastUpdateBy = "",
                     LastUpdateTime = "",
-                    Money = Money.Value.ToString(),
+                    Money = Money.Value,
                     Quanlity = Quanlity.Value.ToString(),
                     To_Address = ToAddress.Value,
                     To_FullName = ToFullName.Value,
                     To_PhoneNumber = ToPhone.Value,
-                    Type = TypeProduct,
+                    Type = TypeProduct.Id,
+                    Type_ext = TypeProduct.Name,
                     Weight = Weight.Value.ToString(),
                     Status = 1,
-                    Holder = ""
+                    Holder = "",
+                    IsConfirm = false,
+                    Status_ext = "Chờ xác nhận nhận đơn"
                 }));
                 if(task)
                 {
@@ -340,9 +348,10 @@ namespace ElogictisMobile.ViewModels
                     {
                         IdProduct = key,
                         TransactionDescription = "CHỜ XÁC NHẬN",
-                        Time = DateTime.Now.ToShortDateString(),
+                        Date = DateTime.Now.ToShortDateString(),
+                        Time = DateTime.Now.ToShortTimeString(),
                         Email = LocalContext.Profiles.Email
-                    }));
+                    })); ;
                     await App.Current.MainPage.DisplayAlert("Thông báo", "Thêm đơn hàng thành công!", "OK");
                 }  
                 else
@@ -350,6 +359,11 @@ namespace ElogictisMobile.ViewModels
                     await App.Current.MainPage.DisplayAlert("Thông báo", "Thêm đơn hàng không thành công!", "OK");
                 }    
             }
+        }
+
+        public void BindingShipMoney()
+        {
+
         }
 
         #endregion

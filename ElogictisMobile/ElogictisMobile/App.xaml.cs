@@ -9,6 +9,9 @@ using System.Threading.Tasks;
 using Xamarin.Forms;
 using System.Reactive.Linq;
 using Xamarin.Forms.Xaml;
+using System.IO;
+using Newtonsoft.Json;
+using ElogictisMobile.Services;
 
 [assembly: ExportFont("Montserrat-Bold.ttf",Alias="Montserrat-Bold")]
      [assembly: ExportFont("Montserrat-Medium.ttf", Alias = "Montserrat-Medium")]
@@ -34,15 +37,20 @@ namespace ElogictisMobile
             
             if (LocalContext.Current.AccountSettings.Id != null)
             {
+                if (LocalContext.Current.AccountSettings.Auth != null)
+                {
+                    LocalContext.IsAdmin = LocalContext.Current.GetPermission(4);
+                    LocalContext.IsManager = LocalContext.Current.GetPermission(3);
+                    LocalContext.IsShipper = LocalContext.Current.GetPermission(2);
+                }
                 return navigationService.NavigateToAsync<DashboardPageViewModel>();
             }
             return navigationService.NavigateToAsync<LoginPageViewModel>(null, true);
         }
-
-
         protected override async void OnStart()
         {
             base.OnStart();
+            LocalContext.ProvinceList = RealtimeFirebase.Instance.GetListProvince();
             await InitNavigation();   
             base.OnResume();
         }

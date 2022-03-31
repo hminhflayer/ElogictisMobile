@@ -1,0 +1,68 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="ElogictisMobile.Views.ManageAgencyPage"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:behavior="clr-namespace:ElogictisMobile.Behaviors"
+    xmlns:button="clr-namespace:Syncfusion.XForms.Buttons;assembly=Syncfusion.Buttons.XForms"
+    xmlns:core="clr-namespace:Syncfusion.XForms.Core;assembly=Syncfusion.Core.XForms"
+    xmlns:gradient="clr-namespace:Syncfusion.XForms.Graphics;assembly=Syncfusion.Core.XForms"
+    xmlns:rotator="clr-namespace:Syncfusion.SfRotator.XForms;assembly=Syncfusion.SfRotator.XForms"
+    xmlns:viewModel="clr-namespace:ElogictisMobile.ViewModels"
+    Title="Quản lý đại lý"
+    NavigationPage.HasBackButton="True"
+    NavigationPage.HasNavigationBar="True">
+    <ContentPage.Content>
+
+        <ScrollView>
+            <Grid
+            ColumnSpacing="0"
+            RowDefinitions="Auto, Auto, *"
+            RowSpacing="0">
+
+                <button:SfButton
+                    Margin="0,16,0,16"
+                    Style="{StaticResource GradientButtonStyle}"
+                    WidthRequest="200" 
+                    Text="Thêm"
+                    Command="{Binding AddProductCommand}"/>
+                <!--<SearchBar x:Name="filterText" HeightRequest="40"
+                   Placeholder="Search here to filter" Grid.Row="0"/>-->
+                <ListView Grid.Row="1" ItemsSource="{Binding ContactList}" SelectionMode="None"
+                          HasUnevenRows="True" ItemTapped="ListView_ItemTapped">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <ViewCell>
+                                <StackLayout Orientation="Vertical" Spacing="16" Padding="16">
+                                    <StackLayout BackgroundColor="#2196F3">
+                                        <Label
+                                            Margin="0,5,0,5"
+                                            FontFamily="Montserrat-SemiBold"
+                                            FontSize="20"
+                                            HorizontalOptions="CenterAndExpand"
+                                            Text="{Binding Status_ext}"
+                                            TextColor="White"/>
+                                    </StackLayout>
+                                    <StackLayout Orientation="Horizontal">
+                                        <Label Text="{Binding From_FullName, StringFormat='Từ: {0}'}"
+                                               FontSize="18"
+                                               FontAttributes="Bold"/>
+                                        <Label Text="{Binding From_PhoneNumber}"
+                                               FontSize="18"/>
+                                    </StackLayout>
+                                    <StackLayout Orientation="Horizontal">
+                                        <Label Text="{Binding To_FullName, StringFormat='Đến: {0}'}"
+                                               FontSize="18"
+                                               FontAttributes="Bold"/>
+                                        <Label Text="{Binding To_PhoneNumber}"
+                                               FontSize="18"/>
+                                    </StackLayout>
+                                </StackLayout>
+                            </ViewCell>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </Grid>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>

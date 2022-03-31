@@ -173,6 +173,9 @@
     <PackageReference Include="Syncfusion.Xamarin.SfRating">
       <Version>19.4.0.54</Version>
     </PackageReference>
+    <PackageReference Include="Syncfusion.Xamarin.SfRotator">
+      <Version>19.4.0.54</Version>
+    </PackageReference>
     <PackageReference Include="Xam.Plugins.Forms.ImageCircle">
       <Version>3.0.0.5</Version>
     </PackageReference>
@@ -186,5 +189,13 @@
       <Name>ElogictisMobile</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <BundleResource Include="Resources\TimeZone.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\ReSchedule.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\ViewMode.png" />
+  </ItemGroup>
 </Project>

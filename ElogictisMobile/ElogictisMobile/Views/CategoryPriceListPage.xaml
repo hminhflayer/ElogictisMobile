@@ -36,15 +36,32 @@
                     Text="Thêm"
                     Command="{Binding AddPriceListCommand}"/>
                 <ListView Grid.Row="1" ItemsSource="{Binding PricesList}" SelectionMode="None"
-                          HasUnevenRows="True">
+                          HasUnevenRows="True" ItemTapped="ListView_ItemTapped">
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <ViewCell>
                                 <StackLayout Orientation="Vertical" Spacing="16" Padding="16">
-                                    <StackLayout Orientation="Horizontal">
-                                        <Label Text="{Binding From_Kilimeter}"
+                                    <StackLayout Orientation="Vertical">
+                                        <StackLayout BackgroundColor="Blue">
+                                            <Label Text="{Binding TypeProduct_ext}"
+                                               FontSize="18"
+                                               FontAttributes="Bold"
+                                               TextColor="White"
+                                               HorizontalOptions="CenterAndExpand"/>
+                                        </StackLayout>
+                                        <StackLayout Orientation="Horizontal">
+                                            <Label Text="{Binding From_Kilometer, StringFormat='Khoảng cách từ: {0} Km'}"
                                                FontSize="18"/>
-                                        <Label Text="{Binding To_Kilimeter}"
+                                            <Label Text="{Binding To_Kilometer, StringFormat='Đến: {0} Km'}"
+                                               FontSize="18"/>
+                                        </StackLayout>
+                                        <StackLayout Orientation="Horizontal">
+                                            <Label Text="{Binding From_Weight, StringFormat='Trọng lượng từ: {0} Kg'}"
+                                               FontSize="18"/>
+                                            <Label Text="{Binding To_Weight, StringFormat='Đến: {0} kg'}"
+                                               FontSize="18"/>
+                                        </StackLayout>
+                                        <Label Text="{Binding Price, StringFormat='GIÁ TIỀN: {0:C} VND'}"
                                                FontSize="18"
                                                FontAttributes="Bold"/>
                                     </StackLayout>

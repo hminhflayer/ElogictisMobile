@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.ObjectModel;
 using ElogictisMobile.Models;
 using ElogictisMobile.Services;
 using ElogictisMobile.Validators;
@@ -17,9 +18,13 @@ namespace ElogictisMobile.ViewModels
     {
         #region Fields
 
-        private ValidatableObject<string> name;
+        private ValidatableObject<string> fromKilometer;
+        private ValidatableObject<string> toKilometer;
+        private ValidatableObject<string> fromWeight;
+        private ValidatableObject<string> toWeight;
+        private ValidatableObject<string> price;
 
-        private Command<object> addCategoryTypeProductCommand;
+        private Command<object> addPriceListCommand;
 
         #endregion
 
@@ -37,28 +42,97 @@ namespace ElogictisMobile.ViewModels
         #endregion
 
         #region Property
+        public Category TypeProduct { get; set; }
+        public ObservableCollection<Category> TypeProductCollection { get; set; } = RealtimeFirebase.Instance.GetAllCategory<Category>("TypeProduct");
 
         /// <summary>
         /// Gets or sets the FirstName
         /// </summary>
-        public ValidatableObject<string> Name
+        public ValidatableObject<string> FromKilometer
         {
             get
             {
-                return this.name;
+                return this.fromKilometer;
             }
 
             set
             {
-                if (this.name == value)
+                if (this.fromKilometer == value)
                 {
                     return;
                 }
 
-                this.SetProperty(ref this.name, value);
+                this.SetProperty(ref this.fromKilometer, value);
             }
         }
+        public ValidatableObject<string> ToKilometer
+        {
+            get
+            {
+                return this.toKilometer;
+            }
 
+            set
+            {
+                if (this.toKilometer == value)
+                {
+                    return;
+                }
+
+                this.SetProperty(ref this.toKilometer, value);
+            }
+        }
+        public ValidatableObject<string> FromWeight
+        {
+            get
+            {
+                return this.fromWeight;
+            }
+
+            set
+            {
+                if (this.fromWeight == value)
+                {
+                    return;
+                }
+
+                this.SetProperty(ref this.fromWeight, value);
+            }
+        }
+        public ValidatableObject<string> ToWeight
+        {
+            get
+            {
+                return this.toWeight;
+            }
+
+            set
+            {
+                if (this.toWeight == value)
+                {
+                    return;
+                }
+
+                this.SetProperty(ref this.toWeight, value);
+            }
+        }
+        public ValidatableObject<string> Price
+        {
+            get
+            {
+                return this.price;
+            }
+
+            set
+            {
+                if (this.price == value)
+                {
+                    return;
+                }
+
+                this.SetProperty(ref this.price, value);
+            }
+        }
         #endregion
 
         #region Command
@@ -66,11 +140,11 @@ namespace ElogictisMobile.ViewModels
         /// <summary>
         /// Gets the command that will be executed when an add profile button is clicked.
         /// </summary>
-        public Command<object> AddCategoryTypeProductCommand
+        public Command<object> AddPriceListCommand
         {
             get
             {
-                return this.addCategoryTypeProductCommand ?? (this.addCategoryTypeProductCommand = new Command<object>(this.AddCategoryTypeProductClicked));
+                return this.addPriceListCommand ?? (this.addPriceListCommand = new Command<object>(this.AddPriceListClicked));
             }
         }
 
@@ -84,8 +158,12 @@ namespace ElogictisMobile.ViewModels
         /// <returns>Returns the names are valid or not</returns>
         public bool AreNamesValid()
         {
-            bool isNameValid = this.Name.Validate();
-            return isNameValid ;
+            bool isFromKilometerValid = this.FromKilometer.Validate();
+            bool isToKilometerValid = this.ToKilometer.Validate();
+            bool isFromWeightValid = this.FromWeight.Validate();
+            bool isToWeightValid = this.ToWeight.Validate();
+            bool iPriceValid = this.Price.Validate();
+            return isFromKilometerValid && isToKilometerValid && isFromWeightValid && isToWeightValid && iPriceValid;
         }
 
         /// <summary>
@@ -93,7 +171,11 @@ namespace ElogictisMobile.ViewModels
         /// </summary>
         private void InitializeProperties()
         {
-            this.Name = new ValidatableObject<string>();
+            this.FromKilometer = new ValidatableObject<string>();
+            this.ToKilometer = new ValidatableObject<string>();
+            this.FromWeight = new ValidatableObject<string>();
+            this.ToWeight = new ValidatableObject<string>();
+            this.Price = new ValidatableObject<string>();
         }
 
         /// <summary>
@@ -101,33 +183,44 @@ namespace ElogictisMobile.ViewModels
         /// </summary>
         private void AddValidationRules()
         {
-            this.Name.Validations.Add(new IsNotNullOrEmptyRule<string> { ValidationMessage = "Tên loại hàng không được trống" });
+            this.FromKilometer.Validations.Add(new IsNotNullOrEmptyRule<string> { ValidationMessage = "Khoảng cách tối thiểu không được trống" });
+            this.ToKilometer.Validations.Add(new IsNotNullOrEmptyRule<string> { ValidationMessage = "Khoảng cách tối đa không được trống" });
+            this.FromWeight.Validations.Add(new IsNotNullOrEmptyRule<string> { ValidationMessage = "Trọng lượng tối thiểu không được trống" });
+            this.ToWeight.Validations.Add(new IsNotNullOrEmptyRule<string> { ValidationMessage = "Trọng lượng tối đa không được trống" });
+            this.Price.Validations.Add(new IsNotNullOrEmptyRule<string> { ValidationMessage = "Giá tiền không được trống" });
         }
 
         /// <summary>
         /// Invoked when add contact button is clicked from the add profile page.
         /// </summary>
         /// <param name="obj">Selected item from the list view.</param>
-        private async void AddCategoryTypeProductClicked(object obj)
+        private async void AddPriceListClicked(object obj)
         {
             try
             {
                 if (this.AreNamesValid())
                 {
-                    var key = GeneralKey.Instance.General("CTP");
-                    Category category = new Category()
+                    var key = GeneralKey.Instance.General("PRL");
+                    PriceList priceList = new PriceList()
                     {
-                        Name = Name.Value,
-                        Id = key
+                        Id = key,
+                        From_Kilometer = this.FromKilometer.Value,
+                        To_Kilometer = this.ToKilometer.Value,
+                        From_Weight = this.FromWeight.Value,
+                        To_Weight = this.ToWeight.Value,
+                        Price = this.Price.Value,
+                        IsDelete = false,
+                        TypeProduct = this.TypeProduct.Id,
+                        TypeProduct_ext = this.TypeProduct.Name
                     };
 
                     IsLoading = true;
                     // Do Something
-                    var upSert = await RealtimeFirebase.Instance.UpSert("Categories/TypeProduct", key, JsonConvert.SerializeObject(category));
+                    var upSert = await RealtimeFirebase.Instance.UpSert("Categories/PricesList", key, JsonConvert.SerializeObject(priceList));
                     if (upSert)
                     {
                         IsLoading = false;
-                        await App.Current.MainPage.DisplayAlert("Thông báo", "Đã thêm loại đơn hàng thành công", "OK");
+                        await App.Current.MainPage.DisplayAlert("Thông báo", "Thêm thành công", "OK");
                     }
                 }
             }

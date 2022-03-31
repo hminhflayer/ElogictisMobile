@@ -15,8 +15,9 @@ namespace ElogictisMobile.Models
         public string To_Address { get; set; }
         public string Weight { get; set; }
         public string Quanlity { get; set; }
-        public string Money { get; set; }
+        public double Money { get; set; }
         public string Type { get; set; }
+        public string Type_ext { get; set; }
         public string Description { get; set; }
         public string CreateTime { get; set; }
         public string CreateBy { get; set; }
@@ -26,11 +27,15 @@ namespace ElogictisMobile.Models
         /*
          *STATUS:
          *1:Wait for confirmation
-         *2:Delivering
-         *3:Delivered Success
-         *4:Cancel
+         *2:Confirm
+         *3:Confirm get
+         *4:Delivering
+         *5:Delivered Success
+         *6:Cancel
          */
         public int Status { get; set; }
+        public string Status_ext { get; set; }
+        public bool IsConfirm { get; set; }
         public string Holder { get; set; }
     }
 }

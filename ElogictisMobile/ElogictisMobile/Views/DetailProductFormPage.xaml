@@ -33,6 +33,17 @@
                 Padding="16,24"
                 BackgroundColor="{DynamicResource Gray-100}"
                 Spacing="16">
+                <StackLayout BackgroundColor="#2196F3">
+                    <Label
+                    Margin="0,5,0,5"
+                    FontFamily="Montserrat-SemiBold"
+                    FontSize="20"
+                    HorizontalOptions="CenterAndExpand"
+                    LineHeight="{OnPlatform Default=-1,
+                                            Android=1.25}"
+                    Text="{Binding Status}"
+                    TextColor="White"/>
+                </StackLayout>
                 <Label
                     Margin="0,0,0,10"
                     FontFamily="Montserrat-SemiBold"
@@ -54,7 +65,8 @@
                                 HeightRequest="40"
                                 Placeholder="Họ và tên"
                                 Style="{StaticResource BorderlessEntryStyle}"
-                                Text="{Binding FromFullName.Value}" />
+                                Text="{Binding FromFullName.Value}" 
+                                IsReadOnly="True"/>
                             <!--  Label to display error icon  -->
                             <Label
                                     Grid.Column="1"
@@ -84,7 +96,8 @@
                                 Keyboard="Telephone"
                                 Placeholder="Số điện thoại"
                                 Style="{StaticResource BorderlessEntryStyle}"
-                                Text="{Binding FromPhone.Value}" >
+                                Text="{Binding FromPhone.Value}" 
+                                IsReadOnly="True">
                                 <controls:BorderlessEntry.Behaviors>
                                     <behaviours:EntryMaskedBehavior Mask="(+84)XXX-XXX-XXX" Prefix="(+84)"/>
                                 </controls:BorderlessEntry.Behaviors>
@@ -118,7 +131,8 @@
                                 HeightRequest="40"
                                 Placeholder="Địa chỉ"
                                 Style="{StaticResource BorderlessEntryStyle}"
-                                Text="{Binding FromAddress.Value}" />
+                                Text="{Binding FromAddress.Value}" 
+                                IsReadOnly="True"/>
                             <Label
                                 Grid.Column="1"
                                 IsVisible="{Binding Path=IsVisible, Source={x:Reference FromAddressValidationLabel}}"
@@ -158,7 +172,8 @@
                                 HeightRequest="40"
                                 Placeholder="Họ và tên"
                                 Style="{StaticResource BorderlessEntryStyle}"
-                                Text="{Binding ToFullName.Value}" />
+                                Text="{Binding ToFullName.Value}" 
+                                IsReadOnly="True"/>
                             <Label
                                 Grid.Column="1"
                                 IsVisible="{Binding Path=IsVisible, Source={x:Reference ToFullNameValidationLabel}}"
@@ -187,7 +202,8 @@
                                 Keyboard="Telephone"
                                 Placeholder="Số điện thoại"
                                 Style="{StaticResource BorderlessEntryStyle}"
-                                Text="{Binding ToPhone.Value}">
+                                Text="{Binding ToPhone.Value}"
+                                IsReadOnly="True">
                                 <controls:BorderlessEntry.Behaviors>
                                     <behaviours:EntryMaskedBehavior Mask="(+84)XXX-XXX-XXX" Prefix="(+84)"/>
                                 </controls:BorderlessEntry.Behaviors>
@@ -220,7 +236,8 @@
                                 HeightRequest="40"
                                 Placeholder="Địa chỉ"
                                 Style="{StaticResource BorderlessEntryStyle}"
-                                Text="{Binding ToAddress.Value}" />
+                                Text="{Binding ToAddress.Value}" 
+                                IsReadOnly="True"/>
                             <Label
                                 Grid.Column="1"
                                 IsVisible="{Binding Path=IsVisible, Source={x:Reference ToAddressValidationLabel}}"
@@ -256,7 +273,10 @@
                                          DataSource="{Binding TypeProductCollection}" 
                                          DisplayMemberPath="Name" 
                                          SelectedValuePath="Id"
-                                         SelectedValue="{Binding TypeProduct}"/>
+                                         SelectedItem="{Binding TypeProduct}"
+                                         IsEditableMode="False"
+                                         ShowClearButton="False"
+                                         IsEnabled="False"/>
                 </StackLayout>
                 <StackLayout Grid.Row="8">
                     <Label
@@ -318,7 +338,7 @@
                     FontFamily="Montserrat-Medium"
                     FontSize="12"
                     HeightRequest="18"
-                    Text="Thu tiền hộ (COD)"
+                    Text="Phí vận chuyển"
                     TextColor="{DynamicResource Gray-800}" />
 
                     <border:SfBorder BorderColor="{Binding Source={x:Reference MoneyEntry}, Path=IsFocused, Converter={StaticResource ColorConverter}, ConverterParameter=3}" Style="{StaticResource DataFormBorderlessEntryBorderStyle}">
@@ -333,7 +353,9 @@
                     </border:SfBorder>
                 </StackLayout>
 
-                <StackLayout Orientation="Horizontal" HorizontalOptions="CenterAndExpand" IsVisible="{Binding IsDelete}">
+                <StackLayout Orientation="Horizontal" 
+                             HorizontalOptions="CenterAndExpand" 
+                             IsVisible="{Binding IsManage}">
                     <buttons:SfButton
                     Margin="0,16,0,0"
                     Style="{StaticResource GradientButtonStyle}"
@@ -350,6 +372,14 @@
                     WidthRequest="60" />
                 </StackLayout>
 
+                <StackLayout Orientation="Horizontal" HorizontalOptions="CenterAndExpand">
+                    <buttons:SfButton
+                    Margin="0,16,0,0"
+                    Style="{StaticResource DangerButtonStyle}"
+                    Text="Hủy đơn"
+                    WidthRequest="200" 
+                    Command="{Binding CancelProductCommand}"/>
+                </StackLayout>
             </StackLayout>
         </ScrollView>
     </ContentPage.Content>

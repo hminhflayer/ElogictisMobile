@@ -40,7 +40,6 @@ namespace ElogictisMobile.ViewModels
             set => SetProperty(ref _isLoading, value);
         }
 
-
         #endregion
 
         #region Event handler

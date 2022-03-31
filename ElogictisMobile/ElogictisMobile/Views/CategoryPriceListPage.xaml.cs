@@ -1,4 +1,5 @@
-﻿using Xamarin.Forms.Internals;
+﻿using ElogictisMobile.ViewModels;
+using Xamarin.Forms.Internals;
 using Xamarin.Forms.Xaml;
 
 namespace ElogictisMobile.Views
@@ -16,6 +17,13 @@ namespace ElogictisMobile.Views
         public CategoryPriceListPage()
         {
             this.InitializeComponent();
+        }
+        private void ListView_ItemTapped(object sender, Xamarin.Forms.ItemTappedEventArgs e)
+        {
+            if (this.BindingContext is CategoryPriceListPageViewModel vm)
+            {
+                vm.ItemTappedCommand.Execute(e.Item);
+            }
         }
     }
 }

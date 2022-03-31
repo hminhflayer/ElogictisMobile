@@ -10,7 +10,7 @@
     xmlns:converter="clr-namespace:ElogictisMobile.Converters"
     xmlns:sfavatar="clr-namespace:Syncfusion.XForms.AvatarView;assembly=Syncfusion.Core.XForms"
     xmlns:ViewModel="clr-namespace:ElogictisMobile.ViewModels" 
-    xmlns:behaviour="clr-namespace:ElogictisMobile.Behaviors"
+    xmlns:behaviour="clr-namespace:ElogictisMobile.Behaviors" xmlns:CI="clr-namespace:ImageCircle.Forms.Plugin.Abstractions;assembly=ImageCircle.Forms.Plugin"
     BackgroundColor="{DynamicResource Gray-Bg}"
     NavigationPage.HasNavigationBar="True"
     NavigationPage.HasBackButton="True"
@@ -58,7 +58,7 @@
                     </StackLayout>-->
                     <Grid>
                         <!--  Avatar view to display the profile picture  -->
-                        <sfavatar:SfAvatarView
+                        <!--<sfavatar:SfAvatarView
                             Padding="13"
                             BackgroundColor="{DynamicResource Gray-200}"
                             BorderWidth="0"
@@ -71,11 +71,15 @@
                             <sfavatar:SfAvatarView.ImageSource>
                                 <FontImageSource
                                     FontFamily="FontIcons"
-                                    Glyph="{StaticResource Contact}"
+                                    Glyph="{Binding Avatar}"
                                     Size="29"
                                     Color="{DynamicResource Gray-600}" />
                             </sfavatar:SfAvatarView.ImageSource>
-                        </sfavatar:SfAvatarView>
+                        </sfavatar:SfAvatarView>-->
+                        <CI:CircleImage Source="{Binding Avatar}"
+                                        BackgroundColor="{DynamicResource Gray-200}"
+                                        HeightRequest="80"
+                                        WidthRequest="80"/>
 
                         <border:SfBorder HorizontalOptions="Center" VerticalOptions="Center" 
                         HeightRequest="110" WidthRequest="110" BorderColor="Transparent" >
@@ -169,7 +173,6 @@
                             </control:BorderlessEntry.Behaviors>
                         </control:BorderlessEntry>
                     </border:SfBorder>
-
                     <buttons:SfButton
                     Margin="0,16,0,0"
                     Style="{StaticResource GradientButtonStyle}"

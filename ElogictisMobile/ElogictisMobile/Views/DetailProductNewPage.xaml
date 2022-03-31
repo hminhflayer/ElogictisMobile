@@ -1,0 +1,143 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="ElogictisMobile.Views.DetailProductNewPage"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:button="clr-namespace:Syncfusion.XForms.Buttons;assembly=Syncfusion.Buttons.XForms"
+    xmlns:core="clr-namespace:Syncfusion.XForms.Core;assembly=Syncfusion.Core.XForms"
+    xmlns:svg="clr-namespace:ElogictisMobile.Controls" 
+    xmlns:converter="clr-namespace:ElogictisMobile.Converters" xmlns:border="clr-namespace:Syncfusion.XForms.Border;assembly=Syncfusion.Core.XForms" xmlns:combobox="clr-namespace:Syncfusion.XForms.ComboBox;assembly=Syncfusion.SfComboBox.XForms" xmlns:behaviours="clr-namespace:ElogictisMobile.Behaviors"
+    BackgroundColor="{StaticResource Gray-White}"
+    Title="Chi tiết đơn hàng"
+    NavigationPage.HasNavigationBar="True"
+    NavigationPage.HasBackButton="True">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converter:BooleanToColorConverter x:Key="ColorConverter" />
+            <converter:InverseBoolConverter x:Key="InverseBoolConverter" />
+            <converter:NameValidationConverter x:Key="FirstValidationErrorConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    <ContentPage.Content>
+
+        <ScrollView>
+            <StackLayout
+                Padding="16,24"
+                BackgroundColor="{DynamicResource Gray-100}"
+                Spacing="16">
+                <StackLayout Orientation="Vertical">
+                    <!--From-->
+                    <Label Text="Thông tin người gửi" FontSize="22" 
+                           FontAttributes="Bold"
+                           TextColor="#2196F3"/>
+                    <StackLayout Orientation="Horizontal" Margin="30,0,0,0">
+                        <Label Text="Họ và tên: "
+                               FontSize="18"
+                               FontAttributes="Bold"/>
+                        <Label Text="{Binding FromFullName}"
+                               FontSize="20"
+                               FontAttributes="Bold"/>
+                    </StackLayout>
+                    <StackLayout Orientation="Horizontal" Margin="30,0,0,0">
+                        <Label Text="Số điện thoại: "
+                               FontSize="18"
+                               FontAttributes="Bold"/>
+                        <Label Text="{Binding FromPhoneNumber}"
+                               FontSize="18"
+                               FontAttributes="Bold"/>
+                    </StackLayout>
+                    <StackLayout Orientation="Horizontal" Margin="30,0,0,0">
+                        <Label Text="Địa chỉ: "
+                               FontSize="18"
+                               FontAttributes="Bold"/>
+                        <Label Text="{Binding FromAddress}"
+                               FontSize="18"
+                               FontAttributes="Bold"/>
+                    </StackLayout>
+                    <!--To-->
+                    <Label Text="Thông tin người nhận" FontSize="22" 
+                           FontAttributes="Bold"
+                           TextColor="#2196F3"/>
+                    <StackLayout Orientation="Horizontal" Margin="30,0,0,0">
+                        <Label Text="Họ và tên: "
+                               FontSize="18"
+                               FontAttributes="Bold"/>
+                        <Label Text="{Binding ToFullName}"
+                               FontSize="18"
+                               FontAttributes="Bold"/>
+                    </StackLayout>
+                    <StackLayout Orientation="Horizontal" Margin="30,0,0,0">
+                        <Label Text="Số điện thoại: "
+                               FontSize="18"
+                               FontAttributes="Bold"/>
+                        <Label Text="{Binding ToPhoneNumber}"
+                               FontSize="18"
+                               FontAttributes="Bold"/>
+                    </StackLayout>
+                    <StackLayout Orientation="Horizontal" Margin="30,0,0,0">
+                        <Label Text="Địa chỉ: "
+                               FontSize="18"
+                               FontAttributes="Bold"/>
+                        <Label Text="{Binding ToAddress}"
+                               FontSize="18"
+                               FontAttributes="Bold"/>
+                    </StackLayout>
+                    <!--Info-->
+                    <Label Text="Thông tin đơn hàng" FontSize="22" 
+                           FontAttributes="Bold"
+                           TextColor="#2196F3"/>
+                    <StackLayout Orientation="Horizontal" Margin="30,0,0,0">
+                        <Label Text="Loại hàng: "
+                               FontSize="18"
+                               FontAttributes="Bold"/>
+                        <Label Text="{Binding TypeProduct}"
+                               FontSize="18"
+                               FontAttributes="Bold"/>
+                    </StackLayout>
+                    <StackLayout Orientation="Horizontal" Margin="30,0,0,0">
+                        <Label Text="Số lượng kiện hàng: "
+                               FontSize="18"
+                               FontAttributes="Bold"/>
+                        <Label Text="{Binding Quantity}"
+                               FontSize="18"
+                               FontAttributes="Bold"/>
+                    </StackLayout>
+                    <StackLayout Orientation="Horizontal" Margin="30,0,0,0">
+                        <Label Text="Tổng trọng lượng: "
+                               FontSize="18"
+                               FontAttributes="Bold"/>
+                        <Label Text="{Binding TotalWeight}"
+                               FontSize="18"
+                               FontAttributes="Bold"/>
+                    </StackLayout>
+                    <StackLayout Orientation="Horizontal" Margin="30,0,0,0">
+                        <Label Text="Ghi chú: "
+                               FontSize="18"
+                               FontAttributes="Bold"/>
+                        <Label Text="{Binding Description}"
+                               FontSize="18"
+                               FontAttributes="Bold"/>
+                    </StackLayout>
+                    <Label Text="{Binding Money,StringFormat='Phí vận chuyển: {0} VNĐ'}"
+                           FontSize="20"
+                           FontAttributes="Bold"
+                           TextColor="#2196F3"/>
+                </StackLayout>
+
+                <StackLayout Orientation="Horizontal" HorizontalOptions="CenterAndExpand" IsVisible="{Binding IsManage}">
+                    <button:SfButton
+                    Margin="0,16,0,0"
+                    Style="{StaticResource GradientButtonStyle}"
+                    Text="Nhận đơn hàng"
+                    WidthRequest="200" 
+                    Command="{Binding ConfirmProductCommand}"/>
+
+                </StackLayout>
+
+            </StackLayout>
+        </ScrollView>
+
+    </ContentPage.Content>
+
+</ContentPage>

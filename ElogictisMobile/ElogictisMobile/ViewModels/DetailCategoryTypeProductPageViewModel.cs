@@ -155,9 +155,29 @@ namespace ElogictisMobile.ViewModels
         /// Invoked when add profile button is clicked from the add profile page.
         /// </summary>
         /// <param name="obj">Selected item from the list view.</param>
-        private void DeleteClicked(object obj)
+        private async void DeleteClicked(object obj)
         {
             // Do something
+            try
+            {
+                var action = await App.Current.MainPage.DisplayAlert("Thông báo", "Bạn có thực sự muốn xóa thông tin đơn hàng này?", "Đúng", "Không");
+                if (action)
+                {
+                    var del = await RealtimeFirebase.Instance.Delete("Categories/TypeProduct", LocalContext.CategorySelected.Id);
+                    if (del)
+                    {
+                        await App.Current.MainPage.DisplayAlert("Thông báo", "Đã xóa thành công", "OK");
+                    }
+                    else
+                    {
+                        await App.Current.MainPage.DisplayAlert("Thông báo", "Có lỗi khi xóa", "OK");
+                    }
+                }
+            }
+            catch(Exception ex)
+            {
+                await App.Current.MainPage.DisplayAlert("Thông báo", ex.Message, "OK");
+            }
         }
 
         #endregion

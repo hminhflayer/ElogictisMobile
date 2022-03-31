@@ -18,6 +18,10 @@ namespace ElogictisMobile.ViewModels
         private INavigationService _navigationService;
         private IAccountService _accountService;
         #endregion
+        #region Properties
+        public bool IsManage { get; set; } = LocalContext.IsAdmin? LocalContext.IsAdmin:LocalContext.IsManager? LocalContext.IsManager: false;
+        public bool IsAdmin { get; set; } = LocalContext.IsAdmin;
+        #endregion
         #region Constructor
 
         /// <summary>
@@ -39,6 +43,9 @@ namespace ElogictisMobile.ViewModels
             this.ManageProfilesCommand = new Command(this.ManageProfilesClicked);
             this.CategoryTypeProductCommand = new Command(this.CategoryTypeProdcutClicked);
             this.CategoryPriceListCommand = new Command(this.CategoryPriceListClicked);
+            this.ProductNewCommand = new Command(this.ManageProductNewClicked);
+            this.AgencyCommand = new Command(this.ManageAgencyClicked);
+            this.ProvinceCommand = new Command(this.ManageProvinceClicked);
             this.LogoutCommand = new Command(this.LogoutClicked);
         }
 
@@ -89,6 +96,10 @@ namespace ElogictisMobile.ViewModels
         public Command CategoryTypeProductCommand { get; set; }
 
         public Command CategoryPriceListCommand { get; set; }
+        public Command ProductNewCommand { get; set; }
+        public Command AgencyCommand { get; set; }
+        public Command ProvinceCommand { get; set; }
+
 
         /// <summary>
         /// Gets or sets the command is executed when the logout is clicked.
@@ -230,6 +241,45 @@ namespace ElogictisMobile.ViewModels
             try
             {
                 await _navigationService.NavigateToAsync<CategoryPriceListPageViewModel>();
+            }
+            catch (Exception ex)
+            {
+                await App.Current.MainPage.DisplayAlert("Thông báo", ex.Message, "OK");
+            }
+        }
+
+        private async void ManageProductNewClicked(object obj)
+        {
+            // Do something
+            try
+            {
+                await _navigationService.NavigateToAsync<ManageProductNewPageViewModel>();
+            }
+            catch (Exception ex)
+            {
+                await App.Current.MainPage.DisplayAlert("Thông báo", ex.Message, "OK");
+            }
+        }
+
+        private async void ManageAgencyClicked(object obj)
+        {
+            // Do something
+            try
+            {
+                await _navigationService.NavigateToAsync<ManageAgencyPageViewModel>();
+            }
+            catch (Exception ex)
+            {
+                await App.Current.MainPage.DisplayAlert("Thông báo", ex.Message, "OK");
+            }
+        }
+
+        private async void ManageProvinceClicked(object obj)
+        {
+            // Do something
+            try
+            {
+                await _navigationService.NavigateToAsync<ManageProvincePageViewModel>();
             }
             catch (Exception ex)
             {

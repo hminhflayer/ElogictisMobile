@@ -70,12 +70,6 @@ namespace ElogictisMobile.ViewModels
             {
                 new HealthCare()
                 {
-                    Category = "Tổng chi phí thu hộ (COD)",
-                    CategoryValue = "0 VNĐ",
-                    BackgroundGradientStart = "#cf86ff",
-                },
-                new HealthCare()
-                {
                     Category = "Tổng chi phí vận chuyển",
                     CategoryValue = "0 VNĐ",
                     BackgroundGradientStart = "#8691ff",
@@ -85,6 +79,12 @@ namespace ElogictisMobile.ViewModels
                     Category = "Tổng chi phí vận chuyển trong tháng",
                     CategoryValue = "0 VNĐ",
                     BackgroundGradientStart = "#ff9686",
+                },
+                new HealthCare()
+                {
+                    Category = "Số tiền trong tài khoản",
+                    CategoryValue = LocalContext.Current.AccountSettings.Money +" VNĐ",
+                    BackgroundGradientStart = "#cf86ff",
                 },
             };
 

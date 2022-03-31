@@ -18,5 +18,10 @@ namespace ElogictisMobile.Views
         {
             this.InitializeComponent();
         }
+
+        private void WeightEntry_TextChanged(object sender, TextChangedEventArgs e)
+        {
+
+        }
     }
 }

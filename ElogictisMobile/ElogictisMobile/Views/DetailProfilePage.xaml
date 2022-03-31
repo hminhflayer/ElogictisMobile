@@ -76,6 +76,13 @@
                         </border:SfBorder.Content>
                     </border:SfBorder>
                 </Grid>
+                <StackLayout Orientation="Horizontal" Padding="12,8" Margin="0,8,0,0">
+                    <Label Text="Tiền trong tài khoản: "
+                           FontSize="18"/>
+                    <Label Text="{Binding Money, StringFormat='{0:#,0.#0} VNĐ'}"
+                       FontAttributes="Bold"
+                           FontSize="18"/>
+                </StackLayout>
 
                 <StackLayout>
                     <!--  Full name entry with border  -->
@@ -158,33 +165,52 @@
                 </border:SfBorder>
                 
                 <!--  Auth  -->
-                <combobox:SfComboBox HeightRequest="40" 
+                <combobox:SfComboBox HeightRequest="60"
                                          x:Name="comboBox" 
                                          DataSource="{Binding PermissionCollection}" 
                                          DisplayMemberPath="Name" 
                                          SelectedValuePath="Id"
-                                         SelectedIndex="1"
-                                         SelectedValue="{Binding Auth}"
-                                     IsVisible="{Binding IsAdmin}"
+                                         SelectedItem="{Binding Auth}"
+                                     SelectedValue="{Binding Auth.Id}"
                                      IsEditableMode="False"
-                                     ShowClearButton="False"/>
+                                     ShowClearButton="False"
+                                     TextSize="20"
+                                     FontAttributes="Bold"/>
 
-                <StackLayout Orientation="Horizontal" HorizontalOptions="CenterAndExpand" IsVisible="{Binding IsDelete}">
-                    <buttons:SfButton
+                <StackLayout IsVisible="{Binding IsManager}">
+                    <StackLayout Orientation="Horizontal" HorizontalOptions="CenterAndExpand">
+                        <buttons:SfButton
+                    Margin="0,16,0,0"
+                    Style="{StaticResource GradientButtonStyle}"
+                    Text="Nạp tiền"
+                    WidthRequest="150" 
+                    Command="{Binding RechargeMoneyCommand}"/>
+
+                        <buttons:SfButton
+                    Margin="0,16,0,0"
+                    Command="{Binding WithdrawMoneyCommand}"
+                    Style="{StaticResource GradientButtonStyle}"
+                    Text="Rút tiền"
+                    WidthRequest="150" />
+                    </StackLayout>
+                    <StackLayout Orientation="Horizontal" HorizontalOptions="CenterAndExpand">
+                        <buttons:SfButton
                     Margin="0,16,0,0"
                     Style="{StaticResource GradientButtonStyle}"
                     Text="Cập Nhật"
                     WidthRequest="200" 
                     Command="{Binding UpdateProfileCommand}"/>
 
-                    <!--  Submit Button  -->
-                    <buttons:SfButton
+                        <!--  Submit Button  -->
+                        <buttons:SfButton
                     Margin="0,16,0,0"
                     Command="{Binding DeleteProfileCommand}"
-                    Style="{StaticResource GradientButtonStyle}"
+                    Style="{StaticResource DangerButtonStyle}"
                     Text="XÓA"
                     WidthRequest="60" />
+                    </StackLayout>
                 </StackLayout>
+                
             </StackLayout>
         </ScrollView>
     </ContentPage.Content>

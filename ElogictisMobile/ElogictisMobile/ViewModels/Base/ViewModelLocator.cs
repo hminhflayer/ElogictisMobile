@@ -27,15 +27,17 @@ namespace ElogictisMobile.ViewModels.Base
             Register<SignUpPageViewModel, SignUpPage>();
             Register<ForgotPasswordPageViewModel, ForgotPasswordPage>();
             Register<ResetPasswordPageViewModel, ResetPasswordPage>();
+            Register<AlertSignUpPageViewModel, AlertSignUpPage>();
+
             Register<StatisticalPageViewModel, StatisticalPage>();
             Register<ManageItemPageViewModel, ManageItemPage>();
             Register<TransactionHistoryPageViewModel, TransactionHistoryPage>();
             Register<SettingsPageViewModel, SettingsPage>();
-            Register<AlertSignUpPageViewModel, AlertSignUpPage>();
 
             Register<AddProductFormPageViewModel, AddProductFormPage>();
             Register<AddCategoryTypeProductPageViewModel, AddCategoryTypeProductPage>();
             Register<AddCategoryPriceListPageViewModel, AddCategoryPriceListPage>();
+            Register<AddAgencyPageViewModel, AddAgencyPage>();
 
             Register<UpdateProfilePageViewModel, UpdateProfilePage>();
 
@@ -43,11 +45,16 @@ namespace ElogictisMobile.ViewModels.Base
             Register<ManageProductsPageViewModel, ManageProductsPage>();
             Register<CategoryTypeProductPageViewModel, CategoryTypeProductPage>();
             Register<CategoryPriceListPageViewModel, CategoryPriceListPage>();
+            Register<ManageProductNewPageViewModel, ManageProductNewPage>();
+            Register<ManageAgencyPageViewModel, ManageAgencyPage>();
+            Register<ManageProvincePageViewModel, ManageProvincePage>();
 
             Register<DetailProfilePageViewModel, DetailProfilePage>();
             Register<DetailProductFormPageViewModel, DetailProductFormPage>();
+            Register<DetailCategoryPricesListPageViewModel, DetailCategoryPricesListPage>();
             Register<DetailCategoryTypeProductPageViewModel, DetailCategoryTypeProductPage>();
-
+            Register<DetailProductNewPageViewModel, DetailProductNewPage>();
+            Register<DetailAgencyPageViewModel, DetailAgencyPage>();
 
             // Register Services (registered as Singletons by default)
             _container.Register<INavigationService, NavigationService>();

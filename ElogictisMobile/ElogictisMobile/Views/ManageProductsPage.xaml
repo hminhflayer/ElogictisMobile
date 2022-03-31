@@ -3,15 +3,9 @@
     x:Class="ElogictisMobile.Views.ManageProductsPage"
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:behavior="clr-namespace:ElogictisMobile.Behaviors;assembly=ElogictisMobile"
-    xmlns:behaviors="clr-namespace:ElogictisMobile.Behaviors"
-    xmlns:border="clr-namespace:Syncfusion.XForms.Border;assembly=Syncfusion.Core.XForms"
     xmlns:buttons="clr-namespace:Syncfusion.XForms.Buttons;assembly=Syncfusion.Buttons.XForms"
-    xmlns:controls="clr-namespace:ElogictisMobile.Controls"
     xmlns:d="http://xamarin.com/schemas/2014/forms/design"
-    xmlns:data="clr-namespace:Syncfusion.DataSource;assembly=Syncfusion.DataSource.Portable"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:sfavatar="clr-namespace:Syncfusion.XForms.AvatarView;assembly=Syncfusion.Core.XForms" 
     BackgroundColor="{DynamicResource Gray-Bg}"
     NavigationPage.HasNavigationBar="True"
     NavigationPage.HasBackButton="True"
@@ -40,6 +34,15 @@
                         <DataTemplate>
                             <ViewCell>
                                 <StackLayout Orientation="Vertical" Spacing="16" Padding="16">
+                                    <StackLayout BackgroundColor="#2196F3">
+                                        <Label
+                                            Margin="0,5,0,5"
+                                            FontFamily="Montserrat-SemiBold"
+                                            FontSize="20"
+                                            HorizontalOptions="CenterAndExpand"
+                                            Text="{Binding Status_ext}"
+                                            TextColor="White"/>
+                                    </StackLayout>
                                     <StackLayout Orientation="Horizontal">
                                         <Label Text="{Binding From_FullName, StringFormat='Từ: {0}'}"
                                                FontSize="18"

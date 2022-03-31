@@ -12,8 +12,8 @@
             <Setter.Value>
                 <graphics:SfLinearGradientBrush>
                     <graphics:SfLinearGradientBrush.GradientStops>
-                        <graphics:SfGradientStop Offset="0" Color="{DynamicResource PrimaryColor}" />
-                        <graphics:SfGradientStop Offset="1" Color="{DynamicResource PrimaryGradient}" />
+                        <graphics:SfGradientStop Offset="0" Color="#2196F3" />
+                        <graphics:SfGradientStop Offset="0" Color="#2196F5" />
                     </graphics:SfLinearGradientBrush.GradientStops>
                 </graphics:SfLinearGradientBrush>
             </Setter.Value>
@@ -71,4 +71,26 @@
         <Setter Property="VerticalTextAlignment" Value="Center" />
     </Style>
 
+    <Style x:Key="DangerButtonStyle" TargetType="buttons:SfButton">
+        <Setter Property="BackgroundGradient">
+            <Setter.Value>
+                <graphics:SfLinearGradientBrush>
+                    <graphics:SfLinearGradientBrush.GradientStops>
+                        <graphics:SfGradientStop Offset="0" Color="#ff0035" />
+                        <graphics:SfGradientStop Offset="0" Color="#ff0040" />
+                    </graphics:SfLinearGradientBrush.GradientStops>
+                </graphics:SfLinearGradientBrush>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="TextColor" Value="{DynamicResource Gray-White}" />
+        <Setter Property="FontFamily" Value="Montserrat-SemiBold" />
+        <Setter Property="BorderWidth" Value="0" />
+        <Setter Property="FontSize" Value="16" />
+        <Setter Property="HeightRequest" Value="40" />
+        <Setter Property="CornerRadius" Value="20" />
+        <Setter Property="HorizontalTextAlignment" Value="Center" />
+        <Setter Property="VerticalTextAlignment" Value="Center" />
+        <Setter Property="HorizontalOptions" Value="Center" />
+        <Setter Property="VerticalOptions" Value="Center" />
+    </Style>
 </ResourceDictionary>
