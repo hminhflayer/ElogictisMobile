@@ -255,7 +255,7 @@
                                          DisplayMemberPath="Name" 
                                          SelectedValuePath="Id"
                                          SelectedIndex="0"
-                                         SelectedValue="{Binding TypeProduct}"
+                                         SelectedItem="{Binding TypeProduct}"
                                          ShowClearButton="False"
                                          IsEditableMode="False"/>
                 </StackLayout>

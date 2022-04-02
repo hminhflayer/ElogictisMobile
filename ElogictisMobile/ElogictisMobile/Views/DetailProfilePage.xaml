@@ -178,20 +178,23 @@
                                      FontAttributes="Bold"/>
 
                 <StackLayout IsVisible="{Binding IsManager}">
-                    <StackLayout Orientation="Horizontal" HorizontalOptions="CenterAndExpand">
+                    <StackLayout Orientation="Horizontal" HorizontalOptions="CenterAndExpand"
+                                 IsVisible="{Binding IsConfirm}">
+                        <buttons:SfButton
+                    Margin="0,16,0,0"
+                    Style="{StaticResource SuccessButtonStyle}"
+                    Text="Duyệt tài khoản"
+                    WidthRequest="250" 
+                    Command="{Binding ConfirmCommand}"/>
+                    </StackLayout>
+                    <StackLayout Orientation="Horizontal" HorizontalOptions="CenterAndExpand"
+                                 IsVisible="{Binding IsVisible}">
                         <buttons:SfButton
                     Margin="0,16,0,0"
                     Style="{StaticResource GradientButtonStyle}"
-                    Text="Nạp tiền"
+                    Text="Nạp/Rút tiền"
                     WidthRequest="150" 
-                    Command="{Binding RechargeMoneyCommand}"/>
-
-                        <buttons:SfButton
-                    Margin="0,16,0,0"
-                    Command="{Binding WithdrawMoneyCommand}"
-                    Style="{StaticResource GradientButtonStyle}"
-                    Text="Rút tiền"
-                    WidthRequest="150" />
+                    Command="{Binding ManageMoneyCommand}"/>
                     </StackLayout>
                     <StackLayout Orientation="Horizontal" HorizontalOptions="CenterAndExpand">
                         <buttons:SfButton

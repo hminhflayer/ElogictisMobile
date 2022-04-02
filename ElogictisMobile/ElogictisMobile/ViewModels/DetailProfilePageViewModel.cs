@@ -20,8 +20,10 @@ namespace ElogictisMobile.ViewModels
     {
         #region Fields
         private Profiles Profiles { get; set; }
-        private bool IsManager { get; set; } = LocalContext.IsManager;
+        public bool IsVisible { get; set; }
+        public bool IsManager { get; set; }
         public string Money { get; set; }
+        public bool IsConfirm { get; set; } = !LocalContext.ProfileSelected.IsConfirm;
 
         private ValidatableObject<string> fullName;
 
@@ -36,6 +38,8 @@ namespace ElogictisMobile.ViewModels
         private Command<object> addProfileCommand;
 
         private Command<object> deleteProfileCommand;
+        private Command<object> manageMoneyCommand;
+        private Command<object> confirmCommand;
         private INavigationService _navigationService;
        
 
@@ -51,6 +55,22 @@ namespace ElogictisMobile.ViewModels
             _navigationService = navigationService;
             this.InitializeProperties();
             this.AddValidationRules();
+            if(LocalContext.IsManager || LocalContext.IsAdmin)
+            {
+                IsManager = true;
+            }    
+            else
+            {
+                IsManager = false;
+            }
+            if(LocalContext.ProfileSelected.Id == LocalContext.Current.AccountSettings.Id && LocalContext.Current.AccountSettings.Auth == "3")
+            {
+                IsVisible = false;
+            }
+            else
+            {
+                IsVisible = true;
+            }    
         }
 
         #endregion
@@ -153,6 +173,14 @@ namespace ElogictisMobile.ViewModels
             }
         }
 
+        public Command<object> ConfirmCommand
+        {
+            get
+            {
+                return this.confirmCommand ?? (this.confirmCommand = new Command<object>(this.ConfirmClicked));
+            }
+        }
+
         /// <summary>
         /// Gets the command that will be executed when an add contact button is clicked.
         /// </summary>
@@ -169,6 +197,14 @@ namespace ElogictisMobile.ViewModels
             get
             {
                 return this.deleteProfileCommand ?? (this.deleteProfileCommand = new Command<object>(this.DeleteProfileClicked));
+            }
+        }
+
+        public Command<object> ManageMoneyCommand
+        {
+            get
+            {
+                return this.manageMoneyCommand ?? (this.manageMoneyCommand = new Command<object>(this.ManageMoneyClicked));
             }
         }
 
@@ -205,7 +241,7 @@ namespace ElogictisMobile.ViewModels
                 Name = LocalContext.ProfileSelected.Auth_ext
             };
             this.Auth = auth;
-            this.Money = LocalContext.Current.AccountSettings.Money.ToString();
+            this.Money = LocalContext.ProfileSelected.Money.ToString();
         }
 
         /// <summary>
@@ -225,16 +261,16 @@ namespace ElogictisMobile.ViewModels
         {
             if (this.AreNamesValid())
             {
-                Profiles profiles = LocalContext.Profiles;
+                Profiles profiles = LocalContext.ProfileSelected;
                 profiles.Name = FullName.Value;
-                profiles.LastUpdateBy = LocalContext.Profiles.Email;
+                profiles.LastUpdateBy = LocalContext.ProfileSelected.Email;
                 profiles.LastUpdateTime = DateTime.Now.ToString();
                 profiles.Phone = PhoneNumber;
                 profiles.Auth = Auth.Id;
                 profiles.Auth_ext = Auth.Name;
 
                 // Do Something
-                await RealtimeFirebase.Instance.UpSert("Profiles", LocalContext.Profiles.Id, JsonConvert.SerializeObject(profiles));
+                await RealtimeFirebase.Instance.UpSert("Profiles", LocalContext.ProfileSelected.Id, JsonConvert.SerializeObject(profiles));
                 await App.Current.MainPage.DisplayAlert("Thông báo", "Đã cập nhật thông tin thành viên thành công", "OK");
             }
         }
@@ -254,17 +290,41 @@ namespace ElogictisMobile.ViewModels
             var action = await App.Current.MainPage.DisplayAlert("Thông báo", "Bạn có thực sự muốn xóa thông tin thành viên này?", "Đúng","Không");
             if(action)
             {
-                Profiles profiles = LocalContext.Profiles;
+                Profiles profiles = LocalContext.ProfileSelected;
                 profiles.IsDelete = true;
-                profiles.LastUpdateBy = LocalContext.Profiles.Email;
+                profiles.LastUpdateBy = LocalContext.ProfileSelected.Email;
                 profiles.LastUpdateTime = DateTime.Now.ToString();
 
                 // Do Something
-                await RealtimeFirebase.Instance.UpSert("Profiles", LocalContext.Profiles.Id, JsonConvert.SerializeObject(profiles));
-                //await RealtimeFirebase.Instance.Delete("Profiles", LocalContext.ProfileSelected.Id);
+                //await RealtimeFirebase.Instance.UpSert("Profiles", LocalContext.ProfileSelected.Id, JsonConvert.SerializeObject(profiles));
+                await RealtimeFirebase.Instance.Delete("Profiles", LocalContext.ProfileSelected.Id);
                 await App.Current.MainPage.DisplayAlert("Thông báo", "Đã xóa thông tin thành viên thành công", "OK");
                 isDelete = true;
             }    
+        }
+
+        private async void ConfirmClicked(object obj)
+        {
+            // Do something
+            Profiles profiles = LocalContext.ProfileSelected;
+            profiles.IsConfirm = true;
+
+            // Do Something
+            var up = await RealtimeFirebase.Instance.UpSert("Profiles", LocalContext.ProfileSelected.Id, JsonConvert.SerializeObject(profiles));
+            if(up)
+            {
+                await App.Current.MainPage.DisplayAlert("Thông báo", "Đã duyệt tài khoản thành công", "OK");
+            }    
+            else
+            {
+                await App.Current.MainPage.DisplayAlert("Thông báo", "Duyệt tài khoản không thành công", "OK");
+            }    
+            
+        }
+
+        private async void ManageMoneyClicked(object obj)
+        {
+            await _navigationService.NavigateToAsync<MoneyManagePageViewModel>();
         }
 
         #endregion

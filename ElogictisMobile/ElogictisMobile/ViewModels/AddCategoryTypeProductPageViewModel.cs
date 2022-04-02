@@ -32,6 +32,7 @@ namespace ElogictisMobile.ViewModels
         {
             this.InitializeProperties();
             this.AddValidationRules();
+            IsLoading = false;
         }
 
         #endregion
@@ -112,8 +113,10 @@ namespace ElogictisMobile.ViewModels
         {
             try
             {
+
                 if (this.AreNamesValid())
                 {
+                    IsLoading = true;
                     var key = GeneralKey.Instance.General("CTP");
                     Category category = new Category()
                     {

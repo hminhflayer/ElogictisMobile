@@ -4,10 +4,8 @@ using System.Text;
 
 namespace ElogictisMobile.Models
 {
-    public class TypeProduct
+    public class Company
     {
-        public string Id { get; set; }
-        public string Name { get; set; }
-    
+        public double TotalMoney { get; set; }
     }
 }

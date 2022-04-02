@@ -18,17 +18,22 @@
             ColumnSpacing="0"
             RowDefinitions="Auto, Auto, *"
             RowSpacing="0">
-
-                <button:SfButton
-                    Margin="0,16,0,16"
+                <StackLayout Orientation="Horizontal">
+                    
+                    <SearchBar x:Name="filterText" HeightRequest="40"
+                               WidthRequest="300"
+                            Placeholder="Nhập tên Tỉnh/Thành phố" Grid.Row="1"
+                            TextChanged="SearchBar_TextChanged"/>
+                    <button:SfButton
+                    Margin="0,16,0,20"
                     Style="{StaticResource GradientButtonStyle}"
-                    WidthRequest="200" 
+                    WidthRequest="80" 
                     Text="Thêm"
                     Command="{Binding AddProductCommand}"/>
-                <!--<SearchBar x:Name="filterText" HeightRequest="40"
-                   Placeholder="Search here to filter" Grid.Row="0"/>-->
+                </StackLayout>
+                
                 <ListView Grid.Row="1" ItemsSource="{Binding ProvinceList}" SelectionMode="None"
-                          HasUnevenRows="True">
+                          HasUnevenRows="True" ItemTapped="ListView_ItemTapped">
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <ViewCell>

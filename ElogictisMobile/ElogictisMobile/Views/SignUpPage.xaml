@@ -10,7 +10,8 @@
     xmlns:converter="clr-namespace:ElogictisMobile.Converters"
     xmlns:core="clr-namespace:Syncfusion.XForms.Core;assembly=Syncfusion.Core.XForms"
     xmlns:local="clr-namespace:ElogictisMobile.Views"
-    xmlns:viewModel="clr-namespace:ElogictisMobile.ViewModels"
+    xmlns:viewModel="clr-namespace:ElogictisMobile.ViewModels" 
+    xmlns:combobox="clr-namespace:Syncfusion.XForms.ComboBox;assembly=Syncfusion.SfComboBox.XForms"
     Title="Sign Up"
     BackgroundColor="{DynamicResource Gray-200}"
     NavigationPage.HasNavigationBar="False">
@@ -106,6 +107,162 @@
 
                         <!--  Entry to get email ID from user  -->
                         <local:SimpleEmailEntry />
+
+                        <StackLayout>
+                            <!--  Entry to get username from user  -->
+                            <border:SfBorder
+                                BackgroundColor="{DynamicResource Gray-Bg}"
+                                BorderColor="{Binding Source={x:Reference PhoneEntry}, Path=IsFocused, Converter={StaticResource ColorConverter}, ConverterParameter=3}"
+                                Style="{StaticResource LoginFormBorderlessEntryBorderStyle}">
+                                <Grid ColumnDefinitions="*, Auto">
+
+                                    <control:BorderlessEntry
+                                        x:Name="PhoneEntry"
+                                        Margin="15,0"
+                                        HeightRequest="40"
+                                        Keyboard="Telephone"
+                                        Placeholder="Số điện thoại"
+                                        Style="{StaticResource BorderlessEntryStyle}"
+                                        Text="{Binding PhoneNumber.Value}">
+                                        <control:BorderlessEntry.Behaviors>
+                                            <behaviour:EntryMaskedBehavior Mask="(+84)XXX-XXX-XXX" Prefix="(+84)"/>
+                                            <behaviour:EntryLineValidationBehaviour 
+                                                IsValid="{Binding PhoneNumber.IsValid}" />
+                                        </control:BorderlessEntry.Behaviors>
+                                    </control:BorderlessEntry>
+
+                                    <!--  Label to display error icon  -->
+                                    <Label
+                                        Grid.Column="1"
+                                        IsVisible="{Binding Path=IsVisible, Source={x:Reference PhoneValidationLabel}}"
+                                        Style="{StaticResource ErrorIconLabelStyle}"
+                                        Text="{StaticResource Error}" />
+                                </Grid>
+                            </border:SfBorder>
+
+                            <!--  Label to display error message  -->
+                            <Label
+                                x:Name="PhoneValidationLabel"
+                                Margin="15,-3,0,0"
+                                IsVisible="{Binding Name.IsValid, Converter={StaticResource InverseBoolConverter}}"
+                                Style="{StaticResource SimpleLabelStyle}"
+                                Text="{Binding Name.Errors, Converter={StaticResource FirstValidationErrorConverter}}"
+                                TextColor="{DynamicResource Red}"
+                                VerticalOptions="FillAndExpand" />
+                        </StackLayout>  
+
+                        <StackLayout Orientation="Horizontal">
+                            <Label
+                                Margin="0,0,0,10"
+                                FontFamily="Montserrat-SemiBold"
+                                FontSize="16"
+                                HorizontalOptions="FillAndExpand"
+                                LineHeight="{OnPlatform Default=-1,
+                                                        Android=1.25}"
+                                Text="Tỉnh: "
+                                TextColor="{DynamicResource Gray-800}"
+                                VerticalOptions="Center"
+                                VerticalTextAlignment="Center" />
+                            <combobox:SfComboBox HeightRequest="40" 
+                                         WidthRequest="280"
+                                         DataSource="{Binding ProvinceCollection}" 
+                                         DisplayMemberPath="Name" 
+                                         SelectedValuePath="Id"
+                                         SelectedItem="{Binding Province}"
+                                         SelectionChanged="SfComboBox_SelectionChanged"
+                                         ShowClearButton="False"
+                                         IsEditableMode="False"/>
+                        </StackLayout>
+                        <StackLayout Orientation="Horizontal">
+                            <Label
+                                Margin="0,0,0,10"
+                                FontFamily="Montserrat-SemiBold"
+                                FontSize="16"
+                                HorizontalOptions="FillAndExpand"
+                                LineHeight="{OnPlatform Default=-1,
+                                                        Android=1.25}"
+                                Text="Huyện: "
+                                TextColor="{DynamicResource Gray-800}"
+                                VerticalOptions="Center"
+                                VerticalTextAlignment="Center" />   
+                            <combobox:SfComboBox HeightRequest="40"
+                                         WidthRequest="280"
+                                         DataSource="{Binding DistrictCollection}" 
+                                         DisplayMemberPath="Name" 
+                                         SelectedValuePath="Id"
+                                         SelectedValue="883"
+                                         SelectedItem="{Binding District}"
+                                         SelectionChanged="District_SelectionChanged"
+                                         AllowFiltering="True"
+                                         ShowClearButton="True"
+                                         IsEditableMode="True"/>
+                        </StackLayout>
+                        <StackLayout Orientation="Horizontal">
+                            <Label
+                                Margin="0,0,0,10"
+                                FontFamily="Montserrat-SemiBold"
+                                FontSize="16"
+                                HorizontalOptions="FillAndExpand"
+                                LineHeight="{OnPlatform Default=-1,
+                                                        Android=1.25}"
+                                Text="Xã: "
+                                TextColor="{DynamicResource Gray-800}"
+                                VerticalOptions="Center"
+                                VerticalTextAlignment="Center" />
+                            <combobox:SfComboBox HeightRequest="40"
+                                                     WidthRequest="280"
+                                                     DataSource="{Binding TownCollection}" 
+                                                     DisplayMemberPath="Name" 
+                                                     SelectedValuePath="Id"
+                                                     SelectedIndex="0"
+                                                     SelectedItem="{Binding Town}"
+                                                     SelectionChanged="Town_SelectedChanged"
+                                                     AllowFiltering="True"
+                                                     ShowClearButton="True"
+                                                     IsEditableMode="True"/>
+                        </StackLayout>
+
+                        <StackLayout>
+                            <!--  Entry to get username from user  -->
+                            <border:SfBorder
+                                BackgroundColor="{DynamicResource Gray-Bg}"
+                                BorderColor="{Binding Source={x:Reference AddressEntry}, Path=IsFocused, Converter={StaticResource ColorConverter}, ConverterParameter=3}"
+                                Style="{StaticResource LoginFormBorderlessEntryBorderStyle}">
+                                <Grid ColumnDefinitions="*, Auto">
+
+                                    <control:BorderlessEntry
+                                        x:Name="AddressEntry"
+                                        Margin="15,0"
+                                        HeightRequest="40"
+                                        Placeholder="Địa chỉ chi tiết"
+                                        Style="{StaticResource BorderlessEntryStyle}"
+                                        Text="{Binding Address.Value}">
+                                        <Entry.Behaviors>
+                                            <behaviour:EntryLineValidationBehaviour 
+                                                IsValid="{Binding Address.IsValid}" />
+                                        </Entry.Behaviors>
+                                    </control:BorderlessEntry>
+
+                                    <!--  Label to display error icon  -->
+                                    <Label
+                                        Grid.Column="1"
+                                        IsVisible="{Binding Path=IsVisible, Source={x:Reference AddressValidationLabel}}"
+                                        Style="{StaticResource ErrorIconLabelStyle}"
+                                        Text="{StaticResource Error}" />
+                                </Grid>
+                            </border:SfBorder>
+
+                            <!--  Label to display error message  -->
+                            <Label
+                                x:Name="AddressValidationLabel"
+                                Margin="15,-3,0,0"
+                                IsVisible="{Binding Name.IsValid, Converter={StaticResource InverseBoolConverter}}"
+                                Style="{StaticResource SimpleLabelStyle}"
+                                Text="{Binding Name.Errors, Converter={StaticResource FirstValidationErrorConverter}}"
+                                TextColor="{DynamicResource Red}"
+                                VerticalOptions="FillAndExpand" />
+                        </StackLayout>
+
 
                         <StackLayout>
                             <!--  Entry to get password from user  -->

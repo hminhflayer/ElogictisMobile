@@ -9,5 +9,6 @@ namespace ElogictisMobile.Models
         public string Id { get; set; }
         public string Name { get; set; }
         public string ProvinceId { get; set; }
+        public string ProvinceName { get; set; }
     }
 }

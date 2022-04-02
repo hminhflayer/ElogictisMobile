@@ -10,9 +10,6 @@ namespace ElogictisMobile.Models
         public string Name { get; set; }
         public string Email { get; set; }
         public string Phone { get; set; }
-        public string Province { get; set; }
-        public string District { get; set; }
-        public string Town { get; set; }
         public string Address { get; set; }
         public string CreateTime { get; set; }
         public string CreateBy { get; set; }
@@ -23,7 +20,7 @@ namespace ElogictisMobile.Models
         public string Avatar { get; set; }
         public string Token { get; set; }
         public DateTime ExpireToken { get; set; }
-        public int Money { get; set; }
+        public double Money { get; set; }
         public string AgencyId { get; set; }
         public bool IsConfirm { get; set; }
 
@@ -36,5 +33,11 @@ namespace ElogictisMobile.Models
          */
         public string Auth { get; set; }
         public string Auth_ext { get; set; }
+        public string Province { get; set; }
+        public string Province_ext { get; set; }
+        public string District { get; set; }
+        public string District_ext { get; set; }
+        public string Town { get; set; }
+        public string Town_ext { get; set; }
     }
 }

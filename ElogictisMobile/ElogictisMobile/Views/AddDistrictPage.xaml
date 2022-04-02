@@ -1,21 +1,18 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage
-    x:Class="ElogictisMobile.Views.AddProvincePage"
+    x:Class="ElogictisMobile.Views.AddDistrictPage"
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:badge="clr-namespace:Syncfusion.XForms.BadgeView;assembly=Syncfusion.SfBadgeView.XForms"
-    xmlns:border="clr-namespace:Syncfusion.XForms.Border;assembly=Syncfusion.Core.XForms"
     xmlns:buttons="clr-namespace:Syncfusion.XForms.Buttons;assembly=Syncfusion.Buttons.XForms"
-    xmlns:control="clr-namespace:ElogictisMobile.Controls"
-    xmlns:behaviours="clr-namespace:ElogictisMobile.Behaviors"
-    xmlns:converter="clr-namespace:ElogictisMobile.Converters"
-    xmlns:sfavatar="clr-namespace:Syncfusion.XForms.AvatarView;assembly=Syncfusion.Core.XForms"
-    xmlns:ViewModel="clr-namespace:ElogictisMobile.ViewModels" 
-    xmlns:behaviour="clr-namespace:ElogictisMobile.Behaviors"
+    xmlns:controls="clr-namespace:ElogictisMobile.Controls" 
+    xmlns:converter="clr-namespace:ElogictisMobile.Converters" 
+    xmlns:border="clr-namespace:Syncfusion.XForms.Border;assembly=Syncfusion.Core.XForms" 
+    xmlns:behaviours="clr-namespace:ElogictisMobile.Behaviors" 
+    xmlns:combobox="clr-namespace:Syncfusion.XForms.ComboBox;assembly=Syncfusion.SfComboBox.XForms"
+    Title="Thêm Quận/Huyện"
     BackgroundColor="{DynamicResource Gray-Bg}"
     NavigationPage.HasBackButton="True"
-    NavigationPage.HasNavigationBar="True"
-    Title="Thêm tỉnh">
+    NavigationPage.HasNavigationBar="True">
 
     <ContentPage.Resources>
         <ResourceDictionary>
@@ -31,27 +28,50 @@
                 Padding="16,24"
                 BackgroundColor="{DynamicResource Gray-100}"
                 Spacing="16">
-                <Label
+                <StackLayout Orientation="Horizontal">
+                    <Label
                     Margin="0,0,0,10"
                     FontFamily="Montserrat-SemiBold"
-                    FontSize="18"
+                    FontSize="16"
                     HorizontalOptions="FillAndExpand"
                     LineHeight="{OnPlatform Default=-1,
                                             Android=1.25}"
-                    Text="Thông tin tỉnh"
+                    Text="Tỉnh/Thành Phố: "
                     TextColor="{DynamicResource Gray-800}"
                     VerticalOptions="Center"
                     VerticalTextAlignment="Center" />
-                <StackLayout Grid.Row="1">
+                    <combobox:SfComboBox HeightRequest="40" 
+                                         WidthRequest="200"
+                                         DataSource="{Binding ProvinceCollection}" 
+                                         DisplayMemberPath="Name" 
+                                         SelectedValuePath="Id"
+                                         SelectedItem="{Binding Province}"
+                                         ShowClearButton="False"
+                                         IsEditableMode="False"/>
+                </StackLayout>
+                <StackLayout Grid.Row="2">
+                    <Label
+                    Margin="0,0,0,10"
+                    FontFamily="Montserrat-SemiBold"
+                    FontSize="16"
+                    HorizontalOptions="FillAndExpand"
+                    LineHeight="{OnPlatform Default=-1,
+                                            Android=1.25}"
+                    Text="Mã Quận/Huyện: "
+                    TextColor="{DynamicResource Gray-800}"
+                    VerticalOptions="Center"
+                    VerticalTextAlignment="Center" />
                     <border:SfBorder BorderColor="{Binding Source={x:Reference IdEntry}, Path=IsFocused, Converter={StaticResource ColorConverter}, ConverterParameter=3}" Style="{StaticResource DataFormBorderlessEntryBorderStyle}">
                         <Grid ColumnDefinitions="*, Auto">
-                            <control:BorderlessEntry
+                            <controls:BorderlessEntry
                                 x:Name="IdEntry"
                                 Margin="12,0"
                                 HeightRequest="40"
-                                Placeholder="Mã tỉnh"
+                                Placeholder="Mã Quận/Huyện"
                                 Style="{StaticResource BorderlessEntryStyle}"
-                                Text="{Binding Id.Value}" />
+                                Text="{Binding Id.Value}" >
+                            </controls:BorderlessEntry>
+
                             <!--  Label to display error icon  -->
                             <Label
                                     Grid.Column="1"
@@ -70,17 +90,29 @@
                         TextColor="{DynamicResource Red}"
                         VerticalOptions="FillAndExpand" />
                 </StackLayout>
-                <!--From Full Name-->
-                <StackLayout Grid.Row="1">
+                <StackLayout Grid.Row="3">
+                    <Label
+                    Margin="0,0,0,10"
+                    FontFamily="Montserrat-SemiBold"
+                    FontSize="16"
+                    HorizontalOptions="FillAndExpand"
+                    LineHeight="{OnPlatform Default=-1,
+                                            Android=1.25}"
+                    Text="Tên Quận/Huyện: "
+                    TextColor="{DynamicResource Gray-800}"
+                    VerticalOptions="Center"
+                    VerticalTextAlignment="Center" />
                     <border:SfBorder BorderColor="{Binding Source={x:Reference NameEntry}, Path=IsFocused, Converter={StaticResource ColorConverter}, ConverterParameter=3}" Style="{StaticResource DataFormBorderlessEntryBorderStyle}">
                         <Grid ColumnDefinitions="*, Auto">
-                            <control:BorderlessEntry
+                            <controls:BorderlessEntry
                                 x:Name="NameEntry"
                                 Margin="12,0"
                                 HeightRequest="40"
-                                Placeholder="Tên tỉnh"
+                                Placeholder="Tên Quận/Huyện"
                                 Style="{StaticResource BorderlessEntryStyle}"
-                                Text="{Binding Name.Value}" />
+                                Text="{Binding Name.Value}" >
+                            </controls:BorderlessEntry>
+
                             <!--  Label to display error icon  -->
                             <Label
                                     Grid.Column="1"
@@ -100,7 +132,8 @@
                         VerticalOptions="FillAndExpand" />
                 </StackLayout>
 
-                <StackLayout Orientation="Horizontal">
+                <!--Submit Button-->
+                <StackLayout Orientation="Horizontal" HorizontalOptions="CenterAndExpand">
                     <buttons:SfButton
                     Margin="0,24,0,0"
                     Command="{Binding SubmitCommand}"
@@ -109,13 +142,13 @@
                     WidthRequest="300" />
                     <buttons:SfButton
                     Margin="0,24,0,0"
-                        HorizontalOptions="EndAndExpand"
-                        IsVisible="{Binding IsEdit}"
+                    IsVisible="{Binding IsEdit}"
                     Command="{Binding DeleteCommand}"
                     Style="{StaticResource DangerButtonStyle}"
                     Text="Xóa"
                     WidthRequest="50" />
                 </StackLayout>
+
             </StackLayout>
         </ScrollView>
     </ContentPage.Content>

@@ -32,6 +32,7 @@ namespace ElogictisMobile.ViewModels
         private INavigationService _navigationService;
 
         public Category TypeProduct { get; set; }
+        public string TextButton { get; set; }
         public ObservableCollection<Category> TypeProductCollection { get; set; } = ContentData.TypeProductCollection;
 
         #endregion
@@ -46,12 +47,33 @@ namespace ElogictisMobile.ViewModels
             this.AddValidationRules();
             this.UpdateProductCommand = new Command(this.SubmitClicked);
             this.DeleteProductCommand = new Command(this.DeleteClicked);
+            switch(LocalContext.ProductSelected.Status)
+            {
+                case 2:
+                    {
+                        TextButton = "ĐÃ LẤY HÀNG";
+                        break;
+                    }
+                case 3:
+                    {
+                        TextButton = "ĐÃ GIAO HÀNG";
+                        break;
+                    }
+                default:
+                    {
+                        TextButton = "Cập nhật";
+                        break;
+                    }
+            }    
         }
 
         #endregion
 
         #region Properties
         public bool IsManage { get; set; } = LocalContext.IsManager;
+        public bool IsAdmin { get; set; } = LocalContext.IsAdmin;
+        public bool IsShipper { get; set; } = LocalContext.IsShipper && LocalContext.ProductSelected.Status != 4;
+        public bool IsNotShipper { get; set; } = !LocalContext.IsShipper;
         /// <summary>
         /// Gets or sets the property that bounds with an entry that gets the From Full Name from user.
         /// </summary>
@@ -269,8 +291,8 @@ namespace ElogictisMobile.ViewModels
             this.ToFullName.Value = LocalContext.ProductSelected.To_FullName;
             this.ToPhone.Value = LocalContext.ProductSelected.To_PhoneNumber;
             this.ToAddress.Value = LocalContext.ProductSelected.To_Address;
-            this.Weight.Value = double.Parse(LocalContext.ProductSelected.Weight);
-            this.Quanlity.Value = int.Parse(LocalContext.ProductSelected.Quanlity);
+            this.Weight.Value = LocalContext.ProductSelected.Weight;
+            this.Quanlity.Value = LocalContext.ProductSelected.Quanlity;
             this.Desciption.Value = LocalContext.ProductSelected.Description;
             this.Money.Value = LocalContext.ProductSelected.Money;
             this.TypeProduct = tmp;
@@ -317,30 +339,100 @@ namespace ElogictisMobile.ViewModels
         /// Invoked when the Submit button clicked
         /// </summary>
         /// <param name="obj">The object</param>
+        public Products UpdateStatusProduct(string text, int status)
+        {
+            Products temp = LocalContext.ProductSelected;
+            temp.LastUpdateBy = LocalContext.Current.AccountSettings.Id;
+            temp.LastUpdateTime = DateTime.Now.ToShortDateString();
+            temp.Status = status;
+            temp.Status_ext = text;
+            return temp;
+        }
+        public Products UpdateInfoProduct()
+        {
+            Products temp = LocalContext.ProductSelected;
+            temp.Description = Desciption.Value;
+            temp.From_Address = FromAddress.Value;
+            temp.From_FullName = FromFullName.Value;
+            temp.From_PhoneNumber = FromPhone.Value;
+            temp.LastUpdateBy = LocalContext.Current.AccountSettings.Id;
+            temp.LastUpdateTime = DateTime.Now.ToShortDateString();
+            temp.Money = Money.Value;
+            temp.Quanlity = Quanlity.Value;
+            temp.To_Address = ToAddress.Value;
+            temp.To_FullName = ToFullName.Value;
+            temp.To_PhoneNumber = ToPhone.Value;
+            temp.Type = TypeProduct.Id;
+            temp.Type_ext = TypeProduct.Name;
+            temp.Weight = Weight.Value;
+            temp.Holder = "";
+
+            return temp;
+        }
         private async void SubmitClicked(object obj)
         {
             if (this.AreFieldsValid())
             {
-                Products temp = LocalContext.ProductSelected;
-                temp.Description = Desciption.Value;
-                temp.From_Address = FromAddress.Value;
-                temp.From_FullName = FromFullName.Value;
-                temp.From_PhoneNumber = FromPhone.Value;
-                temp.LastUpdateBy = LocalContext.Current.AccountSettings.Id;
-                temp.LastUpdateTime = DateTime.Now.ToShortDateString();
-                temp.Money = Money.Value;
-                temp.Quanlity = Quanlity.Value.ToString();
-                temp.To_Address = ToAddress.Value;
-                temp.To_FullName = ToFullName.Value;
-                temp.To_PhoneNumber = ToPhone.Value;
-                temp.Type = TypeProduct.Id;
-                temp.Type_ext = TypeProduct.Name;
-                temp.Weight = Weight.Value.ToString();
-                temp.Holder = "";
-
-                await RealtimeFirebase.Instance.UpSert("Products", temp.ID, JsonConvert.SerializeObject(temp));
+                var mess = "ĐÃ LẤY HÀNG/ĐANG GIAO";
+                bool updateUser = false;
+                var keyNoti = GeneralKey.Instance.General("NOTI");
+                Products temp = new Products();
+                if(LocalContext.IsShipper)
+                {
+                    if(LocalContext.ProductSelected.Status == 2)
+                    {
+                        temp = UpdateStatusProduct(mess, 3);
+                    }
+                    else if (LocalContext.ProductSelected.Status == 3)
+                    {
+                        mess = "GIAO THÀNH CÔNG";
+                        temp = UpdateStatusProduct(mess, 4);
+                    }
+                    else
+                    {
+                        mess = "GIAO KHÔNG THÀNH CÔNG";
+                        temp = UpdateStatusProduct(mess, 5);
+                    }    
+                }    
+                else
+                {
+                    temp = UpdateInfoProduct();
+                }
+                if(temp.Status == 3)
+                {
+                    updateUser = await RealtimeFirebase.Instance.UpdateMoneyUser(Money.Value, false, temp.CreateBy);
+                }    
+                if(temp.Status == 4)
+                {
+                    var moneyShipper = LocalContext.ProductSelected.Money * 0.8;
+                    var moneyAgency = LocalContext.ProductSelected.Money * 0.05;
+                    var moneyAdmin = LocalContext.ProductSelected.Money * 0.15;
+                    var shipper = await RealtimeFirebase.Instance.UpdateMoneyUser(moneyShipper, true, temp.Holder);
+                    var agency = await RealtimeFirebase.Instance.UpdateMoneyUser(moneyAgency, true, temp.AgencyId);
+                    var admin = await RealtimeFirebase.Instance.UpdateMoneyUser(moneyAdmin, true, LocalContext.AdminId);
+                    updateUser = shipper && agency && admin;
+                }    
+                var upsert = await RealtimeFirebase.Instance.UpSert("Products", temp.ID, JsonConvert.SerializeObject(temp));
+                
+                if (upsert && updateUser)
+                {
+                    await RealtimeFirebase.Instance.UpSert("Notifications", keyNoti, JsonConvert.SerializeObject(new TransactionHistory
+                    {
+                        IdProduct = temp.ID,
+                        TransactionDescription = mess,
+                        Date = DateTime.Now.ToShortDateString(),
+                        Time = DateTime.Now.ToShortTimeString(),
+                        Email = LocalContext.Current.AccountSettings.Email,
+                        ProfileId = LocalContext.ProductSelected.CreateBy
+                    }));
+                    await App.Current.MainPage.DisplayAlert("Thông báo", "Nhận đơn hàng thành công!", "OK");
+                    await _navigationService.GoBackAsync();
+                }
+                else
+                {
+                    await App.Current.MainPage.DisplayAlert("Thông báo", "Nhận đơn hàng không thành công!", "OK");
+                }
                 await App.Current.MainPage.DisplayAlert("Thông báo", "Cập nhật thành công!", "OK");
-                await _navigationService.GoBackAsync();
             }
         }
 

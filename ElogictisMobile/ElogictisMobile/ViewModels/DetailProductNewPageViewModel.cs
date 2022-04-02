@@ -73,8 +73,8 @@ namespace ElogictisMobile.ViewModels
             this.ToFullName = LocalContext.ProductSelected.To_FullName;
             this.ToPhoneNumber = LocalContext.ProductSelected.To_PhoneNumber;
             this.ToAddress = LocalContext.ProductSelected.To_Address;
-            this.TotalWeight = double.Parse(LocalContext.ProductSelected.Weight);
-            this.Quanlity = int.Parse(LocalContext.ProductSelected.Quanlity);
+            this.TotalWeight = LocalContext.ProductSelected.Weight;
+            this.Quanlity = LocalContext.ProductSelected.Quanlity;
             this.Desciption = LocalContext.ProductSelected.Description;
             this.Money = LocalContext.ProductSelected.Money;
             this.TypeProduct = LocalContext.ProductSelected.Type;
@@ -91,7 +91,7 @@ namespace ElogictisMobile.ViewModels
                 var keyNoti = GeneralKey.Instance.General("NOTI");
                 Products temp = LocalContext.ProductSelected;
                 temp.Status = 2;
-                temp.Status_ext = "Chờ xác nhận lấy hàng";
+                temp.Status_ext = "CHỜ LẤY ĐƠN HÀNG";
                 temp.IsConfirm = true;
                 temp.Holder = LocalContext.Current.AccountSettings.Id;
 
@@ -101,10 +101,11 @@ namespace ElogictisMobile.ViewModels
                     await RealtimeFirebase.Instance.UpSert("Notifications", keyNoti, JsonConvert.SerializeObject(new TransactionHistory
                     {
                         IdProduct = temp.ID,
-                        TransactionDescription = "CHỜ XÁC NHẬN",
+                        TransactionDescription = "CHỜ LẤY ĐƠN HÀNG",
                         Date = DateTime.Now.ToShortDateString(),
                         Time = DateTime.Now.ToShortTimeString(),
-                        Email = LocalContext.Profiles.Email
+                        Email = LocalContext.Profiles.Email,
+                        ProfileId = LocalContext.Current.AccountSettings.Id
                     }));
                     await App.Current.MainPage.DisplayAlert("Thông báo", "Nhận đơn hàng thành công!", "OK");
                     await _navigationService.GoBackAsync();

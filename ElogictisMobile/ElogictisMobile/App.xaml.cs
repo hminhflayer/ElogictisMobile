@@ -33,6 +33,7 @@ namespace ElogictisMobile
 
         private Task InitNavigation()
         {
+            LocalContext.ProvinceList = RealtimeFirebase.Instance.GetListProvince();
             var navigationService = ViewModelLocator.Resolve<INavigationService>();
             
             if (LocalContext.Current.AccountSettings.Id != null)
@@ -50,7 +51,6 @@ namespace ElogictisMobile
         protected override async void OnStart()
         {
             base.OnStart();
-            LocalContext.ProvinceList = RealtimeFirebase.Instance.GetListProvince();
             await InitNavigation();   
             base.OnResume();
         }

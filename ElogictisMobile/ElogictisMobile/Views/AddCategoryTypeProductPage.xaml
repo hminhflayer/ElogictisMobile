@@ -70,8 +70,8 @@
                                        ViewBoxHeight="150" 
                                        Title="Đang thêm dữ liệu..."
                                        TextColor="Blue"
-                                       IsVisible="{Binding Isloading}"
-                                       IsBusy="{Binding Isloading}"/>
+                                       IsVisible="{Binding IsLoading}"
+                                       IsBusy="{Binding IsLoading}"/>
             </StackLayout>
         </ScrollView>
     </ContentPage.Content>

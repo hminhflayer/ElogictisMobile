@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage
-    x:Class="ElogictisMobile.Views.AddProvincePage"
+    x:Class="ElogictisMobile.Views.MoneyManage"
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:badge="clr-namespace:Syncfusion.XForms.BadgeView;assembly=Syncfusion.SfBadgeView.XForms"
@@ -11,11 +11,10 @@
     xmlns:converter="clr-namespace:ElogictisMobile.Converters"
     xmlns:sfavatar="clr-namespace:Syncfusion.XForms.AvatarView;assembly=Syncfusion.Core.XForms"
     xmlns:ViewModel="clr-namespace:ElogictisMobile.ViewModels" 
-    xmlns:behaviour="clr-namespace:ElogictisMobile.Behaviors"
+    xmlns:behaviour="clr-namespace:ElogictisMobile.Behaviors" xmlns:busyindicator="clr-namespace:Syncfusion.SfBusyIndicator.XForms;assembly=Syncfusion.SfBusyIndicator.XForms"
     BackgroundColor="{DynamicResource Gray-Bg}"
     NavigationPage.HasBackButton="True"
-    NavigationPage.HasNavigationBar="True"
-    Title="Thêm tỉnh">
+    NavigationPage.HasNavigationBar="True">
 
     <ContentPage.Resources>
         <ResourceDictionary>
@@ -38,84 +37,62 @@
                     HorizontalOptions="FillAndExpand"
                     LineHeight="{OnPlatform Default=-1,
                                             Android=1.25}"
-                    Text="Thông tin tỉnh"
+                    Text="Số tiền cần nạp/ rút"
                     TextColor="{DynamicResource Gray-800}"
                     VerticalOptions="Center"
                     VerticalTextAlignment="Center" />
                 <StackLayout Grid.Row="1">
-                    <border:SfBorder BorderColor="{Binding Source={x:Reference IdEntry}, Path=IsFocused, Converter={StaticResource ColorConverter}, ConverterParameter=3}" Style="{StaticResource DataFormBorderlessEntryBorderStyle}">
+                    <border:SfBorder BorderColor="{Binding Source={x:Reference MoneyEntry}, Path=IsFocused, Converter={StaticResource ColorConverter}, ConverterParameter=3}" Style="{StaticResource DataFormBorderlessEntryBorderStyle}">
                         <Grid ColumnDefinitions="*, Auto">
                             <control:BorderlessEntry
-                                x:Name="IdEntry"
+                                x:Name="MoneyEntry"
                                 Margin="12,0"
+                                Keyboard="Numeric"
                                 HeightRequest="40"
-                                Placeholder="Mã tỉnh"
+                                Placeholder="Số tiền"
                                 Style="{StaticResource BorderlessEntryStyle}"
-                                Text="{Binding Id.Value}" />
+                                Text="{Binding Money.Value}" />
                             <!--  Label to display error icon  -->
                             <Label
                                     Grid.Column="1"
-                                    IsVisible="{Binding Path=IsVisible, Source={x:Reference IdValidationLabel}}"
+                                    IsVisible="{Binding Path=IsVisible, Source={x:Reference MoneyValidationLabel}}"
                                     Style="{StaticResource ErrorIconLabelStyle}"
                                     Text="{StaticResource Error}" />
                         </Grid>
                     </border:SfBorder>
                     <!--  Label to display error message  -->
                     <Label
-                        x:Name="IdValidationLabel"
+                        x:Name="MoneyValidationLabel"
                         Margin="15,-3,0,0"
-                        IsVisible="{Binding Id.IsValid, Converter={StaticResource InverseBoolConverter}}"
+                        IsVisible="{Binding Money.IsValid, Converter={StaticResource InverseBoolConverter}}"
                         Style="{StaticResource SimpleLabelStyle}"
-                        Text="{Binding Id.Errors, Converter={StaticResource FirstValidationErrorConverter}}"
-                        TextColor="{DynamicResource Red}"
-                        VerticalOptions="FillAndExpand" />
-                </StackLayout>
-                <!--From Full Name-->
-                <StackLayout Grid.Row="1">
-                    <border:SfBorder BorderColor="{Binding Source={x:Reference NameEntry}, Path=IsFocused, Converter={StaticResource ColorConverter}, ConverterParameter=3}" Style="{StaticResource DataFormBorderlessEntryBorderStyle}">
-                        <Grid ColumnDefinitions="*, Auto">
-                            <control:BorderlessEntry
-                                x:Name="NameEntry"
-                                Margin="12,0"
-                                HeightRequest="40"
-                                Placeholder="Tên tỉnh"
-                                Style="{StaticResource BorderlessEntryStyle}"
-                                Text="{Binding Name.Value}" />
-                            <!--  Label to display error icon  -->
-                            <Label
-                                    Grid.Column="1"
-                                    IsVisible="{Binding Path=IsVisible, Source={x:Reference NameValidationLabel}}"
-                                    Style="{StaticResource ErrorIconLabelStyle}"
-                                    Text="{StaticResource Error}" />
-                        </Grid>
-                    </border:SfBorder>
-                    <!--  Label to display error message  -->
-                    <Label
-                        x:Name="NameValidationLabel"
-                        Margin="15,-3,0,0"
-                        IsVisible="{Binding Name.IsValid, Converter={StaticResource InverseBoolConverter}}"
-                        Style="{StaticResource SimpleLabelStyle}"
-                        Text="{Binding Name.Errors, Converter={StaticResource FirstValidationErrorConverter}}"
+                        Text="{Binding Money.Errors, Converter={StaticResource FirstValidationErrorConverter}}"
                         TextColor="{DynamicResource Red}"
                         VerticalOptions="FillAndExpand" />
                 </StackLayout>
 
-                <StackLayout Orientation="Horizontal">
+                <StackLayout Orientation="Horizontal" IsVisible="{Binding !IsVisible}">
                     <buttons:SfButton
                     Margin="0,24,0,0"
-                    Command="{Binding SubmitCommand}"
+                    Command="{Binding DepositCommand}"
                     Style="{StaticResource GradientButtonStyle}"
-                    Text="Cập nhật"
-                    WidthRequest="300" />
+                    Text="Nạp tiền"
+                    WidthRequest="180" />
                     <buttons:SfButton
                     Margin="0,24,0,0"
-                        HorizontalOptions="EndAndExpand"
-                        IsVisible="{Binding IsEdit}"
-                    Command="{Binding DeleteCommand}"
+                    Command="{Binding WithdrawCommand}"
                     Style="{StaticResource DangerButtonStyle}"
-                    Text="Xóa"
-                    WidthRequest="50" />
+                    Text="Rút tiền"
+                    WidthRequest="180" />
                 </StackLayout>
+                <busyindicator:SfBusyIndicator 
+                                       IsBusy="{Binding IsLoading}"
+                                       AnimationType="Cupertino"
+                                       HorizontalOptions="FillAndExpand"
+                                       ViewBoxWidth = "250" 
+                                       ViewBoxHeight="250" 
+                                       Title="Đang xử lý ..."
+                                       TextColor="Blue"/>
             </StackLayout>
         </ScrollView>
     </ContentPage.Content>

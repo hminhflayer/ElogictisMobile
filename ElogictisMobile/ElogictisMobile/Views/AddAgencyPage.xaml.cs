@@ -24,7 +24,7 @@ namespace ElogictisMobile.Views
         {
             if (this.BindingContext is AddAgencyPageViewModel vm)
             {
-                vm.ProvinceCommand.Execute(sender);
+                vm.ProvinceCommand.Execute(e.Value);
             }
         }
 
@@ -32,7 +32,15 @@ namespace ElogictisMobile.Views
         {
             if (this.BindingContext is AddAgencyPageViewModel vm)
             {
-                vm.DistrictCommand.Execute(sender);
+                vm.DistrictCommand.Execute(e.Value);
+            }
+        }
+
+        private void Town_SelectedChanged(object sender, Syncfusion.XForms.ComboBox.SelectionChangedEventArgs e)
+        {
+            if (this.BindingContext is AddAgencyPageViewModel vm)
+            {
+                vm.TownCommand.Execute(e.Value);
             }
         }
     }

@@ -349,17 +349,28 @@
                         HeightRequest="40"
                         Placeholder="Tối đa 2.000.000 VNĐ"
                         Style="{StaticResource BorderlessEntryStyle}"
-                        Text="{Binding Money.Value, StringFormat='{0:C}'}" />
+                        Text="{Binding Money.Value, StringFormat='{0:C}'}" 
+                            IsReadOnly="True"/>
                     </border:SfBorder>
                 </StackLayout>
 
+                <StackLayout Orientation="Horizontal" 
+                             HorizontalOptions="CenterAndExpand" 
+                             IsVisible="{Binding IsShipper}">
+                    <buttons:SfButton
+                    Margin="0,16,0,0"
+                    Style="{StaticResource GradientButtonStyle}"
+                    Text="{Binding TextButton}"
+                    WidthRequest="200" 
+                    Command="{Binding UpdateProductCommand}"/>
+                </StackLayout>
                 <StackLayout Orientation="Horizontal" 
                              HorizontalOptions="CenterAndExpand" 
                              IsVisible="{Binding IsManage}">
                     <buttons:SfButton
                     Margin="0,16,0,0"
                     Style="{StaticResource GradientButtonStyle}"
-                    Text="Cập Nhật"
+                    Text="{Binding TextButton}"
                     WidthRequest="200" 
                     Command="{Binding UpdateProductCommand}"/>
 
@@ -369,10 +380,13 @@
                     Command="{Binding DeleteProductCommand}"
                     Style="{StaticResource GradientButtonStyle}"
                     Text="XÓA"
-                    WidthRequest="60" />
+                    WidthRequest="60"
+                    IsVisible="{Binding IsAdmin}"/>
                 </StackLayout>
 
-                <StackLayout Orientation="Horizontal" HorizontalOptions="CenterAndExpand">
+                <StackLayout Orientation="Horizontal" 
+                             HorizontalOptions="CenterAndExpand"
+                             IsVisible="{Binding IsNotShipper}">
                     <buttons:SfButton
                     Margin="0,16,0,0"
                     Style="{StaticResource DangerButtonStyle}"

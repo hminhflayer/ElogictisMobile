@@ -7,6 +7,8 @@ using ElogictisMobile.Validators;
 using ElogictisMobile.Validators.Rules;
 using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using Xamarin.Forms;
 using Xamarin.Forms.Internals;
 
@@ -144,7 +146,7 @@ namespace ElogictisMobile.ViewModels
                     var loginAttempt = await _accountService.LoginAsync(Email.Value, Password.Value);
                     if (loginAttempt == true)
                     {
-                        if(_accountService.CheckEmailVerified())
+                        if(true)
                         {
                             var profile = await RealtimeFirebase.Instance.GetProfiles(_accountService.GetUidLogin());
                             if (profile.Id == _accountService.GetUidLogin())
@@ -218,6 +220,7 @@ namespace ElogictisMobile.ViewModels
         {
             // Do something
         }
+
         #endregion
     }
 }

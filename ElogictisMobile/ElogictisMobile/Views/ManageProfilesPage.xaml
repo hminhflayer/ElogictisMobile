@@ -26,13 +26,20 @@
             ColumnSpacing="0"
             RowDefinitions="Auto, Auto, *"
             RowSpacing="0">
+                <StackLayout Orientation="Horizontal">
 
-                <buttons:SfButton
-                    Margin="0,16,0,16"
+                    <SearchBar x:Name="filterText" HeightRequest="40"
+                               WidthRequest="300"
+                            Placeholder="Tên thành viên" Grid.Row="1"
+                            TextChanged="SearchBar_TextChanged"/>
+                    <buttons:SfButton
+                    Margin="0,16,0,20"
                     Style="{StaticResource GradientButtonStyle}"
+                    WidthRequest="80" 
                     Text="Thêm"
-                    WidthRequest="200" 
                     Command="{Binding AddProfileCommand}"/>
+                </StackLayout>
+                
                 <ListView Grid.Row="1" ItemsSource="{Binding ProfilesList}" SelectionMode="None"
                           HasUnevenRows="True" ItemTapped="ListView_ItemTapped">
                     <ListView.ItemTemplate>
@@ -44,6 +51,12 @@
                                         <Label Text="{Binding Auth_ext}"
                                                    FontAttributes="Bold"
                                                    TextColor="Green"
+                                               FontSize="16"/>
+                                        <Label Text="ĐÃ DUYỆT"
+                                               IsVisible="{Binding IsConfirm}"
+                                               HorizontalOptions="EndAndExpand"
+                                                   FontAttributes="Bold"
+                                                   TextColor="Blue"
                                                FontSize="16"/>
                                     </StackLayout>
                                     <StackLayout Orientation="Horizontal">

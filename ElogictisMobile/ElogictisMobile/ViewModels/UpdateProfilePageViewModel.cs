@@ -205,15 +205,7 @@ namespace ElogictisMobile.ViewModels
             await App.Current.MainPage.DisplayAlert("File Location", file.AlbumPath, "OK");
             var filepath = file.Path;
 
-            var tmp = ImageSource.FromStream(() =>
-            {
-                var stream = file.GetStream();
-
-                //file.Dispose();
-                return stream;
-            });
-
-            Avatar = tmp;
+            Avatar = ImageSource.FromStream(() => file.GetStream());
         }
 
         #endregion

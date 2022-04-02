@@ -31,11 +31,7 @@ namespace ElogictisMobile.ViewModels
         public ManageProductNewPageViewModel(INavigationService navigationService)
         {
             _navigationService = navigationService;
-            var list = RealtimeFirebase.Instance.GetAllNewProduct();
-            if (list.Count != 0)
-            {
-                ProductList = list;
-            }
+            ProductList = RealtimeFirebase.Instance.GetAllNewProduct();
         }
 
         #endregion

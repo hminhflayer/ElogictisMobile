@@ -27,5 +27,14 @@ namespace ElogictisMobile.Views
                 vm.ItemTappedCommand.Execute(e.Item);
             }
         }
+
+        private void SearchBar_TextChanged(object sender, Xamarin.Forms.TextChangedEventArgs e)
+        {
+            var text = e.NewTextValue;
+            if (this.BindingContext is ManageProductsPageViewModel vm)
+            {
+                vm.TextChangedCommand.Execute(text);
+            }
+        }
     }
 }

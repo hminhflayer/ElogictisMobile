@@ -22,7 +22,7 @@ namespace ElogictisMobile.ViewModels
         private Command<object> itemTappedCommand;
         private Command<object> backCommand;
         private Command<object> addTypeProductCommand;
-
+        private Command<string> textChangedCommand;
         #endregion
 
         #region Constructor
@@ -33,8 +33,9 @@ namespace ElogictisMobile.ViewModels
         public CategoryTypeProductPageViewModel(INavigationService navigationService)
         {
             _navigationService = navigationService;
+            TypeProductList = new ObservableCollection<Category>();
+            TypeProductList.Clear();
             TypeProductList = RealtimeFirebase.Instance.GetAllCategory<Category>("TypeProduct");
-            LocalContext.TypeProductList = TypeProductList;
         }
 
         #endregion
@@ -65,6 +66,13 @@ namespace ElogictisMobile.ViewModels
             get
             {
                 return this.addTypeProductCommand ?? (this.addTypeProductCommand = new Command<object>(this.AddTypeProductClicked));
+            }
+        }
+        public Command<string> TextChangedCommand
+        {
+            get
+            {
+                return this.textChangedCommand ?? (this.textChangedCommand = new Command<string>(this.SearchTextChanged));
             }
         }
 
@@ -107,6 +115,35 @@ namespace ElogictisMobile.ViewModels
             catch (Exception ex)
             {
                 await App.Current.MainPage.DisplayAlert("Thông báo", ex.Message, "OK");
+            }
+        }
+        private void SearchTextChanged(string search)
+        {
+            // Do something
+            try
+            {
+                ObservableCollection<Category> tmp = LocalContext.TypeProductList;
+                if (search == null || search == "")
+                {
+                    foreach (var item in tmp)
+                    {
+                        TypeProductList.Add(item);
+                    }
+                    return;
+                }
+
+                this.TypeProductList.Clear();
+                foreach (var item in tmp)
+                {
+                    if (item.Name.ToLower().Contains(search.ToLower()))
+                    {
+                        TypeProductList.Add(item);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                App.Current.MainPage.DisplayAlert("Thông báo", ex.Message, "OK");
             }
         }
         #endregion

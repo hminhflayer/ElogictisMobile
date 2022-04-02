@@ -1,0 +1,121 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="ElogictisMobile.Views.ManageTownPage"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:button="clr-namespace:Syncfusion.XForms.Buttons;assembly=Syncfusion.Buttons.XForms"
+    xmlns:core="clr-namespace:Syncfusion.XForms.Core;assembly=Syncfusion.Core.XForms"
+    xmlns:svg="clr-namespace:ElogictisMobile.Controls" 
+    xmlns:combobox="clr-namespace:Syncfusion.XForms.ComboBox;assembly=Syncfusion.SfComboBox.XForms" xmlns:busyindicator="clr-namespace:Syncfusion.SfBusyIndicator.XForms;assembly=Syncfusion.SfBusyIndicator.XForms"
+    BackgroundColor="{StaticResource Gray-White}"
+    NavigationPage.HasNavigationBar="True"
+    NavigationPage.HasBackButton="True"
+    Title="Danh mục Xã/Phường/Thị trấn">
+
+    <ContentPage.Content>
+        <ScrollView>
+            <Grid
+            ColumnSpacing="0"
+            RowDefinitions="Auto, Auto, *"
+            RowSpacing="0">
+
+                <StackLayout Orientation="Vertical">
+                    <StackLayout Orientation="Horizontal">
+
+                        <SearchBar x:Name="filterText" HeightRequest="40"
+                               WidthRequest="300"
+                            Placeholder="Nhập Xã/Phường/Thị trấn" Grid.Row="1"
+                            TextChanged="SearchBar_TextChanged"/>
+                        <button:SfButton
+                    Margin="0,16,0,20"
+                    Style="{StaticResource GradientButtonStyle}"
+                    WidthRequest="80" 
+                    Text="Thêm"
+                    Command="{Binding AddTownCommand}"/>
+                    </StackLayout>
+                    <StackLayout Orientation="Horizontal">
+                        <Label
+                    Margin="0,0,0,10"
+                    FontFamily="Montserrat-SemiBold"
+                    FontSize="16"
+                    HorizontalOptions="FillAndExpand"
+                    LineHeight="{OnPlatform Default=-1,
+                                            Android=1.25}"
+                    Text="Tỉnh: "
+                    TextColor="{DynamicResource Gray-800}"
+                    VerticalOptions="Center"
+                    VerticalTextAlignment="Center" />
+                        <combobox:SfComboBox HeightRequest="40" 
+                                         WidthRequest="280"
+                                         DataSource="{Binding ProvinceCollection}" 
+                                         DisplayMemberPath="Name" 
+                                         SelectedValuePath="Id"
+                                         SelectedItem="{Binding Province}"
+                                         IsEnabled="True"
+                                         SelectionChanged="Province_SelectionChanged"
+                                         ShowClearButton="False"
+                                         IsEditableMode="False"/>
+                    </StackLayout>
+                    <StackLayout Orientation="Horizontal">
+                        <Label
+                    Margin="0,0,0,10"
+                    FontFamily="Montserrat-SemiBold"
+                    FontSize="16"
+                    HorizontalOptions="FillAndExpand"
+                    LineHeight="{OnPlatform Default=-1,
+                                            Android=1.25}"
+                    Text="Quận/Huyện: "
+                    TextColor="{DynamicResource Gray-800}"
+                    VerticalOptions="Center"
+                    VerticalTextAlignment="Center" />
+                        <combobox:SfComboBox HeightRequest="40" 
+                                         WidthRequest="280"
+                                         DataSource="{Binding DistrictCollection}" 
+                                         DisplayMemberPath="Name" 
+                                         SelectedValuePath="Id"
+                                         SelectedItem="{Binding District}"
+                                         SelectionChanged="District_SelectionChanged"
+                                         ShowClearButton="False"
+                                         IsEditableMode="False"/>
+                    </StackLayout>
+                </StackLayout>
+
+                <ListView Grid.Row="2" ItemsSource="{Binding TownCollection}" SelectionMode="None"
+                          HasUnevenRows="True" ItemTapped="ListView_ItemTapped">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <ViewCell>
+                                <StackLayout Orientation="Vertical" Spacing="16" Padding="16">
+                                    <StackLayout Orientation="Horizontal">
+                                        <Label Text="Mã Xã/Phường/Thị trấn: "
+                                               FontSize="18"
+                                               FontAttributes="Bold"/>
+                                        <Label Text="{Binding Id}"
+                                               FontSize="18"/>
+                                    </StackLayout>
+                                    <StackLayout Orientation="Horizontal">
+                                        <Label Text="Tên Xã/Phường/Thị trấn: "
+                                               FontSize="18"
+                                               FontAttributes="Bold"/>
+                                        <Label Text="{Binding Name}"
+                                               FontSize="18"/>
+                                    </StackLayout>
+                                </StackLayout>
+                            </ViewCell>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+                <busyindicator:SfBusyIndicator 
+                                       IsBusy="{Binding IsLoading}"
+                                       AnimationType="Cupertino"
+                                       HorizontalOptions="FillAndExpand"
+                                       ViewBoxWidth = "150" 
+                                       ViewBoxHeight="150" 
+                                       Title="Đang tải ..."
+                                       TextColor="Blue"/>
+            </Grid>
+        </ScrollView>
+
+    </ContentPage.Content>
+
+</ContentPage>

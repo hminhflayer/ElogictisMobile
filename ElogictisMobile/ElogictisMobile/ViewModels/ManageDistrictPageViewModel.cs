@@ -4,25 +4,29 @@ using ElogictisMobile.Services.Navigation;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Collections.Specialized;
+using System.Reflection;
 using System.Runtime.Serialization;
+using System.Runtime.Serialization.Json;
 using Xamarin.Forms;
 using Xamarin.Forms.Internals;
 
 namespace ElogictisMobile.ViewModels
 {
     /// <summary>
-    /// ViewModel for contacts page.
+    /// ViewModel for empty cart page.
     /// </summary>
     [Preserve(AllMembers = true)]
     [DataContract]
-    public class ManageProductsPageViewModel : BaseViewModel
+    public class ManageDistrictPageViewModel : BaseViewModel
     {
         #region Fields
 
         private Command<object> itemTappedCommand;
+        private Command<object> backCommand;
         private Command<object> addProductCommand;
         private Command<string> textChangedCommand;
+
+        private INavigationService _navigationService;
 
         #endregion
 
@@ -31,36 +35,11 @@ namespace ElogictisMobile.ViewModels
         /// <summary>
         /// Initializes a new instance for the <see cref="ManageProductsPageViewModel"/> class.
         /// </summary>
-        public ManageProductsPageViewModel(INavigationService navigationService)
+        public ManageDistrictPageViewModel(INavigationService navigationService)
         {
-            try
-            {
-                ProductList = new ObservableCollection<Products>();
-                ProductList.Clear();
-                _navigationService = navigationService;
-
-                if (LocalContext.IsShipper)
-                {
-                    ProductList = RealtimeFirebase.Instance.GetAllProductGeted();
-                }
-                else if (LocalContext.IsAdmin)
-                {
-                    ProductList = RealtimeFirebase.Instance.GetAll<Products>("Products");
-                }
-                else if(LocalContext.IsManager)
-                {
-                    ProductList = RealtimeFirebase.Instance.GetAllProductWithAgency();
-                }
-                else
-                {
-                    ProductList = RealtimeFirebase.Instance.GetAllProductCreated();
-                }
-            }
-            catch(Exception ex)
-            {
-                App.Current.MainPage.DisplayAlert("Thông báo", ex.Message, "OK");
-            }
-            
+            _navigationService = navigationService;
+            DistrictCollection = new ObservableCollection<District>();
+            this.ProvinceCommand = new Command(this.ProvinceChangeClicked);
         }
 
         #endregion
@@ -78,6 +57,14 @@ namespace ElogictisMobile.ViewModels
             }
         }
 
+        public Command<object> BackCommand
+        {
+            get
+            {
+                return this.backCommand ?? (this.backCommand = new Command<object>(this.GoToBack));
+            }
+        }
+
         public Command<object> AddProductCommand
         {
             get
@@ -85,6 +72,7 @@ namespace ElogictisMobile.ViewModels
                 return this.addProductCommand ?? (this.addProductCommand = new Command<object>(this.AddProductClicked));
             }
         }
+
         public Command<string> TextChangedCommand
         {
             get
@@ -92,37 +80,21 @@ namespace ElogictisMobile.ViewModels
                 return this.textChangedCommand ?? (this.textChangedCommand = new Command<string>(this.SearchTextChanged));
             }
         }
-
-        private INavigationService _navigationService;
+        public Category Province { get; set; }
+        public ObservableCollection<Category> ProvinceCollection { get; set; } = LocalContext.ProvinceList;
 
         /// <summary>
         /// Gets or sets a collction of value to be displayed in contacts list page.
         /// </summary>
         [DataMember(Name = "contactsPageList")]
-        public ObservableCollection<Products> ProductList { get; set; }
-        public bool IsShipper { get; set; } = !LocalContext.IsShipper;
+        public ObservableCollection<District> DistrictCollection { get; set; }
 
         #endregion
-
+        #region Commands
+        public Command ProvinceCommand { get; set; }
+        #endregion
         #region Methods
 
-        private void HandleChange(object sender, NotifyCollectionChangedEventArgs e)
-        {
-            foreach (var x in e.NewItems)
-            {
-                // do something
-                App.Current.MainPage.DisplayAlert("OK", x.ToString(), "OK");
-            }
-            foreach (var x in e.OldItems)
-            {
-                // do something
-                Console.WriteLine("Old: " + x);
-            }
-            if (e.Action == NotifyCollectionChangedAction.Move)
-            {
-                //do something
-            }
-        }
         /// <summary>
         /// Invoked when an item is selected from the contacts list.
         /// </summary>
@@ -130,8 +102,15 @@ namespace ElogictisMobile.ViewModels
         private async void NavigateToNextPage(object selectedItem)
         {
             // Do something
-            LocalContext.ProductSelected = selectedItem as Products;
-            await _navigationService.NavigateToAsync<DetailProductFormPageViewModel>();
+            LocalContext.DistrictSelected = selectedItem as District;
+            LocalContext.IsEdit = true;
+            await _navigationService.NavigateToAsync<AddDistrictPageViewModel>();
+        }
+
+        private async void GoToBack(object obj)
+        {
+            // Do something
+            await _navigationService.GoBackAsync();
         }
 
         private async void AddProductClicked(object obj)
@@ -139,7 +118,8 @@ namespace ElogictisMobile.ViewModels
             // Do something
             try
             {
-                await _navigationService.NavigateToAsync<AddProductFormPageViewModel>();
+                LocalContext.IsEdit = false;
+                await _navigationService.NavigateToAsync<AddDistrictPageViewModel>();
             }
             catch (Exception ex)
             {
@@ -147,27 +127,51 @@ namespace ElogictisMobile.ViewModels
             }
         }
 
+        public async void ProvinceChangeClicked()
+        {
+            try
+            {
+                List<District> districts = new List<District>();
+                IsLoading = true;
+                DistrictCollection.Clear();
+                var province = Province.Id;
+                districts = await RealtimeFirebase.Instance.GetListDistrict(province);
+                LocalContext.Districts = districts;
+                foreach(var x in districts)
+                {
+                    DistrictCollection.Add(x);
+                }    
+                IsLoading = false;
+            }
+            catch (Exception ex)
+            {
+                await App.Current.MainPage.DisplayAlert("Thông báo", ex.Message, "OK");
+                IsLoading = false;
+            }
+
+        }
+
         private void SearchTextChanged(string search)
         {
             // Do something
             try
             {
-                ObservableCollection<Products> tmp = LocalContext.ProductsList;
+                List<District> tmp = LocalContext.Districts;
                 if (search == null || search == "")
                 {
                     foreach (var item in tmp)
                     {
-                        ProductList.Add(item);
+                        DistrictCollection.Add(item);
                     }
                     return;
                 }
 
-                this.ProductList.Clear();
+                this.DistrictCollection.Clear();
                 foreach (var item in tmp)
                 {
-                    if (item.ID.ToLower().Contains(search.ToLower()))
+                    if (item.Name.ToLower().Contains(search.ToLower()))
                     {
-                        ProductList.Add(item);
+                        DistrictCollection.Add(item);
                     }
                 }
             }

@@ -99,7 +99,7 @@
                         <Label Text="Số lượng kiện hàng: "
                                FontSize="18"
                                FontAttributes="Bold"/>
-                        <Label Text="{Binding Quantity}"
+                        <Label Text="{Binding Quanlity}"
                                FontSize="18"
                                FontAttributes="Bold"/>
                     </StackLayout>

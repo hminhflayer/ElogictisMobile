@@ -3,6 +3,7 @@ using ElogictisMobile.Services;
 using ElogictisMobile.Services.Navigation;
 using ElogictisMobile.Views;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Runtime.Serialization;
 using Xamarin.Forms;
@@ -22,6 +23,7 @@ namespace ElogictisMobile.ViewModels
         private Command<object> itemTappedCommand;
 
         private Command<object> addProfileCommand;
+        private Command<string> textChangedCommand;
 
         #endregion
 
@@ -33,7 +35,16 @@ namespace ElogictisMobile.ViewModels
         public ManageProfilesPageViewModel(INavigationService navigationService)
         {
             _navigationService = navigationService;
-            ProfilesList = RealtimeFirebase.Instance.GetAll<Profiles>("Profiles");
+
+            if(LocalContext.IsAdmin)
+            {
+                ProfilesList = RealtimeFirebase.Instance.GetAll<Profiles>("Profiles");
+            }
+            else
+            {
+                ProfilesList = RealtimeFirebase.Instance.GetAllProfileWithAgency();
+            }
+            
         }
 
         #endregion
@@ -56,6 +67,13 @@ namespace ElogictisMobile.ViewModels
             get
             {
                 return this.addProfileCommand ?? (this.addProfileCommand = new Command<object>(this.AddProfileClicked));
+            }
+        }
+        public Command<string> TextChangedCommand
+        {
+            get
+            {
+                return this.textChangedCommand ?? (this.textChangedCommand = new Command<string>(this.SearchTextChanged));
             }
         }
 
@@ -94,6 +112,35 @@ namespace ElogictisMobile.ViewModels
             catch(Exception ex)
             {
                 await App.Current.MainPage.DisplayAlert("Thông báo", ex.Message, "OK");
+            }
+        }
+        private void SearchTextChanged(string search)
+        {
+            // Do something
+            try
+            {
+                ObservableCollection<Profiles> tmp = LocalContext.ProfilesList;
+                if (search == null || search == "")
+                {
+                    foreach (var item in tmp)
+                    {
+                        ProfilesList.Add(item);
+                    }
+                    return;
+                }
+
+                this.ProfilesList.Clear();
+                foreach (var item in tmp)
+                {
+                    if (item.Name.ToLower().Contains(search.ToLower()))
+                    {
+                        ProfilesList.Add(item);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                App.Current.MainPage.DisplayAlert("Thông báo", ex.Message, "OK");
             }
         }
         #endregion

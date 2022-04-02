@@ -49,7 +49,7 @@
                     VerticalOptions="FillAndExpand"
                     WidthRequest="{OnPlatform Default='-1',
                                               UWP='350'}"
-                    IsEnabled="{Binding IsLoading}">
+                    IsEnabled="{Binding !IsLoading}">
 
                     <Grid
                         RowDefinitions="Auto, Auto, Auto, Auto, Auto, Auto, Auto, Auto"

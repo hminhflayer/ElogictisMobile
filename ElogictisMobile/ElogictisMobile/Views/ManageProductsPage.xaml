@@ -19,27 +19,41 @@
             ColumnSpacing="0"
             RowDefinitions="Auto, Auto, *"
             RowSpacing="0">
+                <StackLayout Orientation="Horizontal">
 
-                <buttons:SfButton
-                    Margin="0,16,0,16"
-                    Style="{StaticResource GradientButtonStyle}"
-                    WidthRequest="200" 
-                    Text="Thêm"
-                    Command="{Binding AddProductCommand}"/>
-                <!--<SearchBar x:Name="filterText" HeightRequest="40"
-                   Placeholder="Search here to filter" Grid.Row="0"/>-->
-                <ListView Grid.Row="1" ItemsSource="{Binding ContactList}" SelectionMode="None"
+                    <SearchBar x:Name="filterText" HeightRequest="40"
+                               WidthRequest="300"
+                            Placeholder="Nhập Mã đơn hàng" Grid.Row="1"
+                            TextChanged="SearchBar_TextChanged"/>
+                    <buttons:SfButton
+                        Margin="0,16,0,20"
+                        Style="{StaticResource GradientButtonStyle}"
+                        WidthRequest="80" 
+                        Text="Thêm"
+                        IsVisible="{Binding IsShipper}"
+                        Command="{Binding AddProductCommand}"/>
+                </StackLayout>
+                
+                <ListView Grid.Row="1" ItemsSource="{Binding ProductList}" SelectionMode="None"
                           HasUnevenRows="True" ItemTapped="ListView_ItemTapped">
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <ViewCell>
                                 <StackLayout Orientation="Vertical" Spacing="16" Padding="16">
-                                    <StackLayout BackgroundColor="#2196F3">
+                                    <StackLayout BackgroundColor="#2196F3"
+                                                Orientation="Vertical">
                                         <Label
-                                            Margin="0,5,0,5"
+                                            Margin="5,5,0,5"
                                             FontFamily="Montserrat-SemiBold"
-                                            FontSize="20"
-                                            HorizontalOptions="CenterAndExpand"
+                                            FontSize="18"
+                                            HorizontalOptions="StartAndExpand"
+                                            Text="{Binding ID, StringFormat='Mã ĐH: {0}'}"
+                                            TextColor="White"/>
+                                        <Label
+                                            Margin="5,5,0,5"
+                                            FontFamily="Montserrat-SemiBold"
+                                            FontSize="18"
+                                            HorizontalOptions="StartAndExpand"
                                             Text="{Binding Status_ext}"
                                             TextColor="White"/>
                                     </StackLayout>

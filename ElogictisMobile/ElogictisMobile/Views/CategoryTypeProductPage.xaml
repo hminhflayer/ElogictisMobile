@@ -26,12 +26,19 @@
             RowDefinitions="Auto, Auto, *"
             RowSpacing="0">
 
-                <buttons:SfButton
-                    Margin="0,16,0,16"
+                <StackLayout Orientation="Horizontal">
+
+                    <SearchBar x:Name="filterText" HeightRequest="40"
+                               WidthRequest="300"
+                            Placeholder="Nhập loại" Grid.Row="1"
+                            TextChanged="SearchBar_TextChanged"/>
+                    <buttons:SfButton
+                    Margin="0,16,0,20"
                     Style="{StaticResource GradientButtonStyle}"
-                    WidthRequest="200" 
+                    WidthRequest="80" 
                     Text="Thêm"
                     Command="{Binding AddTypeProductCommand}"/>
+                </StackLayout>
                 <ListView Grid.Row="1" ItemsSource="{Binding TypeProductList}" SelectionMode="None"
                           HasUnevenRows="True" ItemTapped="ListView_ItemTapped">
                     <ListView.ItemTemplate>

@@ -1,4 +1,6 @@
-﻿using System.Threading.Tasks;
+﻿using ElogictisMobile.Models;
+using ElogictisMobile.Services;
+using System.Threading.Tasks;
 
 namespace ElogictisMobile.ViewModels
 {
@@ -41,7 +43,38 @@ namespace ElogictisMobile.ViewModels
             StatisticalPageViewModel = statisticalVM;
             TransactionHistoryPageViewModel = historyVM;
             ManageProductsPageViewModel = manageVM;
-            SettingsPageViewModel = settingVM;;
+            SettingsPageViewModel = settingVM;
+
+            //Load Profiles
+            if (LocalContext.IsAdmin)
+            {
+                LocalContext.ProfilesList = RealtimeFirebase.Instance.GetAll<Profiles>("Profiles");
+            }
+            else
+            {
+                LocalContext.ProfilesList = RealtimeFirebase.Instance.GetAllProfileWithAgency();
+            }
+
+            //Load Products, Agency, PriceList
+            if (LocalContext.IsShipper)
+            {
+                LocalContext.ProductsList = RealtimeFirebase.Instance.GetAllProductGeted();
+            }
+            else if (LocalContext.IsAdmin)
+            {
+                LocalContext.ProductsList = RealtimeFirebase.Instance.GetAll<Products>("Products");
+                LocalContext.AgencyList = RealtimeFirebase.Instance.GetAll<Agency>("Agencies");
+                LocalContext.PriceLists = RealtimeFirebase.Instance.GetAllCategory<PriceList>("PricesList");
+                LocalContext.TypeProductList = RealtimeFirebase.Instance.GetAllCategory<Category>("TypeProduct");
+            }
+            else if (LocalContext.IsManager)
+            {
+                LocalContext.ProductsList = RealtimeFirebase.Instance.GetAllProductWithAgency();
+            }
+            else
+            {
+                LocalContext.ProductsList = RealtimeFirebase.Instance.GetAllProductCreated();
+            }
         }
 
         public override Task InitializeAsync(object navigationData)

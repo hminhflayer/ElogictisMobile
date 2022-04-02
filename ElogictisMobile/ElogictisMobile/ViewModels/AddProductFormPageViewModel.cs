@@ -307,58 +307,78 @@ namespace ElogictisMobile.ViewModels
         /// <param name="obj">The object</param>
         private async void SubmitClicked(object obj)
         {
-            if(LocalContext.Current.AccountSettings.Money == 0)
+            try
             {
-                await App.Current.MainPage.DisplayAlert("Thông báo", "Bạn không còn tiền trong tài khoản!", "OK");
-                return;
-            }    
-            if (this.AreFieldsValid())
-            {
-                var key = GeneralKey.Instance.General("PRO");
-                var keyNoti = GeneralKey.Instance.General("NOTI");
-                // Do Something
-                var task = await RealtimeFirebase.Instance.UpSert("Products", key, JsonConvert.SerializeObject(new Products
+                if (LocalContext.Current.AccountSettings.Money == 0)
                 {
-                    CreateBy = LocalContext.Current.AccountSettings.Id,
-                    CreateTime = DateTime.Now.ToShortDateString(),
-                    Description = Desciption.Value,
-                    From_Address = FromAddress.Value,
-                    From_FullName = FromFullName.Value,
-                    From_PhoneNumber = FromPhone.Value,
-                    ID = key,
-                    IsDelete = false,
-                    LastUpdateBy = "",
-                    LastUpdateTime = "",
-                    Money = Money.Value,
-                    Quanlity = Quanlity.Value.ToString(),
-                    To_Address = ToAddress.Value,
-                    To_FullName = ToFullName.Value,
-                    To_PhoneNumber = ToPhone.Value,
-                    Type = TypeProduct.Id,
-                    Type_ext = TypeProduct.Name,
-                    Weight = Weight.Value.ToString(),
-                    Status = 1,
-                    Holder = "",
-                    IsConfirm = false,
-                    Status_ext = "Chờ xác nhận nhận đơn"
-                }));
-                if(task)
+                    await App.Current.MainPage.DisplayAlert("Thông báo", "Bạn không còn tiền trong tài khoản!", "OK");
+                    return;
+                }
+                if (!LocalContext.Current.AccountSettings.IsConfirm)
                 {
-                    await RealtimeFirebase.Instance.UpSert("Notifications", keyNoti, JsonConvert.SerializeObject(new TransactionHistory
+                    await App.Current.MainPage.DisplayAlert("Thông báo", "Tài khoản chưa được duyệt!\nKhông thể tạo đơn hàng", "OK");
+                    return;
+                }
+                if (LocalContext.Current.AccountSettings.Money == 0)
+                {
+                    await App.Current.MainPage.DisplayAlert("Thông báo", "Bạn không còn tiền trong tài khoản!", "OK");
+                    return;
+                }
+                if (this.AreFieldsValid())
+                {
+                    var key = GeneralKey.Instance.General("PRO");
+                    var keyNoti = GeneralKey.Instance.General("NOTI");
+                    // Do Something
+                    var task = await RealtimeFirebase.Instance.UpSert("Products", key, JsonConvert.SerializeObject(new Products
                     {
-                        IdProduct = key,
-                        TransactionDescription = "CHỜ XÁC NHẬN",
-                        Date = DateTime.Now.ToShortDateString(),
-                        Time = DateTime.Now.ToShortTimeString(),
-                        Email = LocalContext.Profiles.Email
-                    })); ;
-                    await App.Current.MainPage.DisplayAlert("Thông báo", "Thêm đơn hàng thành công!", "OK");
-                }  
-                else
-                {
-                    await App.Current.MainPage.DisplayAlert("Thông báo", "Thêm đơn hàng không thành công!", "OK");
-                }    
+                        CreateBy = LocalContext.Current.AccountSettings.Id,
+                        CreateTime = DateTime.Now.ToShortDateString(),
+                        Description = Desciption.Value,
+                        From_Address = FromAddress.Value,
+                        From_FullName = FromFullName.Value,
+                        From_PhoneNumber = FromPhone.Value,
+                        ID = key,
+                        IsDelete = false,
+                        LastUpdateBy = "",
+                        LastUpdateTime = "",
+                        Money = Money.Value,
+                        Quanlity = Quanlity.Value,
+                        To_Address = ToAddress.Value,
+                        To_FullName = ToFullName.Value,
+                        To_PhoneNumber = ToPhone.Value,
+                        Type = TypeProduct.Id,
+                        Type_ext = TypeProduct.Name,
+                        Weight = Weight.Value,
+                        Status = 1,
+                        Holder = "",
+                        IsConfirm = false,
+                        Status_ext = "CHỜ NHẬN ĐƠN",
+                        AgencyId = LocalContext.Current.AccountSettings.AgencyId,
+                    }));
+                    if (task)
+                    {
+                        await RealtimeFirebase.Instance.UpSert("Notifications", keyNoti, JsonConvert.SerializeObject(new TransactionHistory
+                        {
+                            IdProduct = key,
+                            TransactionDescription = "CHỜ NHẬN ĐƠN",
+                            Date = DateTime.Now.ToShortDateString(),
+                            Time = DateTime.Now.ToShortTimeString(),
+                            Email = LocalContext.Profiles.Email,
+                            ProfileId = LocalContext.Current.AccountSettings.Id
+                        })); ;
+                        await App.Current.MainPage.DisplayAlert("Thông báo", "Thêm đơn hàng thành công!", "OK");
+                    }
+                    else
+                    {
+                        await App.Current.MainPage.DisplayAlert("Thông báo", "Thêm đơn hàng không thành công!", "OK");
+                    }
+                }
             }
+            catch(Exception ex)
+            {
+                await App.Current.MainPage.DisplayAlert("Thông báo",ex.Message, "OK");
+            }
+            
         }
 
         public void BindingShipMoney()

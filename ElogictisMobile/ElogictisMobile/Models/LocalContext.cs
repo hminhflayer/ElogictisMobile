@@ -15,6 +15,8 @@ namespace ElogictisMobile.Models
         public static ObservableCollection<Products> ProductsList { get; set; }
         public static ObservableCollection<Category> TypeProductList { get; set; }
         public static ObservableCollection<Category> ProvinceList { get; set; }
+        public static ObservableCollection<Agency> AgencyList { get; set; }
+        public static ObservableCollection<PriceList> PriceLists { get; set; }
         public static Products ProductSelected { get; set; }
         public static Profiles ProfileSelected { get; set; }
         public static Category CategorySelected { get; set; }
@@ -26,6 +28,12 @@ namespace ElogictisMobile.Models
         public static bool IsManager { get; set; }
         public static bool IsShipper { get; set; }
         public static bool IsAdmin { get; set; }
+        public static bool IsEdit { get; set; }
+        public static string AdminId { get; private set; } = "2xxO3k41qcQrviWdPWnQnJJ1b1z2";
+        public static List<District> Districts { get; set; }
+        public static List<Town> Towns { get; set; }
+        public static List<Profiles> ListProfiles { get; set; } = new List<Profiles>();
+
 
         #region Singleton
         private static LocalContext _current;

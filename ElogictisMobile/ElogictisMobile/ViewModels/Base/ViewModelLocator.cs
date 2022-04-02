@@ -34,10 +34,14 @@ namespace ElogictisMobile.ViewModels.Base
             Register<TransactionHistoryPageViewModel, TransactionHistoryPage>();
             Register<SettingsPageViewModel, SettingsPage>();
 
+            Register<AddProfilesPageViewModel, AddProfilesPage>();
             Register<AddProductFormPageViewModel, AddProductFormPage>();
             Register<AddCategoryTypeProductPageViewModel, AddCategoryTypeProductPage>();
             Register<AddCategoryPriceListPageViewModel, AddCategoryPriceListPage>();
             Register<AddAgencyPageViewModel, AddAgencyPage>();
+            Register<AddProvincePageViewModel, AddProvincePage>();
+            Register<AddDistrictPageViewModel, AddDistrictPage>();
+            Register<AddTownPageViewModel, AddTownPage>();
 
             Register<UpdateProfilePageViewModel, UpdateProfilePage>();
 
@@ -48,6 +52,8 @@ namespace ElogictisMobile.ViewModels.Base
             Register<ManageProductNewPageViewModel, ManageProductNewPage>();
             Register<ManageAgencyPageViewModel, ManageAgencyPage>();
             Register<ManageProvincePageViewModel, ManageProvincePage>();
+            Register<ManageDistrictPageViewModel, ManageDistrictPage>();
+            Register<ManageTownPageViewModel, ManageTownPage>();
 
             Register<DetailProfilePageViewModel, DetailProfilePage>();
             Register<DetailProductFormPageViewModel, DetailProductFormPage>();
@@ -55,6 +61,8 @@ namespace ElogictisMobile.ViewModels.Base
             Register<DetailCategoryTypeProductPageViewModel, DetailCategoryTypeProductPage>();
             Register<DetailProductNewPageViewModel, DetailProductNewPage>();
             Register<DetailAgencyPageViewModel, DetailAgencyPage>();
+
+            Register<MoneyManagePageViewModel, MoneyManage>();
 
             // Register Services (registered as Singletons by default)
             _container.Register<INavigationService, NavigationService>();

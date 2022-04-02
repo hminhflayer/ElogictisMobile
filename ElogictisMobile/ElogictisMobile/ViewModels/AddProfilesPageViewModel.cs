@@ -1,5 +1,6 @@
 ﻿using ElogictisMobile.Models;
 using ElogictisMobile.Services;
+using ElogictisMobile.Services.Account;
 using ElogictisMobile.Services.Navigation;
 using ElogictisMobile.Validators;
 using ElogictisMobile.Validators.Rules;
@@ -14,321 +15,196 @@ namespace ElogictisMobile.ViewModels
     /// ViewModel for Business Registration Form page 
     /// </summary> 
     [Preserve(AllMembers = true)]
-    public class AddProfilesPageViewModel : BaseViewModel
+    public class AddProfilesPageViewModel : LoginViewModel
     {
-        #region Constructor
-        public ValidatableObject<string> fromFullName;
-        public ValidatableObject<string> fromPhone;
-        public ValidatableObject<string> fromAddress;
-        public ValidatableObject<string> toFullName;
-        public ValidatableObject<string> toPhone;
-        public ValidatableObject<string> toAddress;
-        public ValidatableObject<int> quanlity;
-        public ValidatableObject<double> weight;
-        public ValidatableObject<string> desciption;
-        public ValidatableObject<double> money;
+        #region Fields
+
+        private ValidatableObject<string> name;
+
+        private ValidatablePair<string> password;
         private INavigationService _navigationService;
-
-        public string TypeProduct { get; set; }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="AddProductFormPageViewModel" /> class
-        /// </summary>
-        public AddProfilesPageViewModel(INavigationService navigationService)
-        {
-            _navigationService = navigationService;
-            this.InitializeProperties();
-            this.AddValidationRules();
-            this.SubmitCommand = new Command(this.SubmitClicked);
-        }
+        private IAccountService _accountService;
 
         #endregion
 
-        #region Properties
+        #region Constructor
 
         /// <summary>
-        /// Gets or sets the property that bounds with an entry that gets the From Full Name from user.
+        /// Initializes a new instance for the <see cref="SignUpPageViewModel" /> class.
         /// </summary>
-
-
-        public ValidatableObject<string> FromFullName
+        public AddProfilesPageViewModel(IAccountService accountService,
+            INavigationService navigationService)
         {
-            get
-            {
-                return this.fromFullName;
-            }
+            _navigationService = navigationService;
+            _accountService = accountService;
 
-            set
-            {
-                if (this.fromFullName == value)
-                {
-                    return;
-                }
-
-                this.SetProperty(ref this.fromFullName, value);
-            }
+            this.InitializeProperties();
+            this.AddValidationRules();
+            this.LoginCommand = new Command(this.LoginClicked);
+            this.SignUpCommand = new Command(this.SignUpClicked);
         }
-        public ValidatableObject<string> FromPhone
-        {
-            get
-            {
-                return this.fromPhone;
-            }
+        #endregion
 
-            set
-            {
-                if (this.fromPhone == value)
-                {
-                    return;
-                }
-
-                this.SetProperty(ref this.fromPhone, value);
-            }
-        }
-        public ValidatableObject<string> FromAddress
-        {
-            get
-            {
-                return this.fromAddress;
-            }
-
-            set
-            {
-                if (this.fromAddress == value)
-                {
-                    return;
-                }
-
-                this.SetProperty(ref this.fromAddress, value);
-            }
-        }
-        public ValidatableObject<string> ToFullName
-        {
-            get
-            {
-                return this.toFullName;
-            }
-
-            set
-            {
-                if (this.toFullName == value)
-                {
-                    return;
-                }
-
-                this.SetProperty(ref this.toFullName, value);
-            }
-        }
-        public ValidatableObject<string> ToPhone
-        {
-            get
-            {
-                return this.toPhone;
-            }
-
-            set
-            {
-                if (this.toPhone == value)
-                {
-                    return;
-                }
-
-                this.SetProperty(ref this.toPhone, value);
-            }
-        }
-        public ValidatableObject<string> ToAddress
-        {
-            get
-            {
-                return this.toAddress;
-            }
-
-            set
-            {
-                if (this.toAddress == value)
-                {
-                    return;
-                }
-
-                this.SetProperty(ref this.toAddress, value);
-            }
-        }
-        public ValidatableObject<int> Quanlity
-        {
-            get
-            {
-                return this.quanlity;
-            }
-
-            set
-            {
-                if (this.quanlity == value)
-                {
-                    return;
-                }
-
-                this.SetProperty(ref this.quanlity, value);
-            }
-        }
-        public ValidatableObject<double> Weight
-        {
-            get
-            {
-                return this.weight;
-            }
-
-            set
-            {
-                if (this.weight == value)
-                {
-                    return;
-                }
-
-                this.SetProperty(ref this.weight, value);
-            }
-        }
-        public ValidatableObject<string> Desciption
-        {
-            get
-            {
-                return this.desciption;
-            }
-
-            set
-            {
-                if (this.desciption == value)
-                {
-                    return;
-                }
-
-                this.SetProperty(ref this.desciption, value);
-            }
-        }
-        public ValidatableObject<double> Money
-        {
-            get
-            {
-                return this.money;
-            }
-
-            set
-            {
-                if (this.money == value)
-                {
-                    return;
-                }
-
-                this.SetProperty(ref this.money, value);
-            }
-        }
-
-        #endregion 
-
-        #region Comments
+        #region Property
 
         /// <summary>
-        /// Gets or sets the command is executed when the Submit button is clicked.
+        /// Gets or sets the property that bounds with an entry that gets the name from user in the Sign Up page.
         /// </summary>
-        public Command SubmitCommand { get; set; }
+        public ValidatableObject<string> Name
+        {
+            get
+            {
+                return this.name;
+            }
 
+            set
+            {
+                if (this.name == value)
+                {
+                    return;
+                }
+
+                this.SetProperty(ref this.name, value);
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the property that bounds with an entry that gets the password from users in the Sign Up page.
+        /// </summary>
+        public ValidatablePair<string> Password
+        {
+            get
+            {
+                return this.password;
+            }
+
+            set
+            {
+                if (this.password == value)
+                {
+                    return;
+                }
+
+                this.SetProperty(ref this.password, value);
+            }
+        }
+        #endregion
+
+        #region Command
+
+        /// <summary>
+        /// Gets or sets the command that is executed when the Log In button is clicked.
+        /// </summary>
+        public Command LoginCommand { get; set; }
+
+        /// <summary>
+        /// Gets or sets the command that is executed when the Sign Up button is clicked.
+        /// </summary>
+        public Command SignUpCommand { get; set; }
         #endregion
 
         #region Methods
 
         /// <summary>
-        /// Initializzing the properties.
+        /// Initialize whether fieldsvalue are true or false.
+        /// </summary>
+        /// <returns>true or false </returns>
+        public bool AreFieldsValid()
+        {
+            bool isEmail = this.Email.Validate();
+            bool isNameValid = this.Name.Validate();
+            bool isPasswordValid = this.Password.Validate();
+            bool isVerifyPassword = false;
+            if (isPasswordValid)
+            {
+                isVerifyPassword = this.Password.Item1.Value.Equals(this.Password.Item2.Value);
+            }
+            return isPasswordValid && isNameValid && isEmail && isVerifyPassword;
+        }
+
+        /// <summary>
+        /// Initializing the properties.
         /// </summary>
         private void InitializeProperties()
         {
-            this.FromFullName = new ValidatableObject<string>();
-            this.FromPhone = new ValidatableObject<string>();
-            this.FromAddress = new ValidatableObject<string>();
-            this.ToFullName = new ValidatableObject<string>();
-            this.ToPhone = new ValidatableObject<string>();
-            this.ToAddress = new ValidatableObject<string>();
-            this.Quanlity = new ValidatableObject<int>();
-            this.Weight = new ValidatableObject<double>();
-            this.Desciption = new ValidatableObject<string>();
-            this.Money = new ValidatableObject<double>();
-
-            Weight.Value = 0;
-            Quanlity.Value = 0;
-            Money.Value = 0;
-            this.FromFullName.Value = LocalContext.Profiles.Name;
-            this.FromPhone.Value = LocalContext.Profiles.Phone;
+            this.Name = new ValidatableObject<string>();
+            this.Password = new ValidatablePair<string>();
         }
 
         /// <summary>
-        /// Validation rule for name
+        /// this method contains the validation rules
         /// </summary>
         private void AddValidationRules()
         {
-            this.FromFullName.Validations.Add(new IsNotNullOrEmptyRule<string> { ValidationMessage = "Họ và tên người gửi không được trống" });
-            this.FromPhone.Validations.Add(new IsNotNullOrEmptyRule<string> { ValidationMessage = "Số điện thoại người gửi không được trống" });
-            this.FromAddress.Validations.Add(new IsNotNullOrEmptyRule<string> { ValidationMessage = "Địa chỉ người gửi không được trống" });
-            this.ToFullName.Validations.Add(new IsNotNullOrEmptyRule<string> { ValidationMessage = "Họ và tên người nhận không được trống" });
-            this.ToPhone.Validations.Add(new IsNotNullOrEmptyRule<string> { ValidationMessage = "Số điện thoại người nhận không được trống" });
-            this.ToAddress.Validations.Add(new IsNotNullOrEmptyRule<string> { ValidationMessage = "Địa chỉ người nhận không được trống" });
-            this.Quanlity.Validations.Add(new IsNotNullOrEmptyRule<int> { ValidationMessage = "Số lượng kiện hàng không được trống" });
-            this.Weight.Validations.Add(new IsNotNullOrEmptyRule<double> { ValidationMessage = "Tổng trọng lượng không được trống" });
-            this.Money.Validations.Add(new IsNotNullOrEmptyRule<double> { ValidationMessage = "Số tiền thu hộ không được trống" });
+            this.Name.Validations.Add(new IsNotNullOrEmptyRule<string> { ValidationMessage = "Họ và tên không được trống" });
+            this.Password.Item1.Validations.Add(new IsNotNullOrEmptyRule<string> { ValidationMessage = "Mật khẩu không được trống" });
+            this.Password.Item1.Validations.Add(new IsNotLength<string> { ValidationMessage = "Mật khẩu phải chứa ít nhất một chữ số, một ký tự viết hoa và ít nhất 8 kí tự" });
+            this.Password.Item2.Validations.Add(new IsNotNullOrEmptyRule<string> { ValidationMessage = "Nhập lại mật khẩu không được trống" });
         }
 
         /// <summary>
-        /// Check name is valid or not
+        /// Invoked when the Log in button is clicked.
         /// </summary>
-        /// <returns>Returns the fields are valid or not</returns>
-        private bool AreFieldsValid()
+        /// <param name="obj">The Object</param>
+        private async void LoginClicked(object obj)
         {
-            bool isFromFullName = this.FromFullName.Validate();
-            bool isFromPhone = this.FromPhone.Validate();
-            bool isFromAddress = this.FromAddress.Validate();
-            bool isToFullName = this.ToFullName.Validate();
-            bool isToPhone = this.ToPhone.Validate();
-            bool isToAddress = this.ToAddress.Validate();
-            bool isQuanlity = this.Quanlity.Validate() && this.Quanlity.Value >= 0;
-            bool isWeight = this.Weight.Validate() && this.Weight.Value >= 0;
-            bool isMoney = this.Money.Validate() && this.Money.Value >= 0 && this.Money.Value <= 2000000;
-
-            return isFromFullName && isFromPhone && isFromAddress
-                && isToFullName && isToPhone && isToAddress && isQuanlity
-                && isWeight && isMoney;
+            // Do something
+            await _navigationService.NavigateToAsync<LoginPageViewModel>();
         }
 
         /// <summary>
-        /// Invoked when the Submit button clicked
+        /// Invoked when the Sign Up button is clicked.
         /// </summary>
-        /// <param name="obj">The object</param>
-        private async void SubmitClicked(object obj)
+        /// <param name="obj">The Object</param>
+        private async void SignUpClicked(object obj)
         {
-            if (this.AreFieldsValid())
+            try
             {
-                var key = GeneralKey.Instance.General("PRO");
-                // Do Something
-                await RealtimeFirebase.Instance.UpSert("Products", key, JsonConvert.SerializeObject(new Products
+                if (this.AreFieldsValid())
                 {
-                    CreateBy = LocalContext.Profiles.Email,
-                    CreateTime = DateTime.Now.ToShortDateString(),
-                    Description = Desciption.Value,
-                    From_Address = FromAddress.Value,
-                    From_FullName = FromFullName.Value,
-                    From_PhoneNumber = FromPhone.Value,
-                    ID = key,
-                    IsDelete = false,
-                    LastUpdateBy = "",
-                    LastUpdateTime = "",
-                    Money = Money.Value,
-                    Quanlity = Quanlity.Value.ToString(),
-                    To_Address = ToAddress.Value,
-                    To_FullName = ToFullName.Value,
-                    To_PhoneNumber = ToPhone.Value,
-                    Type = TypeProduct,
-                    Weight = Weight.Value.ToString(),
-                    Status = 1,
-                    Holder = ""
-                }));
-                await App.Current.MainPage.DisplayAlert("Thông báo", "Thêm đơn hàng thành công!", "OK");
-                await _navigationService.GoBackAsync();
+                    var loginAttempt = await _accountService.SignUpAsync(Email.Value, Password.Item1.Value);
+                    if (loginAttempt != "")
+                    {
+                        Profiles profiles = new Profiles()
+                        {
+                            CreateBy = Email.Value,
+                            CreateTime = DateTime.Now.ToShortDateString(),
+                            Email = Email.Value,
+                            Name = Name.Value,
+                            Id = loginAttempt,
+                            IsDelete = false,
+                            Address = "",
+                            LastUpdateBy = "",
+                            LastUpdateTime = "",
+                            Phone = "",
+                            Auth = "1",
+                            Auth_ext = "Người dùng bình thường",
+                            Identity = "",
+                            Money = 0
+                        };
+                        await RealtimeFirebase.Instance.UpSert("Profiles", loginAttempt, JsonConvert.SerializeObject(profiles));
+                        await App.Current.MainPage.DisplayAlert("Thông báo", "Đăng ký thành công!", "Đóng");
+                    }
+                    else
+                    {
+                        await App.Current.MainPage.DisplayAlert("Thông báo", "Đăng ký không thành công!", "Đóng");
+                    }
+                }
+                else
+                {
+                    await App.Current.MainPage.DisplayAlert("Thông báo", "Thông tin bạn đăng ký không hợp lệ!", "Đóng");
+                }
+            }
+            catch (Exception ex)
+            {
+                if (ex.Message.Contains("already"))
+                {
+                    await App.Current.MainPage.DisplayAlert("Thông báo", "Địa chỉ email đã được sử dụng", "Đóng");
+                }
+                else
+                {
+                    await App.Current.MainPage.DisplayAlert("Thông báo", ex.Message, "Đóng");
+                }
             }
         }
 

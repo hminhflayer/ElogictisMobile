@@ -22,7 +22,7 @@ namespace ElogictisMobile.ViewModels
         private Command<object> itemTappedCommand;
         private Command<object> backCommand;
         private Command<object> addPriceListCommand;
-
+        private Command<string> textChangedCommand;
         #endregion
 
         #region Constructor
@@ -33,6 +33,7 @@ namespace ElogictisMobile.ViewModels
         public CategoryPriceListPageViewModel(INavigationService navigationService)
         {
             _navigationService = navigationService;
+            PricesList = new ObservableCollection<PriceList>();
             PricesList = RealtimeFirebase.Instance.GetAllCategory<PriceList>("PricesList");
         }
 
@@ -66,7 +67,13 @@ namespace ElogictisMobile.ViewModels
                 return this.addPriceListCommand ?? (this.addPriceListCommand = new Command<object>(this.AddPriceListClicked));
             }
         }
-
+        public Command<string> TextChangedCommand
+        {
+            get
+            {
+                return this.textChangedCommand ?? (this.textChangedCommand = new Command<string>(this.SearchTextChanged));
+            }
+        }
         private INavigationService _navigationService;
 
         /// <summary>
@@ -105,6 +112,36 @@ namespace ElogictisMobile.ViewModels
             catch (Exception ex)
             {
                 await App.Current.MainPage.DisplayAlert("Thông báo", ex.Message, "OK");
+            }
+        }
+
+        private void SearchTextChanged(string search)
+        {
+            // Do something
+            try
+            {
+                ObservableCollection<PriceList> tmp = LocalContext.PriceLists;
+                if (search == null || search == "")
+                {
+                    foreach (var item in tmp)
+                    {
+                        PricesList.Add(item);
+                    }
+                    return;
+                }
+
+                this.PricesList.Clear();
+                foreach (var item in tmp)
+                {
+                    if (item.From_Kilometer.Equals(search))
+                    {
+                        PricesList.Add(item);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                App.Current.MainPage.DisplayAlert("Thông báo", ex.Message, "OK");
             }
         }
         #endregion

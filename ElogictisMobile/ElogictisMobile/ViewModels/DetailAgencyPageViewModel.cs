@@ -23,20 +23,15 @@ namespace ElogictisMobile.ViewModels
     public class DetailAgencyPageViewModel : BaseViewModel
     {
         #region Field
-        public ValidatableObject<string> fromFullName;
-        public ValidatableObject<string> fromPhone;
-        public ValidatableObject<string> fromAddress;
-        public ValidatableObject<string> toFullName;
-        public ValidatableObject<string> toPhone;
-        public ValidatableObject<string> toAddress;
-        public ValidatableObject<int> quanlity;
-        public ValidatableObject<double> weight;
-        public ValidatableObject<string> desciption;
-        public ValidatableObject<double> money;
+        public ValidatableObject<string> name;
+        public ValidatableObject<string> address;
         private INavigationService _navigationService;
-
-        public Category TypeProduct { get; set; }
-        public ObservableCollection<Category> TypeProductCollection { get; set; } = ContentData.TypeProductCollection;
+        
+        public Category Province { get; set; }
+        public District District { get; set; }
+        public Town Town { get; set; }
+        public Profiles Profiles { get; set; }
+        public ObservableCollection<Profiles> ProfilesCollection { get; set; } = RealtimeFirebase.Instance.GetAll<Profiles>("Profiles");
 
         #endregion
         #region Constructor 
@@ -50,187 +45,54 @@ namespace ElogictisMobile.ViewModels
             this.AddValidationRules();
             this.UpdateProductCommand = new Command(this.SubmitClicked);
             this.DeleteProductCommand = new Command(this.DeleteClicked);
+
+            var profiles = new Profiles()
+            {
+                Id = LocalContext.AgencySelected.ManagerId,
+                Name = LocalContext.AgencySelected.ManagerName
+            };
+
+            Profiles = profiles;
         }
 
         #endregion
 
         #region Properties
+        public ValidatableObject<string> Name
+        {
+            get
+            {
+                return this.name;
+            }
+
+            set
+            {
+                if (this.name == value)
+                {
+                    return;
+                }
+
+                this.SetProperty(ref this.name, value);
+            }
+        }
+        public ValidatableObject<string> Address
+        {
+            get
+            {
+                return this.address;
+            }
+
+            set
+            {
+                if (this.address == value)
+                {
+                    return;
+                }
+
+                this.SetProperty(ref this.address, value);
+            }
+        }
         public bool IsManage { get; set; } = LocalContext.IsManager;
-        /// <summary>
-        /// Gets or sets the property that bounds with an entry that gets the From Full Name from user.
-        /// </summary>
-        public string Status { get; set; } = LocalContext.ProductSelected.Status_ext;
-
-        public ValidatableObject<string> FromFullName
-        {
-            get
-            {
-                return this.fromFullName;
-            }
-
-            set
-            {
-                if (this.fromFullName == value)
-                {
-                    return;
-                }
-
-                this.SetProperty(ref this.fromFullName, value);
-            }
-        }
-        public ValidatableObject<string> FromPhone
-        {
-            get
-            {
-                return this.fromPhone;
-            }
-
-            set
-            {
-                if (this.fromPhone == value)
-                {
-                    return;
-                }
-
-                this.SetProperty(ref this.fromPhone, value);
-            }
-        }
-        public ValidatableObject<string> FromAddress
-        {
-            get
-            {
-                return this.fromAddress;
-            }
-
-            set
-            {
-                if (this.fromAddress == value)
-                {
-                    return;
-                }
-
-                this.SetProperty(ref this.fromAddress, value);
-            }
-        }
-        public ValidatableObject<string> ToFullName
-        {
-            get
-            {
-                return this.toFullName;
-            }
-
-            set
-            {
-                if (this.toFullName == value)
-                {
-                    return;
-                }
-
-                this.SetProperty(ref this.toFullName, value);
-            }
-        }
-        public ValidatableObject<string> ToPhone
-        {
-            get
-            {
-                return this.toPhone;
-            }
-
-            set
-            {
-                if (this.toPhone == value)
-                {
-                    return;
-                }
-
-                this.SetProperty(ref this.toPhone, value);
-            }
-        }
-        public ValidatableObject<string> ToAddress
-        {
-            get
-            {
-                return this.toAddress;
-            }
-
-            set
-            {
-                if (this.toAddress == value)
-                {
-                    return;
-                }
-
-                this.SetProperty(ref this.toAddress, value);
-            }
-        }
-        public ValidatableObject<int> Quanlity
-        {
-            get
-            {
-                return this.quanlity;
-            }
-
-            set
-            {
-                if (this.quanlity == value)
-                {
-                    return;
-                }
-
-                this.SetProperty(ref this.quanlity, value);
-            }
-        }
-        public ValidatableObject<double> Weight
-        {
-            get
-            {
-                return this.weight;
-            }
-
-            set
-            {
-                if (this.weight == value)
-                {
-                    return;
-                }
-
-                this.SetProperty(ref this.weight, value);
-            }
-        }
-        public ValidatableObject<string> Desciption
-        {
-            get
-            {
-                return this.desciption;
-            }
-
-            set
-            {
-                if (this.desciption == value)
-                {
-                    return;
-                }
-
-                this.SetProperty(ref this.desciption, value);
-            }
-        }
-        public ValidatableObject<double> Money
-        {
-            get
-            {
-                return this.money;
-            }
-
-            set
-            {
-                if (this.money == value)
-                {
-                    return;
-                }
-
-                this.SetProperty(ref this.money, value);
-            }
-        }
 
         #endregion 
 
@@ -251,33 +113,26 @@ namespace ElogictisMobile.ViewModels
         /// </summary>
         private void InitializeProperties()
         {
-            this.FromFullName = new ValidatableObject<string>();
-            this.FromPhone = new ValidatableObject<string>();
-            this.FromAddress = new ValidatableObject<string>();
-            this.ToFullName = new ValidatableObject<string>();
-            this.ToPhone = new ValidatableObject<string>();
-            this.ToAddress = new ValidatableObject<string>();
-            this.Quanlity = new ValidatableObject<int>();
-            this.Weight = new ValidatableObject<double>();
-            this.Desciption = new ValidatableObject<string>();
-            this.Money = new ValidatableObject<double>();
+            this.Name = new ValidatableObject<string>();
+            this.Address = new ValidatableObject<string>();
 
-            var tmp = new Category()
+            var profiles = new Profiles()
             {
-                Id = LocalContext.ProductSelected.Type,
-                Name = LocalContext.ProductSelected.Type_ext
+                Id = LocalContext.AgencySelected.ManagerId,
+                Name = LocalContext.AgencySelected.ManagerName
             };
-            this.FromFullName.Value = LocalContext.ProductSelected.From_FullName;
-            this.FromPhone.Value = LocalContext.ProductSelected.From_PhoneNumber;
-            this.FromAddress.Value = LocalContext.ProductSelected.From_Address;
-            this.ToFullName.Value = LocalContext.ProductSelected.To_FullName;
-            this.ToPhone.Value = LocalContext.ProductSelected.To_PhoneNumber;
-            this.ToAddress.Value = LocalContext.ProductSelected.To_Address;
-            this.Weight.Value = double.Parse(LocalContext.ProductSelected.Weight);
-            this.Quanlity.Value = int.Parse(LocalContext.ProductSelected.Quanlity);
-            this.Desciption.Value = LocalContext.ProductSelected.Description;
-            this.Money.Value = LocalContext.ProductSelected.Money;
-            this.TypeProduct = tmp;
+
+            Profiles = profiles;
+            this.Name.Value = LocalContext.AgencySelected.Name;
+            this.Address.Value = LocalContext.AgencySelected.Address;
+            this.Province.Id = LocalContext.AgencySelected.Province;
+            this.Province.Name = LocalContext.AgencySelected.Province_ext;
+            this.District.Id = LocalContext.AgencySelected.District;
+            this.District.Name = LocalContext.AgencySelected.District_ext;
+            this.Town.Id = LocalContext.AgencySelected.Id;
+            this.Town.Name = LocalContext.AgencySelected.Id;
+            this.Profiles.Id = LocalContext.AgencySelected.ManagerId;
+            this.Profiles.Name = LocalContext.AgencySelected.ManagerName;
         }
 
         /// <summary>
@@ -285,15 +140,8 @@ namespace ElogictisMobile.ViewModels
         /// </summary>
         private void AddValidationRules()
         {
-            this.FromFullName.Validations.Add(new IsNotNullOrEmptyRule<string> { ValidationMessage = "Họ và tên người gửi không được trống" });
-            this.FromPhone.Validations.Add(new IsNotNullOrEmptyRule<string> { ValidationMessage = "Số điện thoại người gửi không được trống" });
-            this.FromAddress.Validations.Add(new IsNotNullOrEmptyRule<string> { ValidationMessage = "Địa chỉ người gửi không được trống" });
-            this.ToFullName.Validations.Add(new IsNotNullOrEmptyRule<string> { ValidationMessage = "Họ và tên người nhận không được trống" });
-            this.ToPhone.Validations.Add(new IsNotNullOrEmptyRule<string> { ValidationMessage = "Số điện thoại người nhận không được trống" });
-            this.ToAddress.Validations.Add(new IsNotNullOrEmptyRule<string> { ValidationMessage = "Địa chỉ người nhận không được trống" });
-            this.Quanlity.Validations.Add(new IsNotNullOrEmptyRule<int> { ValidationMessage = "Số lượng kiện hàng không được trống" });
-            this.Weight.Validations.Add(new IsNotNullOrEmptyRule<double> { ValidationMessage = "Tổng trọng lượng không được trống" });
-            this.Money.Validations.Add(new IsNotNullOrEmptyRule<double> { ValidationMessage = "Số tiền thu hộ không được trống" });
+            this.Name.Validations.Add(new IsNotNullOrEmptyRule<string> { ValidationMessage = "Tên đại lý không được trống" });
+            this.Address.Validations.Add(new IsNotNullOrEmptyRule<string> { ValidationMessage = "Đại chỉ không được trống" });
         }
 
         /// <summary>
@@ -302,19 +150,10 @@ namespace ElogictisMobile.ViewModels
         /// <returns>Returns the fields are valid or not</returns>
         private bool AreFieldsValid()
         {
-            bool isFromFullName = this.FromFullName.Validate();
-            bool isFromPhone = this.FromPhone.Validate();
-            bool isFromAddress = this.FromAddress.Validate();
-            bool isToFullName = this.ToFullName.Validate();
-            bool isToPhone = this.ToPhone.Validate();
-            bool isToAddress = this.ToAddress.Validate();
-            bool isQuanlity = this.Quanlity.Validate() && this.Quanlity.Value >= 0;
-            bool isWeight = this.Weight.Validate() && this.Weight.Value >= 0;
-            bool isMoney = this.Money.Validate() && this.Money.Value >= 0 && this.Money.Value <= 2000000;
+            bool isName = this.Name.Validate();
+            bool isAddress = this.Address.Validate();
 
-            return isFromFullName && isFromPhone && isFromAddress
-                && isToFullName && isToPhone && isToAddress && isQuanlity
-                && isWeight && isMoney;
+            return isName && isAddress;
         }
 
         /// <summary>
@@ -325,26 +164,24 @@ namespace ElogictisMobile.ViewModels
         {
             if (this.AreFieldsValid())
             {
-                Products temp = LocalContext.ProductSelected;
-                temp.Description = Desciption.Value;
-                temp.From_Address = FromAddress.Value;
-                temp.From_FullName = FromFullName.Value;
-                temp.From_PhoneNumber = FromPhone.Value;
-                temp.LastUpdateBy = LocalContext.Current.AccountSettings.Id;
-                temp.LastUpdateTime = DateTime.Now.ToShortDateString();
-                temp.Money = Money.Value;
-                temp.Quanlity = Quanlity.Value.ToString();
-                temp.To_Address = ToAddress.Value;
-                temp.To_FullName = ToFullName.Value;
-                temp.To_PhoneNumber = ToPhone.Value;
-                temp.Type = TypeProduct.Id;
-                temp.Type_ext = TypeProduct.Name;
-                temp.Weight = Weight.Value.ToString();
-                temp.Holder = "";
+                Agency temp = LocalContext.AgencySelected;
+                temp.Name = Name.Value;
+                temp.Address = Address.Value;
+                temp.ManagerId = Profiles.Id;
+                temp.ManagerName = Profiles.Name;
+                temp.UpdateBy = LocalContext.Current.AccountSettings.Id;
+                temp.UpdateTime = DateTime.Now.ToShortDateString();
 
-                await RealtimeFirebase.Instance.UpSert("Products", temp.ID, JsonConvert.SerializeObject(temp));
-                await App.Current.MainPage.DisplayAlert("Thông báo", "Cập nhật thành công!", "OK");
-                await _navigationService.GoBackAsync();
+                var ups = await RealtimeFirebase.Instance.UpSert("Agencies", temp.Id, JsonConvert.SerializeObject(temp));
+                if(ups)
+                {
+                    await App.Current.MainPage.DisplayAlert("Thông báo", "Cập nhật thành công!", "OK");
+                    await _navigationService.GoBackAsync();
+                }    
+                else
+                {
+                    await App.Current.MainPage.DisplayAlert("Thông báo", "Cập nhật không thành công!", "OK");
+                }
             }
         }
 

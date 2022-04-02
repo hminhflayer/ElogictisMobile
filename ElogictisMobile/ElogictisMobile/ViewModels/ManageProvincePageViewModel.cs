@@ -2,6 +2,7 @@
 using ElogictisMobile.Services;
 using ElogictisMobile.Services.Navigation;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Reflection;
 using System.Runtime.Serialization;
@@ -23,6 +24,7 @@ namespace ElogictisMobile.ViewModels
         private Command<object> itemTappedCommand;
         private Command<object> backCommand;
         private Command<object> addProductCommand;
+        private Command<string> textChangedCommand;
 
         #endregion
 
@@ -34,7 +36,7 @@ namespace ElogictisMobile.ViewModels
         public ManageProvincePageViewModel(INavigationService navigationService)
         {
             _navigationService = navigationService;
-            ProvinceList = RealtimeFirebase.Instance.GetListProvince();
+            this.ProvinceList = RealtimeFirebase.Instance.GetListProvince();
         }
 
         #endregion
@@ -68,6 +70,14 @@ namespace ElogictisMobile.ViewModels
             }
         }
 
+        public Command<string> TextChangedCommand
+        {
+            get
+            {
+                return this.textChangedCommand ?? (this.textChangedCommand = new Command<string>(this.SearchTextChanged));
+            }
+        }
+
         private INavigationService _navigationService;
 
         /// <summary>
@@ -75,6 +85,7 @@ namespace ElogictisMobile.ViewModels
         /// </summary>
         [DataMember(Name = "contactsPageList")]
         public ObservableCollection<Category> ProvinceList { get; set; }
+        public List<Category> List { get; set; }
 
         #endregion
 
@@ -87,8 +98,9 @@ namespace ElogictisMobile.ViewModels
         private async void NavigateToNextPage(object selectedItem)
         {
             // Do something
-            LocalContext.ProductSelected = selectedItem as Products;
-            await _navigationService.NavigateToAsync<DetailProductFormPageViewModel>();
+            LocalContext.ProvinceSelected = selectedItem as Category;
+            LocalContext.IsEdit = true;
+            await _navigationService.NavigateToAsync<AddProvincePageViewModel>();
         }
 
         private async void GoToBack(object obj)
@@ -102,11 +114,42 @@ namespace ElogictisMobile.ViewModels
             // Do something
             try
             {
+                LocalContext.IsEdit = false;
                 await _navigationService.NavigateToAsync<AddProductFormPageViewModel>();
             }
             catch (Exception ex)
             {
                 await App.Current.MainPage.DisplayAlert("Thông báo", ex.Message, "OK");
+            }
+        }
+
+        private void SearchTextChanged(string search)
+        {
+            // Do something
+            try
+            {
+                ObservableCollection<Category> tmp = LocalContext.ProvinceList;
+                if (search == null || search == "")
+                {
+                    foreach (var item in tmp)
+                    {
+                        ProvinceList.Add(item);
+                    }
+                    return;
+                }    
+                   
+                this.ProvinceList.Clear();
+                foreach(var item in tmp)
+                {
+                    if(item.Name.ToLower().Contains(search.ToLower()))
+                    {
+                        ProvinceList.Add(item);
+                    }
+                }    
+            }
+            catch (Exception ex)
+            {
+                App.Current.MainPage.DisplayAlert("Thông báo", ex.Message, "OK");
             }
         }
         #endregion

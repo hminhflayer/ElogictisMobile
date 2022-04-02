@@ -18,5 +18,22 @@ namespace ElogictisMobile.Views
         {
             this.InitializeComponent();
         }
+
+        private void SearchBar_TextChanged(object sender, Xamarin.Forms.TextChangedEventArgs e)
+        {
+            var text = e.NewTextValue;
+            if (this.BindingContext is ManageProvincePageViewModel vm)
+            {
+                vm.TextChangedCommand.Execute(text);
+            }
+        }
+
+        private void ListView_ItemTapped(object sender, Xamarin.Forms.ItemTappedEventArgs e)
+        {
+            if (this.BindingContext is ManageProvincePageViewModel vm)
+            {
+                vm.ItemTappedCommand.Execute(e.Item);
+            }
+        }
     }
 }

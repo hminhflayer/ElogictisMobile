@@ -17,6 +17,7 @@ namespace ElogictisMobile.Models
         public string TransactionDescription { get; set; }
 
         public string Email { get; set; }
+        public string ProfileId { get; set; }
 
         public string Time { get; set; }
         public string Date { get; set; }

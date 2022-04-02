@@ -5,6 +5,7 @@ using ElogictisMobile.Validators;
 using ElogictisMobile.Validators.Rules;
 using Newtonsoft.Json;
 using System;
+using System.Collections.ObjectModel;
 using Xamarin.Forms;
 using Xamarin.Forms.Internals;
 
@@ -14,7 +15,7 @@ namespace ElogictisMobile.ViewModels
     /// ViewModel for add profile page.
     /// </summary>
     [Preserve(AllMembers = true)]
-    public class AddProvincePageViewModel : BaseViewModel
+    public class AddDistrictPageViewModel : BaseViewModel
     {
         #region Constructor
         public ValidatableObject<string> id;
@@ -24,7 +25,7 @@ namespace ElogictisMobile.ViewModels
         /// <summary>
         /// Initializes a new instance of the <see cref="AddProductFormPageViewModel" /> class
         /// </summary>
-        public AddProvincePageViewModel(INavigationService navigationService)
+        public AddDistrictPageViewModel(INavigationService navigationService)
         {
             _navigationService = navigationService;
             this.InitializeProperties();
@@ -76,7 +77,8 @@ namespace ElogictisMobile.ViewModels
                 this.SetProperty(ref this.id, value);
             }
         }
-
+        public Category Province { get; set; }
+        public ObservableCollection<Category> ProvinceCollection { get; set; } = LocalContext.ProvinceList;
         #endregion 
 
         #region Comments
@@ -101,8 +103,14 @@ namespace ElogictisMobile.ViewModels
 
             if(LocalContext.IsEdit)
             {
-                Id.Value = LocalContext.ProvinceSelected.Id;
-                Name.Value = LocalContext.ProvinceSelected.Name;
+                Id.Value = LocalContext.DistrictSelected.Id;
+                Name.Value = LocalContext.DistrictSelected.Name;
+                Category provi = new Category()
+                {
+                    Id = LocalContext.DistrictSelected.ProvinceId,
+                    Name = LocalContext.DistrictSelected.ProvinceName
+                };
+                Province = provi;
             }    
         }
 
@@ -111,8 +119,8 @@ namespace ElogictisMobile.ViewModels
         /// </summary>
         private void AddValidationRules()
         {
-            this.Name.Validations.Add(new IsNotNullOrEmptyRule<string> { ValidationMessage = "Tên tỉnh không được trống" });
-            this.Id.Validations.Add(new IsNotNullOrEmptyRule<string> { ValidationMessage = "Mã tỉnh không được trống" });
+            this.Name.Validations.Add(new IsNotNullOrEmptyRule<string> { ValidationMessage = "Tên Quận/Huyện không được trống" });
+            this.Id.Validations.Add(new IsNotNullOrEmptyRule<string> { ValidationMessage = "Mã Quận/Huyện không được trống" });
         }
 
         /// <summary>
@@ -137,20 +145,37 @@ namespace ElogictisMobile.ViewModels
             {
                 // Do Something
                 IsLoading = true;
-                var province = LocalContext.ProvinceSelected;
-                province.Name = Name.Value;
-                province.Id = Id.Value;
+                string mess;
+                var district = new District();
+                if (IsEdit)
+                {
+                    district = LocalContext.DistrictSelected;
+                    district.Name = Name.Value;
+                    district.Id = Id.Value;
+                    district.ProvinceName = Province.Name;
+                    district.ProvinceId = Province.Id;
+                    mess = "Cập nhật thành công!";
+                }    
+                else
+                {
+                    district.Name = Name.Value;
+                    district.Id = Id.Value;
+                    district.ProvinceName = Province.Name;
+                    district.ProvinceId = Province.Id;
+                    mess = "Thêm thành công!";
+                }    
+                
 
-                var task = await RealtimeFirebase.Instance.UpSert("Categories/Province", Id.Value, JsonConvert.SerializeObject(province));
+                var task = await RealtimeFirebase.Instance.UpSert("Categories/District/"+ Province.Id, Id.Value, JsonConvert.SerializeObject(district));
                 if (task)
                 {
                     IsLoading = false;
-                    await App.Current.MainPage.DisplayAlert("Thông báo", "Thêm thành công!", "OK");
+                    await App.Current.MainPage.DisplayAlert("Thông báo", mess, "OK");
                 }
                 else
                 {
                     IsLoading = false;
-                    await App.Current.MainPage.DisplayAlert("Thông báo", "Thêm không thành công!", "OK");
+                    await App.Current.MainPage.DisplayAlert("Thông báo", "Thêm/Cập nhật không thành công!", "OK");
                 }
             }
         }
@@ -163,7 +188,7 @@ namespace ElogictisMobile.ViewModels
                 var action = await App.Current.MainPage.DisplayAlert("Thông báo", "Bạn có thực sự muốn xóa tỉnh "+ Name.Value +" ?", "Đúng", "Không");
                 if (action)
                 {
-                    var del = await RealtimeFirebase.Instance.Delete("Categories/Province", Id.Value);
+                    var del = await RealtimeFirebase.Instance.Delete("Categories/District/"+Province.Id, Id.Value);
                     if (del)
                     {
                         await App.Current.MainPage.DisplayAlert("Thông báo", "Đã xóa thành công", "OK");

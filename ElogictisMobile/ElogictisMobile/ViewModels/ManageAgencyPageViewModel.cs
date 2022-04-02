@@ -22,6 +22,7 @@ namespace ElogictisMobile.ViewModels
         private Command<object> itemTappedCommand;
         private Command<object> backCommand;
         private Command<object> addProductCommand;
+        private Command<string> textChangedCommand;
 
         #endregion
 
@@ -66,6 +67,13 @@ namespace ElogictisMobile.ViewModels
                 return this.addProductCommand ?? (this.addProductCommand = new Command<object>(this.AddProductClicked));
             }
         }
+        public Command<string> TextChangedCommand
+        {
+            get
+            {
+                return this.textChangedCommand ?? (this.textChangedCommand = new Command<string>(this.SearchTextChanged));
+            }
+        }
 
         private INavigationService _navigationService;
 
@@ -83,7 +91,7 @@ namespace ElogictisMobile.ViewModels
         {
             // Do something
             LocalContext.AgencySelected = selectedItem as Agency;
-            await _navigationService.NavigateToAsync<DetailProductFormPageViewModel>();
+            await _navigationService.NavigateToAsync<DetailAgencyPageViewModel>();
         }
 
         private async void GoToBack(object obj)
@@ -102,6 +110,36 @@ namespace ElogictisMobile.ViewModels
             catch (Exception ex)
             {
                 await App.Current.MainPage.DisplayAlert("Thông báo", ex.Message, "OK");
+            }
+        }
+
+        private void SearchTextChanged(string search)
+        {
+            // Do something
+            try
+            {
+                ObservableCollection<Agency> tmp = LocalContext.AgencyList;
+                if (search == null || search == "")
+                {
+                    foreach (var item in tmp)
+                    {
+                        AgencyList.Add(item);
+                    }
+                    return;
+                }
+
+                this.AgencyList.Clear();
+                foreach (var item in tmp)
+                {
+                    if (item.Name.ToLower().Contains(search.ToLower()))
+                    {
+                        AgencyList.Add(item);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                App.Current.MainPage.DisplayAlert("Thông báo", ex.Message, "OK");
             }
         }
         #endregion

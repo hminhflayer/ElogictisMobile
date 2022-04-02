@@ -7,6 +7,7 @@ using ElogictisMobile.Validators;
 using ElogictisMobile.Validators.Rules;
 using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Reflection;
 using System.Runtime.Serialization;
@@ -26,15 +27,17 @@ namespace ElogictisMobile.ViewModels
         public ValidatableObject<string> name;
         public ValidatableObject<string> address;
         private INavigationService _navigationService;
-        private Category province;
 
+        public Category Province { get; set; }
         public District District { get; set; }
         public Town Town { get; set; }
         public Profiles Profiles { get; set; }
         public ObservableCollection<Profiles> ProfilesCollection { get; set; } = RealtimeFirebase.Instance.GetAll<Profiles>("Profiles");
         public ObservableCollection<Category> ProvinceCollection { get; set; } = LocalContext.ProvinceList;
-        public ObservableCollection<District> DistrictCollection { get; set; } = RealtimeFirebase.Instance.GetListDistrict("89");
-        public ObservableCollection<Town> TownCollection { get; set; } = RealtimeFirebase.Instance.GetListTown("883");
+        public ObservableCollection<District> DistrictCollection { get; set; }
+        public ObservableCollection<Town> TownCollection { get; set; }
+        public List<District> DistrictColl { get; set; }
+        public List<Town> TownColl { get; set; }
 
 
         /// <summary>
@@ -44,36 +47,18 @@ namespace ElogictisMobile.ViewModels
         {
             _navigationService = navigationService;
             this.InitializeProperties();
-            this.AddValidationRules();
+            this.AddValidationRules(); 
             this.SubmitCommand = new Command(this.SubmitClicked);
             this.ProvinceCommand = new Command(this.ProvinceChangeClicked);
+            this.DistrictCommand = new Command(this.DistrictChangeClicked);
+            this.TownCommand = new Command(this.TownChangeClicked);
+            DistrictCollection = new ObservableCollection<District>();
+            TownCollection = new ObservableCollection<Town>();
         }
 
         #endregion
 
         #region Properties
-
-        /// <summary>
-        /// Gets or sets the property that bounds with an entry that gets the From Full Name from user.
-        /// </summary>
-
-        public Category Province
-        {
-            get
-            {
-                return this.province;
-            }
-
-            set
-            {
-                if (this.province == value)
-                {
-                    return;
-                }
-
-                this.SetProperty(ref this.province, value);
-            }
-        }
         public ValidatableObject<string> Name
         {
             get
@@ -119,6 +104,7 @@ namespace ElogictisMobile.ViewModels
         public Command SubmitCommand { get; set; }
         public Command ProvinceCommand { get; set; }
         public Command DistrictCommand { get; set; }
+        public Command TownCommand { get; set; }
 
         #endregion
 
@@ -131,6 +117,15 @@ namespace ElogictisMobile.ViewModels
         {
             this.Name = new ValidatableObject<string>();
             this.Address = new ValidatableObject<string>();
+            if(ProvinceCollection.Count > 0)
+            {
+                Province = new Category()
+                {
+                    Id = "89",
+                    Name = "An Giang"
+                };
+            }    
+            
         }
 
         /// <summary>
@@ -167,7 +162,7 @@ namespace ElogictisMobile.ViewModels
             }
             if (this.AreFieldsValid())
             {
-                var key = GeneralKey.Instance.General("AGENCY");
+                var key = "AGENCY" + Province.Id + District.Id;
                 // Do Something
                 var task = await RealtimeFirebase.Instance.UpSert("Agencies", key, JsonConvert.SerializeObject(new Agency
                 {
@@ -198,12 +193,66 @@ namespace ElogictisMobile.ViewModels
                 }
             }
         }
-
-        public void ProvinceChangeClicked()
+        public async void ProvinceChangeClicked()
         {
+            try
+            {
+                List<District> districts = new List<District>();
+                var province = Province.Id;
+
+                District = new District();
+                Town = new Town();
+
+                DistrictCollection.Clear();
+                TownCollection.Clear();
+
+                districts = await RealtimeFirebase.Instance.GetListDistrict(province);
+                foreach (var x in districts)
+                {
+                    DistrictCollection.Add(x);
+                }
+            }
+            catch(Exception ex)
+            {
+                await App.Current.MainPage.DisplayAlert("Thông báo", ex.Message, "OK");
+            }
+            
+        }
+        public async void DistrictChangeClicked()
+        {
+            try
+            {
+                List<Town> towns = new List<Town>();
+                var district = District.Id;
+
+                Town = new Town();
+
+                TownCollection.Clear();
+
+                towns = await RealtimeFirebase.Instance.GetListTown(district);
+                foreach (var x in towns)
+                {
+                    TownCollection.Add(x);
+                }
+            }
+            catch(Exception ex)
+            {
+                await App.Current.MainPage.DisplayAlert("Thông báo", ex.Message, "OK");
+            }
+            
+        }
+        public async void TownChangeClicked()
+        {
+            try
+            {
+                Address.Value = Town.FullAddress;
+            }
+            catch (Exception ex)
+            {
+                await App.Current.MainPage.DisplayAlert("Thông báo", ex.Message, "OK");
+            }
 
         }
-
         #endregion
     }
 }

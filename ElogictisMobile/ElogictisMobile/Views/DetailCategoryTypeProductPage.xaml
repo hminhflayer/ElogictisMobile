@@ -12,7 +12,7 @@
     xmlns:local="clr-namespace:ElogictisMobile.Views"
     xmlns:viewModel="clr-namespace:ElogictisMobile.ViewModels"
     BackgroundColor="{DynamicResource Gray-200}"
-    Title="Thông tin danh mục loại hàng"
+    Title="Thông tin danh mục loại đơn hàng"
     NavigationPage.HasNavigationBar="True"
     NavigationPage.HasBackButton="True">
 
@@ -37,7 +37,7 @@
 
                                 <control:BorderlessEntry
                         x:Name="NameEntry"
-                        Placeholder="Họ và tên"
+                        Placeholder="Loại đơn hàng"
                         Style="{StaticResource BorderlessEntryStyle}" 
                         Text="{Binding Name.Value}">
                                     <Entry.Behaviors>

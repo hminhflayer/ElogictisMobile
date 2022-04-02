@@ -79,7 +79,79 @@
                         TextColor="{DynamicResource Red}"
                         VerticalOptions="FillAndExpand" />
                 </StackLayout>
-                <!--From Phone-->
+                <!--From Phone--> 
+
+                <StackLayout Orientation="Horizontal">
+                    <Label
+                    Margin="0,0,0,10"
+                    FontFamily="Montserrat-SemiBold"
+                    FontSize="16"
+                    HorizontalOptions="FillAndExpand"
+                    LineHeight="{OnPlatform Default=-1,
+                                            Android=1.25}"
+                    Text="Tỉnh: "
+                    TextColor="{DynamicResource Gray-800}"
+                    VerticalOptions="Center"
+                    VerticalTextAlignment="Center" />
+                    <combobox:SfComboBox HeightRequest="40" 
+                                         WidthRequest="280"
+                                         DataSource="{Binding ProvinceCollection}" 
+                                         DisplayMemberPath="Name" 
+                                         SelectedValuePath="Id"
+                                         SelectedItem="{Binding Province}"
+                                         IsEnabled="False"
+                                         SelectionChanged="SfComboBox_SelectionChanged"
+                                         ShowClearButton="False"
+                                         IsEditableMode="False"/>
+                </StackLayout>
+                <StackLayout Orientation="Horizontal">
+                    <Label
+                    Margin="0,0,0,10"
+                    FontFamily="Montserrat-SemiBold"
+                    FontSize="16"
+                    HorizontalOptions="FillAndExpand"
+                    LineHeight="{OnPlatform Default=-1,
+                                            Android=1.25}"
+                    Text="Huyện: "
+                    TextColor="{DynamicResource Gray-800}"
+                    VerticalOptions="Center"
+                    VerticalTextAlignment="Center" />
+                    <combobox:SfComboBox HeightRequest="40"
+                                         WidthRequest="280"
+                                         DataSource="{Binding DistrictCollection}" 
+                                         DisplayMemberPath="Name" 
+                                         SelectedValuePath="Id"
+                                         SelectedValue="883"
+                                         SelectedItem="{Binding District}"
+                                         SelectionChanged="District_SelectionChanged"
+                                         AllowFiltering="True"
+                                         ShowClearButton="True"
+                                         IsEditableMode="True"/>
+                </StackLayout>
+                <StackLayout Orientation="Horizontal">
+                    <Label
+                    Margin="0,0,0,10"
+                    FontFamily="Montserrat-SemiBold"
+                    FontSize="16"
+                    HorizontalOptions="FillAndExpand"
+                    LineHeight="{OnPlatform Default=-1,
+                                            Android=1.25}"
+                    Text="Xã: "
+                    TextColor="{DynamicResource Gray-800}"
+                    VerticalOptions="Center"
+                    VerticalTextAlignment="Center" />
+                    <combobox:SfComboBox HeightRequest="40"
+                                         WidthRequest="280"
+                                         DataSource="{Binding TownCollection}" 
+                                         DisplayMemberPath="Name" 
+                                         SelectedValuePath="Id"
+                                         SelectedIndex="0"
+                                         SelectedItem="{Binding Town}"
+                                         SelectionChanged="Town_SelectedChanged"
+                                         AllowFiltering="True"
+                                         ShowClearButton="True"
+                                         IsEditableMode="True"/>
+                </StackLayout>
                 <StackLayout Grid.Row="2">
                     <Label
                     Margin="0,0,0,10"
@@ -120,87 +192,6 @@
                         Text="{Binding Address.Errors, Converter={StaticResource FirstValidationErrorConverter}}"
                         TextColor="{DynamicResource Red}"
                         VerticalOptions="FillAndExpand" />
-                </StackLayout>
-
-                <Label
-                    Margin="0,0,0,10"
-                    FontFamily="Montserrat-SemiBold"
-                    FontSize="18"
-                    HorizontalOptions="FillAndExpand"
-                    LineHeight="{OnPlatform Default=-1,
-                                            Android=1.25}"
-                    Text="Thông tin đơn hàng"
-                    TextColor="{DynamicResource Gray-800}"
-                    VerticalOptions="Center"
-                    VerticalTextAlignment="Center" />
-                <StackLayout Orientation="Horizontal">
-                    <Label
-                    Margin="0,0,0,10"
-                    FontFamily="Montserrat-SemiBold"
-                    FontSize="16"
-                    HorizontalOptions="FillAndExpand"
-                    LineHeight="{OnPlatform Default=-1,
-                                            Android=1.25}"
-                    Text="Tỉnh: "
-                    TextColor="{DynamicResource Gray-800}"
-                    VerticalOptions="Center"
-                    VerticalTextAlignment="Center" />
-                    <combobox:SfComboBox HeightRequest="40" 
-                                         WidthRequest="280"
-                                         DataSource="{Binding ProvinceCollection}" 
-                                         DisplayMemberPath="Name" 
-                                         SelectedValuePath="Id"
-                                         SelectedItem="{Binding Province}"
-                                         IsEnabled="True"
-                                         SelectionChanged="SfComboBox_SelectionChanged"
-                                         SelectedValue="89"
-                                         ShowClearButton="False"
-                                         IsEditableMode="False"/>
-                </StackLayout>
-                <StackLayout Orientation="Horizontal">
-                    <Label
-                    Margin="0,0,0,10"
-                    FontFamily="Montserrat-SemiBold"
-                    FontSize="16"
-                    HorizontalOptions="FillAndExpand"
-                    LineHeight="{OnPlatform Default=-1,
-                                            Android=1.25}"
-                    Text="Huyện: "
-                    TextColor="{DynamicResource Gray-800}"
-                    VerticalOptions="Center"
-                    VerticalTextAlignment="Center" />
-                    <combobox:SfComboBox HeightRequest="40"
-                                         WidthRequest="280"
-                                         DataSource="{Binding DistrictCollection}" 
-                                         DisplayMemberPath="Name" 
-                                         SelectedValuePath="Id"
-                                         SelectedValue="883"
-                                         SelectedItem="{Binding District}"
-                                         SelectionChanged="District_SelectionChanged"
-                                         ShowClearButton="False"
-                                         IsEditableMode="False"/>
-                </StackLayout>
-                <StackLayout Orientation="Horizontal">
-                    <Label
-                    Margin="0,0,0,10"
-                    FontFamily="Montserrat-SemiBold"
-                    FontSize="16"
-                    HorizontalOptions="FillAndExpand"
-                    LineHeight="{OnPlatform Default=-1,
-                                            Android=1.25}"
-                    Text="Xã: "
-                    TextColor="{DynamicResource Gray-800}"
-                    VerticalOptions="Center"
-                    VerticalTextAlignment="Center" />
-                    <combobox:SfComboBox HeightRequest="40"
-                                         WidthRequest="280"
-                                         DataSource="{Binding TownCollection}" 
-                                         DisplayMemberPath="Name" 
-                                         SelectedValuePath="Id"
-                                         SelectedIndex="0"
-                                         SelectedItem="{Binding Town}"
-                                         ShowClearButton="False"
-                                         IsEditableMode="False"/>
                 </StackLayout>
                 <StackLayout>
                     <Label

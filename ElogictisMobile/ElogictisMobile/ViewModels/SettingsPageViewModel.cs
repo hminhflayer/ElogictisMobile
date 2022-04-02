@@ -21,6 +21,7 @@ namespace ElogictisMobile.ViewModels
         #region Properties
         public bool IsManage { get; set; } = LocalContext.IsAdmin? LocalContext.IsAdmin:LocalContext.IsManager? LocalContext.IsManager: false;
         public bool IsAdmin { get; set; } = LocalContext.IsAdmin;
+        public bool IsShipper { get; set; } = LocalContext.IsShipper;
         #endregion
         #region Constructor
 
@@ -46,6 +47,8 @@ namespace ElogictisMobile.ViewModels
             this.ProductNewCommand = new Command(this.ManageProductNewClicked);
             this.AgencyCommand = new Command(this.ManageAgencyClicked);
             this.ProvinceCommand = new Command(this.ManageProvinceClicked);
+            this.DistrictCommand = new Command(this.ManageDistrictClicked);
+            this.TownCommand = new Command(this.ManageTownClicked);
             this.LogoutCommand = new Command(this.LogoutClicked);
         }
 
@@ -99,6 +102,8 @@ namespace ElogictisMobile.ViewModels
         public Command ProductNewCommand { get; set; }
         public Command AgencyCommand { get; set; }
         public Command ProvinceCommand { get; set; }
+        public Command DistrictCommand { get; set; }
+        public Command TownCommand { get; set; }
 
 
         /// <summary>
@@ -280,6 +285,32 @@ namespace ElogictisMobile.ViewModels
             try
             {
                 await _navigationService.NavigateToAsync<ManageProvincePageViewModel>();
+            }
+            catch (Exception ex)
+            {
+                await App.Current.MainPage.DisplayAlert("Thông báo", ex.Message, "OK");
+            }
+        }
+
+        private async void ManageDistrictClicked(object obj)
+        {
+            // Do something
+            try
+            {
+                await _navigationService.NavigateToAsync<ManageDistrictPageViewModel>();
+            }
+            catch (Exception ex)
+            {
+                await App.Current.MainPage.DisplayAlert("Thông báo", ex.Message, "OK");
+            }
+        }
+
+        private async void ManageTownClicked(object obj)
+        {
+            // Do something
+            try
+            {
+                await _navigationService.NavigateToAsync<ManageTownPageViewModel>();
             }
             catch (Exception ex)
             {

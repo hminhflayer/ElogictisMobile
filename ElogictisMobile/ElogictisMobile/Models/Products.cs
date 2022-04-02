@@ -13,8 +13,8 @@ namespace ElogictisMobile.Models
         public string To_FullName { get; set; }
         public string To_PhoneNumber { get; set; }
         public string To_Address { get; set; }
-        public string Weight { get; set; }
-        public string Quanlity { get; set; }
+        public double Weight { get; set; }
+        public int Quanlity { get; set; }
         public double Money { get; set; }
         public string Type { get; set; }
         public string Type_ext { get; set; }
@@ -26,16 +26,16 @@ namespace ElogictisMobile.Models
         public bool IsDelete { get; set; }
         /*
          *STATUS:
-         *1:Wait for confirmation
-         *2:Confirm
-         *3:Confirm get
-         *4:Delivering
-         *5:Delivered Success
-         *6:Cancel
+         *1:CHỜ NHẬN HÀNG
+         *2:CHỜ LẤY HÀNG
+         *3:ĐANG GIAO
+         *4:GIAO THÀNH CÔNG
+         *5:GIAO KHÔNG THÀNH CÔNG
          */
         public int Status { get; set; }
         public string Status_ext { get; set; }
         public bool IsConfirm { get; set; }
         public string Holder { get; set; }
+        public string AgencyId { get; set; }
     }
 }

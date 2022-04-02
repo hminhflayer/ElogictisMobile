@@ -49,7 +49,7 @@
                         Spacing="24"
                         VerticalOptions="CenterAndExpand">
 
-                        
+
                         <StackLayout>
                             <!--  Entry to get username from user  -->
                             <border:SfBorder
@@ -180,43 +180,10 @@
                             Command="{Binding SignUpCommand}"
                             HorizontalOptions="FillAndExpand"
                             Style="{StaticResource GradientButtonStyle}"
-                            Text="REGISTER" />
-                    </StackLayout>
-
-                    <StackLayout
-                        HorizontalOptions="Center"
-                        Orientation="Horizontal"
-                        Spacing="1"
-                        VerticalOptions="End">
-
-
-                        <Label
-                            Style="{StaticResource DescriptionLabelStyle}"
-                            Text="Already have an account?"
-                            TextColor="{DynamicResource Gray-800}"
-                            VerticalTextAlignment="Center" />
-
-                        <buttons:SfButton
-                            Command="{Binding LoginCommand}"
-                            Style="{StaticResource TransparentButtonStyle}"
-                            Text="Log In"
-                            TextColor="{DynamicResource PrimaryColor}" />
-
+                            Text="THÊM" />
                     </StackLayout>
                 </StackLayout>
             </ScrollView>
-
-            <!--  Close button  -->
-            <buttons:SfButton
-                Margin="8"
-                Command="{Binding BackButtonCommand}"
-                FontSize="20"
-                HorizontalOptions="End"
-                Style="{StaticResource IconButtonStyle}"
-                Text="{StaticResource Close}"
-                TextColor="{DynamicResource Steel}"
-                VerticalOptions="Start" />
-
         </Grid>
     </ContentPage.Content>
 </ContentPage>
