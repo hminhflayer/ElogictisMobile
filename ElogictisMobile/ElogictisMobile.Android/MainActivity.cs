@@ -6,27 +6,66 @@ using Android.Runtime;
 using Android.OS;
 using Android.Views;
 using Firebase;
+using Android;
 
 namespace ElogictisMobile.Droid
 {
     [Activity(Label = "ElogictisMobile", Icon = "@mipmap/icon", Theme = "@style/MainTheme", MainLauncher = true, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation | ConfigChanges.UiMode | ConfigChanges.ScreenLayout | ConfigChanges.SmallestScreenSize )]
     public class MainActivity : global::Xamarin.Forms.Platform.Android.FormsAppCompatActivity
     {
+        const int RequestLocationId = 0;
+        readonly string[] LocationPermission =
+        {
+            Manifest.Permission.AccessCoarseLocation,
+            Manifest.Permission.AccessFineLocation
+        };
+
+        protected override void OnStart()
+        {
+            base.OnStart();
+            if((int)Build.VERSION.SdkInt >= 23)
+            {
+                if(CheckSelfPermission(Manifest.Permission.AccessFineLocation)
+                    != Permission.Granted)
+                {
+                    RequestPermissions(LocationPermission, RequestLocationId);
+                }    
+                else
+                {
+
+                }    
+            }    
+        }
+
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
 
             Xamarin.Essentials.Platform.Init(this, savedInstanceState);
             global::Xamarin.Forms.Forms.Init(this, savedInstanceState);
+            Xamarin.FormsMaps.Init(this, savedInstanceState);
             this.Window.AddFlags(WindowManagerFlags.Fullscreen);
             FirebaseApp.InitializeApp(Application.Context);
             LoadApplication(new App());
         }
         public override void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Android.Content.PM.Permission[] grantResults)
         {
-            Xamarin.Essentials.Platform.OnRequestPermissionsResult(requestCode, permissions, grantResults);
+            if(requestCode == RequestLocationId)
+            {
+                if((grantResults.Length == 1) && (grantResults[0] == (int)Permission.Granted))
+                {
 
-            base.OnRequestPermissionsResult(requestCode, permissions, grantResults);
+                }
+                else
+                {
+
+                }
+            }    
+            else
+            {
+                Xamarin.Essentials.Platform.OnRequestPermissionsResult(requestCode, permissions, grantResults);
+                base.OnRequestPermissionsResult(requestCode, permissions, grantResults);
+            }
         }
     }
 }

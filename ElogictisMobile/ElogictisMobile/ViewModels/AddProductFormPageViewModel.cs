@@ -6,9 +6,12 @@ using ElogictisMobile.Validators;
 using ElogictisMobile.Validators.Rules;
 using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using Xamarin.Forms;
 using Xamarin.Forms.Internals;
+using Xamarin.Forms.Maps;
 
 namespace ElogictisMobile.ViewModels
 {
@@ -31,9 +34,14 @@ namespace ElogictisMobile.ViewModels
         public ValidatableObject<double> money;
         private INavigationService _navigationService;
 
+        private Command<object> fromMapClickedCommand;
+        private Command<object> toMapClickedCommand;
+
         public Category TypeProduct { get; set; }
         public ObservableCollection<Category> TypeProductCollection { get; set; } = ContentData.TypeProductCollection;
 
+        public ObservableCollection<Pin> FromLocations { get; set; }
+        public ObservableCollection<Pin> ToLocations { get; set; }
         public ObservableCollection<Category> WeightCollection { get; set; } = ContentData.WeightCollection;
 
 
@@ -45,6 +53,10 @@ namespace ElogictisMobile.ViewModels
             _navigationService = navigationService;
             this.InitializeProperties();
             this.AddValidationRules();
+
+            FromLocations = new ObservableCollection<Pin>();
+            ToLocations = new ObservableCollection<Pin>();
+
             this.SubmitCommand = new Command(this.SubmitClicked);
         }
 
@@ -55,7 +67,21 @@ namespace ElogictisMobile.ViewModels
         /// <summary>
         /// Gets or sets the property that bounds with an entry that gets the From Full Name from user.
         /// </summary>
+        public Command<object> FromMapClickedCommand
+        {
+            get
+            {
+                return this.fromMapClickedCommand ?? (this.fromMapClickedCommand = new Command<object>(this.FromMapClicked));
+            }
+        }
 
+        public Command<object> ToMapClickedCommand
+        {
+            get
+            {
+                return this.toMapClickedCommand ?? (this.toMapClickedCommand = new Command<object>(this.ToMapClicked));
+            }
+        }
 
         public ValidatableObject<string> FromFullName
         {
@@ -228,6 +254,29 @@ namespace ElogictisMobile.ViewModels
             }
         }
 
+        public Command<string> FromAddressChangedCommand
+        {
+            get
+            {
+                return this.fromAddressChangedCommand ?? (this.fromAddressChangedCommand = new Command<string>(this.FromAddressChangeClicked));
+            }
+        }
+
+        public Command<string> ToAddressChangedCommand
+        {
+            get
+            {
+                return this.toAddressChangedCommand ?? (this.toAddressChangedCommand = new Command<string>(this.ToAddressChangeClicked));
+            }
+        }
+
+        public Command<double> WeightChangedCommand
+        {
+            get
+            {
+                return this.weightChangedCommand ?? (this.weightChangedCommand = new Command<double>(this.WeightChangeClicked));
+            }
+        }
         #endregion 
 
         #region Comments
@@ -236,7 +285,9 @@ namespace ElogictisMobile.ViewModels
         /// Gets or sets the command is executed when the Submit button is clicked.
         /// </summary>
         public Command SubmitCommand { get; set; }
-
+        private Command<string> fromAddressChangedCommand;
+        private Command<string> toAddressChangedCommand;
+        private Command<double> weightChangedCommand;
         #endregion
 
         #region Methods
@@ -381,11 +432,121 @@ namespace ElogictisMobile.ViewModels
             
         }
 
-        public void BindingShipMoney()
+        private void FromMapClicked(object obj)
         {
+            Position position = (Position)obj;
+            Pin pin = new Pin()
+            {
+                Label = "Địa chỉ người gửi",
+                Position = position
+            };
+            FromLocations.Clear();
+            FromLocations.Add(pin);
+        }
+
+        private void ToMapClicked(object obj)
+        {
+            Position position = (Position)obj;
+            Pin pin = new Pin()
+            {
+                Label = "Địa chỉ người nhận",
+                Position = position
+            };
+            ToLocations.Clear();
+            ToLocations.Add(pin);
+        }
+
+        public async void FromAddressChangeClicked(string address)
+        {
+            try
+            {
+                if(string.IsNullOrEmpty(address))
+                {
+                    return;
+                }    
+                IsLoading = true;
+                Geocoder geoCoder = new Geocoder();
+                IEnumerable<Position> approximateLocations = await geoCoder.GetPositionsForAddressAsync(address);
+                Position position = approximateLocations.FirstOrDefault();
+                Pin pin = new Pin()
+                {
+                    Label = "Địa chỉ người gửi",
+                    Position = position
+                };
+                FromLocations.Clear();
+                FromLocations.Add(pin);
+                if(Weight.Value != 0 || !double.IsNaN(Weight.Value))
+                {
+                    WeightChangeClicked(Weight.Value);
+                }
+                IsLoading = false;
+            }
+            catch (Exception ex)
+            {
+                await App.Current.MainPage.DisplayAlert("Thông báo", ex.Message, "OK");
+                IsLoading = false;
+            }
 
         }
 
+        public async void ToAddressChangeClicked(string address)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(address))
+                {
+                    return;
+                }
+                IsLoading = true;
+                Geocoder geoCoder = new Geocoder();
+                IEnumerable<Position> approximateLocations = await geoCoder.GetPositionsForAddressAsync(address);
+                Position position = approximateLocations.FirstOrDefault();
+                Pin pin = new Pin()
+                {
+                    Label = "Địa chỉ người nhận",
+                    Position = position
+                };
+                ToLocations.Clear();
+                ToLocations.Add(pin);
+                if (Weight.Value != 0 || !double.IsNaN(Weight.Value))
+                {
+                    WeightChangeClicked(Weight.Value);
+                }
+                IsLoading = false;
+            }
+            catch (Exception ex)
+            {
+                await App.Current.MainPage.DisplayAlert("Thông báo", ex.Message, "OK");
+                IsLoading = false;
+            }
+
+        }
+
+        public async void WeightChangeClicked(double weight)
+        {
+            try
+            {
+                if (weight <= 0 || FromLocations.Count == 0 || ToLocations.Count == 0)
+                {
+                    return;
+                }
+                IsLoading = true;
+                Position positionfrom = FromLocations[0].Position;
+                Position positionto = ToLocations[0].Position;
+                Distance distance = Distance.BetweenPositions(positionfrom, positionto);
+
+                PriceList priceList = await RealtimeFirebase.Instance.GetPriceList(weight, distance.Kilometers);
+
+                Money.Value = double.Parse(priceList.Price);
+                IsLoading = false;
+            }
+            catch (Exception ex)
+            {
+                await App.Current.MainPage.DisplayAlert("Thông báo", ex.Message, "OK");
+                IsLoading = false;
+            }
+
+        }
         #endregion
     }
 }

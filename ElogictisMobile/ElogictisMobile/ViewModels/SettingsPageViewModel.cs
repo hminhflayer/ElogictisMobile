@@ -322,7 +322,7 @@ namespace ElogictisMobile.ViewModels
         /// Invoked when the help option is clicked
         /// </summary>
         /// <param name="obj">The object</param>
-        private void HelpClicked(object obj)
+        private async void HelpClicked(object obj)
         {
             // Do something
         }

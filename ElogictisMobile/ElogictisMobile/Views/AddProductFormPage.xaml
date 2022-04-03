@@ -11,6 +11,7 @@
     xmlns:combobox="clr-namespace:Syncfusion.XForms.ComboBox;assembly=Syncfusion.SfComboBox.XForms"
     xmlns:controls="clr-namespace:ElogictisMobile.Controls"
     xmlns:converter="clr-namespace:ElogictisMobile.Converters"
+    xmlns:maps="clr-namespace:Xamarin.Forms.Maps;assembly=Xamarin.Forms.Maps"
     xmlns:inputLayout="clr-namespace:Syncfusion.XForms.TextInputLayout;assembly=Syncfusion.Core.XForms"
     Title="Tạo đơn hàng"
     BackgroundColor="{DynamicResource Gray-100}"
@@ -116,7 +117,8 @@
                                 HeightRequest="40"
                                 Placeholder="Địa chỉ"
                                 Style="{StaticResource BorderlessEntryStyle}"
-                                Text="{Binding FromAddress.Value}" />
+                                Text="{Binding FromAddress.Value}" 
+                                TextChanged="FromAddressEntry_TextChanged"/>
                             <Label
                                 Grid.Column="1"
                                 IsVisible="{Binding Path=IsVisible, Source={x:Reference FromAddressValidationLabel}}"
@@ -134,6 +136,35 @@
                         TextColor="{DynamicResource Red}"
                         VerticalOptions="FillAndExpand" />
                 </StackLayout>
+                <StackLayout HeightRequest="200">
+                    <maps:Map x:Name="map"
+                        MapClicked="FromMap_MapClicked"
+                        IsShowingUser="False"
+                        MoveToLastRegionOnLayoutChange="True"
+                        HasScrollEnabled="True"
+                        ItemsSource="{Binding FromLocations}">
+                        <x:Arguments>
+                            <maps:MapSpan>
+                                <x:Arguments>
+                                    <maps:Position>
+                                        <x:Arguments>
+                                            <x:Double>10.3784705</x:Double>
+                                            <x:Double>105.4394167</x:Double>
+                                        </x:Arguments>
+                                    </maps:Position>
+                                    <x:Double>0.01</x:Double>
+                                    <x:Double>0.01</x:Double>
+                                </x:Arguments>
+                            </maps:MapSpan>
+                        </x:Arguments>
+                        <maps:Map.ItemTemplate>
+                            <DataTemplate>
+                                <maps:Pin Position="{Binding Position}"
+                                  Label="{Binding Label}"/>
+                            </DataTemplate>
+                        </maps:Map.ItemTemplate>
+                    </maps:Map>
+                </StackLayout>
                 
                 <Label
                     Margin="0,0,0,10"
@@ -147,7 +178,7 @@
                     VerticalOptions="Center"
                     VerticalTextAlignment="Center" />
                 <!--To Full Name-->
-                <StackLayout Grid.Row="4">
+                <StackLayout Grid.Row="5">
                     <border:SfBorder BorderColor="{Binding Source={x:Reference ToFullNameEntry}, Path=IsFocused, Converter={StaticResource ColorConverter}, ConverterParameter=3}" Style="{StaticResource DataFormBorderlessEntryBorderStyle}">
                         <Grid ColumnDefinitions="*, Auto">
                             <controls:BorderlessEntry
@@ -175,7 +206,7 @@
                         VerticalOptions="FillAndExpand" />
                 </StackLayout>
                 <!--To Phone-->
-                <StackLayout Grid.Row="5">
+                <StackLayout Grid.Row="6">
                     <border:SfBorder BorderColor="{Binding Source={x:Reference ToPhoneEntry}, Path=IsFocused, Converter={StaticResource ColorConverter}, ConverterParameter=3}" Style="{StaticResource DataFormBorderlessEntryBorderStyle}">
                         <Grid ColumnDefinitions="*, Auto">
                             <controls:BorderlessEntry
@@ -209,7 +240,7 @@
                         VerticalOptions="FillAndExpand" />
                 </StackLayout>
                 <!--To Address-->
-                <StackLayout Grid.Row="6">
+                <StackLayout Grid.Row="7">
                     <border:SfBorder BorderColor="{Binding Source={x:Reference ToAddressEntry}, Path=IsFocused, Converter={StaticResource ColorConverter}, ConverterParameter=3}" Style="{StaticResource DataFormBorderlessEntryBorderStyle}">
                         <Grid ColumnDefinitions="*, Auto">
                             <controls:BorderlessEntry
@@ -218,7 +249,8 @@
                                 HeightRequest="40"
                                 Placeholder="Địa chỉ"
                                 Style="{StaticResource BorderlessEntryStyle}"
-                                Text="{Binding ToAddress.Value}" />
+                                Text="{Binding ToAddress.Value}" 
+                                TextChanged="ToAddressEntry_TextChanged"/>
                             <Label
                                 Grid.Column="1"
                                 IsVisible="{Binding Path=IsVisible, Source={x:Reference ToAddressValidationLabel}}"
@@ -235,6 +267,36 @@
                         Text="{Binding ToAddress.Errors, Converter={StaticResource FirstValidationErrorConverter}}"
                         TextColor="{DynamicResource Red}"
                         VerticalOptions="FillAndExpand" />
+                </StackLayout>
+                
+                <StackLayout HeightRequest="200">
+                    <maps:Map
+                        MapClicked="ToMap_MapClicked"
+                        IsShowingUser="False"
+                        MoveToLastRegionOnLayoutChange="True"
+                        HasScrollEnabled="True"
+                        ItemsSource="{Binding ToLocations}">
+                        <x:Arguments>
+                            <maps:MapSpan>
+                                <x:Arguments>
+                                    <maps:Position>
+                                        <x:Arguments>
+                                            <x:Double>10.3784705</x:Double>
+                                            <x:Double>105.4394167</x:Double>
+                                        </x:Arguments>
+                                    </maps:Position>
+                                    <x:Double>0.01</x:Double>
+                                    <x:Double>0.01</x:Double>
+                                </x:Arguments>
+                            </maps:MapSpan>
+                        </x:Arguments>
+                        <maps:Map.ItemTemplate>
+                            <DataTemplate>
+                                <maps:Pin Position="{Binding Position}"
+                                  Label="{Binding Label}"/>
+                            </DataTemplate>
+                        </maps:Map.ItemTemplate>
+                    </maps:Map>
                 </StackLayout>
                 
                 <Label
@@ -330,7 +392,7 @@
                             Keyboard="Numeric"
                         HeightRequest="40"
                         Style="{StaticResource BorderlessEntryStyle}"
-                        Text="{Binding Money.Value,StringFormat='{0:C}'}" 
+                        Text="{Binding Money.Value}" 
                             IsReadOnly="True"/>
                     </border:SfBorder>
                 </StackLayout>

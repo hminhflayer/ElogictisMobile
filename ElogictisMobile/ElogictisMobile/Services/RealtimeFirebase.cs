@@ -432,5 +432,25 @@ namespace ElogictisMobile.Services
             
         }
 
+        public async Task<PriceList> GetPriceList(double weight = 0, double kilometer = 0)
+        {
+            try
+            {
+                var pricelist = (await client
+                .Child("Categories")
+                .Child("PricesList")
+                .OnceAsync<PriceList>())
+                .Where(x => double.Parse(x.Object.From_Kilometer) <= kilometer && double.Parse(x.Object.To_Kilometer) >= kilometer)
+                .FirstOrDefault();
+
+                return pricelist.Object;
+            }
+            catch (Exception ex)
+            {
+                await App.Current.MainPage.DisplayAlert("Thông báo", ex.Message, "OK");
+                return new PriceList();
+            }
+
+        }
     }
 }
