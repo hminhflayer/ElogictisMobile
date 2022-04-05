@@ -170,7 +170,7 @@ namespace ElogictisMobile.ViewModels
                         }    
                         else
                         {
-                            var action = await App.Current.MainPage.DisplayAlert("Thông báo", "Tài khoản của bạn chưa được xác thực\nBạn muốn nhận lại một mail xác thực khác?!", "Đúng", "Không");
+                            bool action = await App.Current.MainPage.DisplayAlert("Thông báo", @"Tài khoản của bạn chưa được xác thực\nBạn muốn nhận lại một mail xác thực khác?!", "Đúng", "Không");
                             IsLoading = false;
                             if (action)
                             {

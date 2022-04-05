@@ -15,15 +15,15 @@ namespace ElogictisMobile.ViewModels
     {
         #region Field
 
-        /// <summary>
-        /// To store the health care data collection.
-        /// </summary>
-        private ObservableCollection<HealthCare> healthCareCardItems;
-
-        /// <summary>
-        /// To store the health care data collection.
-        /// </summary>
-        private ObservableCollection<HealthCare> healthCareListItems;
+        private int valueWait;
+        private int valueShipped;
+        private int valueSuccess;
+        private int valueFail;
+        private double valueTotalRevenue;
+        private double valueMonthRevenue;
+        private double valueMoney;
+        private string textTotalRevenue;
+        private string textMonthRevenue;
 
         #endregion
 
@@ -34,63 +34,69 @@ namespace ElogictisMobile.ViewModels
         /// </summary>
         public StatisticalPageViewModel()
         {
-            this.healthCareCardItems = new ObservableCollection<HealthCare>()
-            {
-                new HealthCare()
-                {
-                    Category = "CHỜ XÁC NHẬN",
-                    CategoryValue = 0 +" đơn",
-                    BackgroundGradientStart = "#f59083",
-                    BackgroundGradientEnd = "#fae188",
-                },
-                new HealthCare()
-                {
-                    Category = "ĐANG GIAO HÀNG",
-                    CategoryValue = 0 +" đơn",
-                    BackgroundGradientStart = "#ff7272",
-                    BackgroundGradientEnd = "#f650c5",
-                },
-                new HealthCare()
-                {
-                    Category = "GIAO THÀNH CÔNG",
-                    CategoryValue = 0 +" đơn",
-                    BackgroundGradientStart = "#5e7cea",
-                    BackgroundGradientEnd = "#1dcce3",
-                },
-                new HealthCare()
-                {
-                    Category = "ĐÃ HỦY",
-                    CategoryValue = 0 +" đơn",
-                    BackgroundGradientStart = "#255ea6",
-                    BackgroundGradientEnd = "#b350d1",
-                },
-            };
-
-            this.healthCareListItems = new ObservableCollection<HealthCare>()
-            {
-                new HealthCare()
-                {
-                    Category = "Tổng chi phí vận chuyển",
-                    CategoryValue = "0 VNĐ",
-                    BackgroundGradientStart = "#8691ff",
-                },
-                new HealthCare()
-                {
-                    Category = "Tổng chi phí vận chuyển trong tháng",
-                    CategoryValue = "0 VNĐ",
-                    BackgroundGradientStart = "#ff9686",
-                },
-                new HealthCare()
-                {
-                    Category = "Số tiền trong tài khoản",
-                    CategoryValue = LocalContext.Current.AccountSettings.Money +" VNĐ",
-                    BackgroundGradientStart = "#cf86ff",
-                },
-            };
-
-            this.ProfileImage = App.ImageServerPath + "ProfileImage1.png";
             this.MenuCommand = new Command(this.MenuButtonClicked);
             this.ProfileSelectedCommand = new Command(this.ProfileImageClicked);
+            IsLoading = true;
+            Device.StartTimer(TimeSpan.FromSeconds(10), () =>
+            {
+                if(LocalContext.Current.AccountSettings == null)
+                {
+                    return false;
+                }    
+                Device.BeginInvokeOnMainThread(() => LoadStatistical());
+                return true;
+            });
+        }
+
+        public async void LoadStatistical()
+        {
+
+            LocalContext.ListTypeProduct = await RealtimeFirebase.Instance.GetTypeProduct();
+
+            if (LocalContext.IsAdmin || LocalContext.IsManager || LocalContext.IsShipper)
+            {
+                TextTotalRevenue = "Tổng doanh thu: ";
+                TextMonthRevenue = "Doanh thu trong tháng: ";
+            }   
+
+            if(LocalContext.IsAdmin)
+            {
+                this.ValueWait = await RealtimeFirebase.Instance.GetStatisticalAdmin(1);
+                this.ValueShipped = await RealtimeFirebase.Instance.GetStatisticalAdmin(3);
+                this.ValueSuccess = await RealtimeFirebase.Instance.GetStatisticalAdmin(4);
+                this.ValueFail = await RealtimeFirebase.Instance.GetStatisticalAdmin(5);
+            }   
+            else if(LocalContext.IsManager)
+            {
+                this.ValueWait = await RealtimeFirebase.Instance.GetStatisticalAgency(1);
+                this.ValueShipped = await RealtimeFirebase.Instance.GetStatisticalAgency(3);
+                this.ValueSuccess = await RealtimeFirebase.Instance.GetStatisticalAgency(4);
+                this.ValueFail = await RealtimeFirebase.Instance.GetStatisticalAgency(5);
+            }   
+            else if(LocalContext.IsShipper)
+            {
+                this.ValueWait = await RealtimeFirebase.Instance.GetStatisticalShipper(1);
+                this.ValueShipped = await RealtimeFirebase.Instance.GetStatisticalShipper(3);
+                this.ValueSuccess = await RealtimeFirebase.Instance.GetStatisticalShipper(4);
+                this.ValueFail = await RealtimeFirebase.Instance.GetStatisticalShipper(5);
+            }   
+            else
+            {
+                TextTotalRevenue = "Tổng chi phí vận chuyển: ";
+                TextMonthRevenue = "Chi phí vận chuyển trong tháng: ";
+
+                this.ValueWait = await RealtimeFirebase.Instance.GetStatisticalUser(1);
+                this.ValueShipped = await RealtimeFirebase.Instance.GetStatisticalUser(3);
+                this.ValueSuccess = await RealtimeFirebase.Instance.GetStatisticalUser(4);
+                this.ValueFail = await RealtimeFirebase.Instance.GetStatisticalUser(5);
+            }
+
+            LocalContext.Current.AccountSettings = await RealtimeFirebase.Instance.GetProfiles(LocalContext.Current.AccountSettings.Id);
+            this.ValueTotalRevenue = await RealtimeFirebase.Instance.TotalRevenueUser(true);
+            this.ValueMonthRevenue = await RealtimeFirebase.Instance.TotalRevenueUser(false);
+            this.ValueMoney = LocalContext.Current.AccountSettings.Money;
+            IsLoading = false;
+
         }
 
         #endregion
@@ -105,32 +111,112 @@ namespace ElogictisMobile.ViewModels
         /// <summary>
         /// Gets the health care items collection.
         /// </summary>
-        public ObservableCollection<HealthCare> HealthCareCardItems
+        public int ValueWait
         {
             get
             {
-                return this.healthCareCardItems;
+                return this.valueWait;
             }
 
             private set
             {
-                this.SetProperty(ref this.healthCareCardItems, value);
+                this.SetProperty(ref this.valueWait, value);
             }
         }
-
-        /// <summary>
-        /// Gets the health care items collection.
-        /// </summary>
-        public ObservableCollection<HealthCare> HealthCareListItems
+        public int ValueShipped
         {
             get
             {
-                return this.healthCareListItems;
+                return this.valueShipped;
             }
 
             private set
             {
-                this.SetProperty(ref this.healthCareListItems, value);
+                this.SetProperty(ref this.valueShipped, value);
+            }
+        }
+        public int ValueSuccess
+        {
+            get
+            {
+                return this.valueSuccess;
+            }
+
+            private set
+            {
+                this.SetProperty(ref this.valueSuccess, value);
+            }
+        }
+        public int ValueFail
+        {
+            get
+            {
+                return this.valueFail;
+            }
+
+            private set
+            {
+                this.SetProperty(ref this.valueFail, value);
+            }
+        }
+        public double ValueTotalRevenue
+        {
+            get
+            {
+                return this.valueTotalRevenue;
+            }
+
+            private set
+            {
+                this.SetProperty(ref this.valueTotalRevenue, value);
+            }
+        }
+        public string TextTotalRevenue
+        {
+            get
+            {
+                return this.textTotalRevenue;
+            }
+
+            private set
+            {
+                this.SetProperty(ref this.textTotalRevenue, value);
+            }
+        }
+        public string TextMonthRevenue
+        {
+            get
+            {
+                return this.textMonthRevenue;
+            }
+
+            private set
+            {
+                this.SetProperty(ref this.textMonthRevenue, value);
+            }
+        }
+        public double ValueMonthRevenue
+        {
+            get
+            {
+                return this.valueMonthRevenue;
+            }
+
+            private set
+            {
+                this.SetProperty(ref this.valueMonthRevenue, value);
+            }
+        }
+        public double ValueMoney
+        {
+            get
+            {
+                return this.valueMoney;
+            }
+
+            private set
+            {
+                this.SetProperty(ref this.valueMoney, value);
             }
         }
 

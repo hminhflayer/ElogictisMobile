@@ -182,7 +182,8 @@ namespace ElogictisMobile.ViewModels
                     ManagerId = Profiles.Id,
                     ManagerName = Profiles.Name
                 }));
-                if (task)
+                var task1 = await RealtimeFirebase.Instance.UpSert("Profiles", Profiles.Id, JsonConvert.SerializeObject(Profiles));
+                if (task && task1)
                 {
                     
                     await App.Current.MainPage.DisplayAlert("Thông báo", "Thêm thành công!", "OK");

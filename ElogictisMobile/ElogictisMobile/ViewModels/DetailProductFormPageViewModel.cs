@@ -6,6 +6,7 @@ using ElogictisMobile.Validators;
 using ElogictisMobile.Validators.Rules;
 using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using Xamarin.Forms;
 using Xamarin.Forms.Internals;
@@ -31,9 +32,6 @@ namespace ElogictisMobile.ViewModels
         public ValidatableObject<double> money;
         private INavigationService _navigationService;
 
-        public Category TypeProduct { get; set; }
-        public string TextButton { get; set; }
-        public ObservableCollection<Category> TypeProductCollection { get; set; } = ContentData.TypeProductCollection;
 
         #endregion
         #region Constructor 
@@ -45,9 +43,12 @@ namespace ElogictisMobile.ViewModels
             _navigationService = navigationService;
             this.InitializeProperties();
             this.AddValidationRules();
+            this.TrackingProductCommand = new Command(this.TrackingClicked);
             this.UpdateProductCommand = new Command(this.SubmitClicked);
             this.DeleteProductCommand = new Command(this.DeleteClicked);
-            switch(LocalContext.ProductSelected.Status)
+            this.CancelProductCommand = new Command(this.CancelClicked);
+            this.TypeProductCollection = LocalContext.ListTypeProduct;
+            switch (LocalContext.ProductSelected.Status)
             {
                 case 2:
                     {
@@ -61,7 +62,7 @@ namespace ElogictisMobile.ViewModels
                     }
                 default:
                     {
-                        TextButton = "Cập nhật";
+                        TextButton = "CẬP NHẬT";
                         break;
                     }
             }    
@@ -70,15 +71,15 @@ namespace ElogictisMobile.ViewModels
         #endregion
 
         #region Properties
+        public Category TypeProduct { get; set; }
+        public string TextButton { get; set; }
+        public List<Category> TypeProductCollection { get; set; }
         public bool IsManage { get; set; } = LocalContext.IsManager;
         public bool IsAdmin { get; set; } = LocalContext.IsAdmin;
         public bool IsShipper { get; set; } = LocalContext.IsShipper && LocalContext.ProductSelected.Status != 4;
-        public bool IsNotShipper { get; set; } = !LocalContext.IsShipper;
-        /// <summary>
-        /// Gets or sets the property that bounds with an entry that gets the From Full Name from user.
-        /// </summary>
+        public bool IsNotShipper { get; set; } = !LocalContext.IsShipper && (LocalContext.ProductSelected.Status == 4);
         public string Status { get; set; } = LocalContext.ProductSelected.Status_ext;
-
+        public bool IsShowTracking { get; set; } = (LocalContext.ProductSelected.Status >= 2);
         public ValidatableObject<string> FromFullName
         {
             get
@@ -259,14 +260,12 @@ namespace ElogictisMobile.ViewModels
         /// </summary>
         public Command UpdateProductCommand { get; set; }
         public Command DeleteProductCommand { get; set; }
+        public Command CancelProductCommand { get; set; }
+        public Command TrackingProductCommand { get; set; }
 
         #endregion
 
         #region Methods
-
-        /// <summary>
-        /// Initializzing the properties.
-        /// </summary>
         private void InitializeProperties()
         {
             this.FromFullName = new ValidatableObject<string>();
@@ -297,10 +296,6 @@ namespace ElogictisMobile.ViewModels
             this.Money.Value = LocalContext.ProductSelected.Money;
             this.TypeProduct = tmp;
         }
-
-        /// <summary>
-        /// Validation rule for name
-        /// </summary>
         private void AddValidationRules()
         {
             this.FromFullName.Validations.Add(new IsNotNullOrEmptyRule<string> { ValidationMessage = "Họ và tên người gửi không được trống" });
@@ -313,11 +308,6 @@ namespace ElogictisMobile.ViewModels
             this.Weight.Validations.Add(new IsNotNullOrEmptyRule<double> { ValidationMessage = "Tổng trọng lượng không được trống" });
             this.Money.Validations.Add(new IsNotNullOrEmptyRule<double> { ValidationMessage = "Số tiền thu hộ không được trống" });
         }
-
-        /// <summary>
-        /// Check name is valid or not
-        /// </summary>
-        /// <returns>Returns the fields are valid or not</returns>
         private bool AreFieldsValid()
         {
             bool isFromFullName = this.FromFullName.Validate();
@@ -334,11 +324,6 @@ namespace ElogictisMobile.ViewModels
                 && isToFullName && isToPhone && isToAddress && isQuanlity
                 && isWeight && isMoney;
         }
-
-        /// <summary>
-        /// Invoked when the Submit button clicked
-        /// </summary>
-        /// <param name="obj">The object</param>
         public Products UpdateStatusProduct(string text, int status)
         {
             Products temp = LocalContext.ProductSelected;
@@ -369,40 +354,53 @@ namespace ElogictisMobile.ViewModels
 
             return temp;
         }
+        private Products FeatureOfShipper()
+        {
+            var mess = "ĐÃ LẤY HÀNG/ĐANG GIAO";
+            Products temp = new Products();
+
+            if (LocalContext.IsShipper)
+            {
+                if (LocalContext.ProductSelected.Status == 2)
+                {
+                    temp = UpdateStatusProduct(mess, 3);
+                }
+                else if (LocalContext.ProductSelected.Status == 3)
+                {
+                    mess = "GIAO THÀNH CÔNG";
+                    temp = UpdateStatusProduct(mess, 4);
+                }
+                else
+                {
+                    mess = "GIAO KHÔNG THÀNH CÔNG";
+                    temp = UpdateStatusProduct(mess, 5);
+                }
+            }
+            else
+            {
+                temp = UpdateInfoProduct();
+            }
+
+            return temp;
+        }
         private async void SubmitClicked(object obj)
         {
             if (this.AreFieldsValid())
             {
-                var mess = "ĐÃ LẤY HÀNG/ĐANG GIAO";
                 bool updateUser = false;
                 var keyNoti = GeneralKey.Instance.General("NOTI");
                 Products temp = new Products();
-                if(LocalContext.IsShipper)
-                {
-                    if(LocalContext.ProductSelected.Status == 2)
-                    {
-                        temp = UpdateStatusProduct(mess, 3);
-                    }
-                    else if (LocalContext.ProductSelected.Status == 3)
-                    {
-                        mess = "GIAO THÀNH CÔNG";
-                        temp = UpdateStatusProduct(mess, 4);
-                    }
-                    else
-                    {
-                        mess = "GIAO KHÔNG THÀNH CÔNG";
-                        temp = UpdateStatusProduct(mess, 5);
-                    }    
-                }    
-                else
-                {
-                    temp = UpdateInfoProduct();
-                }
+
+                temp = FeatureOfShipper();
+
+                //Shipper xác nhận lấy đơn hàng thì trừ tiền trong tài khoản khách hàng
                 if(temp.Status == 3)
                 {
                     updateUser = await RealtimeFirebase.Instance.UpdateMoneyUser(Money.Value, false, temp.CreateBy);
-                }    
-                if(temp.Status == 4)
+                }
+
+                //Shipper giao hàng thành công thì phân chia lợi nhuận
+                if (temp.Status == 4)
                 {
                     var moneyShipper = LocalContext.ProductSelected.Money * 0.8;
                     var moneyAgency = LocalContext.ProductSelected.Money * 0.05;
@@ -412,6 +410,7 @@ namespace ElogictisMobile.ViewModels
                     var admin = await RealtimeFirebase.Instance.UpdateMoneyUser(moneyAdmin, true, LocalContext.AdminId);
                     updateUser = shipper && agency && admin;
                 }    
+
                 var upsert = await RealtimeFirebase.Instance.UpSert("Products", temp.ID, JsonConvert.SerializeObject(temp));
                 
                 if (upsert && updateUser)
@@ -419,27 +418,21 @@ namespace ElogictisMobile.ViewModels
                     await RealtimeFirebase.Instance.UpSert("Notifications", keyNoti, JsonConvert.SerializeObject(new TransactionHistory
                     {
                         IdProduct = temp.ID,
-                        TransactionDescription = mess,
+                        TransactionDescription = temp.Status_ext,
                         Date = DateTime.Now.ToShortDateString(),
                         Time = DateTime.Now.ToShortTimeString(),
                         Email = LocalContext.Current.AccountSettings.Email,
                         ProfileId = LocalContext.ProductSelected.CreateBy
                     }));
-                    await App.Current.MainPage.DisplayAlert("Thông báo", "Nhận đơn hàng thành công!", "OK");
+                    await App.Current.MainPage.DisplayAlert("Thông báo", "Cập nhật trạng thái đơn hàng thành công!", "OK");
                     await _navigationService.GoBackAsync();
                 }
                 else
                 {
-                    await App.Current.MainPage.DisplayAlert("Thông báo", "Nhận đơn hàng không thành công!", "OK");
+                    await App.Current.MainPage.DisplayAlert("Thông báo", "Cập nhật trạng thái đơn hàng không thành công!", "OK");
                 }
-                await App.Current.MainPage.DisplayAlert("Thông báo", "Cập nhật thành công!", "OK");
             }
         }
-
-        /// <summary>
-        /// Invoked when the Delete button clicked
-        /// </summary>
-        /// <param name="obj">The object</param>
         private async void DeleteClicked(object obj)
         {
             // Do something
@@ -457,7 +450,27 @@ namespace ElogictisMobile.ViewModels
                 await App.Current.MainPage.DisplayAlert("Thông báo", "Đã xóa thông tin đơn hàng thành công", "OK");
             }
         }
+        private async void CancelClicked(object obj)
+        {
+            // Do something
+            var action = await App.Current.MainPage.DisplayAlert("Thông báo", "Bạn có thực sự muốn HỦY ĐƠN này?", "Đúng", "Không");
+            if (action)
+            {
+                Products products = LocalContext.ProductSelected;
+                products.IsDelete = true;
+                products.LastUpdateBy = LocalContext.Profiles.Email;
+                products.LastUpdateTime = DateTime.Now.ToString();
 
+                // Do Something
+                await RealtimeFirebase.Instance.UpSert("Products", products.ID, JsonConvert.SerializeObject(products));
+                //await RealtimeFirebase.Instance.Delete("Products", products.ID);
+                await App.Current.MainPage.DisplayAlert("Thông báo", "Đã xóa thông tin đơn hàng thành công", "OK");
+            }
+        }
+        public async void TrackingClicked()
+        {
+            await _navigationService.NavigateToAsync<ProductDeliveryTrackingPageViewModel>();
+        }
         #endregion
     }
 }

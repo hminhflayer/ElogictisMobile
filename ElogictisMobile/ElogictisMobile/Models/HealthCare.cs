@@ -21,7 +21,7 @@ namespace ElogictisMobile.Models
         /// <summary>
         /// Gets or sets the property that has been displays the Category value.
         /// </summary>
-        public string CategoryValue { get; set; }
+        public int CategoryValue { get; set; }
 
         /// <summary>
         /// Gets or sets the property that has been displays the background gradient start.

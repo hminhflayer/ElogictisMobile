@@ -12,6 +12,7 @@
 
   <ItemGroup>
     <None Remove="Data\about.json" />
+    <None Remove="Data\deliverytracking.json" />
     <None Remove="Data\ecommerce.json" />
     <None Remove="Data\errorAndEmpty.json" />
     <None Remove="Data\navigation.json" />
@@ -28,6 +29,7 @@
 
   <ItemGroup>
     <EmbeddedResource Include="Data\about.json" />
+    <EmbeddedResource Include="Data\deliverytracking.json" />
     <EmbeddedResource Include="Data\ecommerce.json" />
     <EmbeddedResource Include="Data\errorAndEmpty.json" />
     <EmbeddedResource Include="Data\navigation.json" />
@@ -56,6 +58,7 @@
     <PackageReference Include="Syncfusion.Xamarin.SfComboBox" Version="19.4.0.54" />
     <PackageReference Include="Syncfusion.Xamarin.SfListView" Version="19.4.0.54" />
     <PackageReference Include="Syncfusion.Xamarin.SfPicker" Version="19.4.0.54" />
+    <PackageReference Include="Syncfusion.Xamarin.SfProgressBar" Version="19.4.0.54" />
     <PackageReference Include="Syncfusion.Xamarin.SfRating" Version="19.4.0.54" />
     <PackageReference Include="Syncfusion.Xamarin.SfRotator" Version="19.4.0.54" />
     <PackageReference Include="Xam.Plugin.Media" Version="5.0.1" />
@@ -212,6 +215,9 @@
     </EmbeddedResource>
     <EmbeddedResource Update="Views\MoneyManage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\ProductDeliveryTrackingPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Views\ResetPasswordPage.xaml">
       <Generator>MSBuild:Compile</Generator>

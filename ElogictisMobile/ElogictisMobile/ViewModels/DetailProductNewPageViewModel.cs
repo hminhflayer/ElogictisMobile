@@ -2,6 +2,7 @@
 using ElogictisMobile.Services;
 using ElogictisMobile.Services.Navigation;
 using Newtonsoft.Json;
+using Syncfusion.XForms.ProgressBar;
 using System;
 using System.Reflection;
 using System.Runtime.Serialization;
@@ -98,6 +99,15 @@ namespace ElogictisMobile.ViewModels
                 var upsert =await RealtimeFirebase.Instance.UpSert("Products", temp.ID, JsonConvert.SerializeObject(temp));
                 if(upsert)
                 {
+                    await RealtimeFirebase.Instance.UpSert("DeliveryTracking/"+temp.ID, "0", JsonConvert.SerializeObject(new ProductDeliveryTrackingModel
+                    {
+                        Date = DateTime.Now.ToShortTimeString() + " " + DateTime.Now.ToShortTimeString(),
+                        ProgressValue = temp.Status,
+                        Status = "NotStarted",
+                        StepStatus = StepStatus.NotStarted,
+                        Title = LocalContext.Current.AccountSettings.Name + ": ĐÃ NHẬN ĐƠN HÀNG",
+                        TitleStatus = "Đơn hàng được Shipper nhận"
+                    }));
                     await RealtimeFirebase.Instance.UpSert("Notifications", keyNoti, JsonConvert.SerializeObject(new TransactionHistory
                     {
                         IdProduct = temp.ID,
@@ -108,7 +118,6 @@ namespace ElogictisMobile.ViewModels
                         ProfileId = LocalContext.Current.AccountSettings.Id
                     }));
                     await App.Current.MainPage.DisplayAlert("Thông báo", "Nhận đơn hàng thành công!", "OK");
-                    await _navigationService.GoBackAsync();
                 }
                 else
                 {

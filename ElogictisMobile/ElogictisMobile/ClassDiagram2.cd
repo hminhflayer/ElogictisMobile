@@ -1,0 +1,67 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="ElogictisMobile.Models.Category">
+    <Position X="0.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\Category.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ElogictisMobile.Models.Agency">
+    <Position X="3.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAASAQAAAgAAASAAgAAIQAQAAAEAAAACAAAAAgAAEAA=</HashCode>
+      <FileName>Models\Agency.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ElogictisMobile.Models.Profiles">
+    <Position X="5.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AABSAQAAAiAAAAAQgAQIABQAAAkAAIACAEBAIxAAEAA=</HashCode>
+      <FileName>Models\Profiles.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ElogictisMobile.Models.Products">
+    <Position X="7.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AALQAAAEBAAggAARgAAAABAAAKMAABAAAQRIAQAAAAQ=</HashCode>
+      <FileName>Models\Products.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ElogictisMobile.Models.Town">
+    <Position X="11.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAACQAAAAAAAASAAAAAAAAAUAAAAAAAAAA=</HashCode>
+      <FileName>Models\Town.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ElogictisMobile.Models.District">
+    <Position X="11.5" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAACAAAAAAAAASAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\District.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ElogictisMobile.Models.PriceList">
+    <Position X="9.25" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEACAAAAAQAAAAAAAAACAAAQAAAAAAAAEAEAEQAAAAA=</HashCode>
+      <FileName>Models\PriceList.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ElogictisMobile.Models.TransactionHistory">
+    <Position X="9" Y="0.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAAAAABAAAAAAAIAAAAABAAAAAAAAgQA=</HashCode>
+      <FileName>Models\TransactionHistory.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ElogictisMobile.Models.HistoryHolders">
+    <Position X="0.5" Y="2" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAEAAAAEAAAAAAAAAEAAAEAAAAAAAAAAAAAGAAAA=</HashCode>
+      <FileName>Models\HistoryHolders.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

@@ -36,7 +36,7 @@ namespace ElogictisMobile
             LocalContext.ProvinceList = RealtimeFirebase.Instance.GetListProvince();
             var navigationService = ViewModelLocator.Resolve<INavigationService>();
             
-            if (LocalContext.Current.AccountSettings.Id != null)
+            if (LocalContext.Current.AccountSettings != null)
             {
                 if (LocalContext.Current.AccountSettings.Auth != null)
                 {

@@ -17,6 +17,7 @@ namespace ElogictisMobile.Models
         public static ObservableCollection<Category> ProvinceList { get; set; }
         public static ObservableCollection<Agency> AgencyList { get; set; }
         public static ObservableCollection<PriceList> PriceLists { get; set; }
+        public static ObservableCollection<HealthCare> ProductStatistical { get; set; }
         public static Products ProductSelected { get; set; }
         public static Profiles ProfileSelected { get; set; }
         public static Category CategorySelected { get; set; }
@@ -32,6 +33,7 @@ namespace ElogictisMobile.Models
         public static string AdminId { get; private set; } = "2xxO3k41qcQrviWdPWnQnJJ1b1z2";
         public static List<District> Districts { get; set; }
         public static List<Town> Towns { get; set; }
+        public static List<Category> ListTypeProduct { get; set; }
         public static List<Profiles> ListProfiles { get; set; } = new List<Profiles>();
 
 

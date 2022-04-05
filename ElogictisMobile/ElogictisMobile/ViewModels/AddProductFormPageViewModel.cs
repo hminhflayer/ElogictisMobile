@@ -8,6 +8,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using Xamarin.Forms;
 using Xamarin.Forms.Internals;
@@ -31,14 +32,16 @@ namespace ElogictisMobile.ViewModels
         public ValidatableObject<int> quanlity;
         public ValidatableObject<double> weight;
         public ValidatableObject<string> desciption;
-        public ValidatableObject<double> money;
+        public ValidatableObject<string> money;
+
         private INavigationService _navigationService;
 
         private Command<object> fromMapClickedCommand;
         private Command<object> toMapClickedCommand;
-
+        private string moneyShipper;
+        private string distanceAddress;
         public Category TypeProduct { get; set; }
-        public ObservableCollection<Category> TypeProductCollection { get; set; } = ContentData.TypeProductCollection;
+        public List<Category> TypeProductCollection { get; set; } = LocalContext.ListTypeProduct;
 
         public ObservableCollection<Pin> FromLocations { get; set; }
         public ObservableCollection<Pin> ToLocations { get; set; }
@@ -80,6 +83,41 @@ namespace ElogictisMobile.ViewModels
             get
             {
                 return this.toMapClickedCommand ?? (this.toMapClickedCommand = new Command<object>(this.ToMapClicked));
+            }
+        }
+        public string MoneyShipper
+        {
+            get
+            {
+                return this.moneyShipper;
+            }
+
+            set
+            {
+                if (this.moneyShipper == value)
+                {
+                    return;
+                }
+
+                this.SetProperty(ref this.moneyShipper, value);
+            }
+        }
+
+        public string DistanceAddress
+        {
+            get
+            {
+                return this.distanceAddress;
+            }
+
+            set
+            {
+                if (this.distanceAddress == value)
+                {
+                    return;
+                }
+
+                this.SetProperty(ref this.distanceAddress, value);
             }
         }
 
@@ -236,7 +274,7 @@ namespace ElogictisMobile.ViewModels
                 this.SetProperty(ref this.desciption, value);
             }
         }
-        public ValidatableObject<double> Money
+        public ValidatableObject<string> Money
         {
             get
             {
@@ -254,19 +292,19 @@ namespace ElogictisMobile.ViewModels
             }
         }
 
-        public Command<string> FromAddressChangedCommand
+        public Command FromAddressChangedCommand
         {
             get
             {
-                return this.fromAddressChangedCommand ?? (this.fromAddressChangedCommand = new Command<string>(this.FromAddressChangeClicked));
+                return this.fromAddressChangedCommand ?? (this.fromAddressChangedCommand = new Command(this.FromAddressChangeClicked));
             }
         }
 
-        public Command<string> ToAddressChangedCommand
+        public Command ToAddressChangedCommand
         {
             get
             {
-                return this.toAddressChangedCommand ?? (this.toAddressChangedCommand = new Command<string>(this.ToAddressChangeClicked));
+                return this.toAddressChangedCommand ?? (this.toAddressChangedCommand = new Command(this.ToAddressChangeClicked));
             }
         }
 
@@ -285,8 +323,8 @@ namespace ElogictisMobile.ViewModels
         /// Gets or sets the command is executed when the Submit button is clicked.
         /// </summary>
         public Command SubmitCommand { get; set; }
-        private Command<string> fromAddressChangedCommand;
-        private Command<string> toAddressChangedCommand;
+        private Command fromAddressChangedCommand;
+        private Command toAddressChangedCommand;
         private Command<double> weightChangedCommand;
         #endregion
 
@@ -306,13 +344,15 @@ namespace ElogictisMobile.ViewModels
             this.Quanlity = new ValidatableObject<int>();
             this.Weight = new ValidatableObject<double>();
             this.Desciption = new ValidatableObject<string>();
-            this.Money = new ValidatableObject<double>();
+            this.Money = new ValidatableObject<string>();
 
             Weight.Value = 0;
             Quanlity.Value = 0;
-            Money.Value = 0;
+            Money.Value = "0";
+            DistanceAddress = "0";
             this.FromFullName.Value = LocalContext.Profiles.Name;
             this.FromPhone.Value = LocalContext.Profiles.Phone;
+            this.FromAddress.Value = LocalContext.Current.AccountSettings.Address;
         }
 
         /// <summary>
@@ -328,7 +368,7 @@ namespace ElogictisMobile.ViewModels
             this.ToAddress.Validations.Add(new IsNotNullOrEmptyRule<string> { ValidationMessage = "Địa chỉ người nhận không được trống" });
             this.Quanlity.Validations.Add(new IsNotNullOrEmptyRule<int> { ValidationMessage = "Số lượng kiện hàng không được trống" });
             this.Weight.Validations.Add(new IsNotNullOrEmptyRule<double> { ValidationMessage = "Tổng trọng lượng không được trống" });
-            this.Money.Validations.Add(new IsNotNullOrEmptyRule<double> { ValidationMessage = "Số tiền thu hộ không được trống" });
+            this.Money.Validations.Add(new IsNotNullOrEmptyRule<string> { ValidationMessage = "Số tiền thu hộ không được trống" });
         }
 
         /// <summary>
@@ -343,13 +383,13 @@ namespace ElogictisMobile.ViewModels
             bool isToFullName = this.ToFullName.Validate();
             bool isToPhone = this.ToPhone.Validate();
             bool isToAddress = this.ToAddress.Validate();
-            bool isQuanlity = this.Quanlity.Validate() && this.Quanlity.Value >= 0;
-            bool isWeight = this.Weight.Validate() && this.Weight.Value >= 0;
-            bool isMoney = this.Money.Validate() && this.Money.Value >= 0 && this.Money.Value <= 2000000;
+            bool isQuanlity = this.Quanlity.Validate();
+            bool isWeight = this.Weight.Validate();
+            bool isMoney = this.Money.Validate();
 
             return isFromFullName && isFromPhone && isFromAddress
-                && isToFullName && isToPhone && isToAddress && isQuanlity
-                && isWeight && isMoney;
+                && isToFullName && isToPhone && isToAddress 
+                && isQuanlity && isWeight && isMoney;
         }
 
         /// <summary>
@@ -377,6 +417,7 @@ namespace ElogictisMobile.ViewModels
                 }
                 if (this.AreFieldsValid())
                 {
+                    IsLoading = true;
                     var key = GeneralKey.Instance.General("PRO");
                     var keyNoti = GeneralKey.Instance.General("NOTI");
                     // Do Something
@@ -392,7 +433,7 @@ namespace ElogictisMobile.ViewModels
                         IsDelete = false,
                         LastUpdateBy = "",
                         LastUpdateTime = "",
-                        Money = Money.Value,
+                        Money = double.Parse(MoneyShipper),
                         Quanlity = Quanlity.Value,
                         To_Address = ToAddress.Value,
                         To_FullName = ToFullName.Value,
@@ -404,7 +445,7 @@ namespace ElogictisMobile.ViewModels
                         Holder = "",
                         IsConfirm = false,
                         Status_ext = "CHỜ NHẬN ĐƠN",
-                        AgencyId = LocalContext.Current.AccountSettings.AgencyId,
+                        AgencyId = LocalContext.Current.AccountSettings.AgencyId
                     }));
                     if (task)
                     {
@@ -417,13 +458,19 @@ namespace ElogictisMobile.ViewModels
                             Email = LocalContext.Profiles.Email,
                             ProfileId = LocalContext.Current.AccountSettings.Id
                         })); ;
+                        IsLoading = false;
                         await App.Current.MainPage.DisplayAlert("Thông báo", "Thêm đơn hàng thành công!", "OK");
                     }
                     else
                     {
+                        IsLoading = false;
                         await App.Current.MainPage.DisplayAlert("Thông báo", "Thêm đơn hàng không thành công!", "OK");
                     }
                 }
+                else
+                {
+                    await App.Current.MainPage.DisplayAlert("Thông báo", "Thông tin đơn hàng không hợp lệ", "OK");
+                }    
             }
             catch(Exception ex)
             {
@@ -456,14 +503,15 @@ namespace ElogictisMobile.ViewModels
             ToLocations.Add(pin);
         }
 
-        public async void FromAddressChangeClicked(string address)
+        public async void FromAddressChangeClicked()
         {
             try
             {
-                if(string.IsNullOrEmpty(address))
+                if(FromAddress == null)
                 {
                     return;
-                }    
+                }
+                var address = FromAddress.Value;
                 IsLoading = true;
                 Geocoder geoCoder = new Geocoder();
                 IEnumerable<Position> approximateLocations = await geoCoder.GetPositionsForAddressAsync(address);
@@ -489,14 +537,18 @@ namespace ElogictisMobile.ViewModels
 
         }
 
-        public async void ToAddressChangeClicked(string address)
+        public async void ToAddressChangeClicked()
         {
             try
             {
-                if (string.IsNullOrEmpty(address))
+                if (ToAddress == null)
                 {
+                    MoneyShipper = "0";
+                    DistanceAddress = "0";
+                    ToLocations.Clear();
                     return;
                 }
+                var address = ToAddress.Value;
                 IsLoading = true;
                 Geocoder geoCoder = new Geocoder();
                 IEnumerable<Position> approximateLocations = await geoCoder.GetPositionsForAddressAsync(address);
@@ -528,16 +580,18 @@ namespace ElogictisMobile.ViewModels
             {
                 if (weight <= 0 || FromLocations.Count == 0 || ToLocations.Count == 0)
                 {
+                    MoneyShipper = "0";
                     return;
                 }
                 IsLoading = true;
                 Position positionfrom = FromLocations[0].Position;
                 Position positionto = ToLocations[0].Position;
                 Distance distance = Distance.BetweenPositions(positionfrom, positionto);
-
+                DistanceAddress = distance.Kilometers.ToString();
+                
                 PriceList priceList = await RealtimeFirebase.Instance.GetPriceList(weight, distance.Kilometers);
 
-                Money.Value = double.Parse(priceList.Price);
+                MoneyShipper = priceList.Price;
                 IsLoading = false;
             }
             catch (Exception ex)

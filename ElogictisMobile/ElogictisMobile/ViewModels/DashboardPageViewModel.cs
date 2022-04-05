@@ -75,6 +75,7 @@ namespace ElogictisMobile.ViewModels
             {
                 LocalContext.ProductsList = RealtimeFirebase.Instance.GetAllProductCreated();
             }
+
         }
 
         public override Task InitializeAsync(object navigationData)

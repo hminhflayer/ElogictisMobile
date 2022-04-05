@@ -28,16 +28,17 @@ namespace ElogictisMobile.Services
             client = new FirebaseClient("https://elogictismobile-default-rtdb.firebaseio.com/");
         }
 
-        public Task<bool> UpSert(string collections = null, string key = null,string data = null)
+        #region Default
+        public Task<bool> UpSert(string collections = null, string key = null, string data = null)
         {
             var tcs = new TaskCompletionSource<bool>();
             try
             {
                 if (!string.IsNullOrEmpty(collections)
-                    && !string.IsNullOrEmpty(key) 
+                    && !string.IsNullOrEmpty(key)
                     && !string.IsNullOrEmpty(data))
                 {
-                    
+
                     client
                     .Child(collections)
                     .Child(key)
@@ -47,13 +48,12 @@ namespace ElogictisMobile.Services
                     return tcs.Task;
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 App.Current.MainPage.DisplayAlert("Thông báo", ex.Message, "OK");
             }
             return tcs.Task;
         }
-
         public async Task<string> GetOne<T>(string collections = null, string key = null)
         {
             try
@@ -66,7 +66,7 @@ namespace ElogictisMobile.Services
                     .Child(key)
                     .OnceAsync<T>();
 
-                    return items.ToString();    
+                    return items.ToString();
                 }
                 else
                 {
@@ -79,13 +79,12 @@ namespace ElogictisMobile.Services
             }
             return "";
         }
-
         public ObservableCollection<T> GetAll<T>(string collection = null)
         {
-            if(string.IsNullOrEmpty(collection))
+            if (string.IsNullOrEmpty(collection))
             {
                 return null;
-            }    
+            }
 
             var profiles = client
                 .Child(collection)
@@ -94,23 +93,6 @@ namespace ElogictisMobile.Services
                 .AsObservableCollection();
             return profiles;
         }
-
-        public ObservableCollection<T> GetAllCategory<T>(string collection = null)
-        {
-            if (string.IsNullOrEmpty(collection))
-            {
-                return null;
-            }
-
-            var gets = client
-                .Child("Categories")
-                .Child(collection)
-                .OrderByKey()
-                .AsObservable<T>()
-                .AsObservableCollection();
-            return gets;
-        }
-
         public Task<bool> Delete(string collections = null, string key = null)
         {
             var tcs = new TaskCompletionSource<bool>();
@@ -119,11 +101,11 @@ namespace ElogictisMobile.Services
                 if (!string.IsNullOrEmpty(collections)
                     && !string.IsNullOrEmpty(key))
                 {
-                     client
-                    .Child(collections)
-                    .Child(key)
-                    .DeleteAsync()
-                    .ContinueWith((task) => OnAuthCompleted(task, tcs));
+                    client
+                   .Child(collections)
+                   .Child(key)
+                   .DeleteAsync()
+                   .ContinueWith((task) => OnAuthCompleted(task, tcs));
 
                     return tcs.Task;
                 }
@@ -134,8 +116,9 @@ namespace ElogictisMobile.Services
             }
             return tcs.Task;
         }
+        #endregion
 
-        //Method for Profiles
+        #region Profiles
         public async Task<List<Profiles>> GetAllProfiles()
         {
 
@@ -156,16 +139,463 @@ namespace ElogictisMobile.Services
                   Money = item.Object.Money,
                   Auth = item.Object.Auth,
                   Auth_ext = item.Object.Auth_ext,
-                  Avatar = item.Object.Avatar
+                  Avatar = item.Object.Avatar,
+                  AgencyId = item.Object.AgencyId,
+                  District = item.Object.District,
+                  District_ext = item.Object.District_ext,
+                  Identity = item.Object.Identity,
+                  IsConfirm = item.Object.IsConfirm,
+                  ManageAgency = item.Object.ManageAgency,
+                  Province = item.Object.Province,
+                  Province_ext = item.Object.Province_ext,
+                  Town = item.Object.Town,
+                  Town_ext = item.Object.Town_ext
               }).ToList();
         }
         public async Task<Profiles> GetProfiles(string key)
         {
-            
             var allPersons = await GetAllProfiles();
             return allPersons.Where(a => a.Id == key).FirstOrDefault();
         }
+        public ObservableCollection<Profiles> GetAllProfileWithAgency()
+        {
+            ObservableCollection<Profiles> profiles = new ObservableCollection<Profiles>();
+            var collection = client
+                .Child("Products")
+                .OrderByKey()
+                .AsObservable<Profiles>()
+                .Subscribe((pro) =>
+                {
+                    if (pro.Object.AgencyId == LocalContext.Current.AccountSettings.AgencyId)
+                    {
+                        profiles.Add(pro.Object);
+                    }
+                });
+            return profiles;
+        }
+        #endregion
 
+        #region Product
+        public ObservableCollection<Products> GetAllNewProduct()
+        {
+            ObservableCollection<Products> products = new ObservableCollection<Products>();
+            var collection = client
+                .Child("Products")
+                .OrderByKey()
+                .AsObservable<Products>()
+                .Subscribe((pro) =>
+                {
+                    if (pro.Object.Status == 1)
+                    {
+                        products.Add(pro.Object);
+                    }
+                });
+            return products;
+        }
+        public ObservableCollection<Products> GetAllProductWithAgency()
+        {
+            ObservableCollection<Products> products = new ObservableCollection<Products>();
+            var collection = client
+                .Child("Products")
+                .OrderByKey()
+                .AsObservable<Products>()
+                .Subscribe((pro) =>
+                {
+                    if (pro.Object.AgencyId == LocalContext.Current.AccountSettings.Id)
+                    {
+                        products.Add(pro.Object);
+                    }
+                });
+            return products;
+        }
+        public ObservableCollection<Products> GetAllProductGeted()
+        {
+            ObservableCollection<Products> products = new ObservableCollection<Products>();
+            var collection = client
+                .Child("Products")
+                .AsObservable<Products>()
+                .Subscribe((pro) =>
+                {
+                    if (pro.Object.Holder == LocalContext.Current.AccountSettings.Id)
+                    {
+                        products.Add(pro.Object);
+                    }
+                });
+            return products;
+        }
+        public ObservableCollection<Products> GetAllProductCreated()
+        {
+            ObservableCollection<Products> products = new ObservableCollection<Products>();
+            var collection = client
+                .Child("Products")
+                .OrderByKey()
+                .AsObservable<Products>()
+                .Subscribe((pro) =>
+                {
+                    if (pro.Object.CreateBy == LocalContext.Current.AccountSettings.Id)
+                    {
+                        products.Add(pro.Object);
+                    }
+                });
+            return products;
+        }
+        #endregion
+
+        #region Categories
+        public ObservableCollection<T> GetAllCategory<T>(string collection = null)
+        {
+            if (string.IsNullOrEmpty(collection))
+            {
+                return null;
+            }
+
+            var gets = client
+                .Child("Categories")
+                .Child(collection)
+                .OrderByKey()
+                .AsObservable<T>()
+                .AsObservableCollection();
+            return gets;
+        }
+        public ObservableCollection<Category> GetListProvince()
+        {
+            var list = client
+                .Child("Categories")
+                .Child("Province")
+                .AsObservable<Category>()
+                .AsObservableCollection();
+
+            return list;
+        }
+        public async Task<List<District>> GetListDistrict(string province = null)
+        {
+            try
+            {
+                return (await client
+                .Child("Categories")
+                .Child("District")
+                .Child(province)
+                .OnceAsync<District>())
+                .Select(item => new District()
+                {
+                    Id = item.Object.Id,
+                    Name = item.Object.Name,
+                    ProvinceId = item.Object.ProvinceId,
+                    ProvinceName = item.Object.ProvinceName,
+                }).ToList();
+
+            }
+            catch (Exception ex)
+            {
+                await App.Current.MainPage.DisplayAlert("Thông báo", ex.Message, "OK");
+                return new List<District>();
+            }
+        }
+        public async Task<List<Town>> GetListTown(string district = null)
+        {
+            try
+            {
+                return (await client
+                .Child("Categories")
+                .Child("Town")
+                .Child(district)
+                .OnceAsync<Town>())
+                .Select(item => new Town()
+                {
+                    Id = item.Object.Id,
+                    Name = item.Object.Name,
+                    ProvinceId = item.Object.ProvinceId,
+                    ProvinceName = item.Object.ProvinceName,
+                    DistrictId = item.Object.DistrictId,
+                    DistrictName = item.Object.DistrictName,
+                    FullAddress = item.Object.FullAddress
+                }).ToList();
+            }
+            catch (Exception ex)
+            {
+                await App.Current.MainPage.DisplayAlert("Thông báo", ex.Message, "OK");
+                return new List<Town>();
+            }
+
+        }
+        public async Task<PriceList> GetPriceList(double weight = 0, double kilometer = 0)
+        {
+            try
+            {
+                var pricelist = (await client
+                .Child("Categories")
+                .Child("PricesList")
+                .OnceAsync<PriceList>())
+                .Where(x => double.Parse(x.Object.From_Kilometer) <= kilometer && double.Parse(x.Object.To_Kilometer) >= kilometer)
+                .FirstOrDefault();
+
+                return pricelist.Object != null ? pricelist.Object : new PriceList()
+                {
+                    Price = "50.000"
+                };
+            }
+            catch (Exception ex)
+            {
+                await App.Current.MainPage.DisplayAlert("Thông báo", ex.Message, "OK");
+                return new PriceList();
+            }
+
+        }
+        public async Task<List<Category>> GetTypeProduct()
+        {
+            try
+            {
+                return (await client
+                .Child("Categories")
+                .Child("TypeProduct")
+                .OnceAsync<Category>())
+                .Select(item => new Category()
+                {
+                    Id = item.Object.Id,
+                    Name = item.Object.Name
+                }).ToList();
+            }
+            catch (Exception ex)
+            {
+                await App.Current.MainPage.DisplayAlert("Thông báo", ex.Message, "OK");
+                return new List<Category>();
+            }
+        }
+
+        #endregion
+
+        #region Statistical
+        public async Task<int> GetStatisticalUser(int status = 0)
+        {
+            int sum = 0;
+            var collection = (await client
+                .Child("Products")
+                .OrderByKey()
+                .OnceAsync<Products>())
+                .Select(item => new Products()
+                {
+                    CreateBy = item.Object.CreateBy,
+                    CreateTime = item.Object.CreateTime,
+                    Description = item.Object.Description,
+                    From_Address = item.Object.From_Address,
+                    From_FullName = item.Object.From_FullName,
+                    From_PhoneNumber = item.Object.From_PhoneNumber,
+                    ID = item.Object.ID,
+                    IsDelete = item.Object.IsDelete,
+                    LastUpdateBy = item.Object.LastUpdateBy,
+                    LastUpdateTime = item.Object.LastUpdateTime,
+                    Money = item.Object.Money,
+                    Quanlity = item.Object.Quanlity,
+                    To_Address = item.Object.To_Address,
+                    To_FullName = item.Object.To_FullName,
+                    To_PhoneNumber = item.Object.To_PhoneNumber,
+                    Type = item.Object.Type,
+                    Type_ext = item.Object.Type_ext,
+                    Weight = item.Object.Weight,
+                    Status = item.Object.Status,
+                    Holder = item.Object.Holder,
+                    IsConfirm = item.Object.IsConfirm,
+                    Status_ext = item.Object.Status_ext,
+                    AgencyId = item.Object.AgencyId
+                })
+                .Where(item => item.CreateBy == LocalContext.Current.AccountSettings.Id)
+                .ToList();
+            foreach (var item in collection)
+            {
+                if (item.Status == status)
+                {
+                    sum += 1;
+                }
+            }
+            return sum;
+        }
+        public async Task<int> GetStatisticalShipper(int status = 0)
+        {
+            int sum = 0;
+            var collection = (await client
+                .Child("Products")
+                .OrderByKey()
+                .OnceAsync<Products>())
+                .Select(item => new Products()
+                {
+                    CreateBy = item.Object.CreateBy,
+                    CreateTime = item.Object.CreateTime,
+                    Description = item.Object.Description,
+                    From_Address = item.Object.From_Address,
+                    From_FullName = item.Object.From_FullName,
+                    From_PhoneNumber = item.Object.From_PhoneNumber,
+                    ID = item.Object.ID,
+                    IsDelete = item.Object.IsDelete,
+                    LastUpdateBy = item.Object.LastUpdateBy,
+                    LastUpdateTime = item.Object.LastUpdateTime,
+                    Money = item.Object.Money,
+                    Quanlity = item.Object.Quanlity,
+                    To_Address = item.Object.To_Address,
+                    To_FullName = item.Object.To_FullName,
+                    To_PhoneNumber = item.Object.To_PhoneNumber,
+                    Type = item.Object.Type,
+                    Type_ext = item.Object.Type_ext,
+                    Weight = item.Object.Weight,
+                    Status = item.Object.Status,
+                    Holder = item.Object.Holder,
+                    IsConfirm = item.Object.IsConfirm,
+                    Status_ext = item.Object.Status_ext,
+                    AgencyId = item.Object.AgencyId
+                })
+                .Where(item => item.Holder == LocalContext.Current.AccountSettings.Id)
+                .ToList();
+            foreach (var item in collection)
+            {
+                if (item.Status == status)
+                {
+                    sum += 1;
+                }
+            }
+            return sum;
+        }
+        public async Task<int> GetStatisticalAgency(int status = 0)
+        {
+            int sum = 0;
+            var collection = (await client
+                .Child("Products")
+                .OrderByKey()
+                .OnceAsync<Products>())
+                .Select(item => new Products()
+                {
+                    CreateBy = item.Object.CreateBy,
+                    CreateTime = item.Object.CreateTime,
+                    Description = item.Object.Description,
+                    From_Address = item.Object.From_Address,
+                    From_FullName = item.Object.From_FullName,
+                    From_PhoneNumber = item.Object.From_PhoneNumber,
+                    ID = item.Object.ID,
+                    IsDelete = item.Object.IsDelete,
+                    LastUpdateBy = item.Object.LastUpdateBy,
+                    LastUpdateTime = item.Object.LastUpdateTime,
+                    Money = item.Object.Money,
+                    Quanlity = item.Object.Quanlity,
+                    To_Address = item.Object.To_Address,
+                    To_FullName = item.Object.To_FullName,
+                    To_PhoneNumber = item.Object.To_PhoneNumber,
+                    Type = item.Object.Type,
+                    Type_ext = item.Object.Type_ext,
+                    Weight = item.Object.Weight,
+                    Status = item.Object.Status,
+                    Holder = item.Object.Holder,
+                    IsConfirm = item.Object.IsConfirm,
+                    Status_ext = item.Object.Status_ext,
+                    AgencyId = item.Object.AgencyId
+                })
+                .Where(item => item.AgencyId == LocalContext.Current.AccountSettings.ManageAgency)
+                .ToList();
+            foreach (var item in collection)
+            {
+                if (item.Status == status)
+                {
+                    sum += 1;
+                }
+            }
+            return sum;
+        }
+        public async Task<int> GetStatisticalAdmin(int status = 0)
+        {
+            int sum = 0;
+            var collection = (await client
+                .Child("Products")
+                .OrderByKey()
+                .OnceAsync<Products>())
+                .Select(item => new Products()
+                {
+                    CreateBy = item.Object.CreateBy,
+                    CreateTime = item.Object.CreateTime,
+                    Description = item.Object.Description,
+                    From_Address = item.Object.From_Address,
+                    From_FullName = item.Object.From_FullName,
+                    From_PhoneNumber = item.Object.From_PhoneNumber,
+                    ID = item.Object.ID,
+                    IsDelete = item.Object.IsDelete,
+                    LastUpdateBy = item.Object.LastUpdateBy,
+                    LastUpdateTime = item.Object.LastUpdateTime,
+                    Money = item.Object.Money,
+                    Quanlity = item.Object.Quanlity,
+                    To_Address = item.Object.To_Address,
+                    To_FullName = item.Object.To_FullName,
+                    To_PhoneNumber = item.Object.To_PhoneNumber,
+                    Type = item.Object.Type,
+                    Type_ext = item.Object.Type_ext,
+                    Weight = item.Object.Weight,
+                    Status = item.Object.Status,
+                    Holder = item.Object.Holder,
+                    IsConfirm = item.Object.IsConfirm,
+                    Status_ext = item.Object.Status_ext,
+                    AgencyId = item.Object.AgencyId
+                })
+                .ToList();
+            foreach (var item in collection)
+            {
+                if (item.Status == status)
+                {
+                    sum += 1;
+                }
+            }
+            return sum;
+        }
+        #endregion
+
+        #region StatisticalRevenue
+        public async Task<double> TotalRevenueUser(bool total = true)
+        {
+            double sum = 0;
+            var collection = (await client
+                .Child("Products")
+                .OrderByKey()
+                .OnceAsync<Products>())
+                .Select(item => new Products()
+                {
+                    CreateBy = item.Object.CreateBy,
+                    CreateTime = item.Object.CreateTime,
+                    Description = item.Object.Description,
+                    From_Address = item.Object.From_Address,
+                    From_FullName = item.Object.From_FullName,
+                    From_PhoneNumber = item.Object.From_PhoneNumber,
+                    ID = item.Object.ID,
+                    IsDelete = item.Object.IsDelete,
+                    LastUpdateBy = item.Object.LastUpdateBy,
+                    LastUpdateTime = item.Object.LastUpdateTime,
+                    Money = item.Object.Money,
+                    Quanlity = item.Object.Quanlity,
+                    To_Address = item.Object.To_Address,
+                    To_FullName = item.Object.To_FullName,
+                    To_PhoneNumber = item.Object.To_PhoneNumber,
+                    Type = item.Object.Type,
+                    Type_ext = item.Object.Type_ext,
+                    Weight = item.Object.Weight,
+                    Status = item.Object.Status,
+                    Holder = item.Object.Holder,
+                    IsConfirm = item.Object.IsConfirm,
+                    Status_ext = item.Object.Status_ext,
+                    AgencyId = item.Object.AgencyId
+                })
+                .Where(item => item.CreateBy == LocalContext.Current.AccountSettings.Id)
+                .ToList();
+            foreach(var item in collection)
+            {
+                if(total)
+                {
+                    sum += item.Money;
+                }
+                else
+                {
+                    var month = Convert.ToDateTime(item.CreateTime);
+                    if(month.Month == DateTime.Now.Month)
+                    {
+                        sum += item.Money;
+                    }    
+                }    
+            }    
+            return sum;
+        }
+        #endregion
         public async Task<bool> UpdateMoneyCompany(double money, bool plus = true)
         {
             var tcs = new TaskCompletionSource<bool>();
@@ -204,7 +634,6 @@ namespace ElogictisMobile.Services
                 return await tcs.Task;
             }
         }
-
         public async Task<bool> UpdateMoneyUser(double money = 0, bool plus = true, string Id = null)
         {
             var tcs = new TaskCompletionSource<bool>();
@@ -238,7 +667,6 @@ namespace ElogictisMobile.Services
                 return await tcs.Task;
             }
         }
-        //Method for Notifi
         public ObservableCollection<TransactionHistory> GetAllNotifi()
         {
             ObservableCollection<TransactionHistory> transactionHistories = new ObservableCollection<TransactionHistory>();
@@ -255,40 +683,36 @@ namespace ElogictisMobile.Services
                 });
             return transactionHistories;
        }
-
-        public ObservableCollection<Profiles> GetAllProfileWithAgency()
+        public async Task<List<ProductDeliveryTrackingModel>> GetDeliveryTrackingModelsAsync(string id = null)
         {
-            ObservableCollection<Profiles> profiles = new ObservableCollection<Profiles>();
-            var collection = client
-                .Child("Products")
-                .OrderByKey()
-                .AsObservable<Profiles>()
-                .Subscribe((pro) =>
-                {
-                    if (pro.Object.AgencyId == LocalContext.Current.AccountSettings.AgencyId)
-                    {
-                        profiles.Add(pro.Object);
-                    }
-                });
-            return profiles;
-        }
-        //Status product
-        public ObservableCollection<Products> GetProductWithStatus(int status = 0)
-        {
-            if (status <= 0 || status > 4)
+            try
             {
-                return null;
+                List<ProductDeliveryTrackingModel> collection = new List<ProductDeliveryTrackingModel>();
+                collection = (await client
+                    .Child("DeliveryTracking")
+                    .Child(id)
+                    .OnceAsync<ProductDeliveryTrackingModel>())
+                    .Select(item => new ProductDeliveryTrackingModel()
+                    {
+                        Date = item.Object.Date,
+                        TitleStatus = item.Object.TitleStatus,
+                        Title = item.Object.Title,
+                        OrderDate = item.Object.OrderDate,
+                        OrderStatus = item.Object.OrderStatus,
+                        ProgressValue = item.Object.ProgressValue,
+                        Status = item.Object.Status,
+                        StepStatus = item.Object.StepStatus
+                    })
+                    .ToList();
+                return collection;
             }
-
-            var product = client
-                .Child("Products")
-                .AsObservable<Products>()
-                .AsObservableCollection()
-                .Where<Products>(a => a.Status == status && a.CreateBy == LocalContext.Current.AccountSettings.Email);
+            catch(Exception ex)
+            {
+                return new List<ProductDeliveryTrackingModel>();
+                await App.Current.MainPage.DisplayAlert("LỖI", ex.Message, "Đóng");
+            }
             
-            return (ObservableCollection<Products>)product;
         }
-
         private void OnAuthCompleted(Task task, TaskCompletionSource<bool> tcs)
         {
             if (task.IsCanceled || task.IsFaulted)
@@ -301,156 +725,9 @@ namespace ElogictisMobile.Services
             tcs.SetResult(true);
         }
 
-        public ObservableCollection<Products> GetAllNewProduct()
-        {
-            ObservableCollection<Products> products = new ObservableCollection<Products>();
-            var collection = client
-                .Child("Products")
-                .OrderByKey()
-                .AsObservable<Products>()
-                .Subscribe((pro) =>
-                {
-                    if(pro.Object.Status == 1)
-                    {
-                        products.Add(pro.Object);
-                    }
-                });
-            return products;
-        }
-        public ObservableCollection<Products> GetAllProductWithAgency()
-        {
-            ObservableCollection<Products> products = new ObservableCollection<Products>();
-            var collection = client
-                .Child("Products")
-                .OrderByKey()
-                .AsObservable<Products>()
-                .Subscribe((pro) =>
-                {
-                    if (pro.Object.AgencyId == LocalContext.Current.AccountSettings.Id)
-                    {
-                        products.Add(pro.Object);
-                    }
-                });
-            return products;
-        }
+        
 
-        public ObservableCollection<Products> GetAllProductGeted()
-        {
-            ObservableCollection<Products> products = new ObservableCollection<Products>();
-            var collection = client
-                .Child("Products")
-                .OrderByKey()
-                .AsObservable<Products>()
-                .Subscribe((pro) =>
-                {
-                    if (pro.Object.Holder == LocalContext.Current.AccountSettings.Id)
-                    {
-                        products.Add(pro.Object);
-                    }
-                });
-            return products;
-        }
 
-        public ObservableCollection<Products> GetAllProductCreated()
-        {
-            ObservableCollection<Products> products = new ObservableCollection<Products>();
-            var collection = client
-                .Child("Products")
-                .OrderByKey()
-                .AsObservable<Products>()
-                .Subscribe((pro) =>
-                {
-                    if (pro.Object.CreateBy == LocalContext.Current.AccountSettings.Id)
-                    {
-                        products.Add(pro.Object);
-                    }
-                });
-            return products;
-        }
-
-        public ObservableCollection<Category> GetListProvince()
-        {
-            var list = client
-                .Child("Categories")
-                .Child("Province")
-                .AsObservable<Category>()
-                .AsObservableCollection();
-
-            return list;
-        }
-
-        public async Task<List<District>> GetListDistrict(string province = null)
-        {
-            try
-            {
-                return (await client
-                .Child("Categories")
-                .Child("District")
-                .Child(province)
-                .OnceAsync<District>())
-                .Select(item => new District()
-                {
-                    Id = item.Object.Id,
-                    Name = item.Object.Name,
-                    ProvinceId = item.Object.ProvinceId,
-                    ProvinceName = item.Object.ProvinceName,
-                }).ToList();
-
-            }
-            catch(Exception ex)
-            {
-                await App.Current.MainPage.DisplayAlert("Thông báo", ex.Message, "OK");
-                return new List<District>();
-            }
-        }
-
-        public async Task<List<Town>> GetListTown(string district = null)
-        {
-            try
-            {
-                return (await client
-                .Child("Categories")
-                .Child("Town")
-                .Child(district)
-                .OnceAsync<Town>())
-                .Select(item => new Town()
-                {
-                    Id = item.Object.Id,
-                    Name = item.Object.Name,
-                    ProvinceId = item.Object.ProvinceId,
-                    ProvinceName = item.Object.ProvinceName,
-                    DistrictId = item.Object.DistrictId,
-                    DistrictName = item.Object.DistrictName,
-                    FullAddress = item.Object.FullAddress
-                }).ToList();
-            }
-            catch(Exception ex)
-            {
-                await App.Current.MainPage.DisplayAlert("Thông báo", ex.Message, "OK");
-                return new List<Town>();
-            }
-            
-        }
-
-        public async Task<PriceList> GetPriceList(double weight = 0, double kilometer = 0)
-        {
-            try
-            {
-                var pricelist = (await client
-                .Child("Categories")
-                .Child("PricesList")
-                .OnceAsync<PriceList>())
-                .Where(x => double.Parse(x.Object.From_Kilometer) <= kilometer && double.Parse(x.Object.To_Kilometer) >= kilometer)
-                .FirstOrDefault();
-
-                return pricelist.Object;
-            }
-            catch (Exception ex)
-            {
-                await App.Current.MainPage.DisplayAlert("Thông báo", ex.Message, "OK");
-                return new PriceList();
-            }
-
-        }
+        
     }
 }

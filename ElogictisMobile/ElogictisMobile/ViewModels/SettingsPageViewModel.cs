@@ -322,7 +322,7 @@ namespace ElogictisMobile.ViewModels
         /// Invoked when the help option is clicked
         /// </summary>
         /// <param name="obj">The object</param>
-        private async void HelpClicked(object obj)
+        private void HelpClicked(object obj)
         {
             // Do something
         }
@@ -338,7 +338,7 @@ namespace ElogictisMobile.ViewModels
             {
                 if (_accountService.SignOut())
                 {
-                    LocalContext.Current.AccountSettings = new Profiles();
+                    LocalContext.Current.AccountSettings = null;
                     await _navigationService.NavigateToAsync<LoginPageViewModel>(null,true);
                 }    
             }

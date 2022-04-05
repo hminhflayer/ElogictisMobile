@@ -18,10 +18,9 @@ namespace ElogictisMobile.Models
         public string Identity { get; set; }
         public bool IsDelete { get; set; }
         public string Avatar { get; set; }
-        public string Token { get; set; }
-        public DateTime ExpireToken { get; set; }
         public double Money { get; set; }
         public string AgencyId { get; set; }
+        public string ManageAgency { get; set; }
         public bool IsConfirm { get; set; }
 
         /*

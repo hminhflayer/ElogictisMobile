@@ -5,6 +5,8 @@ using ElogictisMobile.Validators.Rules;
 using Newtonsoft.Json;
 using Plugin.Media;
 using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using Xamarin.Forms;
 using Xamarin.Forms.Internals;
 
@@ -21,6 +23,11 @@ namespace ElogictisMobile.ViewModels
         private ValidatableObject<string> fullName;
 
         private ValidatableObject<string> email;
+        private ValidatableObject<string> address;
+        private Category province;
+        private District district;
+        private Town town;
+        private string avatar;
 
         private string phoneNumber;
 
@@ -39,16 +46,114 @@ namespace ElogictisMobile.ViewModels
         {
             this.InitializeProperties();
             this.AddValidationRules();
+            ProvinceCollection = new ObservableCollection<Category>();
+            DistrictCollection = new ObservableCollection<District>();
+            TownCollection = new ObservableCollection<Town>();
+
+            ProvinceCollection = LocalContext.ProvinceList;
+            Province = new Category();
+            District = new District();
+            Town = new Town();
+            this.ProvinceCommand = new Command(this.ProvinceChangeClicked);
+            this.DistrictCommand = new Command(this.DistrictChangeClicked);
+            this.TownCommand = new Command(this.TownChangeClicked);
         }
 
         #endregion
 
         #region Property
 
-        /// <summary>
-        /// Gets or sets the FirstName
-        /// </summary>
-        public ImageSource Avatar { get; set; }
+        public Category Province
+        {
+            get
+            {
+                return this.province;
+            }
+
+            set
+            {
+                if (this.province == value)
+                {
+                    return;
+                }
+
+                this.SetProperty(ref this.province, value);
+            }
+        }
+        public District District
+        {
+            get
+            {
+                return this.district;
+            }
+
+            set
+            {
+                if (this.district == value)
+                {
+                    return;
+                }
+
+                this.SetProperty(ref this.district, value);
+            }
+        }
+        public Town Town
+        {
+            get
+            {
+                return this.town;
+            }
+
+            set
+            {
+                if (this.town == value)
+                {
+                    return;
+                }
+
+                this.SetProperty(ref this.town, value);
+            }
+        }
+        public ObservableCollection<Category> ProvinceCollection { get; set; }
+        public ObservableCollection<District> DistrictCollection { get; set; }
+        public ObservableCollection<Town> TownCollection { get; set; }
+        public List<District> DistrictColl { get; set; }
+        public List<Town> TownColl { get; set; }
+
+        public string Avatar
+        {
+            get
+            {
+                return this.avatar;
+            }
+
+            set
+            {
+                if (this.avatar == value)
+                {
+                    return;
+                }
+
+                this.SetProperty(ref this.avatar, value);
+            }
+        }
+        public ValidatableObject<string> Address
+        {
+            get
+            {
+                return this.address;
+            }
+
+            set
+            {
+                if (this.address == value)
+                {
+                    return;
+                }
+
+                this.SetProperty(ref this.address, value);
+            }
+        }
         public ValidatableObject<string> FullName
         {
             get
@@ -110,9 +215,9 @@ namespace ElogictisMobile.ViewModels
 
         #region Command
 
-        /// <summary>
-        /// Gets the command that will be executed when an add profile button is clicked.
-        /// </summary>
+        public Command ProvinceCommand { get; set; }
+        public Command DistrictCommand { get; set; }
+        public Command TownCommand { get; set; }
         public Command<object> AddProfileCommand
         {
             get
@@ -154,11 +259,38 @@ namespace ElogictisMobile.ViewModels
         {
             this.FullName = new ValidatableObject<string>();
             this.Email = new ValidatableObject<string>();
+            this.Address = new ValidatableObject<string>();
 
             this.FullName.Value = LocalContext.Current.AccountSettings.Name;
             this.Email.Value = LocalContext.Current.AccountSettings.Email;
             this.PhoneNumber = LocalContext.Current.AccountSettings.Phone;
             this.Avatar = LocalContext.Current.AccountSettings.Avatar;
+            this.Address.Value = LocalContext.Current.AccountSettings.Address;
+
+            this.Province = new Category()
+            {
+                Id = LocalContext.Current.AccountSettings.Province,
+                Name = LocalContext.Current.AccountSettings.Province_ext
+            };
+
+            this.District = new District()
+            {
+                Id = LocalContext.Current.AccountSettings.District,
+                Name = LocalContext.Current.AccountSettings.District_ext,
+                ProvinceId = LocalContext.Current.AccountSettings.Province,
+                ProvinceName = LocalContext.Current.AccountSettings.Province_ext
+            };
+
+            this.Town = new Town()
+            {
+                Id = LocalContext.Current.AccountSettings.Town,
+                Name = LocalContext.Current.AccountSettings.Town_ext,
+                DistrictId = LocalContext.Current.AccountSettings.District,
+                DistrictName = LocalContext.Current.AccountSettings.District_ext,
+                ProvinceId = LocalContext.Current.AccountSettings.Province,
+                ProvinceName = LocalContext.Current.AccountSettings.Province_ext,
+                FullAddress = LocalContext.Current.AccountSettings.Address
+            };
         }
 
         /// <summary>
@@ -178,17 +310,34 @@ namespace ElogictisMobile.ViewModels
         {
             if (this.AreNamesValid())
             {
+                IsLoading = true;
                 Profiles profiles = LocalContext.Current.AccountSettings;
                 profiles.Name = FullName.Value;
                 profiles.LastUpdateBy = LocalContext.Profiles.Email;
                 profiles.LastUpdateTime = DateTime.Now.ToString();
                 profiles.Phone = PhoneNumber;
+                profiles.Province = Province.Id;
+                profiles.Province_ext = Province.Name;
+                profiles.District = District.Id;
+                profiles.District_ext = District.Name;
+                profiles.Town = Town.Id;
+                profiles.Town_ext = Town.Name;
+                profiles.Address = Address.Value;
+                profiles.Avatar = Avatar;
 
                 // Do Something
-                await RealtimeFirebase.Instance.UpSert("Profiles", LocalContext.Profiles.Id, JsonConvert.SerializeObject(profiles));
-                await App.Current.MainPage.DisplayAlert("Thông báo", "Đã cập nhật thông tin tài khoản thành công", "OK");
-
-                LocalContext.Current.AccountSettings = profiles;
+                var upsert = await RealtimeFirebase.Instance.UpSert("Profiles", LocalContext.Profiles.Id, JsonConvert.SerializeObject(profiles));
+                if(upsert)
+                {
+                    IsLoading = false;
+                    LocalContext.Current.AccountSettings = profiles;
+                    await App.Current.MainPage.DisplayAlert("Thông báo", "Đã cập nhật thông tin tài khoản thành công", "OK");
+                }    
+                else
+                {
+                    IsLoading = false;
+                    await App.Current.MainPage.DisplayAlert("Thông báo lỗi", "Cập nhật thông tin không thành công", "OK");
+                }
             }
         }
 
@@ -202,12 +351,83 @@ namespace ElogictisMobile.ViewModels
             var file = await CrossMedia.Current.PickPhotoAsync();
             if (file == null)
                 return;
-            await App.Current.MainPage.DisplayAlert("File Location", file.AlbumPath, "OK");
             var filepath = file.Path;
 
-            Avatar = ImageSource.FromStream(() => file.GetStream());
+            Avatar = ImageSource.FromStream(() => file.GetStream()).ToString();
         }
 
+        public async void ProvinceChangeClicked()
+        {
+            try
+            {
+                if(Province == null)
+                {
+                    return;
+                }    
+                List<District> districts = new List<District>();
+                var province = Province.Id;
+
+                District = new District();
+                Town = new Town();
+
+                DistrictCollection.Clear();
+                TownCollection.Clear();
+
+                districts = await RealtimeFirebase.Instance.GetListDistrict(province);
+                foreach (var x in districts)
+                {
+                    DistrictCollection.Add(x);
+                }
+            }
+            catch (Exception ex)
+            {
+                await App.Current.MainPage.DisplayAlert("Thông báo", ex.Message, "OK");
+            }
+
+        }
+        public async void DistrictChangeClicked()
+        {
+            try
+            {
+                if(District == null)
+                {
+                    return;
+                }    
+                List<Town> towns = new List<Town>();
+                var district = District.Id;
+
+                Town = new Town();
+
+                TownCollection.Clear();
+
+                towns = await RealtimeFirebase.Instance.GetListTown(district);
+                foreach (var x in towns)
+                {
+                    TownCollection.Add(x);
+                }
+            }
+            catch (Exception ex)
+            {
+                await App.Current.MainPage.DisplayAlert("Thông báo", ex.Message, "OK");
+            }
+
+        }
+        public async void TownChangeClicked()
+        {
+            try
+            {
+                if(Town == null)
+                {
+                    return;
+                }    
+                Address.Value = Town.FullAddress;
+            }
+            catch (Exception ex)
+            {
+                await App.Current.MainPage.DisplayAlert("Thông báo", ex.Message, "OK");
+            }
+
+        }
         #endregion
     }
 }

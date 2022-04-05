@@ -29,7 +29,7 @@ namespace ElogictisMobile.Views
             }    
             if (this.BindingContext is AddProductFormPageViewModel vm)
             {
-                vm.WeightChangedCommand.Execute(int.Parse(e.NewTextValue));
+                vm.WeightChangedCommand.Execute(double.Parse(e.NewTextValue));
             }
         }
 

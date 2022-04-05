@@ -12,7 +12,7 @@
     xmlns:controls="clr-namespace:ElogictisMobile.Controls"
     xmlns:converter="clr-namespace:ElogictisMobile.Converters"
     xmlns:maps="clr-namespace:Xamarin.Forms.Maps;assembly=Xamarin.Forms.Maps"
-    xmlns:inputLayout="clr-namespace:Syncfusion.XForms.TextInputLayout;assembly=Syncfusion.Core.XForms"
+    xmlns:inputLayout="clr-namespace:Syncfusion.XForms.TextInputLayout;assembly=Syncfusion.Core.XForms" xmlns:busyindicator="clr-namespace:Syncfusion.SfBusyIndicator.XForms;assembly=Syncfusion.SfBusyIndicator.XForms"
     Title="Tạo đơn hàng"
     BackgroundColor="{DynamicResource Gray-100}"
     NavigationPage.HasNavigationBar="True"
@@ -27,12 +27,13 @@
     </ContentPage.Resources>
 
     <ContentPage.Content>
-        <ScrollView>
-            <StackLayout
+        <StackLayout>
+            <ScrollView HorizontalOptions="Center">
+                <StackLayout
                 Padding="16,24"
                 BackgroundColor="{DynamicResource Gray-100}"
                 Spacing="16">
-                <Label
+                    <Label
                     Margin="0,0,0,10"
                     FontFamily="Montserrat-SemiBold"
                     FontSize="18"
@@ -43,27 +44,28 @@
                     TextColor="{DynamicResource Gray-800}"
                     VerticalOptions="Center"
                     VerticalTextAlignment="Center" />
-                <!--From Full Name-->
-                <StackLayout Grid.Row="1">
-                    <border:SfBorder BorderColor="{Binding Source={x:Reference FromFullNameEntry}, Path=IsFocused, Converter={StaticResource ColorConverter}, ConverterParameter=3}" Style="{StaticResource DataFormBorderlessEntryBorderStyle}">
-                        <Grid ColumnDefinitions="*, Auto">
-                            <controls:BorderlessEntry
+                    <!--From Full Name-->
+                    <StackLayout Grid.Row="1">
+                        <border:SfBorder BorderColor="{Binding Source={x:Reference FromFullNameEntry}, Path=IsFocused, Converter={StaticResource ColorConverter}, ConverterParameter=3}" Style="{StaticResource DataFormBorderlessEntryBorderStyle}">
+                            <Grid ColumnDefinitions="*, Auto">
+                                <controls:BorderlessEntry
                                 x:Name="FromFullNameEntry"
                                 Margin="12,0"
                                 HeightRequest="40"
                                 Placeholder="Họ và tên"
+                                IsReadOnly="True"
                                 Style="{StaticResource BorderlessEntryStyle}"
                                 Text="{Binding FromFullName.Value}" />
-                            <!--  Label to display error icon  -->
-                            <Label
+                                <!--  Label to display error icon  -->
+                                <Label
                                     Grid.Column="1"
                                     IsVisible="{Binding Path=IsVisible, Source={x:Reference FullNameValidationLabel}}"
                                     Style="{StaticResource ErrorIconLabelStyle}"
                                     Text="{StaticResource Error}" />
-                        </Grid>
-                    </border:SfBorder>
-                    <!--  Label to display error message  -->
-                    <Label
+                            </Grid>
+                        </border:SfBorder>
+                        <!--  Label to display error message  -->
+                        <Label
                         x:Name="FullNameValidationLabel"
                         Margin="15,-3,0,0"
                         IsVisible="{Binding FromFullName.IsValid, Converter={StaticResource InverseBoolConverter}}"
@@ -71,34 +73,35 @@
                         Text="{Binding FromFullName.Errors, Converter={StaticResource FirstValidationErrorConverter}}"
                         TextColor="{DynamicResource Red}"
                         VerticalOptions="FillAndExpand" />
-                </StackLayout>
-                <!--From Phone-->
-                <StackLayout Grid.Row="2">
-                    <border:SfBorder BorderColor="{Binding Source={x:Reference FromPhoneEntry}, Path=IsFocused, Converter={StaticResource ColorConverter}, ConverterParameter=3}" Style="{StaticResource DataFormBorderlessEntryBorderStyle}">
-                        <Grid ColumnDefinitions="*, Auto">
-                            <controls:BorderlessEntry
+                    </StackLayout>
+                    <!--From Phone-->
+                    <StackLayout Grid.Row="2">
+                        <border:SfBorder BorderColor="{Binding Source={x:Reference FromPhoneEntry}, Path=IsFocused, Converter={StaticResource ColorConverter}, ConverterParameter=3}" Style="{StaticResource DataFormBorderlessEntryBorderStyle}">
+                            <Grid ColumnDefinitions="*, Auto">
+                                <controls:BorderlessEntry
                                 x:Name="FromPhoneEntry"
                                 Margin="12,0"
                                 HeightRequest="40"
                                 Keyboard="Telephone"
                                 Placeholder="Số điện thoại"
+                                IsReadOnly="True"
                                 Style="{StaticResource BorderlessEntryStyle}"
                                 Text="{Binding FromPhone.Value}" >
-                                <controls:BorderlessEntry.Behaviors>
-                                    <behaviours:EntryMaskedBehavior Mask="(+84)XXX-XXX-XXX" Prefix="(+84)"/>
-                                </controls:BorderlessEntry.Behaviors>
-                            </controls:BorderlessEntry>
-                            
-                                    <!--  Label to display error icon  -->
-                            <Label
+                                    <controls:BorderlessEntry.Behaviors>
+                                        <behaviours:EntryMaskedBehavior Mask="(+84)XXX-XXX-XXX" Prefix="(+84)"/>
+                                    </controls:BorderlessEntry.Behaviors>
+                                </controls:BorderlessEntry>
+
+                                <!--  Label to display error icon  -->
+                                <Label
                                     Grid.Column="1"
                                     IsVisible="{Binding Path=IsVisible, Source={x:Reference FromPhoneValidationLabel}}"
                                     Style="{StaticResource ErrorIconLabelStyle}"
                                     Text="{StaticResource Error}" />
-                        </Grid>
-                    </border:SfBorder>
-                    <!--  Label to display error message  -->
-                    <Label
+                            </Grid>
+                        </border:SfBorder>
+                        <!--  Label to display error message  -->
+                        <Label
                         x:Name="FromPhoneValidationLabel"
                         Margin="15,-3,0,0"
                         IsVisible="{Binding FromPhone.IsValid, Converter={StaticResource InverseBoolConverter}}"
@@ -106,28 +109,30 @@
                         Text="{Binding FromPhone.Errors, Converter={StaticResource FirstValidationErrorConverter}}"
                         TextColor="{DynamicResource Red}"
                         VerticalOptions="FillAndExpand" />
-                </StackLayout>
-                <!--From Address-->
-                <StackLayout Grid.Row="3">
-                    <border:SfBorder BorderColor="{Binding Source={x:Reference FromAddressEntry}, Path=IsFocused, Converter={StaticResource ColorConverter}, ConverterParameter=3}" Style="{StaticResource DataFormBorderlessEntryBorderStyle}">
-                        <Grid ColumnDefinitions="*, Auto">
-                            <controls:BorderlessEntry
+                    </StackLayout>
+                    <!--From Address-->
+                    <StackLayout Grid.Row="3">
+                        <border:SfBorder BorderColor="{Binding Source={x:Reference FromAddressEntry}, Path=IsFocused, Converter={StaticResource ColorConverter}, ConverterParameter=3}" Style="{StaticResource DataFormBorderlessEntryBorderStyle}">
+                            <Grid ColumnDefinitions="*, Auto">
+                                <StackLayout>
+                                    <controls:BorderlessEntry
                                 x:Name="FromAddressEntry"
                                 Margin="12,0"
                                 HeightRequest="40"
                                 Placeholder="Địa chỉ"
                                 Style="{StaticResource BorderlessEntryStyle}"
-                                Text="{Binding FromAddress.Value}" 
-                                TextChanged="FromAddressEntry_TextChanged"/>
-                            <Label
+                                Text="{Binding FromAddress.Value}"/>
+                                    <Button Text="Xem" Command="{Binding FromAddressChangedCommand}"/>
+                                </StackLayout>
+                                <Label
                                 Grid.Column="1"
                                 IsVisible="{Binding Path=IsVisible, Source={x:Reference FromAddressValidationLabel}}"
                                 Style="{StaticResource ErrorIconLabelStyle}"
                                 Text="{StaticResource Error}" />
-                        </Grid>
-                    </border:SfBorder>
-                    <!--  Label to display error message  -->
-                    <Label
+                            </Grid>
+                        </border:SfBorder>
+                        <!--  Label to display error message  -->
+                        <Label
                         x:Name="FromAddressValidationLabel"
                         Margin="15,-3,0,0"
                         IsVisible="{Binding FromAddress.IsValid, Converter={StaticResource InverseBoolConverter}}"
@@ -135,38 +140,38 @@
                         Text="{Binding FromAddress.Errors, Converter={StaticResource FirstValidationErrorConverter}}"
                         TextColor="{DynamicResource Red}"
                         VerticalOptions="FillAndExpand" />
-                </StackLayout>
-                <StackLayout HeightRequest="200">
-                    <maps:Map x:Name="map"
+                    </StackLayout>
+                    <StackLayout HeightRequest="200">
+                        <maps:Map x:Name="map"
                         MapClicked="FromMap_MapClicked"
                         IsShowingUser="False"
                         MoveToLastRegionOnLayoutChange="True"
                         HasScrollEnabled="True"
                         ItemsSource="{Binding FromLocations}">
-                        <x:Arguments>
-                            <maps:MapSpan>
-                                <x:Arguments>
-                                    <maps:Position>
-                                        <x:Arguments>
-                                            <x:Double>10.3784705</x:Double>
-                                            <x:Double>105.4394167</x:Double>
-                                        </x:Arguments>
-                                    </maps:Position>
-                                    <x:Double>0.01</x:Double>
-                                    <x:Double>0.01</x:Double>
-                                </x:Arguments>
-                            </maps:MapSpan>
-                        </x:Arguments>
-                        <maps:Map.ItemTemplate>
-                            <DataTemplate>
-                                <maps:Pin Position="{Binding Position}"
+                            <x:Arguments>
+                                <maps:MapSpan>
+                                    <x:Arguments>
+                                        <maps:Position>
+                                            <x:Arguments>
+                                                <x:Double>10.3784705</x:Double>
+                                                <x:Double>105.4394167</x:Double>
+                                            </x:Arguments>
+                                        </maps:Position>
+                                        <x:Double>0.01</x:Double>
+                                        <x:Double>0.01</x:Double>
+                                    </x:Arguments>
+                                </maps:MapSpan>
+                            </x:Arguments>
+                            <maps:Map.ItemTemplate>
+                                <DataTemplate>
+                                    <maps:Pin Position="{Binding Position}"
                                   Label="{Binding Label}"/>
-                            </DataTemplate>
-                        </maps:Map.ItemTemplate>
-                    </maps:Map>
-                </StackLayout>
-                
-                <Label
+                                </DataTemplate>
+                            </maps:Map.ItemTemplate>
+                        </maps:Map>
+                    </StackLayout>
+
+                    <Label
                     Margin="0,0,0,10"
                     FontFamily="Montserrat-SemiBold"
                     FontSize="18"
@@ -177,26 +182,26 @@
                     TextColor="{DynamicResource Gray-800}"
                     VerticalOptions="Center"
                     VerticalTextAlignment="Center" />
-                <!--To Full Name-->
-                <StackLayout Grid.Row="5">
-                    <border:SfBorder BorderColor="{Binding Source={x:Reference ToFullNameEntry}, Path=IsFocused, Converter={StaticResource ColorConverter}, ConverterParameter=3}" Style="{StaticResource DataFormBorderlessEntryBorderStyle}">
-                        <Grid ColumnDefinitions="*, Auto">
-                            <controls:BorderlessEntry
+                    <!--To Full Name-->
+                    <StackLayout Grid.Row="5">
+                        <border:SfBorder BorderColor="{Binding Source={x:Reference ToFullNameEntry}, Path=IsFocused, Converter={StaticResource ColorConverter}, ConverterParameter=3}" Style="{StaticResource DataFormBorderlessEntryBorderStyle}">
+                            <Grid ColumnDefinitions="*, Auto">
+                                <controls:BorderlessEntry
                                 x:Name="ToFullNameEntry"
                                 Margin="12,0"
                                 HeightRequest="40"
                                 Placeholder="Họ và tên"
                                 Style="{StaticResource BorderlessEntryStyle}"
                                 Text="{Binding ToFullName.Value}" />
-                            <Label
+                                <Label
                                 Grid.Column="1"
                                 IsVisible="{Binding Path=IsVisible, Source={x:Reference ToFullNameValidationLabel}}"
                                 Style="{StaticResource ErrorIconLabelStyle}"
                                 Text="{StaticResource Error}" />
-                        </Grid>
-                    </border:SfBorder>
-                    <!--  Label to display error message  -->
-                    <Label
+                            </Grid>
+                        </border:SfBorder>
+                        <!--  Label to display error message  -->
+                        <Label
                         x:Name="ToFullNameValidationLabel"
                         Margin="15,-3,0,0"
                         IsVisible="{Binding ToFullName.IsValid, Converter={StaticResource InverseBoolConverter}}"
@@ -204,12 +209,12 @@
                         Text="{Binding ToFullName.Errors, Converter={StaticResource FirstValidationErrorConverter}}"
                         TextColor="{DynamicResource Red}"
                         VerticalOptions="FillAndExpand" />
-                </StackLayout>
-                <!--To Phone-->
-                <StackLayout Grid.Row="6">
-                    <border:SfBorder BorderColor="{Binding Source={x:Reference ToPhoneEntry}, Path=IsFocused, Converter={StaticResource ColorConverter}, ConverterParameter=3}" Style="{StaticResource DataFormBorderlessEntryBorderStyle}">
-                        <Grid ColumnDefinitions="*, Auto">
-                            <controls:BorderlessEntry
+                    </StackLayout>
+                    <!--To Phone-->
+                    <StackLayout Grid.Row="6">
+                        <border:SfBorder BorderColor="{Binding Source={x:Reference ToPhoneEntry}, Path=IsFocused, Converter={StaticResource ColorConverter}, ConverterParameter=3}" Style="{StaticResource DataFormBorderlessEntryBorderStyle}">
+                            <Grid ColumnDefinitions="*, Auto">
+                                <controls:BorderlessEntry
                                 x:Name="ToPhoneEntry"
                                 Margin="12,0"
                                 HeightRequest="40"
@@ -217,20 +222,20 @@
                                 Placeholder="Số điện thoại"
                                 Style="{StaticResource BorderlessEntryStyle}"
                                 Text="{Binding ToPhone.Value}">
-                                <controls:BorderlessEntry.Behaviors>
-                                    <behaviours:EntryMaskedBehavior Mask="(+84)XXX-XXX-XXX" Prefix="(+84)"/>
-                                </controls:BorderlessEntry.Behaviors>
-                            </controls:BorderlessEntry>
-                            
-                            <Label
+                                    <controls:BorderlessEntry.Behaviors>
+                                        <behaviours:EntryMaskedBehavior Mask="(+84)XXX-XXX-XXX" Prefix="(+84)"/>
+                                    </controls:BorderlessEntry.Behaviors>
+                                </controls:BorderlessEntry>
+
+                                <Label
                                 Grid.Column="1"
                                 IsVisible="{Binding Path=IsVisible, Source={x:Reference ToPhoneValidationLabel}}"
                                 Style="{StaticResource ErrorIconLabelStyle}"
                                 Text="{StaticResource Error}" />
-                        </Grid>
-                    </border:SfBorder>
-                    <!--  Label to display error message  -->
-                    <Label
+                            </Grid>
+                        </border:SfBorder>
+                        <!--  Label to display error message  -->
+                        <Label
                         x:Name="ToPhoneValidationLabel"
                         Margin="15,-3,0,0"
                         IsVisible="{Binding ToPhone.IsValid, Converter={StaticResource InverseBoolConverter}}"
@@ -238,28 +243,31 @@
                         Text="{Binding ToPhone.Errors, Converter={StaticResource FirstValidationErrorConverter}}"
                         TextColor="{DynamicResource Red}"
                         VerticalOptions="FillAndExpand" />
-                </StackLayout>
-                <!--To Address-->
-                <StackLayout Grid.Row="7">
-                    <border:SfBorder BorderColor="{Binding Source={x:Reference ToAddressEntry}, Path=IsFocused, Converter={StaticResource ColorConverter}, ConverterParameter=3}" Style="{StaticResource DataFormBorderlessEntryBorderStyle}">
-                        <Grid ColumnDefinitions="*, Auto">
-                            <controls:BorderlessEntry
+                    </StackLayout>
+                    <!--To Address-->
+                    <StackLayout Grid.Row="7">
+                        <border:SfBorder BorderColor="{Binding Source={x:Reference ToAddressEntry}, Path=IsFocused, Converter={StaticResource ColorConverter}, ConverterParameter=3}" Style="{StaticResource DataFormBorderlessEntryBorderStyle}">
+                            <Grid ColumnDefinitions="*, Auto">
+                                <StackLayout>
+                                    <controls:BorderlessEntry
                                 x:Name="ToAddressEntry"
                                 Margin="12,0"
                                 HeightRequest="40"
                                 Placeholder="Địa chỉ"
                                 Style="{StaticResource BorderlessEntryStyle}"
-                                Text="{Binding ToAddress.Value}" 
-                                TextChanged="ToAddressEntry_TextChanged"/>
-                            <Label
+                                Text="{Binding ToAddress.Value}"/>
+                                    <Button Text="Xem" Command="{Binding ToAddressChangedCommand}"/>
+                                </StackLayout>
+                                
+                                <Label
                                 Grid.Column="1"
                                 IsVisible="{Binding Path=IsVisible, Source={x:Reference ToAddressValidationLabel}}"
                                 Style="{StaticResource ErrorIconLabelStyle}"
                                 Text="{StaticResource Error}" />
-                        </Grid>
-                    </border:SfBorder>
-                    <!--  Label to display error message  -->
-                    <Label
+                            </Grid>
+                        </border:SfBorder>
+                        <!--  Label to display error message  -->
+                        <Label
                         x:Name="ToAddressValidationLabel"
                         Margin="15,-3,0,0"
                         IsVisible="{Binding ToAddress.IsValid, Converter={StaticResource InverseBoolConverter}}"
@@ -267,39 +275,39 @@
                         Text="{Binding ToAddress.Errors, Converter={StaticResource FirstValidationErrorConverter}}"
                         TextColor="{DynamicResource Red}"
                         VerticalOptions="FillAndExpand" />
-                </StackLayout>
-                
-                <StackLayout HeightRequest="200">
-                    <maps:Map
+                    </StackLayout>
+
+                    <StackLayout HeightRequest="200">
+                        <maps:Map
                         MapClicked="ToMap_MapClicked"
                         IsShowingUser="False"
                         MoveToLastRegionOnLayoutChange="True"
                         HasScrollEnabled="True"
                         ItemsSource="{Binding ToLocations}">
-                        <x:Arguments>
-                            <maps:MapSpan>
-                                <x:Arguments>
-                                    <maps:Position>
-                                        <x:Arguments>
-                                            <x:Double>10.3784705</x:Double>
-                                            <x:Double>105.4394167</x:Double>
-                                        </x:Arguments>
-                                    </maps:Position>
-                                    <x:Double>0.01</x:Double>
-                                    <x:Double>0.01</x:Double>
-                                </x:Arguments>
-                            </maps:MapSpan>
-                        </x:Arguments>
-                        <maps:Map.ItemTemplate>
-                            <DataTemplate>
-                                <maps:Pin Position="{Binding Position}"
+                            <x:Arguments>
+                                <maps:MapSpan>
+                                    <x:Arguments>
+                                        <maps:Position>
+                                            <x:Arguments>
+                                                <x:Double>10.3784705</x:Double>
+                                                <x:Double>105.4394167</x:Double>
+                                            </x:Arguments>
+                                        </maps:Position>
+                                        <x:Double>0.01</x:Double>
+                                        <x:Double>0.01</x:Double>
+                                    </x:Arguments>
+                                </maps:MapSpan>
+                            </x:Arguments>
+                            <maps:Map.ItemTemplate>
+                                <DataTemplate>
+                                    <maps:Pin Position="{Binding Position}"
                                   Label="{Binding Label}"/>
-                            </DataTemplate>
-                        </maps:Map.ItemTemplate>
-                    </maps:Map>
-                </StackLayout>
-                
-                <Label
+                                </DataTemplate>
+                            </maps:Map.ItemTemplate>
+                        </maps:Map>
+                    </StackLayout>
+
+                    <Label
                     Margin="0,0,0,10"
                     FontFamily="Montserrat-SemiBold"
                     FontSize="18"
@@ -310,8 +318,8 @@
                     TextColor="{DynamicResource Gray-800}"
                     VerticalOptions="Center"
                     VerticalTextAlignment="Center" />
-                <StackLayout Grid.Row="7">
-                    <combobox:SfComboBox HeightRequest="40" 
+                    <StackLayout Grid.Row="7">
+                        <combobox:SfComboBox HeightRequest="40" 
                                          x:Name="comboBox" 
                                          DataSource="{Binding TypeProductCollection}" 
                                          DisplayMemberPath="Name" 
@@ -320,16 +328,16 @@
                                          SelectedItem="{Binding TypeProduct}"
                                          ShowClearButton="False"
                                          IsEditableMode="False"/>
-                </StackLayout>
-                <StackLayout Grid.Row="8">
-                    <Label
+                    </StackLayout>
+                    <StackLayout Grid.Row="8">
+                        <Label
                     FontFamily="Montserrat-Medium"
                     FontSize="12"
                     HeightRequest="18"
                     Text="Số lượng kiện hàng"
                     TextColor="{DynamicResource Gray-800}" />
-                    <border:SfBorder BorderColor="{Binding Source={x:Reference QuanlityEntry}, Path=IsFocused, Converter={StaticResource ColorConverter}, ConverterParameter=3}" Style="{StaticResource DataFormBorderlessEntryBorderStyle}">
-                        <controls:BorderlessEntry
+                        <border:SfBorder BorderColor="{Binding Source={x:Reference QuanlityEntry}, Path=IsFocused, Converter={StaticResource ColorConverter}, ConverterParameter=3}" Style="{StaticResource DataFormBorderlessEntryBorderStyle}">
+                            <controls:BorderlessEntry
                         x:Name="QuanlityEntry"
                         Margin="12,0"
                         HeightRequest="40"
@@ -337,47 +345,47 @@
                         Placeholder="Số lượng kiện hàng"
                         Style="{StaticResource BorderlessEntryStyle}"
                         Text="{Binding Quanlity.Value}" />
-                    </border:SfBorder>
-                </StackLayout>
-                <StackLayout Grid.Row="9">
-                    <Label
+                        </border:SfBorder>
+                    </StackLayout>
+                    <StackLayout Grid.Row="9">
+                        <Label
                     FontFamily="Montserrat-Medium"
                     FontSize="12"
                     HeightRequest="18"
                     Text="Tổng trọng lượng (Kg)"
                     TextColor="{DynamicResource Gray-800}" />
-                    <border:SfBorder BorderColor="{Binding Source={x:Reference WeightEntry}, Path=IsFocused, Converter={StaticResource ColorConverter}, ConverterParameter=3}" Style="{StaticResource DataFormBorderlessEntryBorderStyle}">
-                        <controls:BorderlessEntry
+                        <border:SfBorder BorderColor="{Binding Source={x:Reference WeightEntry}, Path=IsFocused, Converter={StaticResource ColorConverter}, ConverterParameter=3}" Style="{StaticResource DataFormBorderlessEntryBorderStyle}">
+                            <controls:BorderlessEntry
                             x:Name="WeightEntry"
                             Margin="12,0"
                             HeightRequest="40"
-                            Keyboard="Numeric"
+                            Keyboard="Telephone"
                             Placeholder="Tổng trọng lượng"
                             Style="{StaticResource BorderlessEntryStyle}"
                             Text="{Binding Weight.Value}" 
                             TextChanged="WeightEntry_TextChanged"/>
-                    </border:SfBorder>
-                </StackLayout>
-                <StackLayout Grid.Row="10">
-                    <Label
+                        </border:SfBorder>
+                    </StackLayout>
+                    <StackLayout Grid.Row="10">
+                        <Label
                     FontFamily="Montserrat-Medium"
                     FontSize="12"
                     HeightRequest="18"
                     Text="Ghi chú"
                     TextColor="{DynamicResource Gray-800}" />
-                    <border:SfBorder BorderColor="{Binding Source={x:Reference DescriptionEntry}, Path=IsFocused, Converter={StaticResource ColorConverter}, ConverterParameter=3}" Style="{StaticResource DataFormBorderlessEntryBorderStyle}">
-                        <controls:BorderlessEntry
+                        <border:SfBorder BorderColor="{Binding Source={x:Reference DescriptionEntry}, Path=IsFocused, Converter={StaticResource ColorConverter}, ConverterParameter=3}" Style="{StaticResource DataFormBorderlessEntryBorderStyle}">
+                            <controls:BorderlessEntry
                         x:Name="DescriptionEntry"
                         Margin="12,0"
                         HeightRequest="40"
                         Placeholder="Ghi chú"
                         Style="{StaticResource BorderlessEntryStyle}"
                         Text="{Binding Desciption.Value}" />
-                    </border:SfBorder>
-                </StackLayout>
-                <!--Price-->
-                <StackLayout Grid.Row="11">
-                    <Label
+                        </border:SfBorder>
+                    </StackLayout>
+                    <!--Price-->
+                    <StackLayout Grid.Row="11">
+                        <Label
                     Margin="0,5,0,0"
                     FontFamily="Montserrat-Medium"
                     FontSize="12"
@@ -385,27 +393,42 @@
                     Text="Phí vận chuyển"
                     TextColor="{DynamicResource Gray-800}" />
 
-                    <border:SfBorder BorderColor="{Binding Source={x:Reference MoneyEntry}, Path=IsFocused, Converter={StaticResource ColorConverter}, ConverterParameter=3}" Style="{StaticResource DataFormBorderlessEntryBorderStyle}">
-                        <controls:BorderlessEntry
+                        <Label
+                    Margin="0,5,0,0"
+                    FontFamily="Montserrat-Medium"
+                    FontSize="12"
+                    HeightRequest="18"
+                    Text="{Binding DistanceAddress, StringFormat='Khoảng cách vận chuyển: {0:F2} Km'}"
+                    TextColor="{DynamicResource Gray-800}" />
+                        <border:SfBorder BorderColor="{Binding Source={x:Reference MoneyEntry}, Path=IsFocused, Converter={StaticResource ColorConverter}, ConverterParameter=3}" Style="{StaticResource DataFormBorderlessEntryBorderStyle}">
+                            <controls:BorderlessEntry
                         x:Name="MoneyEntry"
                         Margin="12,0"
-                            Keyboard="Numeric"
                         HeightRequest="40"
                         Style="{StaticResource BorderlessEntryStyle}"
-                        Text="{Binding Money.Value}" 
-                            IsReadOnly="True"/>
-                    </border:SfBorder>
-                </StackLayout>
+                        Text="{Binding MoneyShipper, StringFormat='{0:C}'}"
+                        IsReadOnly="True"/>
+                        </border:SfBorder>
+                    </StackLayout>
 
-                <!--Submit Button-->  
-                <buttons:SfButton
+                    <!--Submit Button-->
+                    <buttons:SfButton
                     Margin="0,24,0,0"
                     Command="{Binding SubmitCommand}"
                     Style="{StaticResource GradientButtonStyle}"
                     Text="Tạo đơn"
                     WidthRequest="200" />
+                </StackLayout>
 
-            </StackLayout>
-        </ScrollView>
+            </ScrollView>
+            <busyindicator:SfBusyIndicator 
+                                       IsBusy="{Binding IsLoading}"
+                                       AnimationType="Cupertino" 
+                                       ViewBoxWidth = "150" 
+                                       ViewBoxHeight="150" 
+                                       Title="Đang xử lý ..."
+                                       TextColor="Blue"/>
+        </StackLayout>
+        
     </ContentPage.Content>
 </ContentPage>

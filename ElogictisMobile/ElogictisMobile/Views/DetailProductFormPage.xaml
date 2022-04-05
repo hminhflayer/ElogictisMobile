@@ -290,6 +290,7 @@
                         x:Name="QuanlityEntry"
                         Margin="12,0"
                         HeightRequest="40"
+                            IsReadOnly="{Binding IsShipper}"
                         Keyboard="Numeric"
                         Placeholder="Số lượng kiện hàng"
                         Style="{StaticResource BorderlessEntryStyle}"
@@ -309,6 +310,7 @@
                             Margin="12,0"
                             HeightRequest="40"
                             Keyboard="Numeric"
+                            IsReadOnly="{Binding IsShipper}"
                             Placeholder="Tổng trọng lượng"
                             Style="{StaticResource BorderlessEntryStyle}"
                             Text="{Binding Weight.Value}" />
@@ -327,6 +329,7 @@
                         Margin="12,0"
                         HeightRequest="40"
                         Placeholder="Ghi chú"
+                            IsReadOnly="{Binding IsShipper}"
                         Style="{StaticResource BorderlessEntryStyle}"
                         Text="{Binding Desciption.Value}" />
                     </border:SfBorder>
@@ -393,6 +396,16 @@
                     Text="Hủy đơn"
                     WidthRequest="200" 
                     Command="{Binding CancelProductCommand}"/>
+                </StackLayout>
+                <StackLayout Orientation="Horizontal" 
+                             HorizontalOptions="EndAndExpand"
+                             IsVisible="{Binding IsShowTracking}">
+                    <buttons:SfButton
+                    Margin="0,16,0,0"
+                    Style="{StaticResource GradientButtonStyle}"
+                    Text="Lịch trình đơn hàng >"
+                    WidthRequest="200" 
+                    Command="{Binding TrackingProductCommand}"/>
                 </StackLayout>
             </StackLayout>
         </ScrollView>
