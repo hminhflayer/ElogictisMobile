@@ -44,16 +44,17 @@ namespace ElogictisMobile.ViewModels
         /// </summary>
         public UpdateProfilePageViewModel()
         {
-            this.InitializeProperties();
-            this.AddValidationRules();
+
             ProvinceCollection = new ObservableCollection<Category>();
             DistrictCollection = new ObservableCollection<District>();
             TownCollection = new ObservableCollection<Town>();
-
             ProvinceCollection = LocalContext.ProvinceList;
             Province = new Category();
             District = new District();
             Town = new Town();
+
+            this.InitializeProperties();
+            this.AddValidationRules();
             this.ProvinceCommand = new Command(this.ProvinceChangeClicked);
             this.DistrictCommand = new Command(this.DistrictChangeClicked);
             this.TownCommand = new Command(this.TownChangeClicked);
@@ -265,13 +266,15 @@ namespace ElogictisMobile.ViewModels
             this.Email.Value = LocalContext.Current.AccountSettings.Email;
             this.PhoneNumber = LocalContext.Current.AccountSettings.Phone;
             this.Avatar = LocalContext.Current.AccountSettings.Avatar;
-            this.Address.Value = LocalContext.Current.AccountSettings.Address;
+            this.Address.Value = LocalContext.Current.AccountSettings.Address == null? "" : LocalContext.Current.AccountSettings.Address;
 
             this.Province = new Category()
             {
                 Id = LocalContext.Current.AccountSettings.Province,
                 Name = LocalContext.Current.AccountSettings.Province_ext
             };
+
+            ProvinceChangeClicked();
 
             this.District = new District()
             {
@@ -280,6 +283,7 @@ namespace ElogictisMobile.ViewModels
                 ProvinceId = LocalContext.Current.AccountSettings.Province,
                 ProvinceName = LocalContext.Current.AccountSettings.Province_ext
             };
+            DistrictChangeClicked();
 
             this.Town = new Town()
             {

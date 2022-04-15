@@ -4,11 +4,6 @@ using Xamarin.Forms.Internals;
 
 namespace ElogictisMobile.Models
 {
-    /// <summary>
-    /// Model for ProductDeliveryTrackingModel
-    /// </summary>
-    [Preserve(AllMembers = true)]
-    [DataContract]
     public class ProductDeliveryTrackingModel
     {
         #region Fields

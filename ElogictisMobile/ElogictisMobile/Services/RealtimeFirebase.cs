@@ -3,10 +3,12 @@ using Firebase.Database;
 using Firebase.Database.Query;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using Plugin.LocalNotification;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Reactive.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -15,7 +17,16 @@ namespace ElogictisMobile.Services
     public class RealtimeFirebase
     {
         FirebaseClient client;
+        
         private static RealtimeFirebase instance;
+
+        ObservableCollection<Products> ProductsAgency = new ObservableCollection<Products>();
+        ObservableCollection<Products> ProductsShipper = new ObservableCollection<Products>();
+        ObservableCollection<Products> ProductsUser = new ObservableCollection<Products>();
+
+        #region Properties
+
+        #endregion
 
         public static RealtimeFirebase Instance
         {
@@ -91,6 +102,7 @@ namespace ElogictisMobile.Services
                 .OrderByKey()
                 .AsObservable<T>()
                 .AsObservableCollection();
+   
             return profiles;
         }
         public Task<bool> Delete(string collections = null, string key = null)
@@ -157,12 +169,16 @@ namespace ElogictisMobile.Services
             var allPersons = await GetAllProfiles();
             return allPersons.Where(a => a.Id == key).FirstOrDefault();
         }
+        public async Task<Profiles> GetProfilesAgency(string agencyId)
+        {
+            var allPersons = await GetAllProfiles();
+            return allPersons.Where(a => a.AgencyId == agencyId).FirstOrDefault();
+        }
         public ObservableCollection<Profiles> GetAllProfileWithAgency()
         {
             ObservableCollection<Profiles> profiles = new ObservableCollection<Profiles>();
             var collection = client
-                .Child("Products")
-                .OrderByKey()
+                .Child("Profiles")
                 .AsObservable<Profiles>()
                 .Subscribe((pro) =>
                 {
@@ -171,6 +187,7 @@ namespace ElogictisMobile.Services
                         profiles.Add(pro.Object);
                     }
                 });
+
             return profiles;
         }
         #endregion
@@ -179,6 +196,14 @@ namespace ElogictisMobile.Services
         public ObservableCollection<Products> GetAllNewProduct()
         {
             ObservableCollection<Products> products = new ObservableCollection<Products>();
+            var notification = new NotificationRequest
+            {
+                BadgeNumber = 1,
+                Description = "Có đơn hàng mới, hãy vào App nhận đơn ngay.",
+                Title = "Thông báo!",
+                NotificationId = 1337,
+                ReturningData = "Dummy Dâta"
+            };
             var collection = client
                 .Child("Products")
                 .OrderByKey()
@@ -188,29 +213,29 @@ namespace ElogictisMobile.Services
                     if (pro.Object.Status == 1)
                     {
                         products.Add(pro.Object);
+                        NotificationCenter.Current.Show(notification);
                     }
-                });
+                }); 
             return products;
         }
         public ObservableCollection<Products> GetAllProductWithAgency()
         {
-            ObservableCollection<Products> products = new ObservableCollection<Products>();
             var collection = client
                 .Child("Products")
                 .OrderByKey()
                 .AsObservable<Products>()
                 .Subscribe((pro) =>
                 {
-                    if (pro.Object.AgencyId == LocalContext.Current.AccountSettings.Id)
+                    if (pro.Object.AgencyId == LocalContext.Current.AccountSettings.AgencyId)
                     {
-                        products.Add(pro.Object);
+                        ProductsAgency.Remove(pro.Object);
+                        ProductsAgency.Add(pro.Object);
                     }
                 });
-            return products;
+            return ProductsAgency;
         }
         public ObservableCollection<Products> GetAllProductGeted()
         {
-            ObservableCollection<Products> products = new ObservableCollection<Products>();
             var collection = client
                 .Child("Products")
                 .AsObservable<Products>()
@@ -218,10 +243,11 @@ namespace ElogictisMobile.Services
                 {
                     if (pro.Object.Holder == LocalContext.Current.AccountSettings.Id)
                     {
-                        products.Add(pro.Object);
+                        ProductsShipper.Remove(pro.Object);
+                        ProductsShipper.Add(pro.Object);
                     }
                 });
-            return products;
+            return ProductsShipper;
         }
         public ObservableCollection<Products> GetAllProductCreated()
         {
@@ -234,9 +260,25 @@ namespace ElogictisMobile.Services
                 {
                     if (pro.Object.CreateBy == LocalContext.Current.AccountSettings.Id)
                     {
-                        products.Add(pro.Object);
+                        ProductsUser.Remove(pro.Object);
+                        ProductsUser.Add(pro.Object);
                     }
                 });
+            return ProductsUser;
+        }
+        public ObservableCollection<ProductDeliveryTrackingModel> GetDelivery(string idProduct = null)
+        {
+            if (string.IsNullOrEmpty(idProduct))
+            {
+                return null;
+            }
+
+            var products = client
+                .Child("DeliveryTracking")
+                .Child(idProduct)
+                .AsObservable<ProductDeliveryTrackingModel>()
+                .AsObservableCollection();
+
             return products;
         }
         #endregion
@@ -396,7 +438,8 @@ namespace ElogictisMobile.Services
                     Holder = item.Object.Holder,
                     IsConfirm = item.Object.IsConfirm,
                     Status_ext = item.Object.Status_ext,
-                    AgencyId = item.Object.AgencyId
+                    AgencyId = item.Object.AgencyId,
+                    Name = item.Object.Name
                 })
                 .Where(item => item.CreateBy == LocalContext.Current.AccountSettings.Id)
                 .ToList();
@@ -440,7 +483,8 @@ namespace ElogictisMobile.Services
                     Holder = item.Object.Holder,
                     IsConfirm = item.Object.IsConfirm,
                     Status_ext = item.Object.Status_ext,
-                    AgencyId = item.Object.AgencyId
+                    AgencyId = item.Object.AgencyId,
+                    Name = item.Object.Name
                 })
                 .Where(item => item.Holder == LocalContext.Current.AccountSettings.Id)
                 .ToList();
@@ -484,7 +528,8 @@ namespace ElogictisMobile.Services
                     Holder = item.Object.Holder,
                     IsConfirm = item.Object.IsConfirm,
                     Status_ext = item.Object.Status_ext,
-                    AgencyId = item.Object.AgencyId
+                    AgencyId = item.Object.AgencyId,
+                    Name = item.Object.Name
                 })
                 .Where(item => item.AgencyId == LocalContext.Current.AccountSettings.ManageAgency)
                 .ToList();
@@ -528,7 +573,8 @@ namespace ElogictisMobile.Services
                     Holder = item.Object.Holder,
                     IsConfirm = item.Object.IsConfirm,
                     Status_ext = item.Object.Status_ext,
-                    AgencyId = item.Object.AgencyId
+                    AgencyId = item.Object.AgencyId,
+                    Name = item.Object.Name
                 })
                 .ToList();
             foreach (var item in collection)
@@ -574,9 +620,10 @@ namespace ElogictisMobile.Services
                     Holder = item.Object.Holder,
                     IsConfirm = item.Object.IsConfirm,
                     Status_ext = item.Object.Status_ext,
-                    AgencyId = item.Object.AgencyId
+                    AgencyId = item.Object.AgencyId,
+                    Name = item.Object.Name
                 })
-                .Where(item => item.CreateBy == LocalContext.Current.AccountSettings.Id)
+                .Where(item => item.CreateBy == LocalContext.Current.AccountSettings.Id && item.Status >= 3)
                 .ToList();
             foreach(var item in collection)
             {
@@ -593,6 +640,165 @@ namespace ElogictisMobile.Services
                     }    
                 }    
             }    
+            return sum;
+        }
+        public async Task<double> TotalRevenueAgency(bool total = true)
+        {
+            double sum = 0;
+            var collection = (await client
+                .Child("Products")
+                .OrderByKey()
+                .OnceAsync<Products>())
+                .Select(item => new Products()
+                {
+                    CreateBy = item.Object.CreateBy,
+                    CreateTime = item.Object.CreateTime,
+                    Description = item.Object.Description,
+                    From_Address = item.Object.From_Address,
+                    From_FullName = item.Object.From_FullName,
+                    From_PhoneNumber = item.Object.From_PhoneNumber,
+                    ID = item.Object.ID,
+                    IsDelete = item.Object.IsDelete,
+                    LastUpdateBy = item.Object.LastUpdateBy,
+                    LastUpdateTime = item.Object.LastUpdateTime,
+                    Money = item.Object.Money,
+                    Quanlity = item.Object.Quanlity,
+                    To_Address = item.Object.To_Address,
+                    To_FullName = item.Object.To_FullName,
+                    To_PhoneNumber = item.Object.To_PhoneNumber,
+                    Type = item.Object.Type,
+                    Type_ext = item.Object.Type_ext,
+                    Weight = item.Object.Weight,
+                    Status = item.Object.Status,
+                    Holder = item.Object.Holder,
+                    IsConfirm = item.Object.IsConfirm,
+                    Status_ext = item.Object.Status_ext,
+                    AgencyId = item.Object.AgencyId,
+                    Name = item.Object.Name
+                })
+                .Where(item => item.AgencyId == LocalContext.Current.AccountSettings.ManageAgency && item.Status >= 3)
+                .ToList();
+            foreach (var item in collection)
+            {
+                if (total)
+                {
+                    sum += (item.Money * 0.05);
+                }
+                else
+                {
+                    var month = Convert.ToDateTime(item.CreateTime);
+                    if (month.Month == DateTime.Now.Month)
+                    {
+                        sum += (item.Money * 0.05);
+                    }
+                }
+            }
+            return sum;
+        }
+        public async Task<double> TotalRevenueShipper(bool total = true)
+        {
+            double sum = 0;
+            var collection = (await client
+                .Child("Products")
+                .OrderByKey()
+                .OnceAsync<Products>())
+                .Select(item => new Products()
+                {
+                    CreateBy = item.Object.CreateBy,
+                    CreateTime = item.Object.CreateTime,
+                    Description = item.Object.Description,
+                    From_Address = item.Object.From_Address,
+                    From_FullName = item.Object.From_FullName,
+                    From_PhoneNumber = item.Object.From_PhoneNumber,
+                    ID = item.Object.ID,
+                    IsDelete = item.Object.IsDelete,
+                    LastUpdateBy = item.Object.LastUpdateBy,
+                    LastUpdateTime = item.Object.LastUpdateTime,
+                    Money = item.Object.Money,
+                    Quanlity = item.Object.Quanlity,
+                    To_Address = item.Object.To_Address,
+                    To_FullName = item.Object.To_FullName,
+                    To_PhoneNumber = item.Object.To_PhoneNumber,
+                    Type = item.Object.Type,
+                    Type_ext = item.Object.Type_ext,
+                    Weight = item.Object.Weight,
+                    Status = item.Object.Status,
+                    Holder = item.Object.Holder,
+                    IsConfirm = item.Object.IsConfirm,
+                    Status_ext = item.Object.Status_ext,
+                    AgencyId = item.Object.AgencyId,
+                    Name = item.Object.Name
+                })
+                .Where(item => item.Holder == LocalContext.Current.AccountSettings.Id && item.Status >= 3)
+                .ToList();
+            foreach (var item in collection)
+            {
+                if (total)
+                {
+                    sum += (item.Money * 0.80);
+                }
+                else
+                {
+                    var month = Convert.ToDateTime(item.CreateTime);
+                    if (month.Month == DateTime.Now.Month)
+                    {
+                        sum += (item.Money * 0.80);
+                    }
+                }
+            }
+            return sum;
+        }
+        public async Task<double> TotalRevenueAdmin(bool total = true)
+        {
+            double sum = 0;
+            var collection = (await client
+                .Child("Products")
+                .OrderByKey()
+                .OnceAsync<Products>())
+                .Select(item => new Products()
+                {
+                    CreateBy = item.Object.CreateBy,
+                    CreateTime = item.Object.CreateTime,
+                    Description = item.Object.Description,
+                    From_Address = item.Object.From_Address,
+                    From_FullName = item.Object.From_FullName,
+                    From_PhoneNumber = item.Object.From_PhoneNumber,
+                    ID = item.Object.ID,
+                    IsDelete = item.Object.IsDelete,
+                    LastUpdateBy = item.Object.LastUpdateBy,
+                    LastUpdateTime = item.Object.LastUpdateTime,
+                    Money = item.Object.Money,
+                    Quanlity = item.Object.Quanlity,
+                    To_Address = item.Object.To_Address,
+                    To_FullName = item.Object.To_FullName,
+                    To_PhoneNumber = item.Object.To_PhoneNumber,
+                    Type = item.Object.Type,
+                    Type_ext = item.Object.Type_ext,
+                    Weight = item.Object.Weight,
+                    Status = item.Object.Status,
+                    Holder = item.Object.Holder,
+                    IsConfirm = item.Object.IsConfirm,
+                    Status_ext = item.Object.Status_ext,
+                    AgencyId = item.Object.AgencyId,
+                    Name = item.Object.Name
+                })
+                .Where(item => item.Status >= 3)
+                .ToList();
+            foreach (var item in collection)
+            {
+                if (total)
+                {
+                    sum += (item.Money * 0.15);
+                }
+                else
+                {
+                    var month = Convert.ToDateTime(item.CreateTime);
+                    if (month.Month == DateTime.Now.Month)
+                    {
+                        sum += (item.Money * 0.15);
+                    }
+                }
+            }
             return sum;
         }
         #endregion
@@ -667,6 +873,39 @@ namespace ElogictisMobile.Services
                 return await tcs.Task;
             }
         }
+        public async Task<bool> UpdateMoneyAgency(double money = 0, bool plus = true, string Id = null)
+        {
+            var tcs = new TaskCompletionSource<bool>();
+            try
+            {
+                var allPersons = await GetAllProfiles();
+                var profile = allPersons.Where(a => a.ManageAgency == Id)
+                    .FirstOrDefault();
+                if (plus)
+                {
+                    profile.Money += money;
+                }
+                else
+                {
+                    profile.Money -= money;
+                }
+
+                var json = JsonConvert.SerializeObject(profile);
+
+                await client
+                    .Child("Profiles")
+                    .Child(profile.Id)
+                    .PutAsync(json)
+                    .ContinueWith((task) => OnAuthCompleted(task, tcs));
+
+                return await tcs.Task;
+            }
+            catch (Exception ex)
+            {
+                await App.Current.MainPage.DisplayAlert("Thông báo", ex.Message, "OK");
+                return await tcs.Task;
+            }
+        }
         public ObservableCollection<TransactionHistory> GetAllNotifi()
         {
             ObservableCollection<TransactionHistory> transactionHistories = new ObservableCollection<TransactionHistory>();
@@ -694,13 +933,13 @@ namespace ElogictisMobile.Services
                     .OnceAsync<ProductDeliveryTrackingModel>())
                     .Select(item => new ProductDeliveryTrackingModel()
                     {
-                        Date = item.Object.Date,
-                        TitleStatus = item.Object.TitleStatus,
-                        Title = item.Object.Title,
-                        OrderDate = item.Object.OrderDate,
-                        OrderStatus = item.Object.OrderStatus,
+                        Date = item.Object.Date == null?"": item.Object.Date,
+                        TitleStatus = item.Object.TitleStatus == null ? "" : item.Object.TitleStatus,
+                        Title = item.Object.Title == null ? "" : item.Object.Title,
+                        OrderDate = item.Object.OrderDate == null ? "" : item.Object.OrderDate,
+                        OrderStatus = item.Object.OrderStatus == null ? "" : item.Object.OrderStatus,
                         ProgressValue = item.Object.ProgressValue,
-                        Status = item.Object.Status,
+                        Status = item.Object.Status == null ? "" : item.Object.Status,
                         StepStatus = item.Object.StepStatus
                     })
                     .ToList();
@@ -724,10 +963,6 @@ namespace ElogictisMobile.Services
             // user is logged in
             tcs.SetResult(true);
         }
-
-        
-
-
-        
+     
     }
 }

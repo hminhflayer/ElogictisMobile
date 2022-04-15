@@ -1,5 +1,6 @@
 ﻿using ElogictisMobile.Models;
 using ElogictisMobile.Services;
+using Syncfusion.XForms.ProgressBar;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -8,11 +9,6 @@ using Xamarin.Forms.Internals;
 
 namespace ElogictisMobile.ViewModels
 {
-    /// <summary>
-    /// ViewModel for ProductDeliveryTracking page.
-    /// </summary>
-    [Preserve(AllMembers = true)]
-    [DataContract]
     public class ProductDeliveryTrackingPageViewModel : BaseViewModel
     {
         public ProductDeliveryTrackingPageViewModel()

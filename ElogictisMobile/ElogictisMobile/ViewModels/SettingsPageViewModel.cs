@@ -50,6 +50,7 @@ namespace ElogictisMobile.ViewModels
             this.DistrictCommand = new Command(this.ManageDistrictClicked);
             this.TownCommand = new Command(this.ManageTownClicked);
             this.LogoutCommand = new Command(this.LogoutClicked);
+            this.HistoryTransactionCommand = new Command(this.HistoryTransactionClicked);
         }
 
 
@@ -104,6 +105,7 @@ namespace ElogictisMobile.ViewModels
         public Command ProvinceCommand { get; set; }
         public Command DistrictCommand { get; set; }
         public Command TownCommand { get; set; }
+        public Command HistoryTransactionCommand { get; set; }
 
 
         /// <summary>
@@ -325,6 +327,19 @@ namespace ElogictisMobile.ViewModels
         private void HelpClicked(object obj)
         {
             // Do something
+        }
+
+        private async void HistoryTransactionClicked(object obj)
+        {
+            // Do something
+            try
+            {
+                await _navigationService.NavigateToAsync<HistoryTransactionPageViewModel>();
+            }
+            catch (Exception ex)
+            {
+                await App.Current.MainPage.DisplayAlert("Thông báo", ex.Message, "OK");
+            }
         }
 
         /// <summary>

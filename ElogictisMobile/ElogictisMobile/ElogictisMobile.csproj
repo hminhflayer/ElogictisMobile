@@ -11,11 +11,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Data\about.json" />
-    <None Remove="Data\deliverytracking.json" />
-    <None Remove="Data\ecommerce.json" />
-    <None Remove="Data\errorAndEmpty.json" />
-    <None Remove="Data\navigation.json" />
     <None Remove="Images\EmptyCart.svg" />
     <None Remove="Images\NoItem.svg" />
     <None Remove="Resources\Fonts\Montserrat-Bold.ttf" />
@@ -28,11 +23,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Include="Data\about.json" />
-    <EmbeddedResource Include="Data\deliverytracking.json" />
-    <EmbeddedResource Include="Data\ecommerce.json" />
-    <EmbeddedResource Include="Data\errorAndEmpty.json" />
-    <EmbeddedResource Include="Data\navigation.json" />
     <EmbeddedResource Include="Images\EmptyCart.svg" />
     <EmbeddedResource Include="Images\NoItem.svg" />
     <EmbeddedResource Include="Resources\Fonts\Montserrat-Bold.ttf" />
@@ -45,6 +35,7 @@
   <ItemGroup>
     <PackageReference Include="akavache" Version="8.1.1" />
     <PackageReference Include="FirebaseDatabase.net" Version="4.0.7" />
+    <PackageReference Include="Plugin.LocalNotification" Version="9.2.0" />
     <PackageReference Include="SkiaSharp.Extended" Version="1.60.0" />
     <PackageReference Include="SkiaSharp.Svg" Version="1.60.0" />
     <PackageReference Include="SkiaSharp.Views.Forms" Version="1.68.0" />
@@ -183,8 +174,17 @@
     <EmbeddedResource Update="Views\DetailProfilePage.xaml">
       <Generator>MSBuild:Compile</Generator>
     </EmbeddedResource>
+    <EmbeddedResource Update="Views\DetailRevenuePage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\FailedProductPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
     <EmbeddedResource Update="Views\ForgotPasswordPage.xaml">
       <Generator>MSBuild:Compile</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\HistoryTransactionPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Views\LoginPage.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -194,9 +194,6 @@
     </EmbeddedResource>
     <EmbeddedResource Update="Views\ManageDistrictPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Views\ManageItemPage.xaml">
-      <Generator>MSBuild:Compile</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Views\ManageProductNewPage.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -253,5 +250,11 @@
 
     <ItemGroup>
         <GoogleServicesJson Include="google-services.json" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Update="Views\HistoryOrderPage.xaml.cs">
+        <DependentUpon>HistoryOrderPage.xaml</DependentUpon>
+      </Compile>
     </ItemGroup>
 </Project>

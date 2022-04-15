@@ -267,6 +267,25 @@
                     TextColor="{DynamicResource Gray-800}"
                     VerticalOptions="Center"
                     VerticalTextAlignment="Center" />
+                <StackLayout>
+                    <Label
+                    FontFamily="Montserrat-Medium"
+                    FontSize="12"
+                    HeightRequest="18"
+                    Text="Tên đơn hàng"
+                    TextColor="{DynamicResource Gray-800}" />
+                    <border:SfBorder BorderColor="{Binding Source={x:Reference NameProductEntry}, Path=IsFocused, Converter={StaticResource ColorConverter}, ConverterParameter=3}" Style="{StaticResource DataFormBorderlessEntryBorderStyle}">
+                        <controls:BorderlessEntry
+                        x:Name="NameProductEntry"
+                        Margin="12,0"
+                        HeightRequest="40"
+                            IsReadOnly="{Binding IsShipper}"
+                        Keyboard="Numeric"
+                        Placeholder="Tên đơn hàng"
+                        Style="{StaticResource BorderlessEntryStyle}"
+                        Text="{Binding NameProduct.Value}" />
+                    </border:SfBorder>
+                </StackLayout>
                 <StackLayout Grid.Row="7">
                     <combobox:SfComboBox HeightRequest="40" 
                                          x:Name="comboBox" 
@@ -350,46 +369,64 @@
                         Margin="12,0"
                         Keyboard="Numeric"
                         HeightRequest="40"
-                        Placeholder="Tối đa 2.000.000 VNĐ"
                         Style="{StaticResource BorderlessEntryStyle}"
-                        Text="{Binding Money.Value, StringFormat='{0:C}'}" 
+                        Text="{Binding Money.Value, StringFormat='{0:0.00} VNĐ'}" 
                             IsReadOnly="True"/>
                     </border:SfBorder>
                 </StackLayout>
 
                 <StackLayout Orientation="Horizontal" 
-                             HorizontalOptions="CenterAndExpand" 
+                             HorizontalOptions="FillAndExpand" 
                              IsVisible="{Binding IsShipper}">
                     <buttons:SfButton
                     Margin="0,16,0,0"
                     Style="{StaticResource GradientButtonStyle}"
                     Text="{Binding TextButton}"
-                    WidthRequest="200" 
+                        HorizontalOptions="FillAndExpand"
                     Command="{Binding UpdateProductCommand}"/>
                 </StackLayout>
                 <StackLayout Orientation="Horizontal" 
-                             HorizontalOptions="CenterAndExpand" 
-                             IsVisible="{Binding IsManage}">
+                             HorizontalOptions="FillAndExpand" 
+                             IsVisible="{Binding IsFailed}">
+                    <buttons:SfButton
+                    Margin="0,16,0,0"
+                    Style="{StaticResource DangerButtonStyle}"
+                    Text="GIAO KHÔNG THÀNH CÔNG"
+                        HorizontalOptions="FillAndExpand"
+                    Command="{Binding FailedProductCommand}"/>
+                </StackLayout>
+                <StackLayout Orientation="Horizontal" 
+                             IsVisible="{Binding IsNotShipper}"
+                             HorizontalOptions="FillAndExpand" >
                     <buttons:SfButton
                     Margin="0,16,0,0"
                     Style="{StaticResource GradientButtonStyle}"
-                    Text="{Binding TextButton}"
-                    WidthRequest="200" 
+                    Text="CẬP NHẬT"
+                        HorizontalOptions="FillAndExpand"
                     Command="{Binding UpdateProductCommand}"/>
 
                     <!--  Submit Button  -->
                     <buttons:SfButton
                     Margin="0,16,0,0"
                     Command="{Binding DeleteProductCommand}"
-                    Style="{StaticResource GradientButtonStyle}"
+                    Style="{StaticResource DangerButtonStyle}"
                     Text="XÓA"
                     WidthRequest="60"
                     IsVisible="{Binding IsAdmin}"/>
                 </StackLayout>
-
                 <StackLayout Orientation="Horizontal" 
                              HorizontalOptions="CenterAndExpand"
-                             IsVisible="{Binding IsNotShipper}">
+                             IsVisible="{Binding IsRefund}">
+                    <buttons:SfButton
+                    Margin="0,16,0,0"
+                    Style="{StaticResource SuccessButtonStyle}"
+                    Text="ĐÃ ĐƯỢC HOÀN ĐƠN"
+                    WidthRequest="200" 
+                    Command="{Binding RefundProductCommand}"/>
+                </StackLayout>
+                <StackLayout Orientation="Horizontal" 
+                             HorizontalOptions="CenterAndExpand"
+                             IsVisible="{Binding IsCancel}">
                     <buttons:SfButton
                     Margin="0,16,0,0"
                     Style="{StaticResource DangerButtonStyle}"

@@ -7,6 +7,7 @@ namespace ElogictisMobile.Models
     public class Products
     {
         public string ID { get; set; }
+        public string Name { get; set; }
         public string From_FullName { get; set; }
         public string From_PhoneNumber { get; set; }
         public string From_Address { get; set; }

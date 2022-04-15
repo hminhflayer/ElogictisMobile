@@ -128,10 +128,10 @@
                         Text="{StaticResource Next}" />
                 </controls:TapAnimationGrid>-->
 
-                <BoxView Style="{StaticResource HorizontalSeparatorStyle}" />
+                <!--<BoxView Style="{StaticResource HorizontalSeparatorStyle}" />-->
 
                 <!--Header lable for notifications-->
-                <Label
+                <!--<Label
                     Margin="16,40,0,16"
                     FontFamily="Montserrat-SemiBold"
                     FontSize="12"
@@ -141,22 +141,22 @@
                     Text="NOTIFICATIONS"
                     TextColor="{DynamicResource Gray-800}"
                     VerticalOptions="Center"
-                    VerticalTextAlignment="Center" />
+                    VerticalTextAlignment="Center" />-->
 
                 <!--Grid for Notifications label and switch-->
-                <Grid
+                <!--<Grid
                     BackgroundColor="{DynamicResource Gray-Bg}"
                     ColumnDefinitions="Auto, *, Auto"
                     ColumnSpacing="0"
                     RowSpacing="0">
 
-                    <!--Notifications icon-->
+                    --><!--Notifications icon--><!--
                     <Label
                         Grid.Column="0"
                         Margin="16,0,0,0"
                         Style="{StaticResource IconLabelStyle}"
                         Text="{StaticResource Notification}" />
-                    <!--Notification label-->
+                    --><!--Notification label--><!--
                     <Label
                         Grid.Column="1"
                         Margin="16,12"
@@ -165,7 +165,7 @@
                         Style="{StaticResource TitleLabelStyle}"
                         Text="Notifications"
                         VerticalOptions="Center" />
-                    <!--Notifications switch-->
+                    --><!--Notifications switch--><!--
                     <buttons:SfSwitch
                         Grid.Column="2"
                         Margin="8,0"
@@ -205,8 +205,8 @@
                             </VisualStateGroup>
                         </VisualStateManager.VisualStateGroups>
                     </buttons:SfSwitch>
-                </Grid>
-                <BoxView Style="{StaticResource HorizontalSeparatorStyle}" />
+                </Grid>-->
+                <!--<BoxView Style="{StaticResource HorizontalSeparatorStyle}" />-->
 
                 <!--Grid for Email notifications and switch-->
                 <!--<Grid
@@ -275,7 +275,7 @@
                 <BoxView Style="{StaticResource HorizontalSeparatorStyle}" />-->
 
                 <!--Header label for Support setting-->
-                <Label
+                <!--<Label
                     Margin="16,40,0,16"
                     FontFamily="Montserrat-SemiBold"
                     FontSize="12"
@@ -285,10 +285,10 @@
                     Text="HỖ TRỢ"
                     TextColor="{DynamicResource Gray-800}"
                     VerticalOptions="Center"
-                    VerticalTextAlignment="Center" />
+                    VerticalTextAlignment="Center" />-->
 
                 <!--Grid for Help label and navigation bar icon-->
-                <controls:TapAnimationGrid
+                <!--<controls:TapAnimationGrid
                     BackgroundColor="{DynamicResource Gray-Bg}"
                     ColumnDefinitions="Auto, *, Auto"
                     ColumnSpacing="0"
@@ -296,13 +296,13 @@
                     RowSpacing="0"
                     Tapped="False">
 
-                    <!--help icon-->
+                    --><!--help icon--><!--
                     <Label
                         Grid.Column="0"
                         Margin="16,0,0,0"
                         Style="{StaticResource IconLabelStyle}"
                         Text="{StaticResource Help}" />
-                    <!--Help text label-->
+                    --><!--Help text label--><!--
                     <Label
                         Grid.Column="1"
                         Margin="16,12"
@@ -311,14 +311,14 @@
                         Style="{StaticResource TitleLabelStyle}"
                         Text="Giúp đỡ"
                         VerticalOptions="Center" />
-                    <!--Navigation icon-->
+                    --><!--Navigation icon--><!--
                     <Label
                         Grid.Column="2"
                         Margin="16,8"
                         Style="{StaticResource IconLabelStyle}"
                         Text="{StaticResource Next}" />
                 </controls:TapAnimationGrid>
-                <BoxView Style="{StaticResource HorizontalSeparatorStyle}" />
+                <BoxView Style="{StaticResource HorizontalSeparatorStyle}" />-->
 
                 <!--Grid for Terms of service label and navigation bar icon-->
                 <controls:TapAnimationGrid
@@ -598,6 +598,38 @@
                     BackgroundColor="{DynamicResource Gray-Bg}"
                     ColumnDefinitions="Auto, *, Auto"
                     ColumnSpacing="0"
+                    Command="{Binding HistoryTransactionCommand}"
+                    RowSpacing="0"
+                    Tapped="False">
+
+                        <!--Edit profile icon-->
+                        <Label
+                        Grid.Column="0"
+                        Margin="16,0,0,0"
+                        Style="{StaticResource IconLabelStyle}"
+                        Text="{StaticResource Calendar}" />
+                        <!--Edit profile label-->
+                        <Label
+                        Grid.Column="1"
+                        Margin="16,12"
+                        FontFamily="Montserrat-Medium"
+                        HorizontalOptions="Start"
+                        Style="{StaticResource TitleLabelStyle}"
+                        Text="Lịch sử giao dịch"
+                        VerticalOptions="Center" />
+                        <!--Navigation icon-->
+                        <Label
+                        Grid.Column="2"
+                        Margin="16,8"
+                        Style="{StaticResource IconLabelStyle}"
+                        Text="{StaticResource Next}" />
+                    </controls:TapAnimationGrid>
+                    <BoxView Style="{StaticResource HorizontalSeparatorStyle}" />
+                    
+                    <controls:TapAnimationGrid
+                    BackgroundColor="{DynamicResource Gray-Bg}"
+                    ColumnDefinitions="Auto, *, Auto"
+                    ColumnSpacing="0"
                     Command="{Binding AgencyCommand}"
                     RowSpacing="0"
                     Tapped="False">
@@ -625,6 +657,7 @@
                         Text="{StaticResource Next}" />
                     </controls:TapAnimationGrid>
                     <BoxView Style="{StaticResource HorizontalSeparatorStyle}" />
+                    
                     <controls:TapAnimationGrid
                     BackgroundColor="{DynamicResource Gray-Bg}"
                     ColumnDefinitions="Auto, *, Auto"
@@ -638,7 +671,7 @@
                         Grid.Column="0"
                         Margin="16,0,0,0"
                         Style="{StaticResource IconLabelStyle}"
-                        Text="{StaticResource Account}" />
+                        Text="{StaticResource Category}" />
                         <!--Edit profile label-->
                         <Label
                         Grid.Column="1"
@@ -656,7 +689,7 @@
                         Text="{StaticResource Next}" />
                     </controls:TapAnimationGrid>
                     <BoxView Style="{StaticResource HorizontalSeparatorStyle}" />
-                    <!--Grid for Edit profile label and navigation bar icon-->
+                    
                     <controls:TapAnimationGrid
                     BackgroundColor="{DynamicResource Gray-Bg}"
                     ColumnDefinitions="Auto, *, Auto"
@@ -670,7 +703,7 @@
                         Grid.Column="0"
                         Margin="16,0,0,0"
                         Style="{StaticResource IconLabelStyle}"
-                        Text="{StaticResource Account}" />
+                        Text="{StaticResource Category}" />
                         <!--Edit profile label-->
                         <Label
                         Grid.Column="1"
@@ -702,7 +735,7 @@
                         Grid.Column="0"
                         Margin="16,0,0,0"
                         Style="{StaticResource IconLabelStyle}"
-                        Text="{StaticResource Account}" />
+                        Text="{StaticResource Category}" />
                         <!--Edit profile label-->
                         <Label
                         Grid.Column="1"
@@ -734,7 +767,7 @@
                         Grid.Column="0"
                         Margin="16,0,0,0"
                         Style="{StaticResource IconLabelStyle}"
-                        Text="{StaticResource Account}" />
+                        Text="{StaticResource Category}" />
                         <!--Edit profile label-->
                         <Label
                         Grid.Column="1"
@@ -766,7 +799,7 @@
                         Grid.Column="0"
                         Margin="16,0,0,0"
                         Style="{StaticResource IconLabelStyle}"
-                        Text="{StaticResource Account}" />
+                        Text="{StaticResource Category}" />
                         <!--Edit profile label-->
                         <Label
                         Grid.Column="1"

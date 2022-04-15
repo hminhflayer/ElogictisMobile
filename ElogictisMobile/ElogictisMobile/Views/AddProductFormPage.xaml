@@ -12,7 +12,8 @@
     xmlns:controls="clr-namespace:ElogictisMobile.Controls"
     xmlns:converter="clr-namespace:ElogictisMobile.Converters"
     xmlns:maps="clr-namespace:Xamarin.Forms.Maps;assembly=Xamarin.Forms.Maps"
-    xmlns:inputLayout="clr-namespace:Syncfusion.XForms.TextInputLayout;assembly=Syncfusion.Core.XForms" xmlns:busyindicator="clr-namespace:Syncfusion.SfBusyIndicator.XForms;assembly=Syncfusion.SfBusyIndicator.XForms"
+    xmlns:inputLayout="clr-namespace:Syncfusion.XForms.TextInputLayout;assembly=Syncfusion.Core.XForms" 
+    xmlns:busyindicator="clr-namespace:Syncfusion.SfBusyIndicator.XForms;assembly=Syncfusion.SfBusyIndicator.XForms"
     Title="Tạo đơn hàng"
     BackgroundColor="{DynamicResource Gray-100}"
     NavigationPage.HasNavigationBar="True"
@@ -122,7 +123,7 @@
                                 Placeholder="Địa chỉ"
                                 Style="{StaticResource BorderlessEntryStyle}"
                                 Text="{Binding FromAddress.Value}"/>
-                                    <Button Text="Xem" Command="{Binding FromAddressChangedCommand}"/>
+                                    <Button Text="Xem" Clicked="Button_Clicked"/>
                                 </StackLayout>
                                 <Label
                                 Grid.Column="1"
@@ -279,13 +280,14 @@
 
                     <StackLayout HeightRequest="200">
                         <maps:Map
+                            x:Name="Tomap"
                         MapClicked="ToMap_MapClicked"
                         IsShowingUser="False"
                         MoveToLastRegionOnLayoutChange="True"
                         HasScrollEnabled="True"
                         ItemsSource="{Binding ToLocations}">
                             <x:Arguments>
-                                <maps:MapSpan>
+                                <maps:MapSpan >
                                     <x:Arguments>
                                         <maps:Position>
                                             <x:Arguments>
@@ -318,6 +320,40 @@
                     TextColor="{DynamicResource Gray-800}"
                     VerticalOptions="Center"
                     VerticalTextAlignment="Center" />
+                    <StackLayout>
+                        <Label
+                    FontFamily="Montserrat-Medium"
+                    FontSize="12"
+                    HeightRequest="18"
+                    Text="Tên đơn hàng"
+                    TextColor="{DynamicResource Gray-800}" />
+                        <border:SfBorder BorderColor="{Binding Source={x:Reference NameProductEntry}, Path=IsFocused, Converter={StaticResource ColorConverter}, ConverterParameter=3}" Style="{StaticResource DataFormBorderlessEntryBorderStyle}">
+                            <Grid ColumnDefinitions="*, Auto">
+                                <controls:BorderlessEntry
+                                x:Name="NameProductEntry"
+                                Margin="12,0"
+                                HeightRequest="40"
+                                Placeholder="Tên đơn hàng"
+                                Style="{StaticResource BorderlessEntryStyle}"
+                                Text="{Binding NameProduct.Value}" />
+                                <!--  Label to display error icon  -->
+                                <Label
+                                    Grid.Column="1"
+                                    IsVisible="{Binding Path=IsVisible, Source={x:Reference NameProductValidationLabel}}"
+                                    Style="{StaticResource ErrorIconLabelStyle}"
+                                    Text="{StaticResource Error}" />
+                            </Grid>
+                        </border:SfBorder>
+                        <!--  Label to display error message  -->
+                        <Label
+                        x:Name="NameProductValidationLabel"
+                        Margin="15,-3,0,0"
+                        IsVisible="{Binding NameProduct.IsValid, Converter={StaticResource InverseBoolConverter}}"
+                        Style="{StaticResource SimpleLabelStyle}"
+                        Text="{Binding NameProduct.Errors, Converter={StaticResource FirstValidationErrorConverter}}"
+                        TextColor="{DynamicResource Red}"
+                        VerticalOptions="FillAndExpand" />
+                    </StackLayout>
                     <StackLayout Grid.Row="7">
                         <combobox:SfComboBox HeightRequest="40" 
                                          x:Name="comboBox" 
@@ -392,7 +428,6 @@
                     HeightRequest="18"
                     Text="Phí vận chuyển"
                     TextColor="{DynamicResource Gray-800}" />
-
                         <Label
                     Margin="0,5,0,0"
                     FontFamily="Montserrat-Medium"

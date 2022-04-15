@@ -1,4 +1,5 @@
-﻿using Xamarin.Forms.Internals;
+﻿using ElogictisMobile.ViewModels;
+using Xamarin.Forms.Internals;
 using Xamarin.Forms.Xaml;
 
 namespace ElogictisMobile.Views
@@ -16,6 +17,30 @@ namespace ElogictisMobile.Views
         public AddProfilesPage()
         {
             this.InitializeComponent();
+        }
+
+        private void SfComboBox_SelectionChanged(object sender, Syncfusion.XForms.ComboBox.SelectionChangedEventArgs e)
+        {
+            if (this.BindingContext is AddProfilesPageViewModel vm)
+            {
+                vm.ProvinceCommand.Execute(e.Value);
+            }
+        }
+
+        private void District_SelectionChanged(object sender, Syncfusion.XForms.ComboBox.SelectionChangedEventArgs e)
+        {
+            if (this.BindingContext is AddProfilesPageViewModel vm)
+            {
+                vm.DistrictCommand.Execute(e.Value);
+            }
+        }
+
+        private void Town_SelectedChanged(object sender, Syncfusion.XForms.ComboBox.SelectionChangedEventArgs e)
+        {
+            if (this.BindingContext is AddProfilesPageViewModel vm)
+            {
+                vm.TownCommand.Execute(e.Value);
+            }
         }
     }
 }

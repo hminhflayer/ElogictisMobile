@@ -57,6 +57,13 @@
                                             Text="{Binding Status_ext}"
                                             TextColor="White"/>
                                     </StackLayout>
+                                    <StackLayout>
+                                        <Label
+                                            FontFamily="Montserrat-SemiBold"
+                                            FontSize="18"
+                                            HorizontalOptions="StartAndExpand"
+                                            Text="{Binding Name,StringFormat='Đơn hàng: {0}'}"/>
+                                    </StackLayout>
                                     <StackLayout Orientation="Horizontal">
                                         <Label Text="{Binding From_FullName, StringFormat='Từ: {0}'}"
                                                FontSize="18"
@@ -65,10 +72,18 @@
                                                FontSize="18"/>
                                     </StackLayout>
                                     <StackLayout Orientation="Horizontal">
+                                        <Label Text="{Binding From_Address, StringFormat='Địa chỉ: {0}'}"
+                                               FontSize="18"/>
+                                    </StackLayout>
+                                    <StackLayout Orientation="Horizontal">
                                         <Label Text="{Binding To_FullName, StringFormat='Đến: {0}'}"
                                                FontSize="18"
                                                FontAttributes="Bold"/>
                                         <Label Text="{Binding To_PhoneNumber}"
+                                               FontSize="18"/>
+                                    </StackLayout>
+                                    <StackLayout Orientation="Horizontal">
+                                        <Label Text="{Binding To_Address, StringFormat='Địa chỉ: {0}'}"
                                                FontSize="18"/>
                                     </StackLayout>
                                 </StackLayout>

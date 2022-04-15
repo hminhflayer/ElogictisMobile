@@ -1,5 +1,9 @@
 ﻿using ElogictisMobile.Models;
 using ElogictisMobile.Services;
+using Plugin.LocalNotification;
+using Plugin.LocalNotification.EventArgs;
+using System;
+using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 
 namespace ElogictisMobile.ViewModels
@@ -55,25 +59,17 @@ namespace ElogictisMobile.ViewModels
                 LocalContext.ProfilesList = RealtimeFirebase.Instance.GetAllProfileWithAgency();
             }
 
+            if(LocalContext.IsShipper)
+            {
+                ObservableCollection<Products> products = RealtimeFirebase.Instance.GetAllNewProduct();
+            }    
+
             //Load Products, Agency, PriceList
-            if (LocalContext.IsShipper)
+            if (LocalContext.IsAdmin)
             {
-                LocalContext.ProductsList = RealtimeFirebase.Instance.GetAllProductGeted();
-            }
-            else if (LocalContext.IsAdmin)
-            {
-                LocalContext.ProductsList = RealtimeFirebase.Instance.GetAll<Products>("Products");
                 LocalContext.AgencyList = RealtimeFirebase.Instance.GetAll<Agency>("Agencies");
                 LocalContext.PriceLists = RealtimeFirebase.Instance.GetAllCategory<PriceList>("PricesList");
                 LocalContext.TypeProductList = RealtimeFirebase.Instance.GetAllCategory<Category>("TypeProduct");
-            }
-            else if (LocalContext.IsManager)
-            {
-                LocalContext.ProductsList = RealtimeFirebase.Instance.GetAllProductWithAgency();
-            }
-            else
-            {
-                LocalContext.ProductsList = RealtimeFirebase.Instance.GetAllProductCreated();
             }
 
         }

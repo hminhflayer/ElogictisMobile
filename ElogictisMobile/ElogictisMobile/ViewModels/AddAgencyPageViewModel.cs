@@ -1,6 +1,5 @@
 ﻿using ElogictisMobile.DataService;
 using ElogictisMobile.Models;
-using ElogictisMobile.Models.About;
 using ElogictisMobile.Services;
 using ElogictisMobile.Services.Navigation;
 using ElogictisMobile.Validators;
@@ -155,11 +154,6 @@ namespace ElogictisMobile.ViewModels
         /// <param name="obj">The object</param>
         private async void SubmitClicked(object obj)
         {
-            if (LocalContext.Current.AccountSettings.Money == 0)
-            {
-                await App.Current.MainPage.DisplayAlert("Thông báo", "Bạn không còn tiền trong tài khoản!", "OK");
-                return;
-            }
             if (this.AreFieldsValid())
             {
                 var key = "AGENCY" + Province.Id + District.Id;
@@ -168,7 +162,7 @@ namespace ElogictisMobile.ViewModels
                 {
                     CreateBy = LocalContext.Current.AccountSettings.Id,
                     CreateTime = DateTime.Now.ToShortDateString(),
-                    Address = Address.Value,
+                    Address = Address.Value + ", " + Town.Name + ", " + District.Name + ", " + Province.Name,
                     Name = Name.Value,
                     Province = Province.Id,
                     Province_ext = Province.Name,
@@ -182,11 +176,14 @@ namespace ElogictisMobile.ViewModels
                     ManagerId = Profiles.Id,
                     ManagerName = Profiles.Name
                 }));
+
+                Profiles.ManageAgency = key;
                 var task1 = await RealtimeFirebase.Instance.UpSert("Profiles", Profiles.Id, JsonConvert.SerializeObject(Profiles));
                 if (task && task1)
                 {
                     
                     await App.Current.MainPage.DisplayAlert("Thông báo", "Thêm thành công!", "OK");
+                    await _navigationService.GoBackAsync();
                 }
                 else
                 {

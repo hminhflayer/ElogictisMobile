@@ -34,7 +34,10 @@ namespace ElogictisMobile.ViewModels
         public ManageAgencyPageViewModel(INavigationService navigationService)
         {
             _navigationService = navigationService;
-            AgencyList = RealtimeFirebase.Instance.GetAll<Agency>("Agencies");
+            if(LocalContext.AgencyList != null && LocalContext.AgencyList.Count > 0)
+            {
+                AgencyList = LocalContext.AgencyList;
+            }    
         }
 
         #endregion

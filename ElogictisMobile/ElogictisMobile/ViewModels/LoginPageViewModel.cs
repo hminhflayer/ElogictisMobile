@@ -146,10 +146,11 @@ namespace ElogictisMobile.ViewModels
                     var loginAttempt = await _accountService.LoginAsync(Email.Value, Password.Value);
                     if (loginAttempt == true)
                     {
-                        if(true)
+                        //_accountService.CheckEmailVerified()
+                        if (true)
                         {
                             var profile = await RealtimeFirebase.Instance.GetProfiles(_accountService.GetUidLogin());
-                            if (profile.Id == _accountService.GetUidLogin())
+                            if (profile != null)
                             {
                                 IsLoading = false;
                                 LocalContext.Profiles = profile;
@@ -170,7 +171,7 @@ namespace ElogictisMobile.ViewModels
                         }    
                         else
                         {
-                            bool action = await App.Current.MainPage.DisplayAlert("Thông báo", @"Tài khoản của bạn chưa được xác thực\nBạn muốn nhận lại một mail xác thực khác?!", "Đúng", "Không");
+                            var action = await App.Current.MainPage.DisplayAlert("Thông báo", "Tài khoản của bạn chưa được xác thực\nBạn muốn nhận lại một mail xác thực khác?!", "Đúng", "Không");
                             IsLoading = false;
                             if (action)
                             {

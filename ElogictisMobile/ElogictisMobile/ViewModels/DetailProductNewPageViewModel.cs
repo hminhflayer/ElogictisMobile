@@ -30,6 +30,7 @@ namespace ElogictisMobile.ViewModels
         public double TotalWeight { get; set; }
         public string Desciption { get; set; }
         public double Money { get; set; }
+        public string NameProduct { get; set; }
         private INavigationService _navigationService;
 
         public string TypeProduct { get; set; }
@@ -78,7 +79,8 @@ namespace ElogictisMobile.ViewModels
             this.Quanlity = LocalContext.ProductSelected.Quanlity;
             this.Desciption = LocalContext.ProductSelected.Description;
             this.Money = LocalContext.ProductSelected.Money;
-            this.TypeProduct = LocalContext.ProductSelected.Type;
+            this.TypeProduct = LocalContext.ProductSelected.Type_ext;
+            this.NameProduct = LocalContext.ProductSelected.Name;
         }
 
         /// <summary>
@@ -96,28 +98,29 @@ namespace ElogictisMobile.ViewModels
                 temp.IsConfirm = true;
                 temp.Holder = LocalContext.Current.AccountSettings.Id;
 
-                var upsert =await RealtimeFirebase.Instance.UpSert("Products", temp.ID, JsonConvert.SerializeObject(temp));
-                if(upsert)
+                var upsert = await RealtimeFirebase.Instance.UpSert("Products", temp.ID, JsonConvert.SerializeObject(temp));
+                var upsert1 = await RealtimeFirebase.Instance.UpSert("DeliveryTracking/" + temp.ID, "01", JsonConvert.SerializeObject(new ProductDeliveryTrackingModel
                 {
-                    await RealtimeFirebase.Instance.UpSert("DeliveryTracking/"+temp.ID, "0", JsonConvert.SerializeObject(new ProductDeliveryTrackingModel
-                    {
-                        Date = DateTime.Now.ToShortTimeString() + " " + DateTime.Now.ToShortTimeString(),
-                        ProgressValue = temp.Status,
-                        Status = "NotStarted",
-                        StepStatus = StepStatus.NotStarted,
-                        Title = LocalContext.Current.AccountSettings.Name + ": ĐÃ NHẬN ĐƠN HÀNG",
-                        TitleStatus = "Đơn hàng được Shipper nhận"
-                    }));
-                    await RealtimeFirebase.Instance.UpSert("Notifications", keyNoti, JsonConvert.SerializeObject(new TransactionHistory
-                    {
-                        IdProduct = temp.ID,
-                        TransactionDescription = "CHỜ LẤY ĐƠN HÀNG",
-                        Date = DateTime.Now.ToShortDateString(),
-                        Time = DateTime.Now.ToShortTimeString(),
-                        Email = LocalContext.Profiles.Email,
-                        ProfileId = LocalContext.Current.AccountSettings.Id
-                    }));
+                    Date = DateTime.Now.ToShortTimeString() + " " + DateTime.Now.ToShortDateString(),
+                    ProgressValue = temp.Status,
+                    Status = "NotStarted",
+                    StepStatus = StepStatus.NotStarted,
+                    Title = LocalContext.Current.AccountSettings.Name + ": ĐÃ NHẬN ĐƠN HÀNG",
+                    TitleStatus = "Đơn hàng được Shipper nhận"
+                }));
+                if (upsert && upsert1)
+                {
+                    //await RealtimeFirebase.Instance.UpSert("Notifications", keyNoti, JsonConvert.SerializeObject(new TransactionHistory
+                    //{
+                    //    IdProduct = temp.ID,
+                    //    TransactionDescription = "CHỜ LẤY ĐƠN HÀNG",
+                    //    Date = DateTime.Now.ToShortDateString(),
+                    //    Time = DateTime.Now.ToShortTimeString(),
+                    //    Email = LocalContext.Profiles.Email,
+                    //    ProfileId = LocalContext.Current.AccountSettings.Id
+                    //}));
                     await App.Current.MainPage.DisplayAlert("Thông báo", "Nhận đơn hàng thành công!", "OK");
+                    await _navigationService.GoBackAsync();
                 }
                 else
                 {

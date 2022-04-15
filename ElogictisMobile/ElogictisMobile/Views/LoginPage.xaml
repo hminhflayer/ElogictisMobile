@@ -153,8 +153,9 @@
             <busyindicator:SfBusyIndicator 
                                        IsBusy="{Binding IsLoading}"
                                        AnimationType="Cupertino" 
-                                       ViewBoxWidth = "150" 
-                                       ViewBoxHeight="150" 
+                                       ViewBoxWidth = "200" 
+                                       ViewBoxHeight="200" 
+                                       FontAttributes="Bold"
                                        Title="Đang đăng nhập ..."
                                        TextColor="Blue"/>
         </Grid>

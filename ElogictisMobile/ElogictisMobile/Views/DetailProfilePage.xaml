@@ -172,6 +172,7 @@
                                          SelectedValuePath="Id"
                                          SelectedItem="{Binding Auth}"
                                      SelectedValue="{Binding Auth.Id}"
+                                     IsEnabled="{Binding IsAdmin}"
                                      IsEditableMode="False"
                                      ShowClearButton="False"
                                      TextSize="20"
@@ -209,6 +210,7 @@
                     Margin="0,16,0,0"
                     Command="{Binding DeleteProfileCommand}"
                     Style="{StaticResource DangerButtonStyle}"
+                            IsVisible="{Binding IsAdmin}"
                     Text="XÓA"
                     WidthRequest="60" />
                     </StackLayout>

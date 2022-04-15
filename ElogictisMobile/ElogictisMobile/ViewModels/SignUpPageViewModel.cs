@@ -182,6 +182,7 @@ namespace ElogictisMobile.ViewModels
             {
                 if (this.AreFieldsValid())
                 {
+                    IsLoading = true;
                     var loginAttempt = await _accountService.SignUpAsync(Email.Value, Password.Item1.Value);
                     if (loginAttempt != "")
                     {
@@ -210,8 +211,16 @@ namespace ElogictisMobile.ViewModels
                             Town_ext = Town.Name,
                             AgencyId = "AGENCY" + Province.Id + District.Id,
                         };
-                        await RealtimeFirebase.Instance.UpSert("Profiles", loginAttempt, JsonConvert.SerializeObject(profiles)); 
-                        await _navigationService.NavigateToAsync<AlertSignUpPageViewModel>();
+                        var upsert = await RealtimeFirebase.Instance.UpSert("Profiles", loginAttempt, JsonConvert.SerializeObject(profiles)); 
+                        if(upsert)
+                        {
+                            IsLoading = false;
+                            await _navigationService.NavigateToAsync<AlertSignUpPageViewModel>();
+                        }    
+                        else
+                        {
+                            await App.Current.MainPage.DisplayAlert("Thông báo", "Có lỗi xảy ra", "Đóng");
+                        }   
                     }
                     else
                     {

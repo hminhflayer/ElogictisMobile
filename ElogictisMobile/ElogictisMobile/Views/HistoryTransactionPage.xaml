@@ -1,0 +1,75 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="ElogictisMobile.Views.HistoryTransactionPage"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:button="clr-namespace:Syncfusion.XForms.Buttons;assembly=Syncfusion.Buttons.XForms"
+    BackgroundColor="{StaticResource Gray-White}"
+    NavigationPage.HasNavigationBar="True"
+    NavigationPage.HasBackButton="True"
+    Title="Lịch sử giao dịch">
+
+    <ContentPage.Content>
+
+        <ScrollView>
+            <Grid
+            ColumnSpacing="0"
+            RowDefinitions="Auto, Auto, *"
+            RowSpacing="0">
+                <StackLayout Orientation="Horizontal">
+
+                    <!--<DatePicker MinimumDate="01/01/1990"
+                                MaximumDate="12/31/2080"
+                                Date="{Binding SelectedDate}"
+                                DateSelected="DatePicker_DateSelected"/>-->
+                </StackLayout>
+
+                <ListView Grid.Row="1" ItemsSource="{Binding HistoryTransactions}" SelectionMode="None"
+                          HasUnevenRows="True">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <ViewCell>
+                                <StackLayout Orientation="Vertical" Spacing="16" Padding="16">
+                                    <StackLayout Orientation="Horizontal" BackgroundColor="ForestGreen">
+                                        <Label Text="{Binding Status}"
+                                               TextColor="White"
+                                               HorizontalOptions="CenterAndExpand"
+                                               FontSize="22"/>
+                                    </StackLayout>
+                                    <StackLayout Orientation="Horizontal">
+                                        <Label Text="Thời gian: "
+                                               FontSize="18"/>
+                                        <Label Text="{Binding CreateTime}"
+                                               FontSize="18"/>
+                                        <Label Text="{Binding CreateDate}"
+                                               FontSize="18"/>
+                                    </StackLayout>
+                                    <StackLayout Orientation="Horizontal">
+                                        <Label Text="{Binding TranferAuth, StringFormat='Từ: {0} -'}"
+                                               FontSize="18"/>
+                                        <Label Text="{Binding TranferName}"
+                                               FontAttributes="Bold"
+                                               FontSize="18"/>
+                                    </StackLayout>
+                                    <StackLayout Orientation="Horizontal">
+                                        <Label Text="{Binding ReceiverAuth, StringFormat='Đến: {0} -'}"
+                                               FontSize="18"/>
+                                        <Label Text="{Binding ReceiverName}"
+                                               FontSize="18"
+                                               FontAttributes="Bold"/>
+                                    </StackLayout>
+                                    <StackLayout Orientation="Horizontal">
+                                        <Label Text="{Binding Money, StringFormat='Số tiền: {0:C}'}"
+                                               FontSize="18"
+                                               FontAttributes="Bold"/>
+                                    </StackLayout>
+                                </StackLayout>
+                            </ViewCell>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </Grid>
+        </ScrollView>
+    </ContentPage.Content>
+
+</ContentPage>

@@ -35,7 +35,6 @@ namespace ElogictisMobile.ViewModels
         public ManageProfilesPageViewModel(INavigationService navigationService)
         {
             _navigationService = navigationService;
-
             if(LocalContext.IsAdmin)
             {
                 ProfilesList = RealtimeFirebase.Instance.GetAll<Profiles>("Profiles");
@@ -77,15 +76,9 @@ namespace ElogictisMobile.ViewModels
             }
         }
 
-        /// <summary>
-        /// Gets or sets a collction of value to be displayed in contacts list page.
-        /// </summary>
-        [DataMember(Name = "contactsPageList")]
-        public ObservableCollection<Contact> ContactList { get; set; }
-
         private INavigationService _navigationService;
 
-        public ObservableCollection<Profiles> ProfilesList { get; set; }
+        public ObservableCollection<Profiles> ProfilesList { get; set; } = new ObservableCollection<Profiles>();
         public Profiles SelectedProfile { get; set; }
         #endregion
 

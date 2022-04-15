@@ -23,6 +23,7 @@ namespace ElogictisMobile.ViewModels
     public class AddProductFormPageViewModel : BaseViewModel
     {
         #region Constructor
+        public ValidatableObject<string> nameProduct;
         public ValidatableObject<string> fromFullName;
         public ValidatableObject<string> fromPhone;
         public ValidatableObject<string> fromAddress;
@@ -121,6 +122,23 @@ namespace ElogictisMobile.ViewModels
             }
         }
 
+        public ValidatableObject<string> NameProduct
+        {
+            get
+            {
+                return this.nameProduct;
+            }
+
+            set
+            {
+                if (this.nameProduct == value)
+                {
+                    return;
+                }
+
+                this.SetProperty(ref this.nameProduct, value);
+            }
+        }
         public ValidatableObject<string> FromFullName
         {
             get
@@ -335,6 +353,7 @@ namespace ElogictisMobile.ViewModels
         /// </summary>
         private void InitializeProperties()
         {
+            this.NameProduct = new ValidatableObject<string>();
             this.FromFullName = new ValidatableObject<string>();
             this.FromPhone = new ValidatableObject<string>();
             this.FromAddress = new ValidatableObject<string>();
@@ -350,8 +369,8 @@ namespace ElogictisMobile.ViewModels
             Quanlity.Value = 0;
             Money.Value = "0";
             DistanceAddress = "0";
-            this.FromFullName.Value = LocalContext.Profiles.Name;
-            this.FromPhone.Value = LocalContext.Profiles.Phone;
+            this.FromFullName.Value = LocalContext.Current.AccountSettings.Name;
+            this.FromPhone.Value = LocalContext.Current.AccountSettings.Phone;
             this.FromAddress.Value = LocalContext.Current.AccountSettings.Address;
         }
 
@@ -360,6 +379,7 @@ namespace ElogictisMobile.ViewModels
         /// </summary>
         private void AddValidationRules()
         {
+            this.NameProduct.Validations.Add(new IsNotNullOrEmptyRule<string> { ValidationMessage = "Tên của đơn hàng không được trống" });
             this.FromFullName.Validations.Add(new IsNotNullOrEmptyRule<string> { ValidationMessage = "Họ và tên người gửi không được trống" });
             this.FromPhone.Validations.Add(new IsNotNullOrEmptyRule<string> { ValidationMessage = "Số điện thoại người gửi không được trống" });
             this.FromAddress.Validations.Add(new IsNotNullOrEmptyRule<string> { ValidationMessage = "Địa chỉ người gửi không được trống" });
@@ -377,6 +397,7 @@ namespace ElogictisMobile.ViewModels
         /// <returns>Returns the fields are valid or not</returns>
         private bool AreFieldsValid()
         {
+            bool isNameProduct = this.NameProduct.Validate();
             bool isFromFullName = this.FromFullName.Validate();
             bool isFromPhone = this.FromPhone.Validate();
             bool isFromAddress = this.FromAddress.Validate();
@@ -389,7 +410,7 @@ namespace ElogictisMobile.ViewModels
 
             return isFromFullName && isFromPhone && isFromAddress
                 && isToFullName && isToPhone && isToAddress 
-                && isQuanlity && isWeight && isMoney;
+                && isQuanlity && isWeight && isMoney && isNameProduct;
         }
 
         /// <summary>
@@ -443,6 +464,7 @@ namespace ElogictisMobile.ViewModels
                         Weight = Weight.Value,
                         Status = 1,
                         Holder = "",
+                        Name = NameProduct.Value,
                         IsConfirm = false,
                         Status_ext = "CHỜ NHẬN ĐƠN",
                         AgencyId = LocalContext.Current.AccountSettings.AgencyId
@@ -460,6 +482,7 @@ namespace ElogictisMobile.ViewModels
                         })); ;
                         IsLoading = false;
                         await App.Current.MainPage.DisplayAlert("Thông báo", "Thêm đơn hàng thành công!", "OK");
+                        await _navigationService.GoBackAsync();
                     }
                     else
                     {

@@ -23,6 +23,7 @@ namespace ElogictisMobile.ViewModels
         private Command<object> itemTappedCommand;
         private Command<object> addProductCommand;
         private Command<string> textChangedCommand;
+        private ObservableCollection<Products> productList;
 
         #endregion
 
@@ -36,16 +37,14 @@ namespace ElogictisMobile.ViewModels
             try
             {
                 ProductList = new ObservableCollection<Products>();
-                ProductList.Clear();
                 _navigationService = navigationService;
-
                 if (LocalContext.IsShipper)
                 {
                     ProductList = RealtimeFirebase.Instance.GetAllProductGeted();
                 }
                 else if (LocalContext.IsAdmin)
                 {
-                    ProductList = RealtimeFirebase.Instance.GetAll<Products>("Products");
+                    ProductList = RealtimeFirebase.Instance.GetAll<Products>("Products");   
                 }
                 else if(LocalContext.IsManager)
                 {
@@ -95,11 +94,19 @@ namespace ElogictisMobile.ViewModels
 
         private INavigationService _navigationService;
 
-        /// <summary>
-        /// Gets or sets a collction of value to be displayed in contacts list page.
-        /// </summary>
-        [DataMember(Name = "contactsPageList")]
-        public ObservableCollection<Products> ProductList { get; set; }
+       
+        public ObservableCollection<Products> ProductList
+        {
+            get
+            {
+                return this.productList;
+            }
+
+            set
+            {
+                this.SetProperty(ref this.productList, value);
+            }
+        }
         public bool IsShipper { get; set; } = !LocalContext.IsShipper;
 
         #endregion
@@ -130,8 +137,11 @@ namespace ElogictisMobile.ViewModels
         private async void NavigateToNextPage(object selectedItem)
         {
             // Do something
-            LocalContext.ProductSelected = selectedItem as Products;
-            await _navigationService.NavigateToAsync<DetailProductFormPageViewModel>();
+            if(selectedItem != null)
+            {
+                LocalContext.ProductSelected = selectedItem as Products;
+                await _navigationService.NavigateToAsync<DetailProductFormPageViewModel>();
+            }   
         }
 
         private async void AddProductClicked(object obj)

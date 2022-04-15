@@ -22,6 +22,7 @@ namespace ElogictisMobile.ViewModels
         private Profiles Profiles { get; set; }
         public bool IsVisible { get; set; }
         public bool IsManager { get; set; }
+        public bool IsAdmin { get; set; }
         public string Money { get; set; }
         public bool IsConfirm { get; set; } = !LocalContext.ProfileSelected.IsConfirm;
 
@@ -53,24 +54,43 @@ namespace ElogictisMobile.ViewModels
         public DetailProfilePageViewModel(INavigationService navigationService)
         {
             _navigationService = navigationService;
+            IsAdmin = true;
+
             this.InitializeProperties();
             this.AddValidationRules();
-            if(LocalContext.IsManager || LocalContext.IsAdmin)
+
+            if (LocalContext.IsManager || LocalContext.IsAdmin)
             {
+                if (LocalContext.IsAdmin)
+                {
+                    PermissionCollection = ContentData.PermissionCollection;
+                }
+                if (LocalContext.IsManager)
+                {
+                    PermissionCollection = ContentData.PermissionCollectionAgency;
+                }
                 IsManager = true;
-            }    
+            }
             else
             {
                 IsManager = false;
             }
-            if(LocalContext.ProfileSelected.Id == LocalContext.Current.AccountSettings.Id && LocalContext.Current.AccountSettings.Auth == "3")
+
+            if (LocalContext.ProfileSelected.Id == LocalContext.Current.AccountSettings.Id && LocalContext.Current.AccountSettings.Auth == "3")
             {
                 IsVisible = false;
             }
             else
             {
                 IsVisible = true;
+            }
+
+            if(LocalContext.IsManager == true && LocalContext.ProfileSelected.Id == LocalContext.Current.AccountSettings.Id)
+            {
+                IsAdmin = false;
+                PermissionCollection = ContentData.PermissionAgency;
             }    
+                
         }
 
         #endregion
@@ -157,7 +177,7 @@ namespace ElogictisMobile.ViewModels
 
         public Category Auth { get; set; }
 
-        public ObservableCollection<Category> PermissionCollection { get; set; } = ContentData.PermissionCollection;
+        public ObservableCollection<Category> PermissionCollection { get; set; }
         #endregion
 
         #region Command
@@ -270,8 +290,15 @@ namespace ElogictisMobile.ViewModels
                 profiles.Auth_ext = Auth.Name;
 
                 // Do Something
-                await RealtimeFirebase.Instance.UpSert("Profiles", LocalContext.ProfileSelected.Id, JsonConvert.SerializeObject(profiles));
-                await App.Current.MainPage.DisplayAlert("Thông báo", "Đã cập nhật thông tin thành viên thành công", "OK");
+                if(await RealtimeFirebase.Instance.UpSert("Profiles", LocalContext.ProfileSelected.Id, JsonConvert.SerializeObject(profiles)))
+                {
+                    await App.Current.MainPage.DisplayAlert("Thông báo", "Đã cập nhật thông tin thành viên thành công", "OK");
+                    await _navigationService.GoBackAsync();
+                }
+                else
+                {
+                    await App.Current.MainPage.DisplayAlert("Thông báo", "Cập nhật thông tin thành viên không thành công", "OK");
+                }
             }
         }
 
@@ -286,21 +313,36 @@ namespace ElogictisMobile.ViewModels
 
         private async void DeleteProfileClicked(object obj)
         {
-            // Do something
-            var action = await App.Current.MainPage.DisplayAlert("Thông báo", "Bạn có thực sự muốn xóa thông tin thành viên này?", "Đúng","Không");
-            if(action)
+            try
             {
-                Profiles profiles = LocalContext.ProfileSelected;
-                profiles.IsDelete = true;
-                profiles.LastUpdateBy = LocalContext.ProfileSelected.Email;
-                profiles.LastUpdateTime = DateTime.Now.ToString();
+                if (LocalContext.ProfileSelected.Money > 0)
+                {
+                    await App.Current.MainPage.DisplayAlert("Không thể xóa thành viên", "Tiền của thành viên còn trong tài khoản\nHãy rút hết tiền trước khi xóa!", "OK");
+                    return;
+                }
+                // Do something
+                var action = await App.Current.MainPage.DisplayAlert("Thông báo", "Bạn có thực sự muốn xóa thông tin thành viên này?", "Đúng", "Không");
+                if (action)
+                {
+                    Profiles profiles = LocalContext.ProfileSelected;
+                    profiles.IsDelete = true;
+                    profiles.LastUpdateBy = LocalContext.ProfileSelected.Email;
+                    profiles.LastUpdateTime = DateTime.Now.ToString();
 
-                // Do Something
-                //await RealtimeFirebase.Instance.UpSert("Profiles", LocalContext.ProfileSelected.Id, JsonConvert.SerializeObject(profiles));
-                await RealtimeFirebase.Instance.Delete("Profiles", LocalContext.ProfileSelected.Id);
-                await App.Current.MainPage.DisplayAlert("Thông báo", "Đã xóa thông tin thành viên thành công", "OK");
-                isDelete = true;
-            }    
+                    // Do Something
+                    //await RealtimeFirebase.Instance.UpSert("Profiles", LocalContext.ProfileSelected.Id, JsonConvert.SerializeObject(profiles));
+                    await RealtimeFirebase.Instance.Delete("Profiles", LocalContext.ProfileSelected.Id);
+
+                    await App.Current.MainPage.DisplayAlert("Thông báo", "Đã xóa thông tin thành viên thành công", "OK");
+                    await _navigationService.GoBackAsync();
+                    isDelete = true;
+                }
+            }
+            catch(Exception ex)
+            {
+                await App.Current.MainPage.DisplayAlert("Thông báo", ex.Message, "OK");
+            }
+            
         }
 
         private async void ConfirmClicked(object obj)
@@ -308,6 +350,7 @@ namespace ElogictisMobile.ViewModels
             // Do something
             Profiles profiles = LocalContext.ProfileSelected;
             profiles.IsConfirm = true;
+            this.IsConfirm = !this.IsConfirm;
 
             // Do Something
             var up = await RealtimeFirebase.Instance.UpSert("Profiles", LocalContext.ProfileSelected.Id, JsonConvert.SerializeObject(profiles));

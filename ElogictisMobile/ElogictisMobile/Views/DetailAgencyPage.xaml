@@ -23,12 +23,11 @@
     </ContentPage.Resources>
 
     <ContentPage.Content>
-        <ScrollView>
-            <StackLayout
+        <StackLayout
                 Padding="16,24"
                 BackgroundColor="{DynamicResource Gray-100}"
                 Spacing="16">
-                <Label
+            <Label
                     Margin="0,0,0,10"
                     FontFamily="Montserrat-SemiBold"
                     FontSize="18"
@@ -39,9 +38,9 @@
                     TextColor="{DynamicResource Gray-800}"
                     VerticalOptions="Center"
                     VerticalTextAlignment="Center" />
-                <!--From Full Name-->
-                <StackLayout Grid.Row="1" Orientation="Horizontal">
-                    <Label
+            <!--From Full Name-->
+            <StackLayout Grid.Row="1" Orientation="Horizontal">
+                <Label
                     Margin="0,0,0,10"
                     FontFamily="Montserrat-SemiBold"
                     FontSize="16"
@@ -52,7 +51,7 @@
                     TextColor="{DynamicResource Gray-800}"
                     VerticalOptions="Center"
                     VerticalTextAlignment="Center" />
-                    <Label
+                <Label
                     Margin="0,0,0,10"
                     FontFamily="Montserrat-SemiBold"
                     FontSize="16"
@@ -63,10 +62,10 @@
                     TextColor="{DynamicResource Gray-800}"
                     VerticalOptions="Center"
                     VerticalTextAlignment="Center" />
-                </StackLayout>
-                <!--From Phone-->
-                <StackLayout Grid.Row="2">
-                    <Label
+            </StackLayout>
+            <!--From Phone-->
+            <StackLayout Grid.Row="2">
+                <Label
                     Margin="0,0,0,10"
                     FontFamily="Montserrat-SemiBold"
                     FontSize="16"
@@ -77,7 +76,7 @@
                     TextColor="{DynamicResource Gray-800}"
                     VerticalOptions="Center"
                     VerticalTextAlignment="Center" />
-                    <Label
+                <Label
                     Margin="0,0,0,10"
                     FontFamily="Montserrat-SemiBold"
                     FontSize="16"
@@ -88,10 +87,10 @@
                     TextColor="{DynamicResource Gray-800}"
                     VerticalOptions="Center"
                     VerticalTextAlignment="Center" />
-                </StackLayout>
-                
-                <StackLayout Orientation="Horizontal">
-                    <Label
+            </StackLayout>
+
+            <StackLayout Orientation="Horizontal">
+                <Label
                     Margin="0,0,0,10"
                     FontFamily="Montserrat-SemiBold"
                     FontSize="16"
@@ -102,7 +101,7 @@
                     TextColor="{DynamicResource Gray-800}"
                     VerticalOptions="Center"
                     VerticalTextAlignment="Center" />
-                    <Label
+                <Label
                     Margin="0,0,0,10"
                     FontFamily="Montserrat-SemiBold"
                     FontSize="16"
@@ -113,9 +112,9 @@
                     TextColor="{DynamicResource Gray-800}"
                     VerticalOptions="Center"
                     VerticalTextAlignment="Center" />
-                </StackLayout>
-                <StackLayout Orientation="Horizontal">
-                    <Label
+            </StackLayout>
+            <StackLayout Orientation="Horizontal">
+                <Label
                     Margin="0,0,0,10"
                     FontFamily="Montserrat-SemiBold"
                     FontSize="16"
@@ -126,7 +125,7 @@
                     TextColor="{DynamicResource Gray-800}"
                     VerticalOptions="Center"
                     VerticalTextAlignment="Center" />
-                    <Label
+                <Label
                     Margin="0,0,0,10"
                     FontFamily="Montserrat-SemiBold"
                     FontSize="16"
@@ -137,9 +136,9 @@
                     TextColor="{DynamicResource Gray-800}"
                     VerticalOptions="Center"
                     VerticalTextAlignment="Center" />
-                </StackLayout>
-                <StackLayout Orientation="Horizontal">
-                    <Label
+            </StackLayout>
+            <StackLayout Orientation="Horizontal">
+                <Label
                     Margin="0,0,0,10"
                     FontFamily="Montserrat-SemiBold"
                     FontSize="16"
@@ -150,7 +149,7 @@
                     TextColor="{DynamicResource Gray-800}"
                     VerticalOptions="Center"
                     VerticalTextAlignment="Center" />
-                    <Label
+                <Label
                     Margin="0,0,0,10"
                     FontFamily="Montserrat-SemiBold"
                     FontSize="16"
@@ -161,9 +160,9 @@
                     TextColor="{DynamicResource Gray-800}"
                     VerticalOptions="Center"
                     VerticalTextAlignment="Center" />
-                </StackLayout>
-                <StackLayout>
-                    <Label
+            </StackLayout>
+            <StackLayout>
+                <Label
                     Margin="0,0,0,10"
                     FontFamily="Montserrat-SemiBold"
                     FontSize="16"
@@ -174,26 +173,24 @@
                     TextColor="{DynamicResource Gray-800}"
                     VerticalOptions="Center"
                     VerticalTextAlignment="Center" />
-                    <combobox:SfComboBox HeightRequest="40" 
+                <combobox:SfComboBox HeightRequest="40" 
                                          DataSource="{Binding ProfilesCollection}" 
                                          DisplayMemberPath="Name" 
                                          SelectedValuePath="Id"
-                                         SelectedIndex="0"
-                                         SelectedItem="{Binding Profiles}"
+                                         SelectedItem="{Binding Profiles, Mode=TwoWay}"
                                          ShowClearButton="False"
                                          IsEditableMode="False"/>
-                </StackLayout>
+            </StackLayout>
 
-                <!--Submit Button-->
-                <buttons:SfButton
+            <!--Submit Button-->
+            <buttons:SfButton
                     Margin="0,24,0,0"
                     Command="{Binding SubmitCommand}"
                     Style="{StaticResource GradientButtonStyle}"
                     Text="Cập nhật"
                     WidthRequest="200" />
 
-            </StackLayout>
-        </ScrollView>
+        </StackLayout>
     </ContentPage.Content>
 
 </ContentPage>

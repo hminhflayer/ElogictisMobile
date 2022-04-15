@@ -17,7 +17,7 @@
         <ScrollView>
             <Grid
             ColumnSpacing="0"
-            RowDefinitions="Auto, Auto, *"
+            RowDefinitions="Auto, *"
             RowSpacing="0">
 
                 <StackLayout Orientation="Horizontal">
@@ -43,16 +43,12 @@
                                 <StackLayout Orientation="Vertical" Spacing="16" Padding="16">
                                     <StackLayout Orientation="Vertical">
                                         <Label Text="{Binding Name, StringFormat='Đại lý: {0}'}"
-                                               FontSize="18"
+                                               FontSize="20"
                                                FontAttributes="Bold"/>
-                                        <StackLayout Orientation="Horizontal">
+                                        <StackLayout Orientation="Vertical">
                                             <Label Text="{Binding Address, StringFormat='Địa chỉ: {0}'}"
                                                FontSize="18"/>
-                                            <Label Text="{Binding Town_ext, StringFormat='Xã {0},'}"
-                                               FontSize="18"/>
-                                            <Label Text="{Binding District_ext, StringFormat='Huyện {0},'}"
-                                               FontSize="18"/>
-                                            <Label Text="{Binding Province_ext, StringFormat='Tỉnh {0}'}"
+                                            <Label Text="{Binding ManagerName, StringFormat='Người quản lý: {0}'}"
                                                FontSize="18"/>
                                         </StackLayout>
                                         

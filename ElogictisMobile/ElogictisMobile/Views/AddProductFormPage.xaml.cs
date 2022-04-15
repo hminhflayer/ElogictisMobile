@@ -56,6 +56,7 @@ namespace ElogictisMobile.Views
             if (this.BindingContext is AddProductFormPageViewModel vm)
             {
                 vm.FromAddressChangedCommand.Execute(e.NewTextValue);
+                //map.MoveToRegion(new MapSpan(vm.FromLocations[0].Position, 0.01, 0.01));
             }
         }
 
@@ -64,6 +65,19 @@ namespace ElogictisMobile.Views
             if (this.BindingContext is AddProductFormPageViewModel vm)
             {
                 vm.ToAddressChangedCommand.Execute(e.NewTextValue);
+                Tomap.MoveToRegion(new MapSpan(vm.ToLocations[0].Position, 0.01, 0.01));
+            }
+        }
+
+        private void Button_Clicked(object sender, System.EventArgs e)
+        {
+            if (this.BindingContext is AddProductFormPageViewModel vm)
+            {
+                vm.FromAddressChangedCommand.Execute(null);
+                //if(vm.FromLocations.Count != null)
+                //{
+                //    map.MoveToRegion(new MapSpan(vm.FromLocations[0].Position, 0.01, 0.01));
+                //}             
             }
         }
     }

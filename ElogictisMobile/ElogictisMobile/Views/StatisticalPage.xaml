@@ -17,12 +17,13 @@
     NavigationPage.HasNavigationBar="False">
 
     <ContentPage.Content>
-        <ScrollView>
-            <StackLayout Spacing="10">
-                <StackLayout Orientation="Horizontal"
+        <Grid>
+            <ScrollView>
+                <StackLayout Spacing="10">
+                    <StackLayout Orientation="Horizontal"
                              Spacing="0"
                              Padding="0">
-                    <controls:CustomShadowFrame
+                        <controls:CustomShadowFrame
                                 BackgroundColor="{DynamicResource GrayShadowColor}"
                                 BorderWidth="0"
                                 Padding="0" 
@@ -32,25 +33,25 @@
                                 HasShadow="True"
                                 Radius="4">
 
-                        <controls:CustomShadowFrame.Content>
-                            <border:SfBorder
+                            <controls:CustomShadowFrame.Content>
+                                <border:SfBorder
                                         BorderColor="Transparent"
                                         BorderWidth="0"
                                         CornerRadius="4">
-                                <Grid>
-                                    <gradient:SfGradientView>
-                                        <gradient:SfGradientView.BackgroundBrush>
-                                            <gradient:SfLinearGradientBrush>
-                                                <gradient:SfLinearGradientBrush.GradientStops>
-                                                    <gradient:SfGradientStop Offset="0.0" Color="#255ea6" />
-                                                    <gradient:SfGradientStop Offset="1.0" Color="#b350d1" />
-                                                </gradient:SfLinearGradientBrush.GradientStops>
-                                            </gradient:SfLinearGradientBrush>
-                                        </gradient:SfGradientView.BackgroundBrush>
-                                    </gradient:SfGradientView>
+                                    <Grid>
+                                        <gradient:SfGradientView>
+                                            <gradient:SfGradientView.BackgroundBrush>
+                                                <gradient:SfLinearGradientBrush>
+                                                    <gradient:SfLinearGradientBrush.GradientStops>
+                                                        <gradient:SfGradientStop Offset="0.0" Color="#255ea6" />
+                                                        <gradient:SfGradientStop Offset="1.0" Color="#b350d1" />
+                                                    </gradient:SfLinearGradientBrush.GradientStops>
+                                                </gradient:SfLinearGradientBrush>
+                                            </gradient:SfGradientView.BackgroundBrush>
+                                        </gradient:SfGradientView>
 
-                                    <StackLayout Margin="10" Spacing="5">
-                                        <Label
+                                        <StackLayout Margin="10" Spacing="5">
+                                            <Label
                                                     FontFamily="Montserrat-SemiBold"
                                                     FontSize="15"
                                             WidthRequest="150"
@@ -59,7 +60,7 @@
                                                                             Default=-1}"
                                                     Text="ĐƠN ĐANG CHỜ"
                                                     TextColor="{DynamicResource Gray-White}" />
-                                        <Label
+                                            <Label
                                             HorizontalOptions="CenterAndExpand"
                                                     FontFamily="Montserrat-SemiBold"
                                                     FontSize="24"
@@ -67,14 +68,14 @@
                                                                             Default=-1}"
                                                     Text="{Binding ValueWait}"
                                                     TextColor="{DynamicResource Gray-White}" />
-                                    </StackLayout>
-                                </Grid>
-                            </border:SfBorder>
+                                        </StackLayout>
+                                    </Grid>
+                                </border:SfBorder>
 
-                        </controls:CustomShadowFrame.Content>
-                    </controls:CustomShadowFrame>
+                            </controls:CustomShadowFrame.Content>
+                        </controls:CustomShadowFrame>
 
-                    <controls:CustomShadowFrame
+                        <controls:CustomShadowFrame
                                 BackgroundColor="{DynamicResource Blue}"
                                 BorderWidth="0"
                                 CornerRadius="4"
@@ -84,26 +85,26 @@
                                 HasShadow="True"
                                 Radius="4">
 
-                        <controls:CustomShadowFrame.Content>
+                            <controls:CustomShadowFrame.Content>
 
-                            <border:SfBorder
+                                <border:SfBorder
                                         BorderColor="Transparent"
                                         BorderWidth="0"
                                         CornerRadius="4">
-                                <Grid>
-                                    <gradient:SfGradientView>
-                                        <gradient:SfGradientView.BackgroundBrush>
-                                            <gradient:SfLinearGradientBrush>
-                                                <gradient:SfLinearGradientBrush.GradientStops>
-                                                    <gradient:SfGradientStop Offset="0.0" Color="#f59083" />
-                                                    <gradient:SfGradientStop Offset="1.0" Color="#fae188" />
-                                                </gradient:SfLinearGradientBrush.GradientStops>
-                                            </gradient:SfLinearGradientBrush>
-                                        </gradient:SfGradientView.BackgroundBrush>
-                                    </gradient:SfGradientView>
+                                    <Grid>
+                                        <gradient:SfGradientView>
+                                            <gradient:SfGradientView.BackgroundBrush>
+                                                <gradient:SfLinearGradientBrush>
+                                                    <gradient:SfLinearGradientBrush.GradientStops>
+                                                        <gradient:SfGradientStop Offset="0.0" Color="#f59083" />
+                                                        <gradient:SfGradientStop Offset="1.0" Color="#fae188" />
+                                                    </gradient:SfLinearGradientBrush.GradientStops>
+                                                </gradient:SfLinearGradientBrush>
+                                            </gradient:SfGradientView.BackgroundBrush>
+                                        </gradient:SfGradientView>
 
-                                    <StackLayout Margin="10" Spacing="5">
-                                        <Label
+                                        <StackLayout Margin="10" Spacing="5">
+                                            <Label
                                                     FontFamily="Montserrat-SemiBold"
                                                     FontSize="15"
                                                     LineHeight="{OnPlatform Android=1.25,
@@ -111,7 +112,7 @@
                                                     Text="ĐANG GIAO HÀNG"
                                             HorizontalOptions="CenterAndExpand"
                                                     TextColor="{DynamicResource Gray-White}" />
-                                        <Label
+                                            <Label
                                                     HorizontalOptions="CenterAndExpand"
                                                     FontFamily="Montserrat-SemiBold"
                                                     FontSize="24"
@@ -119,17 +120,17 @@
                                                                             Default=-1}"
                                                     Text="{Binding ValueShipped}"
                                                     TextColor="{DynamicResource Gray-White}" />
-                                    </StackLayout>
-                                </Grid>
-                            </border:SfBorder>
+                                        </StackLayout>
+                                    </Grid>
+                                </border:SfBorder>
 
-                        </controls:CustomShadowFrame.Content>
-                    </controls:CustomShadowFrame>
-                </StackLayout>
-                <StackLayout Orientation="Horizontal"
+                            </controls:CustomShadowFrame.Content>
+                        </controls:CustomShadowFrame>
+                    </StackLayout>
+                    <StackLayout Orientation="Horizontal"
                              Spacing="0"
                              Padding="0">
-                    <controls:CustomShadowFrame
+                        <controls:CustomShadowFrame
                                 BackgroundColor="{DynamicResource GrayShadowColor}"
                                 BorderWidth="0"
                                 Padding="0" 
@@ -139,32 +140,32 @@
                                 HasShadow="True"
                                 Radius="4">
 
-                        <controls:CustomShadowFrame.Content>
-                            <border:SfBorder
+                            <controls:CustomShadowFrame.Content>
+                                <border:SfBorder
                                         BorderColor="Transparent"
                                         BorderWidth="0"
                                         CornerRadius="4">
-                                <Grid>
-                                    <gradient:SfGradientView>
-                                        <gradient:SfGradientView.BackgroundBrush>
-                                            <gradient:SfLinearGradientBrush>
-                                                <gradient:SfLinearGradientBrush.GradientStops>
-                                                    <gradient:SfGradientStop Offset="0.0" Color="#5e7cea" />
-                                                    <gradient:SfGradientStop Offset="1.0" Color="#1dcce3" />
-                                                </gradient:SfLinearGradientBrush.GradientStops>
-                                            </gradient:SfLinearGradientBrush>
-                                        </gradient:SfGradientView.BackgroundBrush>
-                                    </gradient:SfGradientView>
+                                    <Grid>
+                                        <gradient:SfGradientView>
+                                            <gradient:SfGradientView.BackgroundBrush>
+                                                <gradient:SfLinearGradientBrush>
+                                                    <gradient:SfLinearGradientBrush.GradientStops>
+                                                        <gradient:SfGradientStop Offset="0.0" Color="#5e7cea" />
+                                                        <gradient:SfGradientStop Offset="1.0" Color="#1dcce3" />
+                                                    </gradient:SfLinearGradientBrush.GradientStops>
+                                                </gradient:SfLinearGradientBrush>
+                                            </gradient:SfGradientView.BackgroundBrush>
+                                        </gradient:SfGradientView>
 
-                                    <StackLayout Margin="10" Spacing="5">
-                                        <Label
+                                        <StackLayout Margin="10" Spacing="5">
+                                            <Label
                                                     FontFamily="Montserrat-SemiBold"
                                                     FontSize="15"
                                                     LineHeight="{OnPlatform Android=1.25,
                                                                             Default=-1}"
                                                     Text="GIAO THÀNH CÔNG"
                                                     TextColor="{DynamicResource Gray-White}" />
-                                        <Label
+                                            <Label
                                                     HorizontalOptions="CenterAndExpand"
                                                     FontFamily="Montserrat-SemiBold"
                                                     FontSize="24"
@@ -172,14 +173,14 @@
                                                                             Default=-1}"
                                                     Text="{Binding ValueSuccess}"
                                                     TextColor="{DynamicResource Gray-White}" />
-                                    </StackLayout>
-                                </Grid>
-                            </border:SfBorder>
+                                        </StackLayout>
+                                    </Grid>
+                                </border:SfBorder>
 
-                        </controls:CustomShadowFrame.Content>
-                    </controls:CustomShadowFrame>
+                            </controls:CustomShadowFrame.Content>
+                        </controls:CustomShadowFrame>
 
-                    <controls:CustomShadowFrame
+                        <controls:CustomShadowFrame
                                 BackgroundColor="{DynamicResource Blue}"
                                 BorderWidth="0"
                                 CornerRadius="4"
@@ -189,33 +190,33 @@
                                 HasShadow="True"
                                 Radius="4">
 
-                        <controls:CustomShadowFrame.Content>
+                            <controls:CustomShadowFrame.Content>
 
-                            <border:SfBorder
+                                <border:SfBorder
                                         BorderColor="Transparent"
                                         BorderWidth="0"
                                         CornerRadius="4">
-                                <Grid>
-                                    <gradient:SfGradientView>
-                                        <gradient:SfGradientView.BackgroundBrush>
-                                            <gradient:SfLinearGradientBrush>
-                                                <gradient:SfLinearGradientBrush.GradientStops>
-                                                    <gradient:SfGradientStop Offset="0.0" Color="#ff7272" />
-                                                    <gradient:SfGradientStop Offset="1.0" Color="#f650c5" />
-                                                </gradient:SfLinearGradientBrush.GradientStops>
-                                            </gradient:SfLinearGradientBrush>
-                                        </gradient:SfGradientView.BackgroundBrush>
-                                    </gradient:SfGradientView>
+                                    <Grid>
+                                        <gradient:SfGradientView>
+                                            <gradient:SfGradientView.BackgroundBrush>
+                                                <gradient:SfLinearGradientBrush>
+                                                    <gradient:SfLinearGradientBrush.GradientStops>
+                                                        <gradient:SfGradientStop Offset="0.0" Color="#ff7272" />
+                                                        <gradient:SfGradientStop Offset="1.0" Color="#f650c5" />
+                                                    </gradient:SfLinearGradientBrush.GradientStops>
+                                                </gradient:SfLinearGradientBrush>
+                                            </gradient:SfGradientView.BackgroundBrush>
+                                        </gradient:SfGradientView>
 
-                                    <StackLayout Margin="10" Spacing="5">
-                                        <Label
+                                        <StackLayout Margin="10" Spacing="5">
+                                            <Label
                                                     FontFamily="Montserrat-SemiBold"
                                                     FontSize="15"
                                                     LineHeight="{OnPlatform Android=1.25,
                                                                             Default=-1}"
                                                     Text="ĐƠN HÀNG BỊ HỦY"
                                                     TextColor="{DynamicResource Gray-White}" />
-                                        <Label
+                                            <Label
                                                     HorizontalOptions="CenterAndExpand"
                                                     FontFamily="Montserrat-SemiBold"
                                                     FontSize="24"
@@ -223,16 +224,16 @@
                                                                             Default=-1}"
                                                     Text="{Binding ValueFail}"
                                                     TextColor="{DynamicResource Gray-White}" />
-                                    </StackLayout>
-                                </Grid>
-                            </border:SfBorder>
+                                        </StackLayout>
+                                    </Grid>
+                                </border:SfBorder>
 
-                        </controls:CustomShadowFrame.Content>
-                    </controls:CustomShadowFrame>
-                </StackLayout>
+                            </controls:CustomShadowFrame.Content>
+                        </controls:CustomShadowFrame>
+                    </StackLayout>
 
-                <StackLayout>
-                    <controls:CustomShadowFrame
+                    <StackLayout>
+                        <controls:CustomShadowFrame
                                 Margin="8"
                                 Padding="0"
                                 BackgroundColor="{DynamicResource GrayShadowColor}"
@@ -241,45 +242,45 @@
                                 HasShadow="True"
                                 Radius="4">
 
-                        <border:SfBorder
+                            <border:SfBorder
                                     BorderColor="Transparent"
                                     BorderWidth="0"
                                     CornerRadius="4">
-                            <StackLayout Orientation="Horizontal" Spacing="0">
+                                <StackLayout Orientation="Horizontal" Spacing="0">
 
-                                <BoxView
+                                    <BoxView
                                             BackgroundColor="#ed840c"
                                             CornerRadius="4,0,4,0"
                                             HorizontalOptions="Start"
                                             WidthRequest="8" />
 
-                                <Grid
+                                    <Grid
                                             Padding="8"
                                             HorizontalOptions="FillAndExpand"
                                             RowDefinitions="Auto, Auto"
                                             RowSpacing="4"
                                             VerticalOptions="Center">
 
-                                    <Label
+                                        <Label
                                                 FontSize="14"
                                                 HorizontalOptions="Start"
                                                 Style="{StaticResource TitleLabelStyle}"
                                                 Text="{Binding TextTotalRevenue}" />
-                                    <Label
+                                        <Label
                                                 Grid.RowSpan="2"
                                                 Grid.Column="1"
                                                 HorizontalOptions="EndAndExpand"
                                                 Style="{StaticResource TitleLabelStyle}"
                                                 Text="{Binding ValueTotalRevenue, StringFormat='{0:0.00} VNĐ'}"
                                                 VerticalOptions="Center" />
-                                </Grid>
-                            </StackLayout>
-                        </border:SfBorder>
+                                    </Grid>
+                                </StackLayout>
+                            </border:SfBorder>
 
-                    </controls:CustomShadowFrame>
-                </StackLayout>
-                <StackLayout>
-                    <controls:CustomShadowFrame
+                        </controls:CustomShadowFrame>
+                    </StackLayout>
+                    <StackLayout>
+                        <controls:CustomShadowFrame
                                 Margin="8"
                                 Padding="0"
                                 BackgroundColor="{DynamicResource GrayShadowColor}"
@@ -288,45 +289,45 @@
                                 HasShadow="True"
                                 Radius="4">
 
-                        <border:SfBorder
+                            <border:SfBorder
                                     BorderColor="Transparent"
                                     BorderWidth="0"
                                     CornerRadius="4">
-                            <StackLayout Orientation="Horizontal" Spacing="0">
+                                <StackLayout Orientation="Horizontal" Spacing="0">
 
-                                <BoxView
+                                    <BoxView
                                             BackgroundColor="#18de57"
                                             CornerRadius="4,0,4,0"
                                             HorizontalOptions="Start"
                                             WidthRequest="8" />
 
-                                <Grid
+                                    <Grid
                                             Padding="8"
                                             HorizontalOptions="FillAndExpand"
                                             RowDefinitions="Auto, Auto"
                                             RowSpacing="4"
                                             VerticalOptions="Center">
 
-                                    <Label
+                                        <Label
                                                 FontSize="14"
                                                 HorizontalOptions="Start"
                                                 Style="{StaticResource TitleLabelStyle}"
                                                 Text="{Binding TextMonthRevenue}" />
-                                    <Label
+                                        <Label
                                                 Grid.RowSpan="2"
                                                 Grid.Column="1"
                                                 HorizontalOptions="EndAndExpand"
                                                 Style="{StaticResource TitleLabelStyle}"
                                                 Text="{Binding ValueMonthRevenue, StringFormat='{0:0.00} VNĐ'}"
                                                 VerticalOptions="Center" />
-                                </Grid>
-                            </StackLayout>
-                        </border:SfBorder>
+                                    </Grid>
+                                </StackLayout>
+                            </border:SfBorder>
 
-                    </controls:CustomShadowFrame>
-                </StackLayout>
-                <StackLayout>
-                    <controls:CustomShadowFrame
+                        </controls:CustomShadowFrame>
+                    </StackLayout>
+                    <StackLayout>
+                        <controls:CustomShadowFrame
                                 Margin="8"
                                 Padding="0"
                                 BackgroundColor="{DynamicResource GrayShadowColor}"
@@ -335,53 +336,121 @@
                                 HasShadow="True"
                                 Radius="4">
 
-                        <border:SfBorder
+                            <border:SfBorder
                                     BorderColor="Transparent"
                                     BorderWidth="0"
                                     CornerRadius="4">
-                            <StackLayout Orientation="Horizontal" Spacing="0">
+                                <StackLayout Orientation="Horizontal" Spacing="0">
 
-                                <BoxView
+                                    <BoxView
                                             BackgroundColor="#0caaed"
                                             CornerRadius="4,0,4,0"
                                             HorizontalOptions="Start"
                                             WidthRequest="8" />
 
-                                <Grid
+                                    <Grid
                                             Padding="8"
                                             HorizontalOptions="FillAndExpand"
                                             RowDefinitions="Auto, Auto"
                                             RowSpacing="4"
                                             VerticalOptions="Center">
 
-                                    <Label
+                                        <Label
                                                 FontSize="14"
                                                 HorizontalOptions="Start"
                                                 FontAttributes="Bold"
                                                 Style="{StaticResource TitleLabelStyle}"
                                                 Text="Tài khoản của tôi:" />
-                                    <Label
+                                        <Label
                                                 Grid.RowSpan="2"
                                                 Grid.Column="1"
                                                 HorizontalOptions="EndAndExpand"
                                                 Style="{StaticResource TitleLabelStyle}"
                                                 Text="{Binding ValueMoney, StringFormat='{0:0.00} VNĐ'}"
                                                 VerticalOptions="Center" />
-                                </Grid>
-                            </StackLayout>
-                        </border:SfBorder>
+                                    </Grid>
+                                </StackLayout>
+                            </border:SfBorder>
 
-                    </controls:CustomShadowFrame>
+                        </controls:CustomShadowFrame>
+                    </StackLayout>
+                    <StackLayout IsVisible="{Binding IsNotUser}">
+                        <controls:TapAnimationGrid
+                    BackgroundColor="{DynamicResource Gray-Bg}"
+                    ColumnDefinitions="Auto, *, Auto"
+                    ColumnSpacing="0"
+                    Command="{Binding MenuCommand}"
+                    RowSpacing="0"
+                    Tapped="False">
+
+                            <!--Edit profile icon-->
+                            <Label
+                        Grid.Column="0"
+                        Margin="16,0,0,0"
+                        Style="{StaticResource IconLabelStyle}"
+                        Text="{StaticResource Rating}" />
+                            <!--Edit profile label-->
+                            <Label
+                        Grid.Column="1"
+                        Margin="16,12"
+                        FontFamily="Montserrat-Medium"
+                        HorizontalOptions="Start"
+                        Style="{StaticResource TitleLabelStyle}"
+                        Text="Chi tiết lợi nhuận"
+                        VerticalOptions="Center" />
+                            <!--Navigation icon-->
+                            <Label
+                        Grid.Column="2"
+                        Margin="16,8"
+                        Style="{StaticResource IconLabelStyle}"
+                        Text="{StaticResource Next}" />
+                        </controls:TapAnimationGrid>
+                        <BoxView Style="{StaticResource HorizontalSeparatorStyle}" />
+                    </StackLayout>
+                    <StackLayout IsVisible="{Binding IsShipper}">
+                        <controls:TapAnimationGrid
+                    BackgroundColor="{DynamicResource Gray-Bg}"
+                    ColumnDefinitions="Auto, *, Auto"
+                    ColumnSpacing="0"
+                    Command="{Binding HistoryOrderCommand}"
+                    RowSpacing="0"
+                    Tapped="False">
+
+                            <!--Edit profile icon-->
+                            <Label
+                        Grid.Column="0"
+                        Margin="16,0,0,0"
+                        Style="{StaticResource IconLabelStyle}"
+                        Text="{StaticResource Rating}" />
+                            <!--Edit profile label-->
+                            <Label
+                        Grid.Column="1"
+                        Margin="16,12"
+                        FontFamily="Montserrat-Medium"
+                        HorizontalOptions="Start"
+                        Style="{StaticResource TitleLabelStyle}"
+                        Text="Lịch sử đặt hàng"
+                        VerticalOptions="Center" />
+                            <!--Navigation icon-->
+                            <Label
+                        Grid.Column="2"
+                        Margin="16,8"
+                        Style="{StaticResource IconLabelStyle}"
+                        Text="{StaticResource Next}" />
+                        </controls:TapAnimationGrid>
+                        <BoxView Style="{StaticResource HorizontalSeparatorStyle}" />
+                    </StackLayout>
                 </StackLayout>
-                <busyindicator:SfBusyIndicator 
+            </ScrollView>
+            <busyindicator:SfBusyIndicator 
                                        IsBusy="{Binding IsLoading}"
                                        AnimationType="Cupertino" 
-                                       ViewBoxWidth = "150" 
-                                       ViewBoxHeight="150" 
+                                       ViewBoxWidth = "200" 
+                                       ViewBoxHeight="200" 
+                                       FontAttributes="Bold"
                                        Title="Đang tải dữ liệu ..."
                                        TextColor="Blue"/>
-            </StackLayout>
-        </ScrollView>
+        </Grid>
     </ContentPage.Content>
 
 </ContentPage>

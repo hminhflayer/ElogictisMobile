@@ -11,11 +11,11 @@
                 <pages:StatisticalPage BindingContext="{Binding StatisticalPageViewModel}" />
             </x:Arguments>
         </NavigationPage>
-        <NavigationPage Title="Thông báo" IconImageSource="Bell">
+        <!--<NavigationPage Title="Thông báo" IconImageSource="Bell" IsVisible="true">
             <x:Arguments>
                 <pages:TransactionHistoryPage BindingContext="{Binding TransactionHistoryPageViewModel}" />
             </x:Arguments>
-        </NavigationPage>
+        </NavigationPage>-->
         <NavigationPage Title="Quản lý" IconImageSource="Historyicon">
             <x:Arguments>
                 <pages:ManageProductsPage BindingContext="{Binding ManageProductsPageViewModel}" />

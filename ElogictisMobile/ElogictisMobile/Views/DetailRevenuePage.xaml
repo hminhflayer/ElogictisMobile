@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage
-    x:Class="ElogictisMobile.Views.ManageProductNewPage"
+    x:Class="ElogictisMobile.Views.DetailRevenuePage"
     xmlns="http://xamarin.com/schemas/2014/forms"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:border="clr-namespace:Syncfusion.XForms.Border;assembly=Syncfusion.Core.XForms"
@@ -9,7 +9,7 @@
     xmlns:converter="clr-namespace:ElogictisMobile.Converters"
     xmlns:helper="clr-namespace:ElogictisMobile.Helpers"
     xmlns:syncEffectsView="clr-namespace:Syncfusion.XForms.EffectsView;assembly=Syncfusion.Core.XForms"
-    Title="Đơn mới"
+    Title="Lịch sử lợi nhuận"
     BackgroundColor="{DynamicResource Gray-100}"
     NavigationPage.HasNavigationBar="True"
     NavigationPage.HasBackButton="True">
@@ -30,47 +30,42 @@
 
                 <!--<SearchBar x:Name="filterText" HeightRequest="40"
                    Placeholder="Search here to filter" Grid.Row="0"/>-->
-                <ListView Grid.Row="1" ItemsSource="{Binding ProductList}" SelectionMode="None"
-                          HasUnevenRows="True"
-                          ItemTapped="ListView_ItemTapped">
+                <ListView Grid.Row="1" ItemsSource="{Binding ObservableCollection}" SelectionMode="None"
+                          HasUnevenRows="True">
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <ViewCell>
                                 <StackLayout Orientation="Vertical" Spacing="16" Padding="16">
-                                    <StackLayout Orientation="Horizontal" BackgroundColor="#2196F3" Padding="5">
-                                        <Label Text="{Binding Name, StringFormat='Đơn: {0}'}"
-                                               FontSize="20"
-                                               HorizontalOptions="StartAndExpand"
+                                    <StackLayout Orientation="Horizontal" BackgroundColor="Green" Padding="10">
+                                        <Label Text="Thời gian: "
                                                TextColor="White"
-                                               FontAttributes="Bold"/>
-                                    </StackLayout>
-                                    <StackLayout Orientation="Horizontal">
-                                        <Label Text="{Binding From_FullName, StringFormat='Từ: {0}'}"
+                                               FontSize="18"/>
+                                        <Label Text="{Binding CreateTime}"
                                                FontSize="18"
+                                               TextColor="White"/>
+                                        <Label Text="{Binding CreateDate}"
+                                               TextColor="White"
+                                               FontSize="18"/>
+                                    </StackLayout>
+                                    <StackLayout Orientation="Horizontal">
+                                        <Label Text="Đơn hàng: "
+                                               FontSize="18"/>
+                                        <Label Text="{Binding ProductName}"
+                                               FontSize="18"/>
+                                    </StackLayout>
+                                    <StackLayout Orientation="Horizontal">
+                                        <Label Text="Phí vận chuyển: "
+                                               FontSize="18"/>
+                                        <Label Text="{Binding ProductMoney, StringFormat='{0:C}'}"
+                                               FontSize="18" 
                                                FontAttributes="Bold"/>
-                                        <Label Text="{Binding From_PhoneNumber}"
-                                               FontSize="18"/>
                                     </StackLayout>
                                     <StackLayout Orientation="Horizontal">
-                                        <Label Text="{Binding From_Address, StringFormat='Địa chỉ: {0}'}"
+                                        <Label Text="Lợi nhuận: "
                                                FontSize="18"/>
-                                    </StackLayout>
-                                    <StackLayout Orientation="Horizontal">
-                                        <Label Text="{Binding To_FullName, StringFormat='Đến: {0}'}"
+                                        <Label Text="{Binding Profit, StringFormat='+ {0:C}'}"
                                                FontSize="18"
-                                               FontAttributes="Bold"/>
-                                        <Label Text="{Binding To_PhoneNumber}"
-                                               FontSize="18"/>
-                                    </StackLayout>
-                                    <StackLayout Orientation="Horizontal">
-                                        <Label Text="{Binding To_Address, StringFormat='Địa chỉ: {0}'}"
-                                               FontSize="18"/>
-                                    </StackLayout>
-                                    <StackLayout Orientation="Horizontal" 
-                                                 BackgroundColor="LightGreen">
-                                        <Label Text="{Binding Money, StringFormat='Phí vận chuyển: {0} VNĐ'}"
-                                               FontSize="20"
-                                               HorizontalOptions="CenterAndExpand"
+                                               TextColor="Green"
                                                FontAttributes="Bold"/>
                                     </StackLayout>
                                 </StackLayout>

@@ -6,6 +6,8 @@ using ElogictisMobile.Validators;
 using ElogictisMobile.Validators.Rules;
 using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using Xamarin.Forms;
 using Xamarin.Forms.Internals;
 
@@ -40,8 +42,12 @@ namespace ElogictisMobile.ViewModels
 
             this.InitializeProperties();
             this.AddValidationRules();
-            this.LoginCommand = new Command(this.LoginClicked);
             this.SignUpCommand = new Command(this.SignUpClicked);
+            this.ProvinceCommand = new Command(this.ProvinceChangeClicked);
+            this.DistrictCommand = new Command(this.DistrictChangeClicked);
+            this.TownCommand = new Command(this.TownChangeClicked);
+            DistrictCollection = new ObservableCollection<District>();
+            TownCollection = new ObservableCollection<Town>();
         }
         #endregion
 
@@ -88,19 +94,25 @@ namespace ElogictisMobile.ViewModels
                 this.SetProperty(ref this.password, value);
             }
         }
+        public ValidatableObject<string> Address { get; set; }
+        public ValidatableObject<string> PhoneNumber { get; set; }
+        public Category Province { get; set; }
+        public District District { get; set; }
+        public Town Town { get; set; }
+        public ObservableCollection<Category> ProvinceCollection { get; set; } = LocalContext.ProvinceList;
+        public ObservableCollection<District> DistrictCollection { get; set; }
+        public ObservableCollection<Town> TownCollection { get; set; }
         #endregion
 
         #region Command
 
         /// <summary>
-        /// Gets or sets the command that is executed when the Log In button is clicked.
-        /// </summary>
-        public Command LoginCommand { get; set; }
-
-        /// <summary>
         /// Gets or sets the command that is executed when the Sign Up button is clicked.
         /// </summary>
         public Command SignUpCommand { get; set; }
+        public Command ProvinceCommand { get; }
+        public Command DistrictCommand { get; }
+        public Command TownCommand { get; }
         #endregion
 
         #region Methods
@@ -129,6 +141,8 @@ namespace ElogictisMobile.ViewModels
         {
             this.Name = new ValidatableObject<string>();
             this.Password = new ValidatablePair<string>();
+            this.PhoneNumber = new ValidatableObject<string>();
+            this.Address = new ValidatableObject<string>();
         }
 
         /// <summary>
@@ -143,16 +157,6 @@ namespace ElogictisMobile.ViewModels
         }
 
         /// <summary>
-        /// Invoked when the Log in button is clicked.
-        /// </summary>
-        /// <param name="obj">The Object</param>
-        private async void LoginClicked(object obj)
-        {
-            // Do something
-            await _navigationService.NavigateToAsync<LoginPageViewModel>();
-        }
-
-        /// <summary>
         /// Invoked when the Sign Up button is clicked.
         /// </summary>
         /// <param name="obj">The Object</param>
@@ -162,6 +166,7 @@ namespace ElogictisMobile.ViewModels
             {
                 if (this.AreFieldsValid())
                 {
+                    IsLoading = true;
                     var loginAttempt = await _accountService.SignUpAsync(Email.Value, Password.Item1.Value);
                     if (loginAttempt != "")
                     {
@@ -173,17 +178,34 @@ namespace ElogictisMobile.ViewModels
                             Name = Name.Value,
                             Id = loginAttempt,
                             IsDelete = false,
-                            Address = "",
+                            Address = Address.Value,
                             LastUpdateBy = "",
                             LastUpdateTime = "",
-                            Phone = "",
+                            Phone = PhoneNumber.Value,
                             Auth = "1",
                             Auth_ext = "Người dùng bình thường",
                             Identity = "",
-                            Money = 0
+                            Money = 0,
+                            IsConfirm = false,
+                            Province = Province.Id,
+                            Province_ext = Province.Name,
+                            District = District.Id,
+                            District_ext = District.Name,
+                            Town = Town.Id,
+                            Town_ext = Town.Name,
+                            AgencyId = "AGENCY" + Province.Id + District.Id,
                         };
-                        await RealtimeFirebase.Instance.UpSert("Profiles", loginAttempt, JsonConvert.SerializeObject(profiles));
-                        await App.Current.MainPage.DisplayAlert("Thông báo", "Đăng ký thành công!", "Đóng");
+                        var upsert = await RealtimeFirebase.Instance.UpSert("Profiles", loginAttempt, JsonConvert.SerializeObject(profiles));
+                        if (upsert)
+                        {
+                            IsLoading = false;
+                            await App.Current.MainPage.DisplayAlert("Thông báo", "Thêm thành công", "Đóng");
+                        }
+                        else
+                        {
+                            await App.Current.MainPage.DisplayAlert("Thông báo", "Có lỗi xảy ra", "Đóng");
+                        }
+                        await _navigationService.GoBackAsync();
                     }
                     else
                     {
@@ -208,6 +230,70 @@ namespace ElogictisMobile.ViewModels
             }
         }
 
+        public async void ProvinceChangeClicked()
+        {
+            try
+            {
+                List<District> districts = new List<District>();
+                var province = Province.Id;
+
+                District = null;
+                Town = null;
+
+                DistrictCollection.Clear();
+                TownCollection.Clear();
+
+                districts = await RealtimeFirebase.Instance.GetListDistrict(province);
+                foreach (var x in districts)
+                {
+                    DistrictCollection.Add(x);
+                }
+            }
+            catch (Exception ex)
+            {
+                await App.Current.MainPage.DisplayAlert("Thông báo", ex.Message, "OK");
+            }
+
+        }
+        public async void DistrictChangeClicked()
+        {
+            try
+            {
+                List<Town> towns = new List<Town>();
+                var district = District.Id;
+
+                Town = new Town();
+
+                TownCollection.Clear();
+
+                towns = await RealtimeFirebase.Instance.GetListTown(district);
+                foreach (var x in towns)
+                {
+                    TownCollection.Add(x);
+                }
+            }
+            catch (Exception ex)
+            {
+                await App.Current.MainPage.DisplayAlert("Thông báo", ex.Message, "OK");
+            }
+
+        }
+        public async void TownChangeClicked()
+        {
+            try
+            {
+                if (Town.FullAddress != null)
+                {
+                    Address.Value = Town.FullAddress;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                await App.Current.MainPage.DisplayAlert("Thông báo", ex.Message, "OK");
+            }
+
+        }
         #endregion
     }
 }

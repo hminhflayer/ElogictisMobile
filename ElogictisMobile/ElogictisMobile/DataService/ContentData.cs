@@ -46,5 +46,16 @@ namespace ElogictisMobile.DataService
             new Category() { Id ="3",Name="Quản lý"},
             new Category() { Id ="4",Name="Quản trị viên"}
         };
+
+        public static ObservableCollection<Category> PermissionCollectionAgency = new ObservableCollection<Category>()
+        {
+            new Category() { Id ="1",Name="Người dùng bình thường"},
+            new Category() { Id ="2",Name="Nhân viên"}
+        };
+
+        public static ObservableCollection<Category> PermissionAgency = new ObservableCollection<Category>()
+        {
+            new Category() { Id ="3",Name="Quản lý"}
+        };
     }
 }

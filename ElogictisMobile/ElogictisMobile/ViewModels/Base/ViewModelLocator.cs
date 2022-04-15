@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using ElogictisMobile.Views;
 using ElogictisMobile.Services.Account;
 using ElogictisMobile.Services.Navigation;
-using ElogictisMobile.Services.Work;
 using TinyIoC;
 using Xamarin.Forms;
 
@@ -30,7 +29,6 @@ namespace ElogictisMobile.ViewModels.Base
             Register<AlertSignUpPageViewModel, AlertSignUpPage>();
 
             Register<StatisticalPageViewModel, StatisticalPage>();
-            Register<ManageItemPageViewModel, ManageItemPage>();
             Register<TransactionHistoryPageViewModel, TransactionHistoryPage>();
             Register<SettingsPageViewModel, SettingsPage>();
 
@@ -54,6 +52,9 @@ namespace ElogictisMobile.ViewModels.Base
             Register<ManageProvincePageViewModel, ManageProvincePage>();
             Register<ManageDistrictPageViewModel, ManageDistrictPage>();
             Register<ManageTownPageViewModel, ManageTownPage>();
+            Register<HistoryTransactionPageViewModel, HistoryTransactionPage>();
+            Register<DetailRevenuePageViewModel, DetailRevenuePage>();
+            Register<HistoryOrderPageViewModel, HistoryOrderPage>();
 
             Register<DetailProfilePageViewModel, DetailProfilePage>();
             Register<DetailProductFormPageViewModel, DetailProductFormPage>();
@@ -61,15 +62,13 @@ namespace ElogictisMobile.ViewModels.Base
             Register<DetailCategoryTypeProductPageViewModel, DetailCategoryTypeProductPage>();
             Register<DetailProductNewPageViewModel, DetailProductNewPage>();
             Register<DetailAgencyPageViewModel, DetailAgencyPage>();
+            Register<FailedProductPageViewModel, FailedProductPage>();
 
             Register<MoneyManagePageViewModel, MoneyManage>();
             Register<ProductDeliveryTrackingPageViewModel, ProductDeliveryTrackingPage>();
             // Register Services (registered as Singletons by default)
             _container.Register<INavigationService, NavigationService>();
             _container.Register<IAccountService>(DependencyService.Get<IAccountService>());
-            _container.Register<IWorkService, MockWorkService>();
-            //_container.Register<LoginViewModel>(DependencyService.Get<LoginViewModel>());
-            //_container.Register(DependencyService.Get<IRepository<WorkItem>>());
         }
 
         /// <summary>

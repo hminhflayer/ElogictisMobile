@@ -11,7 +11,7 @@
     xmlns:core="clr-namespace:Syncfusion.XForms.Core;assembly=Syncfusion.Core.XForms"
     xmlns:local="clr-namespace:ElogictisMobile.Views"
     xmlns:viewModel="clr-namespace:ElogictisMobile.ViewModels" 
-    xmlns:combobox="clr-namespace:Syncfusion.XForms.ComboBox;assembly=Syncfusion.SfComboBox.XForms"
+    xmlns:combobox="clr-namespace:Syncfusion.XForms.ComboBox;assembly=Syncfusion.SfComboBox.XForms" xmlns:busyindicator="clr-namespace:Syncfusion.SfBusyIndicator.XForms;assembly=Syncfusion.SfBusyIndicator.XForms"
     Title="Sign Up"
     BackgroundColor="{DynamicResource Gray-200}"
     NavigationPage.HasNavigationBar="False">
@@ -375,6 +375,13 @@
                     </StackLayout>
                 </StackLayout>
             </ScrollView>
+            <busyindicator:SfBusyIndicator 
+                                       IsBusy="{Binding IsLoading}"
+                                       AnimationType="Cupertino" 
+                                       ViewBoxWidth = "150" 
+                                       ViewBoxHeight="150" 
+                                       Title="Đang đăng ký ..."
+                                       TextColor="Blue"/>
 
             <!--  Close button  -->
             <buttons:SfButton

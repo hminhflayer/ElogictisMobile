@@ -23,7 +23,7 @@
 
         <ScrollView>
             <StackLayout
-                Padding="16,24"
+                Padding="10,24"
                 BackgroundColor="{DynamicResource Gray-100}"
                 Spacing="16">
                 <StackLayout Orientation="Vertical">
@@ -31,7 +31,7 @@
                     <Label Text="Thông tin người gửi" FontSize="22" 
                            FontAttributes="Bold"
                            TextColor="#2196F3"/>
-                    <StackLayout Orientation="Horizontal" Margin="30,0,0,0">
+                    <StackLayout Orientation="Horizontal" Margin="15,0,0,0">
                         <Label Text="Họ và tên: "
                                FontSize="18"
                                FontAttributes="Bold"/>
@@ -39,7 +39,7 @@
                                FontSize="20"
                                FontAttributes="Bold"/>
                     </StackLayout>
-                    <StackLayout Orientation="Horizontal" Margin="30,0,0,0">
+                    <StackLayout Orientation="Horizontal" Margin="15,0,0,0">
                         <Label Text="Số điện thoại: "
                                FontSize="18"
                                FontAttributes="Bold"/>
@@ -47,7 +47,7 @@
                                FontSize="18"
                                FontAttributes="Bold"/>
                     </StackLayout>
-                    <StackLayout Orientation="Horizontal" Margin="30,0,0,0">
+                    <StackLayout Orientation="Vertical" Margin="15,0,0,0">
                         <Label Text="Địa chỉ: "
                                FontSize="18"
                                FontAttributes="Bold"/>
@@ -59,7 +59,7 @@
                     <Label Text="Thông tin người nhận" FontSize="22" 
                            FontAttributes="Bold"
                            TextColor="#2196F3"/>
-                    <StackLayout Orientation="Horizontal" Margin="30,0,0,0">
+                    <StackLayout Orientation="Horizontal" Margin="15,0,0,0">
                         <Label Text="Họ và tên: "
                                FontSize="18"
                                FontAttributes="Bold"/>
@@ -67,7 +67,7 @@
                                FontSize="18"
                                FontAttributes="Bold"/>
                     </StackLayout>
-                    <StackLayout Orientation="Horizontal" Margin="30,0,0,0">
+                    <StackLayout Orientation="Horizontal" Margin="15,0,0,0">
                         <Label Text="Số điện thoại: "
                                FontSize="18"
                                FontAttributes="Bold"/>
@@ -75,7 +75,7 @@
                                FontSize="18"
                                FontAttributes="Bold"/>
                     </StackLayout>
-                    <StackLayout Orientation="Horizontal" Margin="30,0,0,0">
+                    <StackLayout Orientation="Vertical" Margin="15,0,0,0">
                         <Label Text="Địa chỉ: "
                                FontSize="18"
                                FontAttributes="Bold"/>
@@ -87,7 +87,15 @@
                     <Label Text="Thông tin đơn hàng" FontSize="22" 
                            FontAttributes="Bold"
                            TextColor="#2196F3"/>
-                    <StackLayout Orientation="Horizontal" Margin="30,0,0,0">
+                    <StackLayout Orientation="Horizontal" Margin="15,0,0,0">
+                        <Label Text="Đơn hàng: "
+                               FontSize="18"
+                               FontAttributes="Bold"/>
+                        <Label Text="{Binding NameProduct}"
+                               FontSize="18"
+                               FontAttributes="Bold"/>
+                    </StackLayout>
+                    <StackLayout Orientation="Horizontal" Margin="15,0,0,0">
                         <Label Text="Loại hàng: "
                                FontSize="18"
                                FontAttributes="Bold"/>
@@ -95,7 +103,7 @@
                                FontSize="18"
                                FontAttributes="Bold"/>
                     </StackLayout>
-                    <StackLayout Orientation="Horizontal" Margin="30,0,0,0">
+                    <StackLayout Orientation="Horizontal" Margin="15,0,0,0">
                         <Label Text="Số lượng kiện hàng: "
                                FontSize="18"
                                FontAttributes="Bold"/>
@@ -103,15 +111,15 @@
                                FontSize="18"
                                FontAttributes="Bold"/>
                     </StackLayout>
-                    <StackLayout Orientation="Horizontal" Margin="30,0,0,0">
+                    <StackLayout Orientation="Horizontal" Margin="15,0,0,0">
                         <Label Text="Tổng trọng lượng: "
                                FontSize="18"
                                FontAttributes="Bold"/>
-                        <Label Text="{Binding TotalWeight}"
+                        <Label Text="{Binding TotalWeight, StringFormat='{0} Kg'}"
                                FontSize="18"
                                FontAttributes="Bold"/>
                     </StackLayout>
-                    <StackLayout Orientation="Horizontal" Margin="30,0,0,0">
+                    <StackLayout Orientation="Vertical" Margin="15,0,0,0">
                         <Label Text="Ghi chú: "
                                FontSize="18"
                                FontAttributes="Bold"/>

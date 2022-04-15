@@ -30,8 +30,8 @@ namespace ElogictisMobile.ViewModels
         public Category Province { get; set; }
         public District District { get; set; }
         public Town Town { get; set; }
-        public Profiles Profiles { get; set; }
-        public ObservableCollection<Profiles> ProfilesCollection { get; set; } = RealtimeFirebase.Instance.GetAll<Profiles>("Profiles");
+        public Profiles profiles;
+        public ObservableCollection<Profiles> ProfilesCollection { get; set; }
 
         #endregion
         #region Constructor 
@@ -45,19 +45,29 @@ namespace ElogictisMobile.ViewModels
             this.AddValidationRules();
             this.UpdateProductCommand = new Command(this.SubmitClicked);
             this.DeleteProductCommand = new Command(this.DeleteClicked);
-
-            var profiles = new Profiles()
-            {
-                Id = LocalContext.AgencySelected.ManagerId,
-                Name = LocalContext.AgencySelected.ManagerName
-            };
-
-            Profiles = profiles;
+            ProfilesCollection = LocalContext.ProfilesList;
         }
 
         #endregion
 
         #region Properties
+        public Profiles Profiles
+        {
+            get
+            {
+                return this.profiles;
+            }
+
+            set
+            {
+                if (this.profiles == value)
+                {
+                    return;
+                }
+
+                this.SetProperty(ref this.profiles, value);
+            }
+        }
         public ValidatableObject<string> Name
         {
             get
@@ -116,23 +126,44 @@ namespace ElogictisMobile.ViewModels
             this.Name = new ValidatableObject<string>();
             this.Address = new ValidatableObject<string>();
 
-            var profiles = new Profiles()
+            foreach (var item in LocalContext.ProfilesList)
             {
-                Id = LocalContext.AgencySelected.ManagerId,
-                Name = LocalContext.AgencySelected.ManagerName
-            };
+                if (item.Id == LocalContext.AgencySelected.ManagerId)
+                {
+                    this.profiles = item;
+                    break;
+                }
+            }
 
-            Profiles = profiles;
             this.Name.Value = LocalContext.AgencySelected.Name;
             this.Address.Value = LocalContext.AgencySelected.Address;
-            this.Province.Id = LocalContext.AgencySelected.Province;
-            this.Province.Name = LocalContext.AgencySelected.Province_ext;
-            this.District.Id = LocalContext.AgencySelected.District;
-            this.District.Name = LocalContext.AgencySelected.District_ext;
-            this.Town.Id = LocalContext.AgencySelected.Id;
-            this.Town.Name = LocalContext.AgencySelected.Id;
-            this.Profiles.Id = LocalContext.AgencySelected.ManagerId;
-            this.Profiles.Name = LocalContext.AgencySelected.ManagerName;
+            Category province = new Category
+            {
+                Id = LocalContext.AgencySelected.Province,
+                Name = LocalContext.AgencySelected.Province_ext
+            };
+            District district = new District
+            {
+                Id = LocalContext.AgencySelected.District,
+                Name = LocalContext.AgencySelected.District_ext,
+                ProvinceId = LocalContext.AgencySelected.Province,
+                ProvinceName = LocalContext.AgencySelected.Province_ext
+            };
+
+            Town town = new Town
+            {
+                Id = LocalContext.AgencySelected.Town,
+                Name = LocalContext.AgencySelected.Town_ext,
+                ProvinceId = LocalContext.AgencySelected.Province,
+                ProvinceName = LocalContext.AgencySelected.Province_ext,
+                DistrictId = LocalContext.AgencySelected.District,
+                DistrictName = LocalContext.AgencySelected.District_ext,
+                FullAddress = LocalContext.AgencySelected.Town_ext + ", " + LocalContext.AgencySelected.District_ext + ", " + LocalContext.AgencySelected.Province_ext
+            };
+
+            this.Province = province;
+            this.District = district;
+            this.Town = town;
         }
 
         /// <summary>
@@ -164,6 +195,7 @@ namespace ElogictisMobile.ViewModels
         {
             if (this.AreFieldsValid())
             {
+                bool task1 = false, task2 = false;
                 Agency temp = LocalContext.AgencySelected;
                 temp.Name = Name.Value;
                 temp.Address = Address.Value;
@@ -172,8 +204,25 @@ namespace ElogictisMobile.ViewModels
                 temp.UpdateBy = LocalContext.Current.AccountSettings.Id;
                 temp.UpdateTime = DateTime.Now.ToShortDateString();
 
+                if(LocalContext.AgencySelected.ManagerId != Profiles.Id)
+                {
+                    Profiles profiles = new Profiles(); 
+                    foreach(var item in ProfilesCollection)
+                    {
+                        if(item.Id == LocalContext.AgencySelected.ManagerId)
+                        {
+                            profiles = item;
+                        }    
+                    }
+
+                    profiles.ManageAgency = "";
+                    Profiles.ManageAgency = temp.Id;
+                    task1 = await RealtimeFirebase.Instance.UpSert("Profiles", LocalContext.AgencySelected.ManagerId, JsonConvert.SerializeObject(profiles));
+                    task2 = await RealtimeFirebase.Instance.UpSert("Profiles", Profiles.Id, JsonConvert.SerializeObject(Profiles));
+                }   
+                
                 var ups = await RealtimeFirebase.Instance.UpSert("Agencies", temp.Id, JsonConvert.SerializeObject(temp));
-                if(ups)
+                if(ups && task1 && task2)
                 {
                     await App.Current.MainPage.DisplayAlert("Thông báo", "Cập nhật thành công!", "OK");
                     await _navigationService.GoBackAsync();
