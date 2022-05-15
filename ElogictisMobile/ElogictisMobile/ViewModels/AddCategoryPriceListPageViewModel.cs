@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using ElogictisMobile.Models;
 using ElogictisMobile.Services;
+using ElogictisMobile.Services.Navigation;
 using ElogictisMobile.Validators;
 using ElogictisMobile.Validators.Rules;
 using Newtonsoft.Json;
@@ -23,31 +25,33 @@ namespace ElogictisMobile.ViewModels
         private ValidatableObject<string> fromWeight;
         private ValidatableObject<string> toWeight;
         private ValidatableObject<string> price;
+        private bool update = false;
 
         private Command<object> addPriceListCommand;
-
-        #endregion
-
-        #region Constructor
-
-        /// <summary>
-        /// Initializing the profile details.
-        /// </summary>
-        public AddCategoryPriceListPageViewModel()
-        {
-            this.InitializeProperties();
-            this.AddValidationRules();
-        }
+        private Command<object> deleteCommand;
 
         #endregion
 
         #region Property
         public Category TypeProduct { get; set; }
-        public ObservableCollection<Category> TypeProductCollection { get; set; } = RealtimeFirebase.Instance.GetAllCategory<Category>("TypeProduct");
+        public ObservableCollection<Category> TypeProductCollection { get; set; }
 
+        public TypeShipProduct TypeShipProduct { get; set; }
+
+        private INavigationService _navigationService;
+
+        public List<TypeShipProduct> TypeShipProducts { get; set; }
         /// <summary>
         /// Gets or sets the FirstName
         /// </summary>
+        /// 
+        public Command<object> DeleteCommand
+        {
+            get
+            {
+                return this.deleteCommand ?? (this.deleteCommand = new Command<object>(this.DeleteClicked));
+            }
+        }
         public ValidatableObject<string> FromKilometer
         {
             get
@@ -176,6 +180,33 @@ namespace ElogictisMobile.ViewModels
             this.FromWeight = new ValidatableObject<string>();
             this.ToWeight = new ValidatableObject<string>();
             this.Price = new ValidatableObject<string>();
+
+            if(update)
+            {
+                this.FromKilometer.Value = LocalContext.PriceListSelected.From_Kilometer;
+                this.ToKilometer.Value = LocalContext.PriceListSelected.To_Kilometer;
+                this.FromWeight.Value = LocalContext.PriceListSelected.From_Weight;
+                this.ToWeight.Value = LocalContext.PriceListSelected.To_Weight;
+                this.Price.Value = LocalContext.PriceListSelected.Price;
+
+                Category typeProduct = new Category()
+                {
+                    Id = LocalContext.PriceListSelected.TypeProduct,
+                    Name = LocalContext.PriceListSelected.TypeProduct_ext,
+                };
+
+                TypeProduct = typeProduct;
+
+                foreach (var item in TypeShipProducts)
+                {
+                    if(item.Id == LocalContext.PriceListSelected.TypeShipProduct && item.Name == LocalContext.PriceListSelected.TypeShipProduct_ext)
+                    {
+                        TypeShipProduct = item;
+                        break;
+                    }    
+                }    
+
+            }    
         }
 
         /// <summary>
@@ -200,28 +231,63 @@ namespace ElogictisMobile.ViewModels
             {
                 if (this.AreNamesValid())
                 {
-                    var key = GeneralKey.Instance.General("PRL");
-                    PriceList priceList = new PriceList()
+                    if(update)
                     {
-                        Id = key,
-                        From_Kilometer = this.FromKilometer.Value,
-                        To_Kilometer = this.ToKilometer.Value,
-                        From_Weight = this.FromWeight.Value,
-                        To_Weight = this.ToWeight.Value,
-                        Price = this.Price.Value,
-                        IsDelete = false,
-                        TypeProduct = this.TypeProduct.Id,
-                        TypeProduct_ext = this.TypeProduct.Name
-                    };
+                        PriceList priceList_tmp = LocalContext.PriceListSelected;
+                        PriceList priceList = new PriceList()
+                        {
+                            Id = priceList_tmp.Id,
+                            From_Kilometer = this.FromKilometer.Value,
+                            To_Kilometer = this.ToKilometer.Value,
+                            From_Weight = this.FromWeight.Value,
+                            To_Weight = this.ToWeight.Value,
+                            Price = this.Price.Value,
+                            IsDelete = false,
+                            TypeProduct = this.TypeProduct.Id,
+                            TypeProduct_ext = this.TypeProduct.Name,
+                            TypeShipProduct = this.TypeShipProduct.Id,
+                            TypeShipProduct_ext = this.TypeShipProduct.Name
+                        };
 
-                    IsLoading = true;
-                    // Do Something
-                    var upSert = await RealtimeFirebase.Instance.UpSert("Categories/PricesList", key, JsonConvert.SerializeObject(priceList));
-                    if (upSert)
+                        IsLoading = true;
+                        // Do Something
+                        var upSert = await RealtimeFirebase.Instance.UpSert("Categories/PricesList", priceList_tmp.Id, JsonConvert.SerializeObject(priceList));
+                        if (upSert)
+                        {
+                            IsLoading = false;
+                            await App.Current.MainPage.DisplayAlert("Thông báo", "Cập nhật bảng giá thành công", "OK");
+                            _navigationService.GoBackAsync();
+                        }
+                    }   
+                    else
                     {
-                        IsLoading = false;
-                        await App.Current.MainPage.DisplayAlert("Thông báo", "Thêm thành công", "OK");
-                    }
+                        var key = GeneralKey.Instance.General("PRL");
+                        PriceList priceList = new PriceList()
+                        {
+                            Id = key,
+                            From_Kilometer = this.FromKilometer.Value,
+                            To_Kilometer = this.ToKilometer.Value,
+                            From_Weight = this.FromWeight.Value,
+                            To_Weight = this.ToWeight.Value,
+                            Price = this.Price.Value,
+                            IsDelete = false,
+                            TypeProduct = this.TypeProduct.Id,
+                            TypeProduct_ext = this.TypeProduct.Name,
+                            TypeShipProduct = this.TypeShipProduct.Id,
+                            TypeShipProduct_ext = this.TypeShipProduct.Name
+                        };
+
+                        IsLoading = true;
+                        // Do Something
+                        var upSert = await RealtimeFirebase.Instance.UpSert("Categories/PricesList", key, JsonConvert.SerializeObject(priceList));
+                        if (upSert)
+                        {
+                            IsLoading = false;
+                            await App.Current.MainPage.DisplayAlert("Thông báo", "Thêm bảng giá thành công", "OK");
+                            _navigationService.GoBackAsync();
+                        }
+                    }    
+                    
                 }
             }
             catch(Exception ex)
@@ -231,6 +297,83 @@ namespace ElogictisMobile.ViewModels
             
         }
 
+        private async void DeleteClicked(object obj)
+        {
+            // Do something
+            try
+            {
+                var action = await App.Current.MainPage.DisplayAlert("Thông báo", "Bạn có thực sự muốn xóa cấu hình bảng giá này?", "Đúng", "Không");
+                if (action)
+                {
+                    var del = await RealtimeFirebase.Instance.Delete("Categories/PricesList", LocalContext.PriceListSelected.Id);
+                    if (del)
+                    {
+                        await App.Current.MainPage.DisplayAlert("Thông báo", "Đã bảng giá xóa thành công", "OK");
+                        _navigationService.GoBackAsync();
+                    }
+                    else
+                    {
+                        await App.Current.MainPage.DisplayAlert("Thông báo", "Có lỗi khi xóa bảng giá", "OK");
+                    }
+
+                    await _navigationService.GoBackAsync();
+                }
+            }
+            catch (Exception ex)
+            {
+                await App.Current.MainPage.DisplayAlert("Thông báo", ex.Message, "OK");
+            }
+        }
+
         #endregion
+
+        #region Constructor
+
+        /// <summary>
+        /// Initializing the profile details.
+        /// </summary>
+        public AddCategoryPriceListPageViewModel(INavigationService navigationService)
+        {
+            _navigationService = navigationService;
+            TypeShipProducts = new List<TypeShipProduct>();
+            TypeProductCollection = new ObservableCollection<Category>();
+            TypeProduct = new Category();
+            TypeShipProduct = new TypeShipProduct();
+            TypeProductCollection = RealtimeFirebase.Instance.GetAllCategory<Category>("TypeProduct");
+
+            TypeShipProducts = LocalContext.ListTypeShipProductCollection;
+
+            if(!(LocalContext.PriceListSelected == null))
+            {
+                if (!string.IsNullOrEmpty(LocalContext.PriceListSelected.Id))
+                {
+                    update = true;
+                }
+                else
+                {
+                    update = false;
+                }    
+                
+            }   
+            else
+            {
+                update = false;
+                if (TypeShipProducts.Count != 0)
+                {
+                    TypeShipProduct = TypeShipProducts[0];
+                }
+
+                if (TypeProductCollection.Count != 0)
+                {
+                    TypeProduct = TypeProductCollection[0];
+                }
+            }
+            this.InitializeProperties();
+            this.AddValidationRules();
+
+        }
+
+        #endregion
+
     }
 }

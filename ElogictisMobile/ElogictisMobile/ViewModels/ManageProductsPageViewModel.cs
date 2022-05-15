@@ -54,6 +54,8 @@ namespace ElogictisMobile.ViewModels
                 {
                     ProductList = RealtimeFirebase.Instance.GetAllProductCreated();
                 }
+
+                LocalContext.ProductsList = ProductList;
             }
             catch(Exception ex)
             {
@@ -149,7 +151,9 @@ namespace ElogictisMobile.ViewModels
             // Do something
             try
             {
-                await _navigationService.NavigateToAsync<AddProductFormPageViewModel>();
+                LocalContext.TmpProduct = new Products();
+                await _navigationService.NavigateToAsync<MapCreateProductPageViewModel>();
+                // await _navigationService.NavigateToAsync<AddProductFormPageViewModel>();
             }
             catch (Exception ex)
             {

@@ -7,6 +7,7 @@ using System;
 using System.Reflection;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Json;
+using System.Threading.Tasks;
 using Xamarin.Forms;
 using Xamarin.Forms.Internals;
 
@@ -34,6 +35,8 @@ namespace ElogictisMobile.ViewModels
         private INavigationService _navigationService;
 
         public string TypeProduct { get; set; }
+        public string TypeShip { get; set; }
+        public string TypeShip_ext { get; set; }
         #endregion
         #region Constructor 
         /// <summary>
@@ -81,22 +84,46 @@ namespace ElogictisMobile.ViewModels
             this.Money = LocalContext.ProductSelected.Money;
             this.TypeProduct = LocalContext.ProductSelected.Type_ext;
             this.NameProduct = LocalContext.ProductSelected.Name;
+            this.TypeShip = LocalContext.ProductSelected.TypeShip;
+            this.TypeShip_ext = LocalContext.ProductSelected.TypeShip_ext;
         }
 
         /// <summary>
         /// Invoked when the Submit button clicked
         /// </summary>
-        /// <param name="obj">The object</param>
+        public async Task<string> GetTimeProductExpired(string idTypeShip)
+        {
+            var now = DateTime.Now;
+            var TypeShip = await RealtimeFirebase.Instance.GetOneTypeShip(idTypeShip);
+
+            now.AddHours(TypeShip.TimeHold);
+
+            return now.ToString();
+        }
         private async void SubmitClicked(object obj)
         {
             try
             {
+                if(LocalContext.Current.AccountSettings.HolderProductPrioritize > 0)
+                {
+                    await App.Current.MainPage.DisplayAlert("Không thể nhận thêm đơn", "Bạn đang giữ đơn hàng ưu tiên\nBạn cần giao đơn ưu tiên trước khi nhận thêm đơn khác","OK");
+                    return;
+                }    
+                if(LocalContext.Current.AccountSettings.CountHolderProduct == 15)
+                {
+                    await App.Current.MainPage.DisplayAlert("Không thể nhận thêm đơn", "Số lượng đơn hàng bạn đang nhận đã đạt giới hạn\n(Tối đa có thể nhận 15 đơn hàng)", "OK");
+                    return;
+                }
+
                 var keyNoti = GeneralKey.Instance.General("NOTI");
                 Products temp = LocalContext.ProductSelected;
+                var time = await GetTimeProductExpired(temp.TypeShip);
+
                 temp.Status = 2;
                 temp.Status_ext = "CHỜ LẤY ĐƠN HÀNG";
                 temp.IsConfirm = true;
                 temp.Holder = LocalContext.Current.AccountSettings.Id;
+                temp.OrderExpirationDate = time;
 
                 var upsert = await RealtimeFirebase.Instance.UpSert("Products", temp.ID, JsonConvert.SerializeObject(temp));
                 var upsert1 = await RealtimeFirebase.Instance.UpSert("DeliveryTracking/" + temp.ID, "01", JsonConvert.SerializeObject(new ProductDeliveryTrackingModel

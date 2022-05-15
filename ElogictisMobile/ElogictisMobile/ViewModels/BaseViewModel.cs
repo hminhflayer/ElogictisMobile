@@ -94,16 +94,33 @@ namespace ElogictisMobile.ViewModels
         /// Invoked when an back button is clicked.
         /// </summary>
         /// <param name="obj">The Object</param>
-        private void BackButtonClicked(object obj)
+        private async void BackButtonClicked(object obj)
         {
-            if (Device.RuntimePlatform == Device.UWP && Application.Current.MainPage.Navigation.NavigationStack.Count > 1)
+            //if (Device.RuntimePlatform == Device.UWP && Application.Current.MainPage.Navigation.NavigationStack.Count > 1)
+            //{
+            //    Application.Current.MainPage.Navigation.PopToRootAsync();
+            //}
+            //else if (Device.RuntimePlatform != Device.UWP && Application.Current.MainPage.Navigation.NavigationStack.Count > 0)
+            //{
+            //    Application.Current.MainPage.Navigation.PopToRootAsync();
+            //}
+
+            if (App.Current.MainPage is TabbedPage tabbedPage)
             {
-                Application.Current.MainPage.Navigation.PopAsync();
+                if (tabbedPage.CurrentPage is NavigationPage nPage)
+                {
+                    await nPage.PopToRootAsync();
+                }
             }
-            else if (Device.RuntimePlatform != Device.UWP && Application.Current.MainPage.Navigation.NavigationStack.Count > 0)
+        }
+
+        private T GetValueFromModel<T>(T obj)
+        {
+            if(obj == null)
             {
-                Application.Current.MainPage.Navigation.PopAsync();
+                return default(T);
             }
+            return obj;
         }
 
         /// <summary>
@@ -114,6 +131,15 @@ namespace ElogictisMobile.ViewModels
         public virtual Task InitializeAsync(object navigationData)
         {
             return Task.CompletedTask;
+        }
+        public string GetValue(string value)
+        {
+            if (value == null)
+            {
+                return "";
+            }
+
+            return value;
         }
         #endregion
 

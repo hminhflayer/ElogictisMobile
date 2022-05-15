@@ -20,5 +20,6 @@ namespace ElogictisMobile.Services.Navigation
         /// </summary>
         /// <returns></returns>
         Task GoBackAsync();
+        Task GoBackRootAsync();
     }
 }

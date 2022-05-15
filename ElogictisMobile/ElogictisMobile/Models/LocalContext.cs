@@ -26,6 +26,7 @@ namespace ElogictisMobile.Models
         public static Category ProvinceSelected { get; set; }
         public static District DistrictSelected { get; set; }
         public static Town TownSelected { get; set; }
+        public static TypeShipProduct TypeShipProductSelected { get; set; }
         public static bool IsManager { get; set; }
         public static bool IsShipper { get; set; }
         public static bool IsAdmin { get; set; }
@@ -34,8 +35,11 @@ namespace ElogictisMobile.Models
         public static List<District> Districts { get; set; }
         public static List<Town> Towns { get; set; }
         public static List<Category> ListTypeProduct { get; set; }
+        public static List<TypeShipProduct> ListTypeShipProductCollection { get; set; }
         public static List<Profiles> ListProfiles { get; set; } = new List<Profiles>();
 
+        public static bool IsFromAddress { get; set; }
+        public static Products TmpProduct { get; set; } = new Products();
 
         #region Singleton
         private static LocalContext _current;
@@ -121,5 +125,6 @@ namespace ElogictisMobile.Models
 
             return false;
         }
+
     }
 }

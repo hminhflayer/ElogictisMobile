@@ -442,6 +442,8 @@ namespace ElogictisMobile.ViewModels
                 {
                     var upsert1 = await RealtimeFirebase.Instance.UpSert("DeliveryTracking/" + temp.ID, "0"+ (temp.Status - 1).ToString(), JsonConvert.SerializeObject(new ProductDeliveryTrackingModel
                     {
+                        OrderDate = "",
+                        OrderStatus = "",
                         Date = DateTime.Now.ToShortTimeString() + " " + DateTime.Now.ToShortDateString(),
                         ProgressValue = temp.Status,
                         Status = temp.Status == 3? "InProgress":"Completed",

@@ -15,5 +15,7 @@ namespace ElogictisMobile.Models
         public string TypeProduct_ext { get; set; }
         public string Price { get; set; }
         public bool IsDelete { get; set; }
+        public string TypeShipProduct_ext { get; set; }
+        public string TypeShipProduct { get; set; }
     }
 }

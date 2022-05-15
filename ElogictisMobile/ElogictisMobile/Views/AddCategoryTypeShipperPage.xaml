@@ -1,0 +1,147 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="ElogictisMobile.Views.AddCategoryTypeShipperPage"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:behaviour="clr-namespace:ElogictisMobile.Behaviors"
+    xmlns:border="clr-namespace:Syncfusion.XForms.Border;assembly=Syncfusion.Core.XForms"
+    xmlns:button="clr-namespace:Syncfusion.XForms.Buttons;assembly=Syncfusion.Buttons.XForms"
+    xmlns:control="clr-namespace:ElogictisMobile.Controls"
+    xmlns:converter="clr-namespace:ElogictisMobile.Converters" 
+    xmlns:busyindicator="clr-namespace:Syncfusion.SfBusyIndicator.XForms;assembly=Syncfusion.SfBusyIndicator.XForms"
+    x:Name="AddCategory"
+    Title="Thông tin hình thức giao hàng"
+    BackgroundColor="{DynamicResource GrayShadowBackgroundColor}"
+    NavigationPage.HasNavigationBar="True"
+    NavigationPage.HasBackButton="True">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converter:BooleanToColorConverter x:Key="ColorConverter" />
+            <converter:InverseBoolConverter x:Key="InverseBoolConverter" />
+            <converter:NameValidationConverter x:Key="FirstValidationErrorConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <ContentPage.Content>
+        <ScrollView>
+            <Grid>
+                <StackLayout Padding="16" Spacing="16">
+                    <StackLayout>
+                        <Label Text="Tên hình thức giao hàng"/>
+                        <!--  Name entry with border  -->
+                        <border:SfBorder BorderColor="{Binding Source={x:Reference NameEntry}, Path=IsFocused, Converter={StaticResource ColorConverter}, ConverterParameter=3}" Style="{StaticResource DataFormBorderlessEntryBorderStyle}"
+                                 Padding="12,8" Margin="0,8,0,0" VerticalOptions="Start">
+                            <Grid ColumnDefinitions="*, Auto">
+
+                                <control:BorderlessEntry
+                        x:Name="NameEntry"
+                        Placeholder="Tên hình thức giao hàng"
+                        Style="{StaticResource BorderlessEntryStyle}" 
+                        Text="{Binding Name.Value}">
+                                    <Entry.Behaviors>
+                                        <behaviour:EntryLineValidationBehaviour IsValid="{Binding Name.IsValid}"/>
+                                    </Entry.Behaviors>
+                                </control:BorderlessEntry>
+
+                                <!--  Label to display error icon  -->
+                                <Label Grid.Column="1" Style="{StaticResource ErrorIconLabelStyle}" Margin="0"
+                                   IsVisible="{Binding Path=IsVisible, Source={x:Reference NameValidationLabel}}"
+                                   Text="{StaticResource Error}"/>
+                            </Grid>
+                        </border:SfBorder>
+
+                        <!--  Label to display error message  -->
+                        <Label x:Name="NameValidationLabel" Margin="15,-3,0,0" VerticalOptions="FillAndExpand"
+                           Text="{Binding Name.Errors, Converter={StaticResource FirstValidationErrorConverter}}"
+                           IsVisible="{Binding Name.IsValid, Converter={StaticResource InverseBoolConverter}}"
+                           Style="{StaticResource SimpleLabelStyle}" TextColor="{DynamicResource Red}"/>
+                    </StackLayout>
+                    <StackLayout>
+
+                        <Label Text="Số đơn tối đa có thể giữ"/>
+                        <!--  Name entry with border  -->
+                        <border:SfBorder BorderColor="{Binding Source={x:Reference MaxReviceEntry}, Path=IsFocused, Converter={StaticResource ColorConverter}, ConverterParameter=3}" Style="{StaticResource DataFormBorderlessEntryBorderStyle}"
+                                 Padding="12,8" Margin="0,8,0,0" VerticalOptions="Start">
+                            <Grid ColumnDefinitions="*, Auto">
+                                <control:BorderlessEntry
+                        x:Name="MaxReviceEntry"
+                                    Keyboard="Numeric"
+                        Placeholder="Số đơn tối đa có thể giữ"
+                        Style="{StaticResource BorderlessEntryStyle}" 
+                        Text="{Binding TimeHold.Value}">
+                                    <Entry.Behaviors>
+                                        <behaviour:EntryLineValidationBehaviour IsValid="{Binding MaxReviced.IsValid}"/>
+                                    </Entry.Behaviors>
+                                </control:BorderlessEntry>
+
+                                <!--  Label to display error icon  -->
+                                <Label Grid.Column="1" Style="{StaticResource ErrorIconLabelStyle}" Margin="0"
+                                   IsVisible="{Binding Path=IsVisible, Source={x:Reference MaxRevicedValidationLabel}}"
+                                   Text="{StaticResource Error}"/>
+                            </Grid>
+                        </border:SfBorder>
+
+                        <!--  Label to display error message  -->
+                        <Label x:Name="MaxRevicedValidationLabel" Margin="15,-3,0,0" VerticalOptions="FillAndExpand"
+                           Text="{Binding MaxReviced.Errors, Converter={StaticResource FirstValidationErrorConverter}}"
+                           IsVisible="{Binding MaxReviced.IsValid, Converter={StaticResource InverseBoolConverter}}"
+                           Style="{StaticResource SimpleLabelStyle}" TextColor="{DynamicResource Red}"/>
+                    </StackLayout>
+                    <StackLayout>
+
+                        <Label Text="Thời gian giữ đơn tối đa (giờ)"/>
+                        <!--  Name entry with border  -->
+                        <border:SfBorder BorderColor="{Binding Source={x:Reference TimeHoldEntry}, Path=IsFocused, Converter={StaticResource ColorConverter}, ConverterParameter=3}" Style="{StaticResource DataFormBorderlessEntryBorderStyle}"
+                                 Padding="12,8" Margin="0,8,0,0" VerticalOptions="Start">
+                            <Grid ColumnDefinitions="*, Auto">
+                                <control:BorderlessEntry
+                        x:Name="TimeHoldEntry"
+                                    Keyboard="Numeric"
+                        Placeholder="Thời gian giữ đơn hàng tối đa (giờ)"
+                        Style="{StaticResource BorderlessEntryStyle}" 
+                        Text="{Binding TimeHold.Value}">
+                                    <Entry.Behaviors>
+                                        <behaviour:EntryLineValidationBehaviour IsValid="{Binding TimeHold.IsValid}"/>
+                                    </Entry.Behaviors>
+                                </control:BorderlessEntry>
+
+                                <!--  Label to display error icon  -->
+                                <Label Grid.Column="1" Style="{StaticResource ErrorIconLabelStyle}" Margin="0"
+                                   IsVisible="{Binding Path=IsVisible, Source={x:Reference TimeHoldValidationLabel}}"
+                                   Text="{StaticResource Error}"/>
+                            </Grid>
+                        </border:SfBorder>
+
+                        <!--  Label to display error message  -->
+                        <Label x:Name="TimeHoldValidationLabel" Margin="15,-3,0,0" VerticalOptions="FillAndExpand"
+                           Text="{Binding TimeHold.Errors, Converter={StaticResource FirstValidationErrorConverter}}"
+                           IsVisible="{Binding TimeHold.IsValid, Converter={StaticResource InverseBoolConverter}}"
+                           Style="{StaticResource SimpleLabelStyle}" TextColor="{DynamicResource Red}"/>
+                    </StackLayout>
+                    <StackLayout>
+                        <!--  Name entry with border  -->
+                        <button:SfCheckBox IsChecked="{Binding Prioritize}"
+                                           Text="Đơn hàng ưu tiên giao"
+                                           FontAttributes="Bold"
+                                           FontSize="20"/>
+                    </StackLayout>
+                    <button:SfButton
+                        Margin="0,16,0,0"
+                        Style="{StaticResource GradientButtonStyle}"
+                        Text="Cập Nhật"
+                        WidthRequest="200" 
+                        Command="{Binding AddCategoryTypeProductCommand}"/>
+                </StackLayout>
+                <busyindicator:SfBusyIndicator 
+                                       AnimationType="Cupertino" 
+                                       ViewBoxWidth = "150" 
+                                       ViewBoxHeight="150" 
+                                       Title="Đang thêm dữ liệu..."
+                                       TextColor="Blue"
+                                       IsVisible="{Binding IsLoading}"
+                                       IsBusy="{Binding IsLoading}"/>
+            </Grid>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>

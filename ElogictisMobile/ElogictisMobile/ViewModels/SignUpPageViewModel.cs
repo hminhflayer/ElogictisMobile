@@ -219,7 +219,7 @@ namespace ElogictisMobile.ViewModels
                         }    
                         else
                         {
-                            await App.Current.MainPage.DisplayAlert("Thông báo", "Có lỗi xảy ra", "Đóng");
+                            await App.Current.MainPage.DisplayAlert("Thông báo", "Có lỗi xảy ra có thể do đường truyền mạng", "Đóng");
                         }   
                     }
                     else
@@ -229,7 +229,34 @@ namespace ElogictisMobile.ViewModels
                 }
                 else
                 {
-                    await App.Current.MainPage.DisplayAlert("Thông báo", "Thông tin bạn đăng ký không hợp lệ!", "Đóng");
+                    bool isEmail = this.Email.Validate();
+                    bool isNameValid = this.Name.Validate();
+                    bool isPasswordValid = this.Password.Validate();
+                    bool isVerifyPassword = false;
+                    if (isPasswordValid)
+                    {
+                        isVerifyPassword = this.Password.Item1.Value.Equals(this.Password.Item2.Value);
+                    }
+
+                    string text = "";
+                    if(!isEmail)
+                    {
+                        text = "Email trống hoặc sai định dạng";
+                    }
+                    if (!isNameValid)
+                    {
+                        text = "Họ và tên trống hoặc quá ngắn";
+                    }
+                    if (!isPasswordValid)
+                    {
+                        text = "Mật khẩu trống hoặc sai định dạng";
+                    }
+                    if (!isVerifyPassword)
+                    {
+                        text = "Xác nhận mật khẩu không trùng khớp với mật khẩu vừa nhập";
+                    }
+
+                    await App.Current.MainPage.DisplayAlert("Thông báo", "Thông tin bạn đăng ký không hợp lệ do:\n"+text, "Đóng");
                 }    
             }
             catch (Exception ex)

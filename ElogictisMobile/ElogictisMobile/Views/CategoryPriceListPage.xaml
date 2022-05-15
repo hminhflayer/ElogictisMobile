@@ -50,6 +50,13 @@
                                 <StackLayout Orientation="Vertical" Spacing="16" Padding="16">
                                     <StackLayout Orientation="Vertical">
                                         <StackLayout BackgroundColor="Blue">
+                                            <Label Text="{Binding TypeShipProduct_ext}"
+                                               FontSize="18"
+                                               FontAttributes="Bold"
+                                               TextColor="White"
+                                               HorizontalOptions="CenterAndExpand"/>
+                                        </StackLayout>
+                                        <StackLayout BackgroundColor="LightBlue">
                                             <Label Text="{Binding TypeProduct_ext}"
                                                FontSize="18"
                                                FontAttributes="Bold"

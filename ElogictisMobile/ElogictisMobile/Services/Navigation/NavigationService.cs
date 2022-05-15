@@ -7,13 +7,24 @@ namespace ElogictisMobile.Services.Navigation
 {
     public class NavigationService : INavigationService
     {
-        public Task GoBackAsync()
+        public Task GoBackRootAsync()
         {
             if (App.Current.MainPage is TabbedPage tabbedPage)
             {
                 if (tabbedPage.CurrentPage is NavigationPage nPage)
                 {
                     return nPage.PopToRootAsync();
+                }
+            }
+            return Task.CompletedTask;
+        }
+        public Task GoBackAsync()
+        {
+            if (App.Current.MainPage is TabbedPage tabbedPage)
+            {
+                if (tabbedPage.CurrentPage is NavigationPage nPage)
+                {
+                    return nPage.PopAsync();
                 }
             }
             return Task.CompletedTask;

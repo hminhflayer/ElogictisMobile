@@ -51,6 +51,7 @@ namespace ElogictisMobile.ViewModels
             this.TownCommand = new Command(this.ManageTownClicked);
             this.LogoutCommand = new Command(this.LogoutClicked);
             this.HistoryTransactionCommand = new Command(this.HistoryTransactionClicked);
+            this.CategoryTypeShipCommand = new Command(this.CategoryTypeShipeClicked);
         }
 
 
@@ -98,7 +99,7 @@ namespace ElogictisMobile.ViewModels
         public Command ManageProfilesCommand { get; set; }
 
         public Command CategoryTypeProductCommand { get; set; }
-
+        public Command CategoryTypeShipCommand { get; set; }
         public Command CategoryPriceListCommand { get; set; }
         public Command ProductNewCommand { get; set; }
         public Command AgencyCommand { get; set; }
@@ -313,6 +314,19 @@ namespace ElogictisMobile.ViewModels
             try
             {
                 await _navigationService.NavigateToAsync<ManageTownPageViewModel>();
+            }
+            catch (Exception ex)
+            {
+                await App.Current.MainPage.DisplayAlert("Thông báo", ex.Message, "OK");
+            }
+        }
+
+        private async void CategoryTypeShipeClicked(object obj)
+        {
+            // Do something
+            try
+            {
+                await _navigationService.NavigateToAsync<ManageCategoryTypeShipperPageViewModel>();
             }
             catch (Exception ex)
             {

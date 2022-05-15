@@ -254,12 +254,12 @@ namespace ElogictisMobile.Services
             ObservableCollection<Products> products = new ObservableCollection<Products>();
             var collection = client
                 .Child("Products")
-                .OrderByKey()
                 .AsObservable<Products>()
                 .Subscribe((pro) =>
                 {
                     if (pro.Object.CreateBy == LocalContext.Current.AccountSettings.Id)
                     {
+                        var index = ProductsUser.IndexOf(pro.Object);
                         ProductsUser.Remove(pro.Object);
                         ProductsUser.Add(pro.Object);
                     }
@@ -299,6 +299,7 @@ namespace ElogictisMobile.Services
                 .AsObservableCollection();
             return gets;
         }
+
         public ObservableCollection<Category> GetListProvince()
         {
             var list = client
@@ -383,6 +384,41 @@ namespace ElogictisMobile.Services
             }
 
         }
+
+        public async Task<List<PriceList>> GetPriceListWithTypeShip(string id = null)
+        {
+            try
+            {
+                var pricelist = (await client
+                .Child("Categories")
+                .Child("PricesList")
+                .OnceAsync<PriceList>())
+                .Where(item => item.Object.TypeShipProduct == id)
+                .Select(item => new PriceList()
+                {
+                    Id = item.Object.Id,
+                    From_Kilometer = item.Object.From_Kilometer,
+                    From_Weight = item.Object.From_Weight,
+                    TypeShipProduct = item.Object.TypeShipProduct,
+                    IsDelete = item.Object.IsDelete,
+                    Price = item.Object.Price,
+                    To_Kilometer = item.Object.To_Kilometer,
+                    To_Weight = item.Object.To_Weight,
+                    TypeProduct = item.Object.TypeProduct,
+                    TypeProduct_ext = item.Object.TypeProduct_ext,
+                    TypeShipProduct_ext = item.Object.TypeShipProduct_ext
+                })
+                .ToList();
+                return pricelist;
+            }
+            catch (Exception ex)
+            {
+                await App.Current.MainPage.DisplayAlert("Thông báo", ex.Message, "OK");
+                return new List<PriceList>();
+            }
+
+        }
+
         public async Task<List<Category>> GetTypeProduct()
         {
             try
@@ -401,6 +437,55 @@ namespace ElogictisMobile.Services
             {
                 await App.Current.MainPage.DisplayAlert("Thông báo", ex.Message, "OK");
                 return new List<Category>();
+            }
+        }
+        public async Task<List<TypeShipProduct>> GetTypeShipProduct()
+        {
+            try
+            {
+                return (await client
+                .Child("Categories")
+                .Child("TypeShip")
+                .OnceAsync<TypeShipProduct>())
+                .Select(item => new TypeShipProduct()
+                {
+                    Id = item.Object.Id,
+                    Name = item.Object.Name,
+                    CreateTime = item.Object.CreateTime,
+                    Prioritize = item.Object.Prioritize,
+                    TimeHold = item.Object.TimeHold
+                }).ToList();
+            }
+            catch (Exception ex)
+            {
+                await App.Current.MainPage.DisplayAlert("Thông báo", ex.Message, "OK");
+                return new List<TypeShipProduct>();
+            }
+        }
+
+        public async Task<TypeShipProduct> GetOneTypeShip(string id)
+        {
+            try
+            {
+                var types = (await client
+                .Child("Categories")
+                .Child("TypeShip")
+                .OnceAsync<TypeShipProduct>())
+                .Select(item => new TypeShipProduct()
+                {
+                    Id = item.Object.Id,
+                    CreateTime = item.Object.CreateTime,
+                    Prioritize = item.Object.Prioritize,
+                    TimeHold = item.Object.TimeHold,
+                    Name = item.Object.Name
+                }).ToList();
+
+                return types.Where(item => item.Id == id) as TypeShipProduct;
+            }
+            catch (Exception ex)
+            {
+                await App.Current.MainPage.DisplayAlert("Thông báo", ex.Message, "OK");
+                return new TypeShipProduct();
             }
         }
 
@@ -848,6 +933,12 @@ namespace ElogictisMobile.Services
                 var allPersons = await GetAllProfiles();
                 var profile = allPersons.Where(a => a.Id == Id)
                     .FirstOrDefault();
+                if(profile == null)
+                {
+                    await App.Current.MainPage.DisplayAlert("Thông báo", "Không tìm thấy thành viên này!", "OK");
+                    return await tcs.Task;
+                }    
+
                 if(plus)
                 {
                     profile.Money += money;
@@ -881,6 +972,11 @@ namespace ElogictisMobile.Services
                 var allPersons = await GetAllProfiles();
                 var profile = allPersons.Where(a => a.ManageAgency == Id)
                     .FirstOrDefault();
+                if(profile is null)
+                {
+                    await App.Current.MainPage.DisplayAlert("Lỗi", "Không tìm thấy quản lý Đại lý ("+Id+")!", "OK");
+                    return false;
+                }    
                 if (plus)
                 {
                     profile.Money += money;
@@ -948,7 +1044,6 @@ namespace ElogictisMobile.Services
             catch(Exception ex)
             {
                 return new List<ProductDeliveryTrackingModel>();
-                await App.Current.MainPage.DisplayAlert("LỖI", ex.Message, "Đóng");
             }
             
         }

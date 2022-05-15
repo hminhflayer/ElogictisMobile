@@ -15,13 +15,13 @@ namespace ElogictisMobile.ViewModels
     /// </summary>
     [Preserve(AllMembers = true)]
     [DataContract]
-    public class CategoryPriceListPageViewModel : BaseViewModel
+    public class ManageCategoryTypeShipperPageViewModel : BaseViewModel
     {
         #region Fields
 
         private Command<object> itemTappedCommand;
         private Command<object> backCommand;
-        private Command<object> addPriceListCommand;
+        private Command<object> addTypeProductCommand;
         private Command<string> textChangedCommand;
         #endregion
 
@@ -30,11 +30,12 @@ namespace ElogictisMobile.ViewModels
         /// <summary>
         /// Initializes a new instance for the <see cref="ManageProductsPageViewModel"/> class.
         /// </summary>
-        public CategoryPriceListPageViewModel(INavigationService navigationService)
+        public ManageCategoryTypeShipperPageViewModel(INavigationService navigationService)
         {
             _navigationService = navigationService;
-            PricesList = new ObservableCollection<PriceList>();
-            PricesList = RealtimeFirebase.Instance.GetAllCategory<PriceList>("PricesList");
+            TypeProductList = new ObservableCollection<Category>();
+            TypeProductList.Clear();
+            TypeProductList = RealtimeFirebase.Instance.GetAllCategory<Category>("TypeShip");
         }
 
         #endregion
@@ -60,11 +61,11 @@ namespace ElogictisMobile.ViewModels
             }
         }
 
-        public Command<object> AddPriceListCommand
+        public Command<object> AddTypeProductCommand
         {
             get
             {
-                return this.addPriceListCommand ?? (this.addPriceListCommand = new Command<object>(this.AddPriceListClicked));
+                return this.addTypeProductCommand ?? (this.addTypeProductCommand = new Command<object>(this.AddTypeShipClicked));
             }
         }
         public Command<string> TextChangedCommand
@@ -74,12 +75,13 @@ namespace ElogictisMobile.ViewModels
                 return this.textChangedCommand ?? (this.textChangedCommand = new Command<string>(this.SearchTextChanged));
             }
         }
+
         private INavigationService _navigationService;
 
         /// <summary>
         /// Gets or sets a collction of value to be displayed in contacts list page.
         /// </summary>\
-        public ObservableCollection<PriceList> PricesList { get; set; }
+        public ObservableCollection<Category> TypeProductList { get; set; }
 
         #endregion
 
@@ -92,8 +94,9 @@ namespace ElogictisMobile.ViewModels
         private async void NavigateToNextPage(object selectedItem)
         {
             // Do something
-            LocalContext.PriceListSelected = selectedItem as PriceList;
-            await _navigationService.NavigateToAsync<AddCategoryPriceListPageViewModel>();
+            LocalContext.TypeShipProductSelected = new TypeShipProduct();
+            await _navigationService.NavigateToAsync<AddCategoryTypeShipperPageViewModel>();
+
         }
 
         private async void GoToBack(object obj)
@@ -102,41 +105,40 @@ namespace ElogictisMobile.ViewModels
             await _navigationService.GoBackAsync();
         }
 
-        private async void AddPriceListClicked(object obj)
+        private async void AddTypeShipClicked(object obj)
         {
             // Do something
             try
             {
-                LocalContext.PriceListSelected = new PriceList();
-                await _navigationService.NavigateToAsync<AddCategoryPriceListPageViewModel>();
+                LocalContext.TypeShipProductSelected = obj as TypeShipProduct;
+                await _navigationService.NavigateToAsync<AddCategoryTypeShipperPageViewModel>();
             }
             catch (Exception ex)
             {
                 await App.Current.MainPage.DisplayAlert("Thông báo", ex.Message, "OK");
             }
         }
-
         private void SearchTextChanged(string search)
         {
             // Do something
             try
             {
-                ObservableCollection<PriceList> tmp = LocalContext.PriceLists;
+                ObservableCollection<Category> tmp = LocalContext.TypeProductList;
                 if (search == null || search == "")
                 {
                     foreach (var item in tmp)
                     {
-                        PricesList.Add(item);
+                        TypeProductList.Add(item);
                     }
                     return;
                 }
 
-                this.PricesList.Clear();
+                this.TypeProductList.Clear();
                 foreach (var item in tmp)
                 {
-                    if (item.From_Kilometer.Equals(search))
+                    if (item.Name.ToLower().Contains(search.ToLower()))
                     {
-                        PricesList.Add(item);
+                        TypeProductList.Add(item);
                     }
                 }
             }

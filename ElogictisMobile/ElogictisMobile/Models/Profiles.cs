@@ -38,5 +38,7 @@ namespace ElogictisMobile.Models
         public string District_ext { get; set; }
         public string Town { get; set; }
         public string Town_ext { get; set; }
+        public int HolderProductPrioritize { get; set; }
+        public int CountHolderProduct { get; set; }
     }
 }

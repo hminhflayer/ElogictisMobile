@@ -67,8 +67,9 @@ namespace ElogictisMobile.ViewModels
         public async void LoadStatistical()
         {
             LocalContext.ListTypeProduct = await RealtimeFirebase.Instance.GetTypeProduct();
+            LocalContext.ListTypeShipProductCollection = await RealtimeFirebase.Instance.GetTypeShipProduct();
 
-            if(LocalContext.IsAdmin)
+            if (LocalContext.IsAdmin)
             {
                 this.ValueWait = await RealtimeFirebase.Instance.GetStatisticalAdmin(1);
                 this.ValueShipped = await RealtimeFirebase.Instance.GetStatisticalAdmin(3);

@@ -38,5 +38,13 @@ namespace ElogictisMobile.Models
         public bool IsConfirm { get; set; }
         public string Holder { get; set; }
         public string AgencyId { get; set; }
+        public string TypeShip { get; set; }
+        public string TypeShip_ext { get; set; }
+        public double LngFromAddress { get; set; }
+        public double LatFromAddress { get; set; }
+        public double LngToAddress { get; set; }
+        public double LatToAddress { get; set; }
+        public double DistanceEstimate { get; set; }
+        public string OrderExpirationDate { get; set; }
     }
 }

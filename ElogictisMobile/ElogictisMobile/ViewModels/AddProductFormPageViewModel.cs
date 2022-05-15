@@ -43,6 +43,8 @@ namespace ElogictisMobile.ViewModels
         private string distanceAddress;
         public Category TypeProduct { get; set; }
         public List<Category> TypeProductCollection { get; set; } = LocalContext.ListTypeProduct;
+        public TypeShipProduct TypeShipProduct { get; set; }
+        public List<TypeShipProduct> TypeShipProductCollection { get; set; } = LocalContext.ListTypeShipProductCollection;
 
         public ObservableCollection<Pin> FromLocations { get; set; }
         public ObservableCollection<Pin> ToLocations { get; set; }
@@ -369,9 +371,11 @@ namespace ElogictisMobile.ViewModels
             Quanlity.Value = 0;
             Money.Value = "0";
             DistanceAddress = "0";
+
             this.FromFullName.Value = LocalContext.Current.AccountSettings.Name;
             this.FromPhone.Value = LocalContext.Current.AccountSettings.Phone;
-            this.FromAddress.Value = LocalContext.Current.AccountSettings.Address;
+            this.FromAddress.Value = LocalContext.TmpProduct.From_Address;
+            this.ToAddress.Value = LocalContext.TmpProduct.To_Address;
         }
 
         /// <summary>
@@ -467,22 +471,30 @@ namespace ElogictisMobile.ViewModels
                         Name = NameProduct.Value,
                         IsConfirm = false,
                         Status_ext = "CHỜ NHẬN ĐƠN",
-                        AgencyId = LocalContext.Current.AccountSettings.AgencyId
+                        AgencyId = LocalContext.Current.AccountSettings.AgencyId,
+                        OrderExpirationDate = "",
+                        LatFromAddress = LocalContext.TmpProduct.LatFromAddress,
+                        LngFromAddress = LocalContext.TmpProduct.LngFromAddress,
+                        LatToAddress = LocalContext.TmpProduct.LatToAddress,
+                        LngToAddress = LocalContext.TmpProduct.LngToAddress,
+                        TypeShip = LocalContext.TmpProduct.TypeShip,
+                        TypeShip_ext = LocalContext.TmpProduct.TypeShip_ext,
+                        DistanceEstimate = LocalContext.TmpProduct.DistanceEstimate
                     }));
                     if (task)
                     {
-                        await RealtimeFirebase.Instance.UpSert("Notifications", keyNoti, JsonConvert.SerializeObject(new TransactionHistory
-                        {
-                            IdProduct = key,
-                            TransactionDescription = "CHỜ NHẬN ĐƠN",
-                            Date = DateTime.Now.ToShortDateString(),
-                            Time = DateTime.Now.ToShortTimeString(),
-                            Email = LocalContext.Profiles.Email,
-                            ProfileId = LocalContext.Current.AccountSettings.Id
-                        })); ;
+                        //await RealtimeFirebase.Instance.UpSert("Notifications", keyNoti, JsonConvert.SerializeObject(new TransactionHistory
+                        //{
+                        //    IdProduct = key,
+                        //    TransactionDescription = "CHỜ NHẬN ĐƠN",
+                        //    Date = DateTime.Now.ToShortDateString(),
+                        //    Time = DateTime.Now.ToShortTimeString(),
+                        //    Email = LocalContext.Profiles.Email,
+                        //    ProfileId = LocalContext.Current.AccountSettings.Id
+                        //})); ;
                         IsLoading = false;
-                        await App.Current.MainPage.DisplayAlert("Thông báo", "Thêm đơn hàng thành công!", "OK");
-                        await _navigationService.GoBackAsync();
+                        await App.Current.MainPage.DisplayAlert("Thông báo", "Thêm đơn hàng "+ NameProduct.Value +" thành công!", "OK");
+                        await _navigationService.GoBackRootAsync();
                     }
                     else
                     {

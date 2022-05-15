@@ -33,42 +33,6 @@ namespace ElogictisMobile.Views
             }
         }
 
-        private void FromMap_MapClicked(object sender, Xamarin.Forms.Maps.MapClickedEventArgs e)
-        {
-            object position = new Position(e.Position.Latitude, e.Position.Longitude);
-            if (this.BindingContext is AddProductFormPageViewModel vm)
-            {
-                vm.FromMapClickedCommand.Execute(position);
-            }
-        }
-
-        private void ToMap_MapClicked(object sender, Xamarin.Forms.Maps.MapClickedEventArgs e)
-        {
-            object position = new Position(e.Position.Latitude, e.Position.Longitude);
-            if (this.BindingContext is AddProductFormPageViewModel vm)
-            {
-                vm.ToMapClickedCommand.Execute(position);
-            }
-        }
-
-        private void FromAddressEntry_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            if (this.BindingContext is AddProductFormPageViewModel vm)
-            {
-                vm.FromAddressChangedCommand.Execute(e.NewTextValue);
-                //map.MoveToRegion(new MapSpan(vm.FromLocations[0].Position, 0.01, 0.01));
-            }
-        }
-
-        private void ToAddressEntry_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            if (this.BindingContext is AddProductFormPageViewModel vm)
-            {
-                vm.ToAddressChangedCommand.Execute(e.NewTextValue);
-                Tomap.MoveToRegion(new MapSpan(vm.ToLocations[0].Position, 0.01, 0.01));
-            }
-        }
-
         private void Button_Clicked(object sender, System.EventArgs e)
         {
             if (this.BindingContext is AddProductFormPageViewModel vm)

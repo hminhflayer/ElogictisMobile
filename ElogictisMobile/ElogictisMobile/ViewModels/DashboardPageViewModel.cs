@@ -62,9 +62,10 @@ namespace ElogictisMobile.ViewModels
             if(LocalContext.IsShipper)
             {
                 ObservableCollection<Products> products = RealtimeFirebase.Instance.GetAllNewProduct();
-            }    
+            }
 
             //Load Products, Agency, PriceList
+
             if (LocalContext.IsAdmin)
             {
                 LocalContext.AgencyList = RealtimeFirebase.Instance.GetAll<Agency>("Agencies");
@@ -72,6 +73,12 @@ namespace ElogictisMobile.ViewModels
                 LocalContext.TypeProductList = RealtimeFirebase.Instance.GetAllCategory<Category>("TypeProduct");
             }
 
+            LoadDataAsync();
+        }
+
+        public async void LoadDataAsync()
+        {
+            LocalContext.ListTypeShipProductCollection = await RealtimeFirebase.Instance.GetTypeShipProduct();
         }
 
         public override Task InitializeAsync(object navigationData)

@@ -1,0 +1,134 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="ElogictisMobile.Views.MapCreateProductPage"
+             xmlns:maps="clr-namespace:Xamarin.Forms.Maps;assembly=Xamarin.Forms.Maps" xmlns:combobox="clr-namespace:Syncfusion.XForms.ComboBox;assembly=Syncfusion.SfComboBox.XForms" xmlns:buttons="clr-namespace:Syncfusion.XForms.Buttons;assembly=Syncfusion.Buttons.XForms"
+             NavigationPage.HasNavigationBar="False">
+    <ContentPage.Content>
+        <AbsoluteLayout>
+            <StackLayout Orientation="Vertical">
+                <StackLayout BackgroundColor="#fff"
+                    Margin="10, 50, 10, 5"
+                             >
+                    <StackLayout Orientation="Horizontal"
+                                 Spacing="5">
+                        <Label
+                            HorizontalOptions="StartAndExpand"
+                            TextColor="Blue"
+                            Style="{StaticResource IconLabelStyle}"
+                            Text="{StaticResource MapPin}" />
+                        <Label Text="{Binding FromAddress}"
+                               FontSize="20"
+                               WidthRequest="360"
+                                   
+                               HorizontalOptions="StartAndExpand">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding FromMapClickedCommand}"/>
+                            </Label.GestureRecognizers>
+                        </Label>
+                    </StackLayout>
+                    <StackLayout Orientation="Horizontal"
+                                 Spacing="5">
+                        <Label
+                            HorizontalOptions="StartAndExpand"
+                            TextColor="Red"
+                            Style="{StaticResource IconLabelStyle}"
+                            Text="{StaticResource MapPin}"/>
+                        <Label Text="{Binding ToAddress}"
+                               FontSize="20"
+                               WidthRequest="360"
+                               HorizontalOptions="StartAndExpand">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding ToMapClickedCommand}"/>
+                            </Label.GestureRecognizers>
+                        </Label>
+                    </StackLayout>
+                </StackLayout>
+                <StackLayout Padding="10">
+                    <Label Text="Loại hình giao hàng"
+                       FontAttributes="Bold"
+                       FontSize="20"/>
+                    <combobox:SfComboBox HeightRequest="50" 
+                                         Margin="5,5,15,5"
+                                         x:Name="comboBox_TypeShipProduct"
+                                         SelectionChanged="comboBox_TypeShipProduct_SelectionChanged"
+                                         TextSize="Medium"
+                                         DataSource="{Binding TypeShipProducts}" 
+                                         DisplayMemberPath="Name" 
+                                         SelectedValuePath="Id"
+                                         SelectedIndex="0"
+                                         SelectedItem="{Binding TypeShipProduct}"
+                                         ShowClearButton="False"
+                                         IsEditableMode="False"/>
+                </StackLayout>
+                <StackLayout Padding="10" Orientation="Vertical">
+                    <Label Text="Bảng giá tham khảo"
+                       HorizontalOptions="CenterAndExpand"
+                       FontAttributes="Bold"
+                       FontSize="20"/>
+                    <StackLayout Orientation="Horizontal" Spacing="15">
+                        <Label Text="Khoảng cách"
+                           FontSize="20"
+                           HorizontalOptions="StartAndExpand"
+                           FontAttributes="Bold"/>
+                        <Label Text="Trọng lượng"
+                           FontSize="20"
+                           HorizontalOptions="StartAndExpand"
+                           FontAttributes="Bold"/>
+                        <Label Text="Chi phí"
+                           FontSize="20"
+                           HorizontalOptions="StartAndExpand"
+                           FontAttributes="Bold"/>
+                    </StackLayout>
+                    <ScrollView>
+                        <ListView ItemsSource="{Binding PriceLists}" SelectionMode="None"
+                          HasUnevenRows="True">
+                            <ListView.ItemTemplate>
+                                <DataTemplate>
+                                    <ViewCell>
+                                        <StackLayout Orientation="Vertical" Spacing="16" Padding="16">
+                                            <StackLayout Orientation="Horizontal" BackgroundColor="#2196F3" Padding="5">
+                                                <Label Text="{Binding From_Kilometer, StringFormat='Từ: {0} Km'}"
+                                               FontSize="20"
+                                               HorizontalOptions="StartAndExpand"/>
+                                                <Label Text="{Binding To_Kilometer, StringFormat='Đến: {0} Km'}"
+                                               FontSize="20"
+                                               HorizontalOptions="StartAndExpand"/>
+                                            </StackLayout>
+                                            <StackLayout Orientation="Horizontal">
+                                                <Label Text="{Binding From_Weight, StringFormat='Từ: {0} Kg'}"
+                                               FontSize="18"/>
+                                                <Label Text="{Binding To_Weight, StringFormat='Đến: {0} Kg'}"
+                                               FontSize="18"/>
+                                            </StackLayout>
+                                            <StackLayout Orientation="Horizontal">
+                                                <Label Text="{Binding Price, StringFormat='{0:C}'}"
+                                               FontSize="18"/>
+                                            </StackLayout>
+                                        </StackLayout>
+                                    </ViewCell>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+                        </ListView>
+                    </ScrollView>
+                </StackLayout>
+            </StackLayout>
+            <buttons:SfButton
+                    Command="{Binding SubmitCommand}"
+                    AbsoluteLayout.LayoutBounds="0, 0 , 1, 1.9"
+                    AbsoluteLayout.LayoutFlags="All"
+                    Style="{StaticResource GradientButtonStyle}"
+                    Text="Thêm chi tiết đơn hàng"
+                    WidthRequest="300" />
+            <buttons:SfButton
+                Margin="8"
+                Command="{Binding BackButtonCommand}"
+                FontSize="20"
+                HorizontalOptions="End"
+                Style="{StaticResource IconButtonStyle}"
+                Text="{StaticResource Back}"
+                TextColor="{DynamicResource Steel}"
+                VerticalOptions="Start" />
+        </AbsoluteLayout>
+    </ContentPage.Content>
+</ContentPage>

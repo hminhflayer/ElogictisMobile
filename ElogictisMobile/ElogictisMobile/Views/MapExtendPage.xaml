@@ -1,0 +1,101 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:maps="clr-namespace:Xamarin.Forms.Maps;assembly=Xamarin.Forms.Maps" xmlns:border="clr-namespace:Syncfusion.XForms.Border;assembly=Syncfusion.Core.XForms" xmlns:controls="clr-namespace:ElogictisMobile.Controls" xmlns:buttons="clr-namespace:Syncfusion.XForms.Buttons;assembly=Syncfusion.Buttons.XForms" xmlns:converter="clr-namespace:ElogictisMobile.Converters"
+             x:Class="ElogictisMobile.Views.MapExtendPage">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converter:BooleanToColorConverter x:Key="ColorConverter" />
+            <converter:InverseBoolConverter x:Key="InverseBoolConverter" />
+            <converter:NameValidationConverter x:Key="FirstValidationErrorConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    <ContentPage.Content>
+        <AbsoluteLayout>
+            <maps:Map
+                x:Name="Map"
+                MapClicked="Map_MapClicked"
+                MoveToLastRegionOnLayoutChange="True"
+                HasScrollEnabled="True"
+                IsShowingUser="True"
+                AbsoluteLayout.LayoutFlags="All"
+                AbsoluteLayout.LayoutBounds="0,0,1,1"
+                ItemsSource="{Binding MapLocations}">
+                <x:Arguments>
+                    <maps:MapSpan >
+                        <x:Arguments>
+                            <maps:Position>
+                                <x:Arguments>
+                                    <x:Double>10.3784705</x:Double>
+                                    <x:Double>105.4394167</x:Double>
+                                </x:Arguments>
+                            </maps:Position>
+                            <x:Double>0.1</x:Double>
+                            <x:Double>0.1</x:Double>
+                        </x:Arguments>
+                    </maps:MapSpan>
+                </x:Arguments>
+                <maps:Map.ItemTemplate>
+                    <DataTemplate>
+                        <maps:Pin Position="{Binding Position}"
+                                  Label="{Binding Label}"/>
+                    </DataTemplate>
+                </maps:Map.ItemTemplate>
+            </maps:Map>
+            <Frame
+                BackgroundColor="#fff"
+                Margin="5, 50, 5, 0"
+                HeightRequest="40">
+                <StackLayout>
+                    <StackLayout Orientation="Horizontal"
+                                 Spacing="5">
+                        <border:SfBorder BorderColor="{Binding Source={x:Reference AddressEntry}, Path=IsFocused, Converter={StaticResource ColorConverter}, ConverterParameter=3}" Style="{StaticResource DataFormBorderlessEntryBorderStyle}">
+                            <Grid ColumnDefinitions="*,Auto, Auto">
+                                <Label
+                                    Margin="5,0,0,0"
+                                    Grid.Column="0"
+                                HorizontalOptions="StartAndExpand"
+                                FontAttributes="Bold"
+                                Style="{StaticResource IconLabelStyle}"
+                                Text="{StaticResource Search}" />
+                                <controls:BorderlessEntry
+                                    Grid.Column="1"
+                                x:Name="AddressEntry"
+                                Margin="5,0,10,0"
+                                    HorizontalOptions="CenterAndExpand"
+                                    WidthRequest="280"
+                                HeightRequest="40"
+                                Placeholder="Nhập địa điểm"
+                                Style="{StaticResource BorderlessEntryStyle}"
+                                Text="{Binding Address}" />
+                                <buttons:SfButton
+                                    Margin="5,0,5,0"
+                                    Grid.Column="2"
+                                    FontAttributes="Bold"
+                                    Command="{Binding ClearCommand}"
+                                    Style="{StaticResource IconButtonStyle}"
+                                    Text="{StaticResource Delete}"
+                                    TextColor="{DynamicResource Steel}"/>
+                            </Grid>
+                        </border:SfBorder>
+                        <buttons:SfButton
+                            Command="{Binding FindClickedCommand}"
+                            AbsoluteLayout.LayoutBounds="0, 1 , 1, 1"
+                            AbsoluteLayout.LayoutFlags="All"
+                            Style="{StaticResource GradientButtonStyle}"
+                            Text="Tìm"
+                            WidthRequest="60" />
+                    </StackLayout>
+                </StackLayout>
+            </Frame>
+            <buttons:SfButton
+                            Command="{Binding SaveClickedCommand}"
+                            AbsoluteLayout.LayoutBounds="0, 0, 1, 1.9"
+                            AbsoluteLayout.LayoutFlags="All"
+                            Style="{StaticResource SuccessButtonStyle}"
+                            FontAttributes="Bold"
+                            FontSize="20"
+                            Text="Xác nhận địa điểm"
+                            WidthRequest="300" />
+        </AbsoluteLayout>
+    </ContentPage.Content>
+</ContentPage>

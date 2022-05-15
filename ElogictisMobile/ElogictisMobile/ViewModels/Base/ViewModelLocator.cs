@@ -21,6 +21,7 @@ namespace ElogictisMobile.ViewModels.Base
             // Register Page and Page Models
 
             Register<DashboardPageViewModel, DashboardPage>();
+            Register<HomePageViewModel, HomePage>();
 
             Register<LoginPageViewModel, LoginPage>();
             Register<SignUpPageViewModel, SignUpPage>();
@@ -32,6 +33,9 @@ namespace ElogictisMobile.ViewModels.Base
             Register<TransactionHistoryPageViewModel, TransactionHistoryPage>();
             Register<SettingsPageViewModel, SettingsPage>();
 
+            Register<MapCreateProductPageViewModel, MapCreateProductPage>();
+            Register<MapExtendPageViewModel, MapExtendPage>();
+
             Register<AddProfilesPageViewModel, AddProfilesPage>();
             Register<AddProductFormPageViewModel, AddProductFormPage>();
             Register<AddCategoryTypeProductPageViewModel, AddCategoryTypeProductPage>();
@@ -40,6 +44,7 @@ namespace ElogictisMobile.ViewModels.Base
             Register<AddProvincePageViewModel, AddProvincePage>();
             Register<AddDistrictPageViewModel, AddDistrictPage>();
             Register<AddTownPageViewModel, AddTownPage>();
+            Register<AddCategoryTypeShipperPageViewModel, AddCategoryTypeShipperPage>();
 
             Register<UpdateProfilePageViewModel, UpdateProfilePage>();
 
@@ -47,6 +52,7 @@ namespace ElogictisMobile.ViewModels.Base
             Register<ManageProductsPageViewModel, ManageProductsPage>();
             Register<CategoryTypeProductPageViewModel, CategoryTypeProductPage>();
             Register<CategoryPriceListPageViewModel, CategoryPriceListPage>();
+            Register<ManageCategoryTypeShipperPageViewModel, ManageCategoryTypeShipperPage>();
             Register<ManageProductNewPageViewModel, ManageProductNewPage>();
             Register<ManageAgencyPageViewModel, ManageAgencyPage>();
             Register<ManageProvincePageViewModel, ManageProvincePage>();
