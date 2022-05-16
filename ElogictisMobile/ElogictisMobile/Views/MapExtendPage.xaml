@@ -62,7 +62,7 @@
                                 x:Name="AddressEntry"
                                 Margin="5,0,10,0"
                                     HorizontalOptions="CenterAndExpand"
-                                    WidthRequest="280"
+                                    WidthRequest="200"
                                 HeightRequest="40"
                                 Placeholder="Nhập địa điểm"
                                 Style="{StaticResource BorderlessEntryStyle}"

@@ -80,38 +80,47 @@
                            HorizontalOptions="StartAndExpand"
                            FontAttributes="Bold"/>
                     </StackLayout>
-                    <ScrollView>
-                        <ListView ItemsSource="{Binding PriceLists}" SelectionMode="None"
+
+                </StackLayout>
+                <ScrollView AbsoluteLayout.LayoutFlags="All" AbsoluteLayout.LayoutBounds="0,0,1,1">
+                    <ListView ItemsSource="{Binding PriceLists}" SelectionMode="None"
                           HasUnevenRows="True">
-                            <ListView.ItemTemplate>
-                                <DataTemplate>
-                                    <ViewCell>
-                                        <StackLayout Orientation="Vertical" Spacing="16" Padding="16">
-                                            <StackLayout Orientation="Horizontal" BackgroundColor="#2196F3" Padding="5">
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <ViewCell>
+                                    <StackLayout Orientation="Vertical" Spacing="16" Padding="10">
+                                        <StackLayout>
+                                            <Label Text="{Binding TypeProduct_ext}"
+                                                FontSize="20"
+                                                HorizontalOptions="StartAndExpand"/>
+                                        </StackLayout>
+                                        <StackLayout Orientation="Horizontal"  BackgroundColor="Beige" >
+                                            <StackLayout Orientation="Vertical">
                                                 <Label Text="{Binding From_Kilometer, StringFormat='Từ: {0} Km'}"
-                                               FontSize="20"
-                                               HorizontalOptions="StartAndExpand"/>
+                                                FontSize="20"
+                                                HorizontalOptions="StartAndExpand"/>
                                                 <Label Text="{Binding To_Kilometer, StringFormat='Đến: {0} Km'}"
-                                               FontSize="20"
-                                               HorizontalOptions="StartAndExpand"/>
+                                                FontSize="20"
+                                                HorizontalOptions="StartAndExpand"/>
                                             </StackLayout>
-                                            <StackLayout Orientation="Horizontal">
+                                            <StackLayout Orientation="Vertical" HorizontalOptions="CenterAndExpand">
                                                 <Label Text="{Binding From_Weight, StringFormat='Từ: {0} Kg'}"
-                                               FontSize="18"/>
+                                                FontSize="18"/>
                                                 <Label Text="{Binding To_Weight, StringFormat='Đến: {0} Kg'}"
-                                               FontSize="18"/>
+                                                FontSize="18"/>
                                             </StackLayout>
-                                            <StackLayout Orientation="Horizontal">
-                                                <Label Text="{Binding Price, StringFormat='{0:C}'}"
-                                               FontSize="18"/>
+                                            <StackLayout Orientation="Vertical">
+                                                <Label Text="{Binding Price, StringFormat='{0:C} VNĐ'}"
+                                                HorizontalOptions="EndAndExpand"
+                                                FontSize="18"/>
                                             </StackLayout>
                                         </StackLayout>
-                                    </ViewCell>
-                                </DataTemplate>
-                            </ListView.ItemTemplate>
-                        </ListView>
-                    </ScrollView>
-                </StackLayout>
+                                    </StackLayout>
+                                </ViewCell>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                </ScrollView>
             </StackLayout>
             <buttons:SfButton
                     Command="{Binding SubmitCommand}"

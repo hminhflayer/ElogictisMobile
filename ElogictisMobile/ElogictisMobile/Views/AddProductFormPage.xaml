@@ -47,6 +47,13 @@
                     VerticalTextAlignment="Center" />
                     <!--From Full Name-->
                     <StackLayout Grid.Row="1">
+                        <Label
+                    FontFamily="Montserrat-Medium"
+                    FontSize="16"
+                    FontAttributes="Bold"
+                    HeightRequest="25"
+                    Text="Tên người gửi"
+                    TextColor="{DynamicResource Gray-800}" />
                         <border:SfBorder BorderColor="{Binding Source={x:Reference FromFullNameEntry}, Path=IsFocused, Converter={StaticResource ColorConverter}, ConverterParameter=3}" Style="{StaticResource DataFormBorderlessEntryBorderStyle}">
                             <Grid ColumnDefinitions="*, Auto">
                                 <controls:BorderlessEntry
@@ -77,6 +84,13 @@
                     </StackLayout>
                     <!--From Phone-->
                     <StackLayout Grid.Row="2">
+                        <Label
+                    FontFamily="Montserrat-Medium"
+                    FontSize="16"
+                    FontAttributes="Bold"
+                    HeightRequest="25"
+                    Text="Số điện thoại"
+                    TextColor="{DynamicResource Gray-800}" />
                         <border:SfBorder BorderColor="{Binding Source={x:Reference FromPhoneEntry}, Path=IsFocused, Converter={StaticResource ColorConverter}, ConverterParameter=3}" Style="{StaticResource DataFormBorderlessEntryBorderStyle}">
                             <Grid ColumnDefinitions="*, Auto">
                                 <controls:BorderlessEntry
@@ -111,6 +125,18 @@
                         TextColor="{DynamicResource Red}"
                         VerticalOptions="FillAndExpand" />
                     </StackLayout>
+                    <StackLayout Grid.Row="2">
+                        <Label
+                    FontFamily="Montserrat-Medium"
+                    FontSize="16"
+                    FontAttributes="Bold"
+                    HeightRequest="25"
+                    Text="Địa chỉ lấy hàng"
+                    TextColor="{DynamicResource Gray-800}" />
+                        <Label Text="{Binding FromAddress.Value}"
+                               FontFamily="Montserrat-Medium"
+                                FontSize="16"/>
+                    </StackLayout>
 
                     <Label
                     Margin="0,0,0,10"
@@ -125,6 +151,13 @@
                     VerticalTextAlignment="Center" />
                     <!--To Full Name-->
                     <StackLayout Grid.Row="4">
+                        <Label
+                    FontFamily="Montserrat-Medium"
+                    FontSize="16"
+                    FontAttributes="Bold"
+                    HeightRequest="25"
+                    Text="Tên người nhận"
+                    TextColor="{DynamicResource Gray-800}" />
                         <border:SfBorder BorderColor="{Binding Source={x:Reference ToFullNameEntry}, Path=IsFocused, Converter={StaticResource ColorConverter}, ConverterParameter=3}" Style="{StaticResource DataFormBorderlessEntryBorderStyle}">
                             <Grid ColumnDefinitions="*, Auto">
                                 <controls:BorderlessEntry
@@ -153,6 +186,13 @@
                     </StackLayout>
                     <!--To Phone-->
                     <StackLayout Grid.Row="5">
+                        <Label
+                    FontFamily="Montserrat-Medium"
+                    FontSize="16"
+                    FontAttributes="Bold"
+                    HeightRequest="25"
+                    Text="Số điện thoại"
+                    TextColor="{DynamicResource Gray-800}" />
                         <border:SfBorder BorderColor="{Binding Source={x:Reference ToPhoneEntry}, Path=IsFocused, Converter={StaticResource ColorConverter}, ConverterParameter=3}" Style="{StaticResource DataFormBorderlessEntryBorderStyle}">
                             <Grid ColumnDefinitions="*, Auto">
                                 <controls:BorderlessEntry
@@ -185,7 +225,17 @@
                         TextColor="{DynamicResource Red}"
                         VerticalOptions="FillAndExpand" />
                     </StackLayout>
-
+                    <StackLayout Grid.Row="2">
+                        <Label
+                    FontFamily="Montserrat-Medium"
+                    FontSize="16"
+                    HeightRequest="25"
+                    Text="Đia chỉ giao hàng"
+                    TextColor="{DynamicResource Gray-800}" />
+                        <Label Text="{Binding ToAddress.Value}"
+                               FontFamily="Montserrat-Medium"
+                    FontSize="16"/>
+                    </StackLayout>
                     <Label
                     Margin="0,0,0,10"
                     FontFamily="Montserrat-SemiBold"
@@ -231,7 +281,25 @@
                         TextColor="{DynamicResource Red}"
                         VerticalOptions="FillAndExpand" />
                     </StackLayout>
+                    <StackLayout Grid.Row="2">
+                        <Label
+                    FontFamily="Montserrat-Medium"
+                    FontSize="16"
+                    HeightRequest="25"
+                    Text="Hình thức giao hàng"
+                    TextColor="{DynamicResource Gray-800}" />
+                        <Label Text="{Binding TypeShip}"
+                               FontFamily="Montserrat-Medium"
+                    FontSize="16"
+                    HeightRequest="25"/>
+                    </StackLayout>
                     <StackLayout Grid.Row="7">
+                        <Label
+                    FontFamily="Montserrat-Medium"
+                    FontSize="16"
+                    HeightRequest="25"
+                    Text="Loại đơn hàng"
+                    TextColor="{DynamicResource Gray-800}" />
                         <combobox:SfComboBox HeightRequest="40" 
                                          x:Name="comboBox_TypeProduct" 
                                          DataSource="{Binding TypeProductCollection}" 
@@ -239,17 +307,6 @@
                                          SelectedValuePath="Id"
                                          SelectedIndex="0"
                                          SelectedItem="{Binding TypeProduct}"
-                                         ShowClearButton="False"
-                                         IsEditableMode="False"/>
-                    </StackLayout>
-                    <StackLayout Grid.Row="8">
-                        <combobox:SfComboBox HeightRequest="40" 
-                                         x:Name="comboBox_TypeShip" 
-                                         DataSource="{Binding TypeShipProductCollection}" 
-                                         DisplayMemberPath="Name" 
-                                         SelectedValuePath="Id"
-                                         SelectedIndex="0"
-                                         SelectedItem="{Binding TypeShipProduct}"
                                          ShowClearButton="False"
                                          IsEditableMode="False"/>
                     </StackLayout>

@@ -35,6 +35,9 @@ namespace ElogictisMobile.ViewModels
         public ValidatableObject<string> desciption;
         public ValidatableObject<string> money;
 
+        private bool acceptSubmit = true;
+        public string typeShip;
+
         private INavigationService _navigationService;
 
         private Command<object> fromMapClickedCommand;
@@ -86,6 +89,24 @@ namespace ElogictisMobile.ViewModels
             get
             {
                 return this.toMapClickedCommand ?? (this.toMapClickedCommand = new Command<object>(this.ToMapClicked));
+            }
+        }
+
+        public string TypeShip
+        {
+            get
+            {
+                return this.typeShip;
+            }
+
+            set
+            {
+                if (this.typeShip == value)
+                {
+                    return;
+                }
+
+                this.SetProperty(ref this.typeShip, value);
             }
         }
         public string MoneyShipper
@@ -376,6 +397,8 @@ namespace ElogictisMobile.ViewModels
             this.FromPhone.Value = LocalContext.Current.AccountSettings.Phone;
             this.FromAddress.Value = LocalContext.TmpProduct.From_Address;
             this.ToAddress.Value = LocalContext.TmpProduct.To_Address;
+            this.TypeShip = LocalContext.TmpProduct.TypeShip_ext;
+            DistanceAddress = LocalContext.TmpProduct.DistanceEstimate.ToString();
         }
 
         /// <summary>
@@ -424,7 +447,7 @@ namespace ElogictisMobile.ViewModels
         private async void SubmitClicked(object obj)
         {
             try
-            {
+            {   
                 if (LocalContext.Current.AccountSettings.Money == 0)
                 {
                     await App.Current.MainPage.DisplayAlert("Thông báo", "Bạn không còn tiền trong tài khoản!", "OK");
@@ -440,6 +463,12 @@ namespace ElogictisMobile.ViewModels
                     await App.Current.MainPage.DisplayAlert("Thông báo", "Bạn không còn tiền trong tài khoản!", "OK");
                     return;
                 }
+                if (!acceptSubmit)
+                {
+                    await App.Current.MainPage.DisplayAlert("Thông báo", "Phí vận chuyển của đơn hàng vượt quá số tiền trang tài khoản", "OK");
+                    return;
+                }
+
                 if (this.AreFieldsValid())
                 {
                     IsLoading = true;
@@ -479,7 +508,9 @@ namespace ElogictisMobile.ViewModels
                         LngToAddress = LocalContext.TmpProduct.LngToAddress,
                         TypeShip = LocalContext.TmpProduct.TypeShip,
                         TypeShip_ext = LocalContext.TmpProduct.TypeShip_ext,
-                        DistanceEstimate = LocalContext.TmpProduct.DistanceEstimate
+                        DistanceEstimate = LocalContext.TmpProduct.DistanceEstimate,
+                        DataDirections = LocalContext.TmpProduct.DataDirections,
+                        ProductPrioritize = LocalContext.TmpProduct.ProductPrioritize
                     }));
                     if (task)
                     {
@@ -613,18 +644,25 @@ namespace ElogictisMobile.ViewModels
         {
             try
             {
-                if (weight <= 0 || FromLocations.Count == 0 || ToLocations.Count == 0)
+                if (weight <= 0)
                 {
                     MoneyShipper = "0";
                     return;
                 }
                 IsLoading = true;
-                Position positionfrom = FromLocations[0].Position;
-                Position positionto = ToLocations[0].Position;
-                Distance distance = Distance.BetweenPositions(positionfrom, positionto);
-                DistanceAddress = distance.Kilometers.ToString();
                 
-                PriceList priceList = await RealtimeFirebase.Instance.GetPriceList(weight, distance.Kilometers);
+                PriceList priceList = await RealtimeFirebase.Instance.GetPriceList(weight, LocalContext.TmpProduct.DistanceEstimate, LocalContext.TmpProduct.TypeShip, TypeProduct.Id);
+                if(double.Parse(priceList.Price) > LocalContext.Current.AccountSettings.Money)
+                {
+                    IsLoading = false;
+                    acceptSubmit = false;
+                    await App.Current.MainPage.DisplayAlert("Thông báo", "Phí vận chuyển của đơn hàng vượt quá số tiền trang tài khoản", "OK");
+                    return;
+                } 
+                else
+                {
+                    acceptSubmit = true;
+                }    
 
                 MoneyShipper = priceList.Price;
                 IsLoading = false;

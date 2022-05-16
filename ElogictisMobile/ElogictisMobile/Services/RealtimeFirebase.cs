@@ -361,7 +361,7 @@ namespace ElogictisMobile.Services
             }
 
         }
-        public async Task<PriceList> GetPriceList(double weight = 0, double kilometer = 0)
+        public async Task<PriceList> GetPriceList(double weight = 0, double kilometer = 0, string idTypeShip = null, string idTypeProduct = null)
         {
             try
             {
@@ -369,12 +369,27 @@ namespace ElogictisMobile.Services
                 .Child("Categories")
                 .Child("PricesList")
                 .OnceAsync<PriceList>())
-                .Where(x => double.Parse(x.Object.From_Kilometer) <= kilometer && double.Parse(x.Object.To_Kilometer) >= kilometer)
+                .Where(x => double.Parse(x.Object.From_Kilometer) <= kilometer && 
+                double.Parse(x.Object.To_Kilometer) >= kilometer &&
+                double.Parse(x.Object.From_Weight) <= weight &&
+                double.Parse(x.Object.To_Kilometer) >= weight &&
+                x.Object.TypeProduct == idTypeProduct &&
+                x.Object.TypeShipProduct == idTypeShip)
                 .FirstOrDefault();
 
-                return pricelist.Object != null ? pricelist.Object : new PriceList()
+                return pricelist != null ? pricelist.Object : new PriceList()
                 {
-                    Price = "50.000"
+                    Price = "50.000",
+                    Id = "",
+                    From_Kilometer = "",
+                    From_Weight = "",
+                    TypeShipProduct = "",
+                    IsDelete = false,
+                    To_Kilometer = "",
+                    To_Weight = "",
+                    TypeProduct = "",
+                    TypeProduct_ext = "",
+                    TypeShipProduct_ext = ""
                 };
             }
             catch (Exception ex)
@@ -480,7 +495,8 @@ namespace ElogictisMobile.Services
                     Name = item.Object.Name
                 }).ToList();
 
-                return types.Where(item => item.Id == id) as TypeShipProduct;
+                var tmp = types.Where(item => item.Id == id);
+                return tmp.FirstOrDefault();
             }
             catch (Exception ex)
             {

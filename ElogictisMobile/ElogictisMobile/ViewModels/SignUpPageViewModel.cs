@@ -210,6 +210,10 @@ namespace ElogictisMobile.ViewModels
                             Town = Town.Id,
                             Town_ext = Town.Name,
                             AgencyId = "AGENCY" + Province.Id + District.Id,
+                            Avatar = "",
+                            CountHolderProduct = 0,
+                            HolderProductPrioritize = 0,
+                            ManageAgency = ""
                         };
                         var upsert = await RealtimeFirebase.Instance.UpSert("Profiles", loginAttempt, JsonConvert.SerializeObject(profiles)); 
                         if(upsert)

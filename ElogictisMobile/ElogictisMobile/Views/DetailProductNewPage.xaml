@@ -95,6 +95,14 @@
                                FontSize="18"
                                FontAttributes="Bold"/>
                     </StackLayout>
+                    <StackLayout Orientation="Vertical" Margin="15,0,0,0">
+                        <Label Text="Hình thức giao: "
+                               FontSize="18"
+                               FontAttributes="Bold"/>
+                        <Label Text="{Binding TypeShip_ext}"
+                               FontSize="18"
+                               FontAttributes="Bold"/>
+                    </StackLayout>
                     <StackLayout Orientation="Horizontal" Margin="15,0,0,0">
                         <Label Text="Loại hàng: "
                                FontSize="18"
@@ -119,11 +127,19 @@
                                FontSize="18"
                                FontAttributes="Bold"/>
                     </StackLayout>
+                    <StackLayout Orientation="Horizontal" Margin="15,0,0,0">
+                        <Label Text="Khoảng cách ước tính: "
+                               FontSize="18"
+                               FontAttributes="Bold"/>
+                        <Label Text="{Binding Distance, StringFormat='{0} Km'}"
+                               FontSize="18"
+                               FontAttributes="Bold"/>
+                    </StackLayout>
                     <StackLayout Orientation="Vertical" Margin="15,0,0,0">
                         <Label Text="Ghi chú: "
                                FontSize="18"
                                FontAttributes="Bold"/>
-                        <Label Text="{Binding Description}"
+                        <Label Text="{Binding Desciption}"
                                FontSize="18"
                                FontAttributes="Bold"/>
                     </StackLayout>

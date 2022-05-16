@@ -46,5 +46,7 @@ namespace ElogictisMobile.Models
         public double LatToAddress { get; set; }
         public double DistanceEstimate { get; set; }
         public string OrderExpirationDate { get; set; }
+        public string DataDirections { get; set; }
+        public bool ProductPrioritize { get; set; }
     }
 }

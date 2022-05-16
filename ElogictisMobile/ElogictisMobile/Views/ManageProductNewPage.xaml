@@ -36,8 +36,15 @@
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <ViewCell>
-                                <StackLayout Orientation="Vertical" Spacing="16" Padding="16">
-                                    <StackLayout Orientation="Horizontal" BackgroundColor="#2196F3" Padding="5">
+                                <StackLayout Orientation="Vertical" Spacing="16" Padding="5">
+                                    <StackLayout Orientation="Horizontal" BackgroundColor="LightGreen">
+                                        <Label Text="{Binding TypeShip_ext}"
+                                               FontSize="20"
+                                               HorizontalOptions="StartAndExpand"
+                                               TextColor="White"
+                                               FontAttributes="Bold"/>
+                                    </StackLayout>
+                                    <StackLayout Orientation="Horizontal" BackgroundColor="LightGreen" Padding="5">
                                         <Label Text="{Binding Name, StringFormat='Đơn: {0}'}"
                                                FontSize="20"
                                                HorizontalOptions="StartAndExpand"

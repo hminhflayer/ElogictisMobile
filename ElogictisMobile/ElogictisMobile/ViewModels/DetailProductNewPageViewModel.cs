@@ -37,6 +37,7 @@ namespace ElogictisMobile.ViewModels
         public string TypeProduct { get; set; }
         public string TypeShip { get; set; }
         public string TypeShip_ext { get; set; }
+        public string Distance { get; set; }
         #endregion
         #region Constructor 
         /// <summary>
@@ -86,6 +87,7 @@ namespace ElogictisMobile.ViewModels
             this.NameProduct = LocalContext.ProductSelected.Name;
             this.TypeShip = LocalContext.ProductSelected.TypeShip;
             this.TypeShip_ext = LocalContext.ProductSelected.TypeShip_ext;
+            this.Distance = LocalContext.ProductSelected.DistanceEstimate.ToString();
         }
 
         /// <summary>
@@ -109,9 +111,9 @@ namespace ElogictisMobile.ViewModels
                     await App.Current.MainPage.DisplayAlert("Không thể nhận thêm đơn", "Bạn đang giữ đơn hàng ưu tiên\nBạn cần giao đơn ưu tiên trước khi nhận thêm đơn khác","OK");
                     return;
                 }    
-                if(LocalContext.Current.AccountSettings.CountHolderProduct == 15)
+                if(LocalContext.Current.AccountSettings.CountHolderProduct == 5)
                 {
-                    await App.Current.MainPage.DisplayAlert("Không thể nhận thêm đơn", "Số lượng đơn hàng bạn đang nhận đã đạt giới hạn\n(Tối đa có thể nhận 15 đơn hàng)", "OK");
+                    await App.Current.MainPage.DisplayAlert("Không thể nhận thêm đơn", "Số lượng đơn hàng bạn đang nhận đã đạt giới hạn\n(Tối đa có thể nhận 5 đơn hàng)", "OK");
                     return;
                 }
 
@@ -125,6 +127,14 @@ namespace ElogictisMobile.ViewModels
                 temp.Holder = LocalContext.Current.AccountSettings.Id;
                 temp.OrderExpirationDate = time;
 
+                var profile = LocalContext.Current.AccountSettings;
+                profile.CountHolderProduct = profile.CountHolderProduct + 1;
+                if(temp.ProductPrioritize)
+                {
+                    profile.HolderProductPrioritize = profile.HolderProductPrioritize + 1;
+                }
+
+                var upsertProfile = await RealtimeFirebase.Instance.UpSert("Profiles", profile.Id, JsonConvert.SerializeObject(profile));
                 var upsert = await RealtimeFirebase.Instance.UpSert("Products", temp.ID, JsonConvert.SerializeObject(temp));
                 var upsert1 = await RealtimeFirebase.Instance.UpSert("DeliveryTracking/" + temp.ID, "01", JsonConvert.SerializeObject(new ProductDeliveryTrackingModel
                 {
@@ -135,7 +145,7 @@ namespace ElogictisMobile.ViewModels
                     Title = LocalContext.Current.AccountSettings.Name + ": ĐÃ NHẬN ĐƠN HÀNG",
                     TitleStatus = "Đơn hàng được Shipper nhận"
                 }));
-                if (upsert && upsert1)
+                if (upsert && upsert1 && upsertProfile)
                 {
                     //await RealtimeFirebase.Instance.UpSert("Notifications", keyNoti, JsonConvert.SerializeObject(new TransactionHistory
                     //{
@@ -147,7 +157,7 @@ namespace ElogictisMobile.ViewModels
                     //    ProfileId = LocalContext.Current.AccountSettings.Id
                     //}));
                     await App.Current.MainPage.DisplayAlert("Thông báo", "Nhận đơn hàng thành công!", "OK");
-                    await _navigationService.GoBackAsync();
+                    await _navigationService.GoBackRootAsync();
                 }
                 else
                 {

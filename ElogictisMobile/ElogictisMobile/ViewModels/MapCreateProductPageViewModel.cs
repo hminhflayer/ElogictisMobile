@@ -1,10 +1,13 @@
 ﻿using ElogictisMobile.Models;
 using ElogictisMobile.Services;
 using ElogictisMobile.Services.Navigation;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Net.Http;
 using System.Text;
+using System.Threading.Tasks;
 using Xamarin.Forms;
 using Xamarin.Forms.Maps;
 
@@ -25,7 +28,7 @@ namespace ElogictisMobile.ViewModels
         public List<TypeShipProduct> TypeShipProducts { get; set; }
         public TypeShipProduct TypeShipProduct { get; set; }
 
-        public List<PriceList> PriceLists { get; set; }
+        public List<PriceList> priceLists;
 
         private INavigationService _navigationService;
 
@@ -56,6 +59,24 @@ namespace ElogictisMobile.ViewModels
                 ToAddress = LocalContext.TmpProduct.To_Address;
             }
         }
+        public List<PriceList> PriceLists
+        {
+            get
+            {
+                return this.priceLists;
+            }
+
+            set
+            {
+                if (this.priceLists == value)
+                {
+                    return;
+                }
+
+                this.SetProperty(ref this.priceLists, value);
+            }
+        }
+
         public string FromAddress
         {
             get
@@ -158,7 +179,10 @@ namespace ElogictisMobile.ViewModels
                 {
                     await App.Current.MainPage.DisplayAlert("Lỗi", "Chưa có thông tin địa chỉ lấy hàng hoặc nhận hàng!", "OK");
                     return;
-                }    
+                }
+                LocalContext.TmpProduct.DataDirections = await GetDataDirections(LocalContext.TmpProduct.From_Address, LocalContext.TmpProduct.To_Address);
+                LocalContext.TmpProduct.DistanceEstimate = GetDistance(LocalContext.TmpProduct.DataDirections);
+
                 await _navigationService.NavigateToAsync<AddProductFormPageViewModel>();
             }
             catch (Exception ex)
@@ -167,11 +191,49 @@ namespace ElogictisMobile.ViewModels
             }
         }
 
+        private double GetDistance(string direction)
+        {
+            var stuff = JsonConvert.DeserializeObject<MapDirections>(direction);
+
+            var meters = stuff.Response.Directions.Routes[0].DistanceMeters;
+            double distance = (meters / 1000.0);
+            return distance;
+        }
+
+        private async Task<string> GetDataDirections(string from, string to)
+        {
+            var client = new HttpClient();
+            var origin = from;
+            var destination = to;
+            var uri = "https://google-maps-directions.p.rapidapi.com/directions?origin="+ origin +"&destination="+ destination +"&distance_units=auto&avoid_routes=tolls%2Cferries&include_timed_distance=false&expand_routes=true&language=vi&region=vi";
+            var request = new HttpRequestMessage
+            {
+                Method = HttpMethod.Get,
+                RequestUri = new Uri(uri),
+                Headers =
+                {
+                    { "X-RapidAPI-Host", "google-maps-directions.p.rapidapi.com"
+                    },
+                    { "X-RapidAPI-Key", "287d14cc02mshc91c6b64caf1e1ep1ee03ejsn96644ab367b9"
+                    },
+                },
+            };
+            using (var response = await client.SendAsync(request))
+            {
+                response.EnsureSuccessStatusCode();
+                var body = await response.Content.ReadAsStringAsync();
+                return body;
+            }
+        }
+
         private async void TypeShipProductChange(object obj)
         {
             try
             {
                 PriceLists.Clear();
+                LocalContext.TmpProduct.TypeShip = TypeShipProduct.Id;
+                LocalContext.TmpProduct.TypeShip_ext = TypeShipProduct.Name;
+                LocalContext.TmpProduct.ProductPrioritize = TypeShipProduct.Prioritize;
                 PriceLists = await RealtimeFirebase.Instance.GetPriceListWithTypeShip(TypeShipProduct.Id);
             }
             catch (Exception ex)

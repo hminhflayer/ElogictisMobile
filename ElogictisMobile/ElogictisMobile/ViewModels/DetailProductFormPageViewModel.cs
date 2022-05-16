@@ -10,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using Xamarin.Essentials;
 using Xamarin.Forms;
 using Xamarin.Forms.Internals;
 
@@ -34,6 +35,8 @@ namespace ElogictisMobile.ViewModels
         public ValidatableObject<string> desciption;
         public ValidatableObject<double> money;
         private INavigationService _navigationService;
+        public string TypeShip_ext { get; set; }
+        private string Mess = "Cập nhật thông tin đơn hàng thành công!";
 
 
         #endregion
@@ -52,6 +55,7 @@ namespace ElogictisMobile.ViewModels
             this.CancelProductCommand = new Command(this.CancelClicked);
             this.RefundProductCommand = new Command(this.RefundClicked);
             this.FailedProductCommand = new Command(this.FailedClicked);
+            this.MapProductCommand = new Command(this.MapClicked);
             this.TypeProductCollection = LocalContext.ListTypeProduct;
             switch (LocalContext.ProductSelected.Status)
             {
@@ -306,6 +310,7 @@ namespace ElogictisMobile.ViewModels
         public Command TrackingProductCommand { get; set; }
         public Command FailedProductCommand { get; set; }
         public Command RefundProductCommand { get; set; }
+        public Command MapProductCommand { get; set; }
 
         #endregion
 
@@ -340,6 +345,7 @@ namespace ElogictisMobile.ViewModels
             this.Quanlity.Value = LocalContext.ProductSelected.Quanlity;
             this.Desciption.Value = LocalContext.ProductSelected.Description;
             this.Money.Value = LocalContext.ProductSelected.Money;
+            this.TypeShip_ext = LocalContext.ProductSelected.TypeShip_ext;
             this.TypeProduct = tmp;
         }
         private void AddValidationRules()
@@ -408,16 +414,19 @@ namespace ElogictisMobile.ViewModels
             {
                 if (LocalContext.ProductSelected.Status == 2)
                 {
+                    Mess = "Đã lấy hàng thành công!";
                     temp = UpdateStatusProduct(mess, 3);
                 }
                 else if (LocalContext.ProductSelected.Status == 3)
                 {
                     mess = "GIAO THÀNH CÔNG";
+                    Mess = "Đã giao hàng thành công!";
                     temp = UpdateStatusProduct(mess, 4);
                 }
                 else
                 {
                     mess = "GIAO KHÔNG THÀNH CÔNG";
+                    Mess = "Giao hàng không thành công!";
                     temp = UpdateStatusProduct(mess, 5);
                 }
             }
@@ -514,6 +523,14 @@ namespace ElogictisMobile.ViewModels
                             Profit = moneyAgency
                         };
 
+                        var profile = LocalContext.Current.AccountSettings;
+                        profile.CountHolderProduct = profile.CountHolderProduct - 1;
+                        if(temp.ProductPrioritize)
+                        {
+                            profile.HolderProductPrioritize = profile.HolderProductPrioritize - 1;
+                        }   
+                        
+                        var upsertProfile = await RealtimeFirebase.Instance.UpSert("Profiles", temp.Holder, JsonConvert.SerializeObject(profile));
                         var shipper = await RealtimeFirebase.Instance.UpdateMoneyUser(moneyShipper, true, temp.Holder);
                         var agency = await RealtimeFirebase.Instance.UpdateMoneyAgency(moneyAgency, true, temp.AgencyId);
                         var admin = await RealtimeFirebase.Instance.UpdateMoneyUser(moneyAdmin, true, LocalContext.AdminId);
@@ -549,12 +566,12 @@ namespace ElogictisMobile.ViewModels
                     //    ProfileId = LocalContext.ProductSelected.CreateBy
                     //}));
                     await _navigationService.GoBackAsync();
-                    await App.Current.MainPage.DisplayAlert("Thông báo", "Cập nhật trạng thái đơn hàng thành công!", "OK");
+                    await App.Current.MainPage.DisplayAlert("Thông báo", Mess, "OK");
     
                 }
                 else
                 {
-                    await App.Current.MainPage.DisplayAlert("Thông báo", "Cập nhật trạng thái đơn hàng không thành công!", "OK");
+                    await App.Current.MainPage.DisplayAlert("Thông báo", "Cập nhật thông tin đơn hàng không thành công!", "OK");
                 }
             }
         }
@@ -693,6 +710,35 @@ namespace ElogictisMobile.ViewModels
             {
                 await _navigationService.NavigateToAsync<FailedProductPageViewModel>();
             }    
+        }
+
+        private async void MapClicked(object obj)
+        {
+            try
+            {
+                var accept = await App.Current.MainPage.DisplayAlert("Thông báo chuyển hướng", "Ứng dụng sẽ chuyển bạn đến ứng dụng khác\nBạn có đồng ý chuyển hướng?", "Đồng ý","Không");
+                if(accept)
+                {
+                    var stuff = JsonConvert.DeserializeObject<MapDirections>(LocalContext.ProductSelected.DataDirections);
+
+                    var uri = stuff.Response.Directions.DirectionsLink;
+
+                    if (Device.RuntimePlatform == Device.iOS)
+                    {
+                        // https://developer.apple.com/library/ios/featuredarticles/iPhoneURLScheme_Reference/MapLinks/MapLinks.html
+                        await Launcher.OpenAsync(uri);
+                    }
+                    else if (Device.RuntimePlatform == Device.Android)
+                    {
+                        // opens the 'task chooser' so the user can pick Maps, Chrome or other mapping app
+                        await Launcher.OpenAsync(uri);
+                    }
+                }    
+            }
+            catch(Exception ex)
+            {
+                await App.Current.MainPage.DisplayAlert("Lỗi", ex.Message, "OK");
+            }
         }
         #endregion
     }

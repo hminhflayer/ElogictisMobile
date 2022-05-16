@@ -179,7 +179,7 @@ namespace ElogictisMobile.ViewModels
                 this.ProductList.Clear();
                 foreach (var item in tmp)
                 {
-                    if (item.ID.ToLower().Contains(search.ToLower()))
+                    if (item.ID.ToLower().Contains(search.ToLower()) || item.Name.ToLower().Contains(search.ToLower()))
                     {
                         ProductList.Add(item);
                     }
