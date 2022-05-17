@@ -41,6 +41,8 @@ namespace ElogictisMobile.Models
         public static bool IsFromAddress { get; set; }
         public static Products TmpProduct { get; set; } = new Products();
 
+        public static List<Products> ProductsDelivery { get; set; }
+
         #region Singleton
         private static LocalContext _current;
         public static LocalContext Current => _current ?? (_current = new LocalContext());

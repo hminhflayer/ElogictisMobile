@@ -234,6 +234,54 @@ namespace ElogictisMobile.Services
                 });
             return ProductsAgency;
         }
+
+        public async Task<List<Products>> GetAllProductGetedIsShiping()
+        {
+            var collection = (await client
+                .Child("Products")
+                .OnceAsync<Products>())
+                .Select(item => new Products()
+                {
+                    CreateBy = item.Object.CreateBy,
+                    CreateTime = item.Object.CreateTime,
+                    Description = item.Object.Description,
+                    From_Address = item.Object.From_Address,
+                    From_FullName = item.Object.From_FullName,
+                    From_PhoneNumber = item.Object.From_PhoneNumber,
+                    ID = item.Object.ID,
+                    IsDelete = item.Object.IsDelete,
+                    LastUpdateBy = item.Object.LastUpdateBy,
+                    LastUpdateTime = item.Object.LastUpdateTime,
+                    Money = item.Object.Money,
+                    Quanlity = item.Object.Quanlity,
+                    To_Address = item.Object.To_Address,
+                    To_FullName = item.Object.To_FullName,
+                    To_PhoneNumber = item.Object.To_PhoneNumber,
+                    Type = item.Object.Type,
+                    Type_ext = item.Object.Type_ext,
+                    Weight = item.Object.Weight,
+                    Status = item.Object.Status,
+                    Holder = item.Object.Holder,
+                    IsConfirm = item.Object.IsConfirm,
+                    Status_ext = item.Object.Status_ext,
+                    AgencyId = item.Object.AgencyId,
+                    Name = item.Object.Name,
+                    DataDirections = item.Object.DataDirections,
+                    DistanceEstimate = item.Object.DistanceEstimate,
+                    LatFromAddress = item.Object.LatFromAddress,
+                    LatToAddress = item.Object.LatToAddress,
+                    LngFromAddress = item.Object.LngFromAddress,
+                    LngToAddress = item.Object.LngToAddress,
+                    OrderExpirationDate = item.Object.OrderExpirationDate,
+                    ProductPrioritize = item.Object.ProductPrioritize,
+                    TypeShip = item.Object.TypeShip,
+                    TypeShip_ext = item.Object.TypeShip_ext
+                })
+                .Where(item => item.Holder == LocalContext.Current.AccountSettings.Id && item.Status == 3)
+                .ToList();
+            return collection;
+        }
+
         public ObservableCollection<Products> GetAllProductGeted()
         {
             var collection = client

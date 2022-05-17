@@ -467,6 +467,38 @@
                         Text="{StaticResource Next}" />
                     </controls:TapAnimationGrid>
                     <BoxView Style="{StaticResource HorizontalSeparatorStyle}" />
+
+                    <controls:TapAnimationGrid
+                    BackgroundColor="{DynamicResource Gray-Bg}"
+                    ColumnDefinitions="Auto, *, Auto"
+                    ColumnSpacing="0"
+                    Command="{Binding ChooseProductShipCommand}"
+                    RowSpacing="0"
+                    Tapped="False">
+
+                        <!--Edit profile icon-->
+                        <Label
+                        Grid.Column="0"
+                        Margin="16,0,0,0"
+                        Style="{StaticResource IconLabelStyle}"
+                        Text="{StaticResource Delivered}" />
+                        <!--Edit profile label-->
+                        <Label
+                        Grid.Column="1"
+                        Margin="16,12"
+                        FontFamily="Montserrat-Medium"
+                        HorizontalOptions="Start"
+                        Style="{StaticResource TitleLabelStyle}"
+                        Text="Hỗ trợ tìm đường"
+                        VerticalOptions="Center" />
+                        <!--Navigation icon-->
+                        <Label
+                        Grid.Column="2"
+                        Margin="16,8"
+                        Style="{StaticResource IconLabelStyle}"
+                        Text="{StaticResource Next}" />
+                    </controls:TapAnimationGrid>
+                    <BoxView Style="{StaticResource HorizontalSeparatorStyle}" />
                 </StackLayout>
                 <!--Header label for account setting-->
                 <StackLayout Orientation="Vertical" Spacing="0"

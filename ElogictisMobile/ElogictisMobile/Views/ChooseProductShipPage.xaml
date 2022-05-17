@@ -1,0 +1,77 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="ElogictisMobile.Views.ChooseProductShipPage"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:input="clr-namespace:Plugin.InputKit.Shared.Controls;assembly=Plugin.InputKit"
+    xmlns:buttons="clr-namespace:Syncfusion.XForms.Buttons;assembly=Syncfusion.Buttons.XForms"
+    xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    BackgroundColor="{DynamicResource Gray-Bg}"
+    NavigationPage.HasNavigationBar="True"
+    NavigationPage.HasBackButton="True"
+    Title="Danh sách đơn hàng đang giao"
+    mc:Ignorable="d">
+
+    <ContentPage.Content>
+
+        <ScrollView>
+            <Grid
+            ColumnSpacing="0"
+            RowDefinitions="Auto, Auto, *"
+            RowSpacing="0">
+                <ListView Grid.Row="1" ItemsSource="{Binding Products}" SelectionMode="None"
+                          HasUnevenRows="True">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <ViewCell>
+                                <StackLayout Orientation="Vertical" Spacing="16" Padding="5">
+                                    <StackLayout BackgroundColor="#2196F3"
+                                                Orientation="Horizontal"
+                                                HorizontalOptions="Fill">
+                                        <Label
+                                            Margin="5,5,0,5"
+                                            FontFamily="Montserrat-SemiBold"
+                                            FontSize="18"
+                                            Text="{Binding Name, StringFormat='Đơn: {0}'}"
+                                            TextColor="White"/>
+                                        <input:CheckBox Color="Blue" 
+                                                        HorizontalOptions="EndAndExpand"
+                                                        Padding="0,0,5,0"
+                                             Type="Check" BoxBackgroundColor="White"         
+                                             CheckChanged="CheckBox_CheckChanged"  BindingContext="{Binding .}" />
+                                    </StackLayout>
+                                    <StackLayout Orientation="Horizontal">
+                                        <Label Text="{Binding OrderExpirationDate, StringFormat='Hạn giao trước: {0}'}"
+                                               FontSize="18"
+                                               FontAttributes="Bold"/>
+                                    </StackLayout>
+                                    <StackLayout Orientation="Vertical">
+                                        <Label Text="Địa chỉ giao hàng:"
+                                               FontSize="18"
+                                               FontAttributes="Bold"/>
+                                        <Label Text="{Binding To_Address}"
+                                               FontSize="18"/>
+                                    </StackLayout>
+                                    <StackLayout Orientation="Horizontal">
+                                        <Label Text="{Binding Money, StringFormat='Phí vận chuyển: {0:c}'}"
+                                               FontAttributes="Bold"
+                                               FontSize="18"/>
+                                    </StackLayout>
+                                </StackLayout>
+                            </ViewCell>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+                <StackLayout>
+                    <buttons:SfButton
+                    Margin="0,10,0,10"
+                    Command="{Binding MapCommand}"
+                    Style="{StaticResource GradientButtonStyle}"
+                    Text="Đến bản đồ"
+                    WidthRequest="360" />
+                </StackLayout>
+            </Grid>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>

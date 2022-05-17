@@ -35,6 +35,8 @@ namespace ElogictisMobile.ViewModels.Base
 
             Register<MapCreateProductPageViewModel, MapCreateProductPage>();
             Register<MapExtendPageViewModel, MapExtendPage>();
+            Register<ChooseProductShipPageViewModel, ChooseProductShipPage>();
+            Register<MapDeliveryPageViewModel, MapDeliveryPage>();
 
             Register<AddProfilesPageViewModel, AddProfilesPage>();
             Register<AddProductFormPageViewModel, AddProductFormPage>();

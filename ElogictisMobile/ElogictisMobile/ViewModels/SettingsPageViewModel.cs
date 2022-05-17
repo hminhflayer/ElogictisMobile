@@ -52,6 +52,7 @@ namespace ElogictisMobile.ViewModels
             this.LogoutCommand = new Command(this.LogoutClicked);
             this.HistoryTransactionCommand = new Command(this.HistoryTransactionClicked);
             this.CategoryTypeShipCommand = new Command(this.CategoryTypeShipeClicked);
+            this.ChooseProductShipCommand = new Command(this.ChooseProductShipClicked);
         }
 
 
@@ -62,6 +63,7 @@ namespace ElogictisMobile.ViewModels
         /// <summary>
         /// Gets or sets the command is executed when the edit profile option is clicked.
         /// </summary>
+        public Command ChooseProductShipCommand { get; set; }
         public Command EditProfileCommand { get; set; }
 
         /// <summary>
@@ -122,6 +124,18 @@ namespace ElogictisMobile.ViewModels
         /// Invoked when the edit profile option clicked
         /// </summary>
         /// <param name="obj">The object</param>
+        private async void ChooseProductShipClicked(object obj)
+        {
+            try
+            {
+                await _navigationService.NavigateToAsync<ChooseProductShipPageViewModel>();
+                // Do something
+            }
+            catch (Exception ex)
+            {
+                await App.Current.MainPage.DisplayAlert("Thông báo", ex.Message, "Đóng");
+            }
+        }
         private async void EditProfileClicked(object obj)
         {
             try
