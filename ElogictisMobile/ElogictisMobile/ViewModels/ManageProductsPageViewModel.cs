@@ -171,7 +171,7 @@ namespace ElogictisMobile.ViewModels
                 {
                     foreach (var item in tmp)
                     {
-                        ProductList.Add(item);
+                        this.ProductList.Add(item);
                     }
                     return;
                 }
@@ -181,7 +181,7 @@ namespace ElogictisMobile.ViewModels
                 {
                     if (item.ID.ToLower().Contains(search.ToLower()) || item.Name.ToLower().Contains(search.ToLower()))
                     {
-                        ProductList.Add(item);
+                        this.ProductList.Add(item);
                     }
                 }
             }

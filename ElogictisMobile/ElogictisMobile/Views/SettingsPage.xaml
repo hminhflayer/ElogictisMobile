@@ -528,7 +528,7 @@
                         Grid.Column="0"
                         Margin="16,0,0,0"
                         Style="{StaticResource IconLabelStyle}"
-                        Text="{StaticResource Account}" />
+                        Text="{StaticResource New}" />
                         <!--Edit profile label-->
                         <Label
                         Grid.Column="1"
@@ -560,7 +560,7 @@
                         Grid.Column="0"
                         Margin="16,0,0,0"
                         Style="{StaticResource IconLabelStyle}"
-                        Text="{StaticResource Account}" />
+                        Text="{StaticResource Menu}" />
                         <!--Edit profile label-->
                         <Label
                         Grid.Column="1"
@@ -593,7 +593,7 @@
                         Grid.Column="0"
                         Margin="16,0,0,0"
                         Style="{StaticResource IconLabelStyle}"
-                        Text="{StaticResource Account}" />
+                        Text="{StaticResource Menu}" />
                         <!--Edit profile label-->
                         <Label
                         Grid.Column="1"
@@ -671,7 +671,7 @@
                         Grid.Column="0"
                         Margin="16,0,0,0"
                         Style="{StaticResource IconLabelStyle}"
-                        Text="{StaticResource Account}" />
+                        Text="{StaticResource Menu}" />
                         <!--Edit profile label-->
                         <Label
                         Grid.Column="1"
@@ -703,7 +703,7 @@
                         Grid.Column="0"
                         Margin="16,0,0,0"
                         Style="{StaticResource IconLabelStyle}"
-                        Text="{StaticResource Account}" />
+                        Text="{StaticResource Category}" />
                         <!--Edit profile label-->
                         <Label
                         Grid.Column="1"

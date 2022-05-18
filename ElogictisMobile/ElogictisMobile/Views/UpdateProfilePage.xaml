@@ -29,32 +29,14 @@
         <ScrollView>
             <StackLayout>
                 <StackLayout Padding="16" Spacing="16">
-                    <Grid>
-                        <CI:CircleImage Source="{Binding Avatar}"
-                                        BackgroundColor="{DynamicResource Gray-200}"
-                                        HeightRequest="80"
-                                        WidthRequest="80"/>
-
-                        <border:SfBorder HorizontalOptions="Center" VerticalOptions="Center" 
-                        HeightRequest="110" WidthRequest="110" BorderColor="Transparent" >
-                            <border:SfBorder.Content>
-                                <buttons:SfButton Text="{StaticResource Add}" HeightRequest="36"
-                                              WidthRequest="36" CornerRadius="36" VerticalOptions="End" 
-                                              HorizontalOptions="End" BorderWidth="2" BackgroundColor="{DynamicResource Gray-200}"
-                                              BorderColor="{DynamicResource Gray-Bg}"
-                                              TextColor="{DynamicResource Steel}" Style="{StaticResource IconButtonStyle}"
-                                              Command="{Binding AddProfileCommand}" />
-                            </border:SfBorder.Content>
-                        </border:SfBorder>
-                    </Grid>
-
                     <StackLayout>
+                        <StackLayout>
                         <!--  Full name entry with border  -->
-                        <border:SfBorder BorderColor="{Binding Source={x:Reference FullNameEntry}, Path=IsFocused, Converter={StaticResource ColorConverter}, ConverterParameter=3}" Style="{StaticResource DataFormBorderlessEntryBorderStyle}"
+                            <Label Text="Họ và tên" FontSize="18"/>
+                            <border:SfBorder BorderColor="{Binding Source={x:Reference FullNameEntry}, Path=IsFocused, Converter={StaticResource ColorConverter}, ConverterParameter=3}" Style="{StaticResource DataFormBorderlessEntryBorderStyle}"
                                  Padding="12,8" Margin="0,8,0,0" VerticalOptions="Start">
-                            <Grid ColumnDefinitions="*, Auto">
-
-                                <control:BorderlessEntry
+                                <Grid ColumnDefinitions="*, Auto">
+                                    <control:BorderlessEntry
                         x:Name="FullNameEntry"
                         Placeholder="Họ và tên"
                         Style="{StaticResource BorderlessEntryStyle}" 
@@ -80,7 +62,8 @@
 
                     <StackLayout>
                         <!--  Email entry with border  -->
-                        <border:SfBorder
+                            <Label Text="Email" FontSize="18"/>
+                            <border:SfBorder
                     Grid.Column="2"
                     BorderColor="{Binding Source={x:Reference EmailEntry}, Path=IsFocused, Converter={StaticResource ColorConverter}, ConverterParameter=3}"
                     Style="{StaticResource DataFormBorderlessEntryBorderStyle}" Padding="12,8" Margin="0,8,0,0" VerticalOptions="Start" >
@@ -112,6 +95,7 @@
                     </StackLayout>
 
                     <!--  Phone number entry with border  -->
+                        <Label Text="Số điện thoại" FontSize="18"/>
                     <border:SfBorder
                     Grid.Column="2"
                     BorderColor="{Binding Source={x:Reference PhoneNoEntry}, Path=IsFocused, Converter={StaticResource ColorConverter}, ConverterParameter=3}"
