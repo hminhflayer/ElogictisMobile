@@ -18,6 +18,7 @@ namespace ElogictisMobile.Models
         public static ObservableCollection<Agency> AgencyList { get; set; }
         public static ObservableCollection<PriceList> PriceLists { get; set; }
         public static ObservableCollection<HealthCare> ProductStatistical { get; set; }
+        public static ObservableCollection<TypeShipProduct> TypeShipProductList { get; set; }
         public static Products ProductSelected { get; set; }
         public static Profiles ProfileSelected { get; set; }
         public static Category CategorySelected { get; set; }
@@ -42,7 +43,7 @@ namespace ElogictisMobile.Models
         public static Products TmpProduct { get; set; } = new Products();
 
         public static List<Products> ProductsDelivery { get; set; }
-
+        public static bool RoundTrip { get; set; }
         #region Singleton
         private static LocalContext _current;
         public static LocalContext Current => _current ?? (_current = new LocalContext());

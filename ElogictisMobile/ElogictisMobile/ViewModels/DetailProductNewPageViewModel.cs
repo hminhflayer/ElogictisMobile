@@ -98,9 +98,9 @@ namespace ElogictisMobile.ViewModels
             var now = DateTime.Now;
             var TypeShip = await RealtimeFirebase.Instance.GetOneTypeShip(idTypeShip);
 
-            now.AddHours(TypeShip.TimeHold);
+            var newnow = now.AddHours(TypeShip.TimeHold);
 
-            return now.ToString();
+            return newnow.ToString();
         }
         private async void SubmitClicked(object obj)
         {
@@ -128,12 +128,14 @@ namespace ElogictisMobile.ViewModels
                 temp.OrderExpirationDate = time;
 
                 var profile = LocalContext.Current.AccountSettings;
-                profile.CountHolderProduct = profile.CountHolderProduct + 1;
-                if(temp.ProductPrioritize)
+                profile.CountHolderProduct = LocalContext.Current.AccountSettings.CountHolderProduct + 1;
+
+                if (temp.ProductPrioritize)
                 {
                     profile.HolderProductPrioritize = profile.HolderProductPrioritize + 1;
                 }
 
+                LocalContext.Current.AccountSettings = profile;
                 var upsertProfile = await RealtimeFirebase.Instance.UpSert("Profiles", profile.Id, JsonConvert.SerializeObject(profile));
                 var upsert = await RealtimeFirebase.Instance.UpSert("Products", temp.ID, JsonConvert.SerializeObject(temp));
                 var upsert1 = await RealtimeFirebase.Instance.UpSert("DeliveryTracking/" + temp.ID, "01", JsonConvert.SerializeObject(new ProductDeliveryTrackingModel

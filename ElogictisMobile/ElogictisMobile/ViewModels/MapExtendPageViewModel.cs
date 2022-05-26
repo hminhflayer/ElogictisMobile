@@ -163,7 +163,7 @@ namespace ElogictisMobile.ViewModels
             }    
         }
 
-        private async void ClearCLicked(object obj)
+        private void ClearCLicked(object obj)
         {
             Address = "";
             MapLocations.Clear();

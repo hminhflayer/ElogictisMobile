@@ -182,13 +182,22 @@
                                          IsEditableMode="False"/>
             </StackLayout>
 
-            <!--Submit Button-->
-            <buttons:SfButton
+            <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand">
+                <!--Submit Button-->
+                <buttons:SfButton
                     Margin="0,24,0,0"
-                    Command="{Binding SubmitCommand}"
+                    Command="{Binding UpdateProductCommand}"
                     Style="{StaticResource GradientButtonStyle}"
                     Text="Cập nhật"
                     WidthRequest="200" />
+                <buttons:SfButton
+                    Margin="0,24,0,0"
+                    Command="{Binding DeleteProductCommand}"
+                    Style="{StaticResource DangerButtonStyle}"
+                    Text="Xóa"
+                    WidthRequest="60" />
+            </StackLayout>
+            
 
         </StackLayout>
     </ContentPage.Content>

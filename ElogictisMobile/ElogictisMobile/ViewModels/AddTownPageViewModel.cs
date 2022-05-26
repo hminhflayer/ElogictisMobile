@@ -108,6 +108,8 @@ namespace ElogictisMobile.ViewModels
         {
             this.Name = new ValidatableObject<string>();
             this.Id = new ValidatableObject<string>();
+            this.Province = LocalContext.ProvinceSelected;
+            this.District = LocalContext.DistrictSelected;
 
             if(LocalContext.IsEdit)
             {
@@ -135,8 +137,8 @@ namespace ElogictisMobile.ViewModels
         /// </summary>
         private void AddValidationRules()
         {
-            this.Name.Validations.Add(new IsNotNullOrEmptyRule<string> { ValidationMessage = "Tên Quận/Huyện không được trống" });
-            this.Id.Validations.Add(new IsNotNullOrEmptyRule<string> { ValidationMessage = "Mã Quận/Huyện không được trống" });
+            this.Name.Validations.Add(new IsNotNullOrEmptyRule<string> { ValidationMessage = "Tên Xã/Phường/Thị trấn không được trống" });
+            this.Id.Validations.Add(new IsNotNullOrEmptyRule<string> { ValidationMessage = "Mã Xã/Phường/Thị trấn không được trống" });
         }
 
         /// <summary>
@@ -173,7 +175,7 @@ namespace ElogictisMobile.ViewModels
                     town.ProvinceName = Province.Name;
                     town.ProvinceId = Province.Id;
                     town.FullAddress = Name.Value + ", " + District.Name + ", " + Province.Name;
-                    mess = "Cập nhật thành công!";
+                    mess = "Cập nhậtthông tin Xã/Phường/Thị trấn thành công!";
                 }    
                 else
                 {
@@ -184,7 +186,7 @@ namespace ElogictisMobile.ViewModels
                     town.ProvinceName = Province.Name;
                     town.ProvinceId = Province.Id;
                     town.FullAddress = Name.Value + ", " + District.Name + ", " + Province.Name;
-                    mess = "Thêm thành công!";
+                    mess = "Thêm Xã/Phường/Thị trấn thành công!";
                 }    
                 
 
@@ -207,13 +209,13 @@ namespace ElogictisMobile.ViewModels
             // Do something
             try
             {
-                var action = await App.Current.MainPage.DisplayAlert("Thông báo", "Bạn có thực sự muốn xóa tỉnh "+ Name.Value +" ?", "Đúng", "Không");
+                var action = await App.Current.MainPage.DisplayAlert("Thông báo", "Bạn có thực sự muốn xóa Xã/Phường/Thị trấn " + Name.Value +" ?", "Đúng", "Không");
                 if (action)
                 {
                     var del = await RealtimeFirebase.Instance.Delete("Categories/Town/"+District.Id, Id.Value);
                     if (del)
                     {
-                        await App.Current.MainPage.DisplayAlert("Thông báo", "Đã xóa thành công", "OK");
+                        await App.Current.MainPage.DisplayAlert("Thông báo", "Đã xóa Xã/Phường/Thị trấn "+Name.Value+" thành công", "OK");
                     }
                     else
                     {

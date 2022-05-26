@@ -241,18 +241,16 @@ namespace ElogictisMobile.ViewModels
         private async void DeleteClicked(object obj)
         {
             // Do something
-            var action = await App.Current.MainPage.DisplayAlert("Thông báo", "Bạn có thực sự muốn xóa thông tin đơn hàng này?", "Đúng", "Không");
+            var action = await App.Current.MainPage.DisplayAlert("Thông báo", "Bạn có thực sự muốn xóa thông tin đại lý này?", "Đúng", "Không");
             if (action)
             {
-                Products products = LocalContext.ProductSelected;
-                products.IsDelete = true;
-                products.LastUpdateBy = LocalContext.Profiles.Email;
-                products.LastUpdateTime = DateTime.Now.ToString();
+                Agency agency = LocalContext.AgencySelected;
 
                 // Do Something
-                await RealtimeFirebase.Instance.UpSert("Products", products.ID, JsonConvert.SerializeObject(products));
+                await RealtimeFirebase.Instance.Delete("Agencies", agency.Id);
                 //await RealtimeFirebase.Instance.Delete("Products", products.ID);
-                await App.Current.MainPage.DisplayAlert("Thông báo", "Đã xóa thông tin đơn hàng thành công", "OK");
+                await App.Current.MainPage.DisplayAlert("Thông báo", "Đã xóa thông tin đại lý thành công", "OK");
+                await _navigationService.GoBackAsync();
             }
         }
 

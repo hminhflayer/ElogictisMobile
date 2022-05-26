@@ -9,7 +9,7 @@
     xmlns:border="clr-namespace:Syncfusion.XForms.Border;assembly=Syncfusion.Core.XForms" 
     xmlns:behaviours="clr-namespace:ElogictisMobile.Behaviors" 
     xmlns:combobox="clr-namespace:Syncfusion.XForms.ComboBox;assembly=Syncfusion.SfComboBox.XForms" xmlns:busyindicator="clr-namespace:Syncfusion.SfBusyIndicator.XForms;assembly=Syncfusion.SfBusyIndicator.XForms"
-    Title="Thêm Quận/Huyện"
+    Title="Thông tin Xã/Phường/Thị trấn"
     BackgroundColor="{DynamicResource Gray-Bg}"
     NavigationPage.HasBackButton="True"
     NavigationPage.HasNavigationBar="True">

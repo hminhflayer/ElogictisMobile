@@ -33,9 +33,10 @@ namespace ElogictisMobile.ViewModels
         public ManageCategoryTypeShipperPageViewModel(INavigationService navigationService)
         {
             _navigationService = navigationService;
-            TypeProductList = new ObservableCollection<Category>();
+            TypeProductList = new ObservableCollection<TypeShipProduct>();
             TypeProductList.Clear();
-            TypeProductList = RealtimeFirebase.Instance.GetAllCategory<Category>("TypeShip");
+            TypeProductList = RealtimeFirebase.Instance.GetAllCategory<TypeShipProduct>("TypeShip");
+            LocalContext.TypeShipProductList = TypeProductList;
         }
 
         #endregion
@@ -81,7 +82,7 @@ namespace ElogictisMobile.ViewModels
         /// <summary>
         /// Gets or sets a collction of value to be displayed in contacts list page.
         /// </summary>\
-        public ObservableCollection<Category> TypeProductList { get; set; }
+        public ObservableCollection<TypeShipProduct> TypeProductList { get; set; }
 
         #endregion
 
@@ -94,7 +95,8 @@ namespace ElogictisMobile.ViewModels
         private async void NavigateToNextPage(object selectedItem)
         {
             // Do something
-            LocalContext.TypeShipProductSelected = new TypeShipProduct();
+            LocalContext.IsEdit = true;
+            LocalContext.TypeShipProductSelected = selectedItem as TypeShipProduct;
             await _navigationService.NavigateToAsync<AddCategoryTypeShipperPageViewModel>();
 
         }
@@ -110,7 +112,8 @@ namespace ElogictisMobile.ViewModels
             // Do something
             try
             {
-                LocalContext.TypeShipProductSelected = obj as TypeShipProduct;
+                LocalContext.IsEdit = false;
+                LocalContext.TypeShipProductSelected = null;
                 await _navigationService.NavigateToAsync<AddCategoryTypeShipperPageViewModel>();
             }
             catch (Exception ex)
@@ -123,7 +126,7 @@ namespace ElogictisMobile.ViewModels
             // Do something
             try
             {
-                ObservableCollection<Category> tmp = LocalContext.TypeProductList;
+                ObservableCollection<TypeShipProduct> tmp = LocalContext.TypeShipProductList;
                 if (search == null || search == "")
                 {
                     foreach (var item in tmp)

@@ -134,7 +134,8 @@ namespace ElogictisMobile.ViewModels
                 this.PricesList.Clear();
                 foreach (var item in tmp)
                 {
-                    if (item.From_Kilometer.Equals(search))
+                    if (item.TypeShipProduct_ext.ToLower().Contains(search.ToLower()) ||
+                        item.TypeProduct_ext.ToLower().Contains(search.ToLower()))
                     {
                         PricesList.Add(item);
                     }

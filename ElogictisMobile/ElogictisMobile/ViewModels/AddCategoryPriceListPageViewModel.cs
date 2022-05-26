@@ -25,7 +25,7 @@ namespace ElogictisMobile.ViewModels
         private ValidatableObject<string> fromWeight;
         private ValidatableObject<string> toWeight;
         private ValidatableObject<string> price;
-        private bool update = false;
+        public bool update = false;
 
         private Command<object> addPriceListCommand;
         private Command<object> deleteCommand;
@@ -256,7 +256,7 @@ namespace ElogictisMobile.ViewModels
                         {
                             IsLoading = false;
                             await App.Current.MainPage.DisplayAlert("Thông báo", "Cập nhật bảng giá thành công", "OK");
-                            _navigationService.GoBackAsync();
+                            await _navigationService.GoBackAsync();
                         }
                     }   
                     else
@@ -284,7 +284,7 @@ namespace ElogictisMobile.ViewModels
                         {
                             IsLoading = false;
                             await App.Current.MainPage.DisplayAlert("Thông báo", "Thêm bảng giá thành công", "OK");
-                            _navigationService.GoBackAsync();
+                            await _navigationService.GoBackAsync();
                         }
                     }    
                     
@@ -309,7 +309,7 @@ namespace ElogictisMobile.ViewModels
                     if (del)
                     {
                         await App.Current.MainPage.DisplayAlert("Thông báo", "Đã bảng giá xóa thành công", "OK");
-                        _navigationService.GoBackAsync();
+                        await _navigationService.GoBackAsync();
                     }
                     else
                     {

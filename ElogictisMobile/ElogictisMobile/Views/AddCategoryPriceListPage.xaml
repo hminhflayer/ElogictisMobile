@@ -239,6 +239,7 @@
                             Margin="0,16,0,0"
                             Style="{StaticResource DangerButtonStyle}"
                             Text="Xóa"
+                            IsVisible="{Binding update}"
                             WidthRequest="50" 
                             Command="{Binding DeleteCommand}"/>
                     </StackLayout>

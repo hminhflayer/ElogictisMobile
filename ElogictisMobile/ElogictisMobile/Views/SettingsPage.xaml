@@ -711,7 +711,7 @@
                         FontFamily="Montserrat-Medium"
                         HorizontalOptions="Start"
                         Style="{StaticResource TitleLabelStyle}"
-                        Text="Danh mục loại hình giao hàng"
+                        Text="Danh mục hình thức giao hàng"
                         VerticalOptions="Center" />
                         <!--Navigation icon-->
                         <Label

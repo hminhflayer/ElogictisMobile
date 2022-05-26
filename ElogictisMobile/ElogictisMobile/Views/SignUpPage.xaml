@@ -168,10 +168,11 @@
                                          DataSource="{Binding ProvinceCollection}" 
                                          DisplayMemberPath="Name" 
                                          SelectedValuePath="Id"
+                                         AllowFiltering="True"
+                                         ShowClearButton="True"
+                                         IsEditableMode="True"
                                          SelectedItem="{Binding Province}"
-                                         SelectionChanged="SfComboBox_SelectionChanged"
-                                         ShowClearButton="False"
-                                         IsEditableMode="False"/>
+                                         SelectionChanged="SfComboBox_SelectionChanged"/>
                         </StackLayout>
                         <StackLayout Orientation="Horizontal">
                             <Label
@@ -370,7 +371,7 @@
                             Command="{Binding LoginCommand}"
                             Style="{StaticResource TransparentButtonStyle}"
                             Text="Đăng nhập"
-                            TextColor="{DynamicResource PrimaryColor}" />
+                            TextColor="{DynamicResource GradientButtonStyle}" />
 
                     </StackLayout>
                 </StackLayout>

@@ -41,21 +41,21 @@ namespace ElogictisMobile.DataService
 
         public static ObservableCollection<Category> PermissionCollection = new ObservableCollection<Category>()
         {
-            new Category() { Id ="1",Name="Người dùng bình thường"},
-            new Category() { Id ="2",Name="Nhân viên"},
-            new Category() { Id ="3",Name="Quản lý"},
+            new Category() { Id ="1",Name="Khách hàng"},
+            new Category() { Id ="2",Name="Shipper"},
+            new Category() { Id ="3",Name="Đại lý"},
             new Category() { Id ="4",Name="Quản trị viên"}
         };
 
         public static ObservableCollection<Category> PermissionCollectionAgency = new ObservableCollection<Category>()
         {
-            new Category() { Id ="1",Name="Người dùng bình thường"},
-            new Category() { Id ="2",Name="Nhân viên"}
+            new Category() { Id ="1",Name="Khách hàng"},
+            new Category() { Id ="2",Name="Shipper"}
         };
 
         public static ObservableCollection<Category> PermissionAgency = new ObservableCollection<Category>()
         {
-            new Category() { Id ="3",Name="Quản lý"}
+            new Category() { Id ="3",Name="Đại lý"}
         };
     }
 }

@@ -58,23 +58,12 @@
                         <sfavatar:SfAvatarView.ImageSource>
                             <FontImageSource
                                     FontFamily="FontIcons"
-                                    Glyph="https://i.pinimg.com/236x/0d/0c/6e/0d0c6e4e3bf2647e0fba35a0905d8484.jpg"
+                                    Glyph="DefaulImage"
                                     Size="29"
                                     Color="{DynamicResource Gray-600}" />
                         </sfavatar:SfAvatarView.ImageSource>
                     </sfavatar:SfAvatarView>
 
-                    <border:SfBorder HorizontalOptions="Center" VerticalOptions="Center" 
-                        HeightRequest="110" WidthRequest="110" BorderColor="Transparent" >
-                        <border:SfBorder.Content>
-                            <buttons:SfButton Text="{StaticResource Add}" HeightRequest="36"
-                                              WidthRequest="36" CornerRadius="36" VerticalOptions="End" 
-                                              HorizontalOptions="End" BorderWidth="2" BackgroundColor="{DynamicResource Gray-200}"
-                                              BorderColor="{DynamicResource Gray-Bg}"
-                                              TextColor="{DynamicResource Steel}" Style="{StaticResource IconButtonStyle}"
-                                              Command="{Binding AddProfileCommand}" />
-                        </border:SfBorder.Content>
-                    </border:SfBorder>
                 </Grid>
                 <StackLayout Orientation="Horizontal" Padding="12,8" Margin="0,8,0,0">
                     <Label Text="Tiền trong tài khoản: "
@@ -154,7 +143,7 @@
                     Style="{StaticResource DataFormBorderlessEntryBorderStyle}"  Padding="12,8" Margin="0,8" VerticalOptions="Start" >
                     <control:BorderlessEntry
                         x:Name="PhoneNoEntry"
-                        Keyboard="Telephone" 
+                        Keyboard="Telephone"
                         Placeholder="Số điện thoại"
                         Text="{Binding PhoneNumber}"
                         Style="{StaticResource BorderlessEntryStyle}">

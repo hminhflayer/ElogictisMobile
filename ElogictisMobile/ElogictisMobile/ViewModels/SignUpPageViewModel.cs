@@ -199,7 +199,7 @@ namespace ElogictisMobile.ViewModels
                             LastUpdateTime = "",
                             Phone = PhoneNumber.Value,
                             Auth = "1",
-                            Auth_ext = "Người dùng bình thường",
+                            Auth_ext = "Khách hàng",
                             Identity = "",
                             Money = 0,
                             IsConfirm = false,

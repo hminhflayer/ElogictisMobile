@@ -145,7 +145,7 @@
                             Command="{Binding SignUpCommand}"
                             Style="{StaticResource TransparentButtonStyle}"
                             Text="Đăng ký ngay"
-                            TextColor="{DynamicResource PrimaryColor}" />
+                            TextColor="{DynamicResource FacebookBlue}" />
 
                     </StackLayout>
                 </StackLayout>

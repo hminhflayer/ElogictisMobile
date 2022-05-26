@@ -221,6 +221,10 @@ namespace ElogictisMobile.ViewModels
             try
             {
                 List<Town> towns = new List<Town>();
+                if(District == null)
+                {
+                    return;
+                }    
                 var district = District.Id;
 
                 Town = new Town();

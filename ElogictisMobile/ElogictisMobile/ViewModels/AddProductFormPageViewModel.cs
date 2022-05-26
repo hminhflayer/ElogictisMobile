@@ -469,6 +469,13 @@ namespace ElogictisMobile.ViewModels
                     return;
                 }
 
+                var MaxMoney = await RealtimeFirebase.Instance.GetTotalMoneyProductWaiting(double.Parse(MoneyShipper));
+                if (MaxMoney > LocalContext.Current.AccountSettings.Money)
+                {
+                    await App.Current.MainPage.DisplayAlert("Thông báo", "Phí vận chuyển của những đơn hàng bạn tạo đã đạt tối đa:\n1.Bạn hãy nạp thêm tiền\n2.Bạn hãy chờ Shipper xác nhận lấy những đơn trước đó. ", "OK");
+                    return;
+                }    
+
                 if (this.AreFieldsValid())
                 {
                     IsLoading = true;
@@ -535,7 +542,7 @@ namespace ElogictisMobile.ViewModels
                 }
                 else
                 {
-                    await App.Current.MainPage.DisplayAlert("Thông báo", "Thông tin đơn hàng không hợp lệ", "OK");
+                    await App.Current.MainPage.DisplayAlert("Thông báo", "Thông tin đơn hàng không đúng\nHãy kiểm tra lại", "OK");
                 }    
             }
             catch(Exception ex)
@@ -656,6 +663,7 @@ namespace ElogictisMobile.ViewModels
                 {
                     IsLoading = false;
                     acceptSubmit = false;
+                    MoneyShipper = priceList.Price;
                     await App.Current.MainPage.DisplayAlert("Thông báo", "Phí vận chuyển của đơn hàng vượt quá số tiền trang tài khoản", "OK");
                     return;
                 } 

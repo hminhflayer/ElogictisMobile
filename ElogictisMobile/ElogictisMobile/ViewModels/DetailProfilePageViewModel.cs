@@ -357,10 +357,12 @@ namespace ElogictisMobile.ViewModels
             if(up)
             {
                 await App.Current.MainPage.DisplayAlert("Thông báo", "Đã duyệt tài khoản thành công", "OK");
+                await _navigationService.GoBackAsync();
             }    
             else
             {
                 await App.Current.MainPage.DisplayAlert("Thông báo", "Duyệt tài khoản không thành công", "OK");
+                await _navigationService.GoBackAsync();
             }    
             
         }

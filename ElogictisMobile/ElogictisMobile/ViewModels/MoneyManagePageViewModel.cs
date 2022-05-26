@@ -16,7 +16,7 @@ namespace ElogictisMobile.ViewModels
         private INavigationService _navigationService;
 
         public ValidatableObject<double> Money { get; set; }
-        public int MoneyProfile { get; set; }
+        public long MoneyProfile { get; set; }
         public bool IsEnable { get; set; }
         public bool IsVisible { get; set; }
         public MoneyManagePageViewModel(INavigationService navigationService)
@@ -101,7 +101,7 @@ namespace ElogictisMobile.ViewModels
                         newProfiles.Add(manage);
 
                         await App.Current.MainPage.DisplayAlert("Thông báo", "Nạp tiền thành công", "OK");
-                        await _navigationService.GoBackAsync();
+                        await _navigationService.GoBackRootAsync();
                     }    
                 }
                 else if(LocalContext.IsAdmin)
@@ -113,7 +113,7 @@ namespace ElogictisMobile.ViewModels
                         IsLoading = false;
                         await RealtimeFirebase.Instance.UpSert("Transaction", historyTransaction.Id, JsonConvert.SerializeObject(historyTransaction));
                         await App.Current.MainPage.DisplayAlert("Thông báo", "Nạp tiền thành công", "OK");
-                        await _navigationService.GoBackAsync();
+                        await _navigationService.GoBackRootAsync();
                     }
                 }   
                 else

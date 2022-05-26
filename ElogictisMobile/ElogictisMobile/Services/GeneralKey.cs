@@ -27,7 +27,7 @@ namespace ElogictisMobile.Services
             if(!string.IsNullOrEmpty(key))
             {
                var time = DateTimeOffset.Now.ToUnixTimeSeconds();
-                return key + (-1*time);
+                return key + (time);
             }
             return "";
         }

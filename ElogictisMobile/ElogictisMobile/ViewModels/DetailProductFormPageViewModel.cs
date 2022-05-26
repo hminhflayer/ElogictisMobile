@@ -297,6 +297,14 @@ namespace ElogictisMobile.ViewModels
             }
         }
 
+        public Command<double> WeightChangedCommand
+        {
+            get
+            {
+                return this.weightChangedCommand ?? (this.weightChangedCommand = new Command<double>(this.WeightChangeClicked));
+            }
+        }
+
         #endregion 
 
         #region Comments
@@ -311,6 +319,8 @@ namespace ElogictisMobile.ViewModels
         public Command FailedProductCommand { get; set; }
         public Command RefundProductCommand { get; set; }
         public Command MapProductCommand { get; set; }
+        
+        private Command<double> weightChangedCommand;
 
         #endregion
 
@@ -525,9 +535,11 @@ namespace ElogictisMobile.ViewModels
 
                         var profile = LocalContext.Current.AccountSettings;
                         profile.CountHolderProduct = profile.CountHolderProduct - 1;
-                        if(temp.ProductPrioritize)
+                        LocalContext.Current.AccountSettings.CountHolderProduct = profile.CountHolderProduct;
+                        if (temp.ProductPrioritize)
                         {
                             profile.HolderProductPrioritize = profile.HolderProductPrioritize - 1;
+                            LocalContext.Current.AccountSettings.HolderProductPrioritize = profile.HolderProductPrioritize;
                         }   
                         
                         var upsertProfile = await RealtimeFirebase.Instance.UpSert("Profiles", temp.Holder, JsonConvert.SerializeObject(profile));
@@ -739,6 +751,37 @@ namespace ElogictisMobile.ViewModels
             {
                 await App.Current.MainPage.DisplayAlert("Lỗi", ex.Message, "OK");
             }
+        }
+
+        public async void WeightChangeClicked(double weight)
+        {
+            try
+            {
+                if (weight <= 0)
+                {
+                    Money.Value = 0.0;
+                    return;
+                }
+                IsLoading = true;
+
+                PriceList priceList = await RealtimeFirebase.Instance.GetPriceList(weight, LocalContext.TmpProduct.DistanceEstimate, LocalContext.TmpProduct.TypeShip, TypeProduct.Id);
+                if (double.Parse(priceList.Price) > LocalContext.Current.AccountSettings.Money)
+                {
+                    IsLoading = false;
+                    Money.Value = double.Parse(priceList.Price);
+                    await App.Current.MainPage.DisplayAlert("Thông báo", "Phí vận chuyển của đơn hàng vượt quá số tiền trang tài khoản", "OK");
+                    return;
+                }
+
+                Money.Value = double.Parse(priceList.Price);
+                IsLoading = false;
+            }
+            catch (Exception ex)
+            {
+                await App.Current.MainPage.DisplayAlert("Thông báo", ex.Message, "OK");
+                IsLoading = false;
+            }
+
         }
         #endregion
     }

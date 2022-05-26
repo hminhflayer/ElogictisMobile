@@ -24,6 +24,8 @@ namespace ElogictisMobile.ViewModels
         private Command<object> addProductCommand;
         private Command<string> textChangedCommand;
         private ObservableCollection<Products> productList;
+        private List<Products> products;
+        private bool first = true;
 
         #endregion
 
@@ -36,6 +38,7 @@ namespace ElogictisMobile.ViewModels
         {
             try
             {
+                products = new List<Products>();
                 ProductList = new ObservableCollection<Products>();
                 _navigationService = navigationService;
                 if (LocalContext.IsShipper)
@@ -167,17 +170,27 @@ namespace ElogictisMobile.ViewModels
             try
             {
                 ObservableCollection<Products> tmp = LocalContext.ProductsList;
+                
+                if(first)
+                {
+                    foreach(var item in tmp)
+                    {
+                        products.Add(item);
+                    }
+                    first = false;
+                }
+
+                this.ProductList.Clear();
                 if (search == null || search == "")
                 {
-                    foreach (var item in tmp)
+                    foreach (var item in products)
                     {
                         this.ProductList.Add(item);
                     }
                     return;
                 }
 
-                this.ProductList.Clear();
-                foreach (var item in tmp)
+                foreach (var item in products)
                 {
                     if (item.ID.ToLower().Contains(search.ToLower()) || item.Name.ToLower().Contains(search.ToLower()))
                     {

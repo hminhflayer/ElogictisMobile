@@ -9,7 +9,7 @@
     xmlns:border="clr-namespace:Syncfusion.XForms.Border;assembly=Syncfusion.Core.XForms" 
     xmlns:behaviours="clr-namespace:ElogictisMobile.Behaviors" 
     xmlns:combobox="clr-namespace:Syncfusion.XForms.ComboBox;assembly=Syncfusion.SfComboBox.XForms"
-    Title="Thêm Quận/Huyện"
+    Title="Thông tin Quận/Huyện"
     BackgroundColor="{DynamicResource Gray-Bg}"
     NavigationPage.HasBackButton="True"
     NavigationPage.HasNavigationBar="True">

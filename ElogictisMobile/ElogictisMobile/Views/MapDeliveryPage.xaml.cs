@@ -56,7 +56,16 @@ namespace ElogictisMobile.Views
 					destination = destination.Substring(0, destination.Length-1);
                     var client = new HttpClient();
                     var key = "pk.eyJ1IjoiaG1pbmhmbGF5ZXIiLCJhIjoiY2wzOXY1dHZ6MDl4aTNpcGVybXh6ZzAwNiJ9.T0Uoz4Rx97j_fyHVjZYWOQ";
-                    var uri = "https://api.mapbox.com/optimized-trips/v1/mapbox/driving/"+destination+"?source=first&roundtrip=true&access_token="+key;
+                    string roundtrip;
+                    if(LocalContext.RoundTrip)
+                    {
+                        roundtrip = "roundtrip=true";
+                    }    
+                    else
+                    {
+                        roundtrip = "roundtrip=false&destination=last";
+                    }    
+                    var uri = "https://api.mapbox.com/optimized-trips/v1/mapbox/driving/"+destination+"?source=first&"+ roundtrip + "&access_token="+key;
                     var request = new HttpRequestMessage
                     {
                         Method = HttpMethod.Get,

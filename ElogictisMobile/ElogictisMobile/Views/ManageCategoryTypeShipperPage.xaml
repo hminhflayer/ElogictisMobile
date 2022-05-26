@@ -15,7 +15,7 @@
     BackgroundColor="{DynamicResource Gray-Bg}"
     NavigationPage.HasNavigationBar="True"
     NavigationPage.HasBackButton="True"
-    Title="Danh mục loại hàng"
+    Title="Danh mục hình thức giao hàng"
     mc:Ignorable="d">
 
     <ContentPage.Content>

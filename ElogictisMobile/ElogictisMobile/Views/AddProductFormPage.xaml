@@ -289,8 +289,10 @@
                     Text="Hình thức giao hàng"
                     TextColor="{DynamicResource Gray-800}" />
                         <Label Text="{Binding TypeShip}"
+                               FontAttributes="Bold"
                                FontFamily="Montserrat-Medium"
-                    FontSize="16"
+                               TextColor="Black"
+                    FontSize="18"
                     HeightRequest="25"/>
                     </StackLayout>
                     <StackLayout Grid.Row="7">
@@ -355,16 +357,33 @@
                     Text="Ghi chú"
                     TextColor="{DynamicResource Gray-800}" />
                         <border:SfBorder BorderColor="{Binding Source={x:Reference DescriptionEntry}, Path=IsFocused, Converter={StaticResource ColorConverter}, ConverterParameter=3}" Style="{StaticResource DataFormBorderlessEntryBorderStyle}">
-                            <controls:BorderlessEntry
+                            <controls:BorderlessEditor
                         x:Name="DescriptionEntry"
                         Margin="12,0"
-                        HeightRequest="40"
+                        HeightRequest="100"
                         Placeholder="Ghi chú"
                         Style="{StaticResource BorderlessEntryStyle}"
                         Text="{Binding Desciption.Value}" />
                         </border:SfBorder>
                     </StackLayout>
-                    <!--Price-->
+                    <StackLayout Grid.Row="12">
+                        <Label
+                    Margin="0,5,0,0"
+                    FontFamily="Montserrat-Medium"
+                    FontSize="12"
+                    HeightRequest="18"
+                    Text="Khoảng cách vận chuyển"
+                    TextColor="{DynamicResource Gray-800}" />
+                        <border:SfBorder BorderColor="{Binding Source={x:Reference MoneyEntry}, Path=IsFocused, Converter={StaticResource ColorConverter}, ConverterParameter=3}" Style="{StaticResource DataFormBorderlessEntryBorderStyle}">
+                            <controls:BorderlessEntry
+                        x:Name="KilometerEntry"
+                        Margin="12,0"
+                        HeightRequest="40"
+                        Style="{StaticResource BorderlessEntryStyle}"
+                        Text="{Binding DistanceAddress, StringFormat='{0:F2}'}"
+                        IsReadOnly="True"/>
+                        </border:SfBorder>
+                    </StackLayout>
                     <StackLayout Grid.Row="12">
                         <Label
                     Margin="0,5,0,0"
@@ -372,13 +391,6 @@
                     FontSize="12"
                     HeightRequest="18"
                     Text="Phí vận chuyển"
-                    TextColor="{DynamicResource Gray-800}" />
-                        <Label
-                    Margin="0,5,0,0"
-                    FontFamily="Montserrat-Medium"
-                    FontSize="12"
-                    HeightRequest="18"
-                    Text="{Binding DistanceAddress, StringFormat='Khoảng cách vận chuyển: {0:F2} Km'}"
                     TextColor="{DynamicResource Gray-800}" />
                         <border:SfBorder BorderColor="{Binding Source={x:Reference MoneyEntry}, Path=IsFocused, Converter={StaticResource ColorConverter}, ConverterParameter=3}" Style="{StaticResource DataFormBorderlessEntryBorderStyle}">
                             <controls:BorderlessEntry

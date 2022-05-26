@@ -43,11 +43,12 @@ namespace ElogictisMobile.ViewModels
 
             TextTotalRevenue = "Tổng doanh thu: ";
             TextMonthRevenue = "Doanh thu trong tháng: ";
+            LoadStatistical();
 
             IsLoading = true;
             Device.StartTimer(TimeSpan.FromSeconds(10), () =>
             {
-                if(LocalContext.Current.AccountSettings == null)
+                if (LocalContext.Current.AccountSettings == null)
                 {
                     return false;
                 }    
@@ -101,7 +102,7 @@ namespace ElogictisMobile.ViewModels
                 TextTotalRevenue = "Tổng chi phí vận chuyển: ";
                 TextMonthRevenue = "Chi phí vận chuyển trong tháng: ";
 
-                this.ValueWait = await RealtimeFirebase.Instance.GetStatisticalUser(1);
+                this.ValueWait = await RealtimeFirebase.Instance.GetStatisticalUser(2);
                 this.ValueShipped = await RealtimeFirebase.Instance.GetStatisticalUser(3);
                 this.ValueSuccess = await RealtimeFirebase.Instance.GetStatisticalUser(4);
                 this.ValueFail = await RealtimeFirebase.Instance.GetStatisticalUser(5);

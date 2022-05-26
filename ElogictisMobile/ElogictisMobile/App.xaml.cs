@@ -43,8 +43,9 @@ namespace ElogictisMobile
                     LocalContext.IsAdmin = LocalContext.Current.GetPermission(4);
                     LocalContext.IsManager = LocalContext.Current.GetPermission(3);
                     LocalContext.IsShipper = LocalContext.Current.GetPermission(2);
-                }
-                return navigationService.NavigateToAsync<DashboardPageViewModel>();
+
+                    return navigationService.NavigateToAsync<DashboardPageViewModel>();
+                } 
             }
             return navigationService.NavigateToAsync<LoginPageViewModel>(null, true);
         }

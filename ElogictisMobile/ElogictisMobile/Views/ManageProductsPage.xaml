@@ -23,7 +23,7 @@
 
                     <SearchBar x:Name="filterText" HeightRequest="40"
                                WidthRequest="300"
-                            Placeholder="Nhập Mã đơn hàng" Grid.Row="1"
+                            Placeholder="Mã hoặc tên đơn hàng" Grid.Row="1"
                             TextChanged="SearchBar_TextChanged"/>
                     <buttons:SfButton
                         Margin="0,16,0,20"
@@ -41,21 +41,30 @@
                             <ViewCell>
                                 <StackLayout Orientation="Vertical" Spacing="16" Padding="16">
                                     <StackLayout BackgroundColor="#2196F3"
-                                                Orientation="Vertical">
-                                        <Label
+                                                Orientation="Horizontal">
+                                        <StackLayout Orientation="Vertical" HorizontalOptions="StartAndExpand">
+                                            <Label
                                             Margin="5,5,0,5"
                                             FontFamily="Montserrat-SemiBold"
                                             FontSize="18"
                                             HorizontalOptions="StartAndExpand"
                                             Text="{Binding ID, StringFormat='Mã ĐH: {0}'}"
                                             TextColor="White"/>
-                                        <Label
+                                            <Label
                                             Margin="5,5,0,5"
                                             FontFamily="Montserrat-SemiBold"
                                             FontSize="18"
                                             HorizontalOptions="StartAndExpand"
                                             Text="{Binding Status_ext}"
                                             TextColor="White"/>
+                                        </StackLayout>
+                                        <Label
+                                            Margin="16,0,16,0"
+                                            HorizontalOptions="End"
+                                            TextColor="Yellow"
+                                            IsVisible="{Binding ProductPrioritize}"
+                                            Style="{StaticResource IconLabelStyle}"
+                                            Text="{StaticResource Rating}" />
                                     </StackLayout>
                                     <StackLayout>
                                         <Label

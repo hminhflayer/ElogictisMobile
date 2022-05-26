@@ -100,8 +100,9 @@ namespace ElogictisMobile.ViewModels
         {
             this.Name = new ValidatableObject<string>();
             this.Id = new ValidatableObject<string>();
+            this.Province = LocalContext.ProvinceSelected;
 
-            if(LocalContext.IsEdit)
+            if (LocalContext.IsEdit)
             {
                 Id.Value = LocalContext.DistrictSelected.Id;
                 Name.Value = LocalContext.DistrictSelected.Name;
@@ -110,7 +111,7 @@ namespace ElogictisMobile.ViewModels
                     Id = LocalContext.DistrictSelected.ProvinceId,
                     Name = LocalContext.DistrictSelected.ProvinceName
                 };
-                Province = provi;
+                this.Province = provi;
             }    
         }
 
@@ -154,7 +155,7 @@ namespace ElogictisMobile.ViewModels
                     district.Id = Id.Value;
                     district.ProvinceName = Province.Name;
                     district.ProvinceId = Province.Id;
-                    mess = "Cập nhật thành công!";
+                    mess = "Cập nhật thông tin Quận/Huyện thành công!";
                 }    
                 else
                 {
@@ -162,9 +163,8 @@ namespace ElogictisMobile.ViewModels
                     district.Id = Id.Value;
                     district.ProvinceName = Province.Name;
                     district.ProvinceId = Province.Id;
-                    mess = "Thêm thành công!";
+                    mess = "Thêm Quận/Huyện thành công!";
                 }    
-                
 
                 var task = await RealtimeFirebase.Instance.UpSert("Categories/District/"+ Province.Id, Id.Value, JsonConvert.SerializeObject(district));
                 if (task)
@@ -175,7 +175,7 @@ namespace ElogictisMobile.ViewModels
                 else
                 {
                     IsLoading = false;
-                    await App.Current.MainPage.DisplayAlert("Thông báo", "Thêm/Cập nhật không thành công!", "OK");
+                    await App.Current.MainPage.DisplayAlert("Thông báo", "Thêm/Cập nhật thông tin Quận/Huyện không thành công!", "OK");
                 }
             }
         }
@@ -185,13 +185,13 @@ namespace ElogictisMobile.ViewModels
             // Do something
             try
             {
-                var action = await App.Current.MainPage.DisplayAlert("Thông báo", "Bạn có thực sự muốn xóa tỉnh "+ Name.Value +" ?", "Đúng", "Không");
+                var action = await App.Current.MainPage.DisplayAlert("Thông báo", "Bạn có thực sự muốn xóa Quận/Huyện "+ Name.Value +" ?", "Đúng", "Không");
                 if (action)
                 {
                     var del = await RealtimeFirebase.Instance.Delete("Categories/District/"+Province.Id, Id.Value);
                     if (del)
                     {
-                        await App.Current.MainPage.DisplayAlert("Thông báo", "Đã xóa thành công", "OK");
+                        await App.Current.MainPage.DisplayAlert("Thông báo", "Đã xóa Quận/Huyện " + Name.Value + " thành công", "OK");
                     }
                     else
                     {

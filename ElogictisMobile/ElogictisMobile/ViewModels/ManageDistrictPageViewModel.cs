@@ -118,6 +118,7 @@ namespace ElogictisMobile.ViewModels
             // Do something
             try
             {
+                LocalContext.ProvinceSelected = Province;
                 LocalContext.IsEdit = false;
                 await _navigationService.NavigateToAsync<AddDistrictPageViewModel>();
             }

@@ -1,4 +1,5 @@
-﻿using Xamarin.Forms;
+﻿using ElogictisMobile.ViewModels;
+using Xamarin.Forms;
 using Xamarin.Forms.Internals;
 using Xamarin.Forms.Xaml;
 
@@ -17,6 +18,17 @@ namespace ElogictisMobile.Views
         public DetailProductFormPage()
         {
             this.InitializeComponent();
+        }
+        private void WeightEntry_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (string.IsNullOrEmpty(e.NewTextValue) || string.IsNullOrWhiteSpace(e.NewTextValue))
+            {
+                return;
+            }
+            if (this.BindingContext is DetailProductFormPageViewModel vm)
+            {
+                vm.WeightChangedCommand.Execute(double.Parse(e.NewTextValue));
+            }
         }
     }
 }

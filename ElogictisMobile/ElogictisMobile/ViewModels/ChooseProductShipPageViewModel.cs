@@ -12,6 +12,7 @@ namespace ElogictisMobile.ViewModels
     public class ChooseProductShipPageViewModel : BaseViewModel
     {
         public List<Products> products;
+        private bool isChecked;
         public Command MapCommand { get; set; }
 
         private INavigationService _navigationService;
@@ -40,6 +41,7 @@ namespace ElogictisMobile.ViewModels
             try
             {
                 LocalContext.ProductsDelivery = selectedItems;
+                LocalContext.RoundTrip = this.isChecked;
                 await _navigationService.NavigateToAsync<MapDeliveryPageViewModel>();
                 // Do something
             }
@@ -64,6 +66,24 @@ namespace ElogictisMobile.ViewModels
                 }
 
                 this.SetProperty(ref this.products, value);
+            }
+        }
+
+        public bool IsChecked
+        {
+            get
+            {
+                return this.isChecked;
+            }
+
+            set
+            {
+                if (this.isChecked == value)
+                {
+                    return;
+                }
+
+                this.SetProperty(ref this.isChecked, value);
             }
         }
     }

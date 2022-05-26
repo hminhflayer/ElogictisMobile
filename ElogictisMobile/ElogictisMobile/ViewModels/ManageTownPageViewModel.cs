@@ -120,6 +120,8 @@ namespace ElogictisMobile.ViewModels
             {
                 LocalContext.Districts = null;
                 LocalContext.IsEdit = false;
+                LocalContext.ProvinceSelected = Province;
+                LocalContext.DistrictSelected = District;
                 await _navigationService.NavigateToAsync<AddTownPageViewModel>();
             }
             catch (Exception ex)

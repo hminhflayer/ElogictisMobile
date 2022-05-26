@@ -5,6 +5,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:buttons="clr-namespace:Syncfusion.XForms.Buttons;assembly=Syncfusion.Buttons.XForms"
     xmlns:converter="clr-namespace:ElogictisMobile.Converters"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:core="clr-namespace:Syncfusion.XForms.Core;assembly=Syncfusion.Core.XForms"
     xmlns:local="clr-namespace:ElogictisMobile.Views"
     xmlns:viewModel="clr-namespace:ElogictisMobile.ViewModels"
@@ -47,29 +48,29 @@
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <ViewCell>
-                                <StackLayout Orientation="Vertical" Spacing="16" Padding="16">
+                                <StackLayout Orientation="Vertical" Spacing="16" Padding="0,20,0,0">
                                     <StackLayout Orientation="Vertical">
-                                        <StackLayout BackgroundColor="Blue">
+                                        <StackLayout BackgroundColor="Red">
                                             <Label Text="{Binding TypeShipProduct_ext}"
                                                FontSize="18"
                                                FontAttributes="Bold"
                                                TextColor="White"
                                                HorizontalOptions="CenterAndExpand"/>
                                         </StackLayout>
-                                        <StackLayout BackgroundColor="LightBlue">
+                                        <StackLayout Padding="16,0,0,0">
                                             <Label Text="{Binding TypeProduct_ext}"
                                                FontSize="18"
                                                FontAttributes="Bold"
-                                               TextColor="White"
-                                               HorizontalOptions="CenterAndExpand"/>
+                                               TextColor="Black"
+                                               HorizontalOptions="StartAndExpand"/>
                                         </StackLayout>
-                                        <StackLayout Orientation="Horizontal">
+                                        <StackLayout Orientation="Horizontal" Padding="16,0,0,0">
                                             <Label Text="{Binding From_Kilometer, StringFormat='Khoảng cách từ: {0} Km'}"
                                                FontSize="18"/>
                                             <Label Text="{Binding To_Kilometer, StringFormat='Đến: {0} Km'}"
                                                FontSize="18"/>
                                         </StackLayout>
-                                        <StackLayout Orientation="Horizontal">
+                                        <StackLayout Orientation="Horizontal" Padding="16,0,0,0">
                                             <Label Text="{Binding From_Weight, StringFormat='Trọng lượng từ: {0} Kg'}"
                                                FontSize="18"/>
                                             <Label Text="{Binding To_Weight, StringFormat='Đến: {0} kg'}"
@@ -77,8 +78,13 @@
                                         </StackLayout>
                                         <Label Text="{Binding Price, StringFormat='GIÁ TIỀN: {0:C} VND'}"
                                                FontSize="18"
+                                               Padding="0,10,0,0"
                                                FontAttributes="Bold"/>
                                     </StackLayout>
+                                    <BoxView 
+                                       WidthRequest="1"
+                                        HeightRequest="2"
+                                       Color="Black"/>
                                 </StackLayout>
                             </ViewCell>
                         </DataTemplate>

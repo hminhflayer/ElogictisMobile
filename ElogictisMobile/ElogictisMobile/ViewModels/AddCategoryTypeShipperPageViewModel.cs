@@ -23,10 +23,11 @@ namespace ElogictisMobile.ViewModels
         private ValidatableObject<int> timeHold;
         private bool prioritize;
 
-        private bool update = false;
+        public bool update = false;
 
         private Command<object> addCategoryTypeProductCommand;
         private INavigationService _navigationService;
+        private Command<object> deleteCommand;
 
         #endregion
 
@@ -48,13 +49,16 @@ namespace ElogictisMobile.ViewModels
             }    
             else
             {
-                if (!string.IsNullOrEmpty(LocalContext.TypeShipProductSelected.Id))
+                if (string.IsNullOrEmpty(LocalContext.TypeShipProductSelected.Id))
                 {
                     update = false;
                 }
                 else
                 {
                     update = true;
+                    this.Name.Value = LocalContext.TypeShipProductSelected.Name;
+                    this.TimeHold.Value = LocalContext.TypeShipProductSelected.TimeHold;
+                    this.Prioritize = LocalContext.TypeShipProductSelected.Prioritize;
                 }    
                 
             }    
@@ -145,7 +149,14 @@ namespace ElogictisMobile.ViewModels
         /// <summary>
         /// Gets the command that will be executed when an add profile button is clicked.
         /// </summary>
-        public Command<object> AddCategoryTypeProductCommand
+        public Command<object> DeleteCommand
+        {
+            get
+            {
+                return this.deleteCommand ?? (this.deleteCommand = new Command<object>(this.DeleteClicked));
+        }
+    }
+    public Command<object> AddCategoryTypeProductCommand
         {
             get
             {
@@ -245,6 +256,34 @@ namespace ElogictisMobile.ViewModels
                 await App.Current.MainPage.DisplayAlert("Thông báo", ex.Message, "OK");
             }
             
+        }
+
+        private async void DeleteClicked(object obj)
+        {
+            // Do something
+            try
+            {
+                var action = await App.Current.MainPage.DisplayAlert("Thông báo", "Bạn có thực sự muốn xóa hình thức giao hàng này?", "Đúng", "Không");
+                if (action)
+                {
+                    var del = await RealtimeFirebase.Instance.Delete("Categories/TypeShip", LocalContext.TypeShipProductSelected.Id);
+                    if (del)
+                    {
+                        await App.Current.MainPage.DisplayAlert("Thông báo", "Đã xóa hình thức giao hàng thành công", "OK");
+                        await _navigationService.GoBackAsync();
+                    }
+                    else
+                    {
+                        await App.Current.MainPage.DisplayAlert("Thông báo", "Có lỗi khi xóa bảng giá", "OK");
+                    }
+
+                    await _navigationService.GoBackAsync();
+                }
+            }
+            catch (Exception ex)
+            {
+                await App.Current.MainPage.DisplayAlert("Thông báo", ex.Message, "OK");
+            }
         }
 
         #endregion

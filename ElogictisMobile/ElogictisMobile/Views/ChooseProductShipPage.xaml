@@ -64,12 +64,19 @@
                     </ListView.ItemTemplate>
                 </ListView>
                 <StackLayout>
+                    <input:CheckBox Color="Blue" 
+                                HorizontalOptions="StartAndExpand"
+                                Padding="5"
+                                    Text="Khứ hồi"
+                                    TextColor="Black"
+                                IsChecked="{Binding IsChecked}"
+                                Type="Check" BoxBackgroundColor="White"/>
                     <buttons:SfButton
                     Margin="0,10,0,10"
                     Command="{Binding MapCommand}"
                     Style="{StaticResource GradientButtonStyle}"
                     Text="Đến bản đồ"
-                    WidthRequest="360" />
+                    WidthRequest="300" />
                 </StackLayout>
             </Grid>
         </ScrollView>

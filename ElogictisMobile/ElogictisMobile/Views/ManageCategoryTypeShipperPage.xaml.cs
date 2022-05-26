@@ -17,7 +17,7 @@ namespace ElogictisMobile.Views
         {
             InitializeComponent();
         }
-        private void ListView_ItemTapped(object sender, Xamarin.Forms.ItemTappedEventArgs e)
+        private void ListView_ItemTapped(object sender, ItemTappedEventArgs e)
         {
             if (this.BindingContext is ManageCategoryTypeShipperPageViewModel vm)
             {

@@ -15,7 +15,7 @@
     BackgroundColor="{DynamicResource Gray-Bg}"
     NavigationPage.HasBackButton="True"
     NavigationPage.HasNavigationBar="True"
-    Title="Thêm tỉnh">
+    Title="Thông tin Tỉnh">
 
     <ContentPage.Resources>
         <ResourceDictionary>

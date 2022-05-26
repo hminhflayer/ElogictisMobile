@@ -380,6 +380,10 @@ namespace ElogictisMobile.ViewModels
                 districts = await RealtimeFirebase.Instance.GetListDistrict(province);
                 foreach (var x in districts)
                 {
+                    if(x.Id == LocalContext.Current.AccountSettings.District)
+                    {
+                        this.District = x;
+                    }    
                     DistrictCollection.Add(x);
                 }
             }
@@ -407,6 +411,10 @@ namespace ElogictisMobile.ViewModels
                 towns = await RealtimeFirebase.Instance.GetListTown(district);
                 foreach (var x in towns)
                 {
+                    if (x.Id == LocalContext.Current.AccountSettings.Town)
+                    {
+                        this.Town = x;
+                    }
                     TownCollection.Add(x);
                 }
             }

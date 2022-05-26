@@ -381,7 +381,7 @@ namespace ElogictisMobile.ViewModels
             {
                 if (_accountService.SignOut())
                 {
-                    LocalContext.Current.AccountSettings = null;
+                    LocalContext.Current.AccountSettings = new Profiles();
                     await _navigationService.NavigateToAsync<LoginPageViewModel>(null,true);
                 }    
             }
