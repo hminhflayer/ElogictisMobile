@@ -33,8 +33,9 @@ namespace ElogictisMobile.ViewModels
         public ValidatableObject<int> quanlity;
         public ValidatableObject<double> weight;
         public ValidatableObject<string> desciption;
-        public ValidatableObject<double> money;
+        public double money;
         private INavigationService _navigationService;
+        private bool acceptSubmit = true;
         public string TypeShip_ext { get; set; }
         private string Mess = "Cập nhật thông tin đơn hàng thành công!";
 
@@ -279,7 +280,7 @@ namespace ElogictisMobile.ViewModels
                 this.SetProperty(ref this.desciption, value);
             }
         }
-        public ValidatableObject<double> Money
+        public double Money
         {
             get
             {
@@ -337,7 +338,6 @@ namespace ElogictisMobile.ViewModels
             this.Quanlity = new ValidatableObject<int>();
             this.Weight = new ValidatableObject<double>();
             this.Desciption = new ValidatableObject<string>();
-            this.Money = new ValidatableObject<double>();
 
             var tmp = new Category()
             {
@@ -354,7 +354,7 @@ namespace ElogictisMobile.ViewModels
             this.Weight.Value = LocalContext.ProductSelected.Weight;
             this.Quanlity.Value = LocalContext.ProductSelected.Quanlity;
             this.Desciption.Value = LocalContext.ProductSelected.Description;
-            this.Money.Value = LocalContext.ProductSelected.Money;
+            this.Money = LocalContext.ProductSelected.Money;
             this.TypeShip_ext = LocalContext.ProductSelected.TypeShip_ext;
             this.TypeProduct = tmp;
         }
@@ -368,7 +368,6 @@ namespace ElogictisMobile.ViewModels
             this.ToAddress.Validations.Add(new IsNotNullOrEmptyRule<string> { ValidationMessage = "Địa chỉ người nhận không được trống" });
             this.Quanlity.Validations.Add(new IsNotNullOrEmptyRule<int> { ValidationMessage = "Số lượng kiện hàng không được trống" });
             this.Weight.Validations.Add(new IsNotNullOrEmptyRule<double> { ValidationMessage = "Tổng trọng lượng không được trống" });
-            this.Money.Validations.Add(new IsNotNullOrEmptyRule<double> { ValidationMessage = "Số tiền thu hộ không được trống" });
         }
         private bool AreFieldsValid()
         {
@@ -380,7 +379,7 @@ namespace ElogictisMobile.ViewModels
             bool isToAddress = this.ToAddress.Validate();
             bool isQuanlity = this.Quanlity.Validate() && this.Quanlity.Value >= 0;
             bool isWeight = this.Weight.Validate() && this.Weight.Value >= 0;
-            bool isMoney = this.Money.Validate() && this.Money.Value >= 0 && this.Money.Value <= 2000000;
+            bool isMoney = this.Money >= 0 && this.Money <= 2000000;
 
             return isFromFullName && isFromPhone && isFromAddress
                 && isToFullName && isToPhone && isToAddress && isQuanlity
@@ -404,7 +403,7 @@ namespace ElogictisMobile.ViewModels
             temp.From_PhoneNumber = FromPhone.Value;
             temp.LastUpdateBy = LocalContext.Current.AccountSettings.Id;
             temp.LastUpdateTime = DateTime.Now.ToShortDateString();
-            temp.Money = Money.Value;
+            temp.Money = Money;
             temp.Quanlity = Quanlity.Value;
             temp.To_Address = ToAddress.Value;
             temp.To_FullName = ToFullName.Value;
@@ -451,6 +450,19 @@ namespace ElogictisMobile.ViewModels
         {
             if (this.AreFieldsValid())
             {
+                if (!acceptSubmit)
+                {
+                    await App.Current.MainPage.DisplayAlert("Thông báo", "Phí vận chuyển của đơn hàng vượt quá số tiền trang tài khoản", "OK");
+                    return;
+                }
+
+                var MaxMoney = await RealtimeFirebase.Instance.GetTotalMoneyProductWaiting(Money);
+                if (MaxMoney > LocalContext.Current.AccountSettings.Money)
+                {
+                    await App.Current.MainPage.DisplayAlert("Thông báo", "Phí vận chuyển của những đơn hàng bạn tạo đã đạt tối đa:\n1.Bạn hãy nạp thêm tiền\n2.Bạn hãy chờ Shipper xác nhận lấy những đơn trước đó. ", "OK");
+                    return;
+                }
+
                 bool updateUser = false;
                 var keyNoti = GeneralKey.Instance.General("NOTI");
                 Products temp = new Products();
@@ -484,10 +496,10 @@ namespace ElogictisMobile.ViewModels
                             ProductMoney = LocalContext.ProductSelected.Money,
                             ProductName = LocalContext.ProductSelected.Name,
                             ProfilesId = temp.Holder,
-                            Profit = Money.Value
+                            Profit = Money
                         };
                         await RealtimeFirebase.Instance.UpSert("HistoryOrder/" + temp.CreateBy, key, JsonConvert.SerializeObject(detailRevenueShipper));
-                        updateUser = await RealtimeFirebase.Instance.UpdateMoneyUser(Money.Value, false, temp.CreateBy);
+                        updateUser = await RealtimeFirebase.Instance.UpdateMoneyUser(Money, false, temp.CreateBy);
                     }
 
                     //Shipper giao hàng thành công thì phân chia lợi nhuận
@@ -759,21 +771,26 @@ namespace ElogictisMobile.ViewModels
             {
                 if (weight <= 0)
                 {
-                    Money.Value = 0.0;
+                    Money = 0.0;
                     return;
                 }
                 IsLoading = true;
 
-                PriceList priceList = await RealtimeFirebase.Instance.GetPriceList(weight, LocalContext.TmpProduct.DistanceEstimate, LocalContext.TmpProduct.TypeShip, TypeProduct.Id);
+                PriceList priceList = await RealtimeFirebase.Instance.GetPriceList(weight, LocalContext.ProductSelected.DistanceEstimate, LocalContext.ProductSelected.TypeShip, TypeProduct.Id);
                 if (double.Parse(priceList.Price) > LocalContext.Current.AccountSettings.Money)
                 {
                     IsLoading = false;
-                    Money.Value = double.Parse(priceList.Price);
+                    acceptSubmit = false;
+                    Money = double.Parse(priceList.Price);
                     await App.Current.MainPage.DisplayAlert("Thông báo", "Phí vận chuyển của đơn hàng vượt quá số tiền trang tài khoản", "OK");
                     return;
                 }
+                else
+                {
+                    acceptSubmit = true;
+                }    
 
-                Money.Value = double.Parse(priceList.Price);
+                Money = double.Parse(priceList.Price);
                 IsLoading = false;
             }
             catch (Exception ex)
